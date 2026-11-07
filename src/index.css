@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-heading: 'Outfit', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #2A2A2A;
+    color: #e5e7eb;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-heading);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #2A2A2A;
+}
+::-webkit-scrollbar-thumb {
+  background: #3e3e3e;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #505050;
+}
+
+/* Glassmorphism & ember glow effects */
+.glass-panel {
+  background: rgba(42, 42, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: #222222;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(225, 6, 0, 0.4);
+  box-shadow: 0 10px 30px -10px rgba(225, 6, 0, 0.15);
+}
+
+.ember-glow {
+  box-shadow: 0 0 50px -10px rgba(225, 6, 0, 0.25);
+}
+
+.card-inner-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-inner-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(225, 6, 0, 0.4), transparent);
+}
+
+/* Text stroke outline for background Sheryians / TheCodeSpark watermark */
+.text-stroke-subtle {
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.12);
+  color: transparent;
+  user-select: none;
+}
+
+.text-stroke-active {
+  -webkit-text-stroke: 1.5px rgba(225, 6, 0, 0.35);
+  color: transparent;
+}
+
+/* Infinite marquee animations */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  transform: translateZ(0);
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee-reverse {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  transform: translateZ(0);
+  animation: marquee-reverse 38s linear infinite;
+}
+
+.animate-marquee:hover,
+.animate-marquee-reverse:hover {
+  animation-play-state: paused;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Infinite vertical marquee animations matching Framer reference */
+@keyframes marquee-vertical {
+  0% { transform: translateY(0%); }
+  100% { transform: translateY(-50%); }
+}
+
+@keyframes marquee-vertical-reverse {
+  0% { transform: translateY(-50%); }
+  100% { transform: translateY(0%); }
+}
+
+.animate-marquee-vertical {
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  will-change: transform;
+  animation: marquee-vertical 32s linear infinite;
+}
+
+.animate-marquee-vertical-reverse {
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  will-change: transform;
+  animation: marquee-vertical-reverse 36s linear infinite;
+}
+
+.animate-marquee-vertical-slow {
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  will-change: transform;
+  animation: marquee-vertical 29s linear infinite;
+}
+
+/* Non-stopping continuous scroll (never pauses on mouse hover) */
+
+/* 3D perspective utilities for Bootcamp cards */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.text-stroke-purple {
+  -webkit-text-stroke: 1.5px rgba(168, 85, 247, 0.25);
+  color: transparent;
+  user-select: none;
+}
+
+.text-stroke-large {
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.07);
+  color: transparent;
+  user-select: none;
+}
