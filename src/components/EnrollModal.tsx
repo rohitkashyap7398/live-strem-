@@ -18,6 +18,7 @@ export const EnrollModal: React.FC<EnrollModalProps> = ({
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [couponCode, setCouponCode] = useState('');
+  const [couponError, setCouponError] = useState<string | null>(null);
   const [discountApplied, setDiscountApplied] = useState(false);
   const [batch, setBatch] = useState('upcoming-immediate');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -30,10 +31,12 @@ export const EnrollModal: React.FC<EnrollModalProps> = ({
   const finalPrice = Math.max(0, basePrice - discountAmount);
 
   const applyCoupon = () => {
+    setCouponError(null);
     if (couponCode.trim().toUpperCase() === 'SPARK10' || couponCode.trim().toUpperCase() === 'SHER10') {
       setDiscountApplied(true);
+      setCouponError(null);
     } else {
-      alert("Invalid coupon! Try code 'SPARK10' for an additional 10% off.");
+      setCouponError("Invalid coupon! Try code 'SPARK10' for an additional 10% off.");
     }
   };
 
@@ -55,7 +58,7 @@ export const EnrollModal: React.FC<EnrollModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
       <div 
-        className="relative w-full max-w-lg bg-[#0e0e12] border border-white/10 rounded-2xl shadow-2xl overflow-hidden card-inner-glow"
+        className="relative w-full max-w-lg bg-[#0e0e12] border border-white/10 rounded-2xl shadow-2xl overflow-hidden card-inner-glow max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -235,6 +238,11 @@ export const EnrollModal: React.FC<EnrollModalProps> = ({
               {discountApplied && (
                 <div className="text-[11px] text-emerald-400 mt-1 font-mono flex items-center gap-1">
                   <Sparkles className="w-3 h-3" /> Extra 10% instant discount applied (Saved ₹{discountAmount.toLocaleString()})
+                </div>
+              )}
+              {couponError && (
+                <div className="text-[11px] text-red-400 mt-1 font-mono">
+                  {couponError}
                 </div>
               )}
             </div>

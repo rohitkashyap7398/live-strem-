@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import {
   ArrowLeft,
   Calendar,
-  Clock,
   Share2,
   Sparkles,
   Compass,
@@ -14,16 +13,15 @@ import {
   Search,
   X,
   TrendingUp,
-  Maximize2,
-  Minimize2,
   CheckCircle2,
-  ArrowRight,
   ArrowUpRight,
   Grid,
   Plus,
   Moon,
   Sun,
-  Bell
+  Bell,
+  Maximize2,
+  Minimize2
 } from 'lucide-react';
 
 interface SparkTabletDashboardProps {
@@ -31,6 +29,58 @@ interface SparkTabletDashboardProps {
   onRequestCallback: () => void;
   onExploreCourses: () => void;
 }
+
+/**
+ * ScaledTabletScreen: Automatically scales the high-resolution 840x490 tablet canvas
+ * so it fits 100% inside any parent container without overflowing or clipping.
+ * Preserves the exact desktop display layout on mobile phones.
+ */
+const ScaledTabletScreen: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const update = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const baseW = 840;
+      const baseH = 490;
+      if (rect.width > 0 && rect.height > 0) {
+        const sX = rect.width / baseW;
+        const sY = rect.height / baseH;
+        setScale(Math.min(sX, sY));
+      }
+    };
+
+    update();
+    const ro = new ResizeObserver(() => update());
+    if (containerRef.current) ro.observe(containerRef.current);
+    window.addEventListener('resize', update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="w-full h-full relative overflow-hidden flex items-center justify-center bg-[#0d0d12]"
+    >
+      <div
+        style={{
+          width: '840px',
+          height: '490px',
+          transform: `scale(${scale})`,
+          transformOrigin: 'center center',
+          flexShrink: 0
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
 
 export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
   onStartJourney,
@@ -94,8 +144,9 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
     { month: 'Dec', value: 88, label: '88k' }
   ];
 
+  // Exact desktop tablet layout rendered at 840x490 canvas
   const dashboardContent = (
-    <div className="w-full h-full flex flex-col justify-between text-neutral-200 select-none font-sans overflow-hidden p-2 sm:p-2.5 lg:p-3 bg-[#0d0d12]">
+    <div className="w-[840px] h-[490px] flex flex-col justify-between text-neutral-200 select-none font-sans overflow-hidden p-2.5 bg-[#0d0d12]">
       {/* 1. TOP-MOST NAVIGATION ROW inside tablet (Matching Framer reference) */}
       <div className="flex items-center justify-between gap-2 pb-1.5 border-b border-white/[0.06] shrink-0">
         <div className="flex items-center gap-2">
@@ -110,10 +161,10 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
             </svg>
           </div>
 
-          <Grid className="w-3.5 h-3.5 text-neutral-400 hidden xs:inline" />
+          <Grid className="w-3.5 h-3.5 text-neutral-400" />
 
           {/* Segmented Pills */}
-          <div className="flex items-center rounded-full bg-white/[0.05] border border-white/10 p-0.5 text-[8px] sm:text-[9px] font-medium font-mono">
+          <div className="flex items-center rounded-full bg-white/[0.05] border border-white/10 p-0.5 text-[9px] font-medium font-mono">
             <button
               onClick={() => setTopSegmentTab('analytics')}
               className={`px-2 py-0.5 rounded-full transition-all cursor-pointer ${
@@ -161,7 +212,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
           <button className="w-5 h-5 rounded-full bg-white/[0.04] hover:bg-white/[0.1] flex items-center justify-center transition-colors">
             <Plus className="w-2.5 h-2.5" />
           </button>
-          <div className="hidden sm:flex items-center rounded-full bg-white/[0.04] p-0.5">
+          <div className="flex items-center rounded-full bg-white/[0.04] p-0.5">
             <span className="p-0.5 rounded-full bg-white/10 text-white">
               <Moon className="w-2.5 h-2.5" />
             </span>
@@ -178,31 +229,31 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
 
       {/* 2. SUB-HEADER: Title & Filter Row inside Tablet */}
       <div className="flex items-center justify-between gap-2 py-1.5 border-b border-white/[0.06] shrink-0">
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-3">
           {/* Back Pill Button */}
           <button
             onClick={onExploreCourses}
             title="Explore Cohorts"
-            className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 flex items-center justify-center transition-colors cursor-pointer"
+            className="w-6 h-6 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 flex items-center justify-center transition-colors cursor-pointer"
           >
-            <ArrowLeft className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-neutral-300" />
+            <ArrowLeft className="w-3 h-3 text-neutral-300" />
           </button>
 
           {/* Breadcrumb & Title */}
           <div>
-            <div className="flex items-center gap-1.5 text-[8px] sm:text-[9px] text-neutral-400 font-mono tracking-wider uppercase">
+            <div className="flex items-center gap-1.5 text-[9px] text-neutral-400 font-mono tracking-wider uppercase">
               <span>TheCodeSpark OS</span>
               <span>→</span>
               <span className="text-[#E10600] font-semibold">Live Intelligence</span>
             </div>
             <div className="flex items-center gap-2">
-              <h2 className="text-xs sm:text-sm font-extrabold text-white font-display tracking-tight flex items-center gap-1.5">
+              <h2 className="text-sm font-extrabold text-white font-display tracking-tight flex items-center gap-1.5">
                 <span>Ai Placement & Code Summery</span>
               </h2>
               {/* Glowing Spark 8-Point Star */}
               <div className="relative flex items-center justify-center">
                 <svg
-                  className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#E10600] animate-pulse drop-shadow-[0_0_8px_rgba(225,6,0,0.8)]"
+                  className="w-4 h-4 text-[#E10600] animate-pulse drop-shadow-[0_0_8px_rgba(225,6,0,0.8)]"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                 >
@@ -214,15 +265,15 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
         </div>
 
         {/* Right Filter Pills */}
-        <div className="flex items-center gap-1 sm:gap-1.5 text-[8px] sm:text-[9px]">
+        <div className="flex items-center gap-1.5 text-[9px]">
           {/* Metric Badge (98) */}
-          <div className="hidden xs:flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/[0.06] border border-white/10 font-mono text-neutral-300">
+          <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/[0.06] border border-white/10 font-mono text-neutral-300">
             <span className="w-1 h-1 rounded-full bg-[#E10600] animate-ping" />
             <span>98</span>
           </div>
 
           {/* Date Range Pill */}
-          <div className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-neutral-300">
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-neutral-300">
             <Calendar className="w-2.5 h-2.5 text-[#E10600]" />
             <span>Nov 1 '25 - Dec 1 '26</span>
           </div>
@@ -259,7 +310,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
           <button
             onClick={onRequestCallback}
             title="Download Cohort Placement Report"
-            className="hidden md:flex items-center gap-1 px-2 py-0.5 rounded-full bg-white text-black hover:bg-neutral-200 text-[8px] font-bold transition-all cursor-pointer shadow-sm"
+            className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white text-black hover:bg-neutral-200 text-[8px] font-bold transition-all cursor-pointer shadow-sm"
           >
             <span>Export</span>
             <Share2 className="w-2.5 h-2.5" />
@@ -270,12 +321,12 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
       {/* 3. MAIN WORKSPACE: Left Sidebar + Left Column + Right Column */}
       <div className="flex-1 flex gap-2 pt-1.5 overflow-hidden items-stretch min-h-0">
         {/* Left Vertical Navigation Dock matching Framer */}
-        <div className="flex flex-col items-center justify-between py-1 px-1 rounded-2xl bg-white/[0.04] border border-white/[0.08] w-6 sm:w-7 shrink-0">
+        <div className="flex flex-col items-center justify-between py-1 px-1 rounded-2xl bg-white/[0.04] border border-white/[0.08] w-7 shrink-0">
           <div className="flex flex-col items-center gap-1">
             {/* 1. Spark (Active) */}
             <button
               onClick={() => setActiveTab('spark')}
-              className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+              className={`w-5 h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
                 activeTab === 'spark'
                   ? 'bg-white text-black shadow-md scale-105'
                   : 'text-neutral-400 hover:text-white hover:bg-white/10'
@@ -291,7 +342,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                 setActiveTab('compass');
                 onExploreCourses();
               }}
-              className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+              className={`w-5 h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
                 activeTab === 'compass'
                   ? 'bg-white text-black shadow-md'
                   : 'text-neutral-400 hover:text-white hover:bg-white/10'
@@ -307,7 +358,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                 setActiveTab('code');
                 handleRunAiPrompt('Optimizing 2-pointer approach for Trapping Rain Water...');
               }}
-              className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+              className={`w-5 h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
                 activeTab === 'code'
                   ? 'bg-white text-black shadow-md'
                   : 'text-neutral-400 hover:text-white hover:bg-white/10'
@@ -323,7 +374,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                 setActiveTab('chat');
                 onRequestCallback();
               }}
-              className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+              className={`w-5 h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
                 activeTab === 'chat'
                   ? 'bg-white text-black shadow-md'
                   : 'text-neutral-400 hover:text-white hover:bg-white/10'
@@ -336,7 +387,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
             {/* 5. Analytics */}
             <button
               onClick={() => setActiveTab('analytics')}
-              className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+              className={`w-5 h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
                 activeTab === 'analytics'
                   ? 'bg-white text-black shadow-md'
                   : 'text-neutral-400 hover:text-white hover:bg-white/10'
@@ -350,7 +401,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
           {/* 6. Settings at bottom */}
           <button
             onClick={() => setActiveTab('settings')}
-            className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+            className={`w-5 h-5 rounded-full flex items-center justify-center transition-all cursor-pointer ${
               activeTab === 'settings'
                 ? 'bg-white text-black shadow-md'
                 : 'text-neutral-400 hover:text-white hover:bg-white/10'
@@ -361,16 +412,16 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
           </button>
         </div>
 
-        {/* 2-Column Main Workspace */}
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-1.5 sm:gap-2 min-h-0 overflow-hidden">
+        {/* 2-Column Main Workspace strictly maintaining 2 columns side-by-side */}
+        <div className="flex-1 grid grid-cols-12 gap-2 min-h-0 overflow-hidden">
           {/* LEFT COLUMN: Card 1 (AI Assistant) + Card 2 (Placement Summary) */}
-          <div className="md:col-span-5 flex flex-col gap-1.5 min-h-0 justify-between">
+          <div className="col-span-5 flex flex-col gap-2 min-h-0 justify-between">
             {/* CARD 1: AI Assistant (Voice Soundwave + Prompt Input) */}
-            <div className="rounded-xl p-2 sm:p-2.5 bg-[#13131a] border border-white/[0.08] flex flex-col justify-between relative overflow-hidden shadow-md flex-1">
+            <div className="rounded-xl p-2.5 bg-[#13131a] border border-white/[0.08] flex flex-col justify-between relative overflow-hidden shadow-md h-[215px]">
               <div className="flex items-center justify-between pb-1">
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[10px] sm:text-[11px] font-bold text-white font-display">
+                  <span className="text-[11px] font-bold text-white font-display">
                     AI Spark Assistant
                   </span>
                 </div>
@@ -383,7 +434,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
               </div>
 
               {/* Pulsing Audio Equalizer Waveform */}
-              <div className="my-1 py-1 px-1.5 rounded-lg bg-black/40 border border-white/[0.05] flex items-center justify-center gap-[2px] sm:gap-[3px] h-8 sm:h-9 overflow-hidden">
+              <div className="my-1 py-1 px-1.5 rounded-lg bg-black/40 border border-white/[0.05] flex items-center justify-center gap-[3px] h-9 overflow-hidden">
                 {bars.map((height, i) => (
                   <motion.div
                     key={i}
@@ -405,7 +456,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                 <motion.div
                   initial={{ opacity: 0, y: 3 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="p-1 rounded bg-[#E10600]/15 border border-[#E10600]/30 text-[8px] sm:text-[9px] text-white leading-tight font-mono mb-1"
+                  className="p-1 rounded bg-[#E10600]/15 border border-[#E10600]/30 text-[9px] text-white leading-tight font-mono mb-1 truncate"
                 >
                   {aiResponse}
                 </motion.div>
@@ -420,15 +471,15 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') handleRunAiPrompt(activePrompt);
                   }}
-                  className="w-full bg-transparent text-[8px] sm:text-[9px] text-neutral-300 placeholder-neutral-500 px-2 outline-none font-sans"
+                  className="w-full bg-transparent text-[9px] text-neutral-300 placeholder-neutral-500 px-2 outline-none font-sans"
                   placeholder="Ask Spark AI code reviewer..."
                 />
                 <button
                   onClick={() => handleRunAiPrompt(activePrompt)}
-                  className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white hover:bg-neutral-200 text-black flex items-center justify-center shrink-0 transition-transform active:scale-95 cursor-pointer"
+                  className="w-5 h-5 rounded-full bg-white hover:bg-neutral-200 text-black flex items-center justify-center shrink-0 transition-transform active:scale-95 cursor-pointer"
                   title="Run Prompt"
                 >
-                  <Search className="w-2 h-2 sm:w-2.5 sm:h-2.5" />
+                  <Search className="w-2.5 h-2.5" />
                 </button>
               </div>
 
@@ -438,7 +489,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                   <button
                     key={idx}
                     onClick={() => handleRunAiPrompt(p)}
-                    className="text-[7px] sm:text-[8px] font-mono px-1.5 py-0.5 rounded-full bg-white/[0.04] hover:bg-white/[0.1] text-neutral-400 hover:text-white transition-colors whitespace-nowrap cursor-pointer shrink-0"
+                    className="text-[8px] font-mono px-1.5 py-0.5 rounded-full bg-white/[0.04] hover:bg-white/[0.1] text-neutral-400 hover:text-white transition-colors whitespace-nowrap cursor-pointer shrink-0"
                   >
                     {idx === 0 ? 'DSA Progress' : idx === 1 ? 'Code Optimizer' : 'Placement Index'}
                   </button>
@@ -447,52 +498,52 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
             </div>
 
             {/* CARD 2: Placement Summary (+247% Growth & Patterned Tiles) */}
-            <div className="rounded-xl p-2 sm:p-2.5 bg-[#13131a] border border-white/[0.08] shadow-md flex-1 flex flex-col justify-between">
+            <div className="rounded-xl p-2.5 bg-[#13131a] border border-white/[0.08] shadow-md h-[165px] flex flex-col justify-between">
               <div className="flex items-center justify-between pb-0.5">
                 <div>
                   <div className="flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E10600]" />
-                    <span className="text-[10px] sm:text-[11px] font-bold text-white font-display">
+                    <span className="text-[11px] font-bold text-white font-display">
                       Placement Summery
                     </span>
                   </div>
-                  <span className="text-[7px] sm:text-[8px] text-neutral-400 block font-mono">
+                  <span className="text-[8px] text-neutral-400 block font-mono">
                     Last 4 months growth & CTC
                   </span>
                 </div>
 
-                {/* +247% Metric Pill with Red Arrow */}
-                <div className="px-1.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-mono text-[9px] sm:text-[10px] font-bold tracking-tight flex items-center gap-1">
+                {/* +247% Metric Pill with Green Arrow */}
+                <div className="px-1.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-mono text-[10px] font-bold tracking-tight flex items-center gap-1">
                   <TrendingUp className="w-2.5 h-2.5" />
                   <span>+ 247%</span>
                 </div>
               </div>
 
               {/* 4 Patterned Status Cards matching Framer exactly */}
-              <div className="grid grid-cols-4 gap-1 sm:gap-1.5 my-1">
+              <div className="grid grid-cols-4 gap-1.5 my-1">
                 {/* 1. Aug: White Solid Card */}
-                <div className="h-12 sm:h-14 rounded-lg bg-white text-black p-1 flex flex-col justify-between shadow-md transition-transform hover:scale-105">
+                <div className="h-14 rounded-lg bg-white text-black p-1 flex flex-col justify-between shadow-md transition-transform hover:scale-105">
                   <span className="text-[7px] font-mono font-bold text-neutral-700">+45%</span>
-                  <span className="text-[8px] sm:text-[9px] font-black font-display leading-none">Aug</span>
+                  <span className="text-[9px] font-black font-display leading-none">Aug</span>
                 </div>
 
                 {/* 2. Sept: Red Diagonal Stripes Card */}
-                <div className="h-12 sm:h-14 rounded-lg p-1 flex flex-col justify-between border border-[#E10600]/40 transition-transform hover:scale-105 bg-[repeating-linear-gradient(45deg,#E10600,#E10600_4px,#7f1d1d_4px,#7f1d1d_8px)] text-white shadow-md">
+                <div className="h-14 rounded-lg p-1 flex flex-col justify-between border border-[#E10600]/40 transition-transform hover:scale-105 bg-[repeating-linear-gradient(45deg,#E10600,#E10600_4px,#7f1d1d_4px,#7f1d1d_8px)] text-white shadow-md">
                   <span className="text-[7px] font-mono font-bold bg-black/60 px-0.5 rounded w-fit">+88%</span>
-                  <span className="text-[8px] sm:text-[9px] font-black font-display leading-none drop-shadow">Sept</span>
+                  <span className="text-[9px] font-black font-display leading-none drop-shadow">Sept</span>
                 </div>
 
                 {/* 3. Oct: Diagonal Crosshatch Mesh Card */}
-                <div className="h-12 sm:h-14 rounded-lg p-1 flex flex-col justify-between border border-white/10 transition-transform hover:scale-105 bg-[#181822] bg-[repeating-linear-gradient(45deg,rgba(255,255,255,0.08),rgba(255,255,255,0.08)_1px,transparent_1px,transparent_5px),repeating-linear-gradient(-45deg,rgba(255,255,255,0.08),rgba(255,255,255,0.08)_1px,transparent_1px,transparent_5px)] text-white shadow-md">
+                <div className="h-14 rounded-lg p-1 flex flex-col justify-between border border-white/10 transition-transform hover:scale-105 bg-[#181822] bg-[repeating-linear-gradient(45deg,rgba(255,255,255,0.08),rgba(255,255,255,0.08)_1px,transparent_1px,transparent_5px),repeating-linear-gradient(-45deg,rgba(255,255,255,0.08),rgba(255,255,255,0.08)_1px,transparent_1px,transparent_5px)] text-white shadow-md">
                   <span className="text-[7px] font-mono font-bold bg-black/60 px-0.5 rounded w-fit">+56%</span>
-                  <span className="text-[8px] sm:text-[9px] font-black font-display leading-none">Oct</span>
+                  <span className="text-[9px] font-black font-display leading-none">Oct</span>
                 </div>
 
                 {/* 4. Nov: Vibrant Solid Signal Red #E10600 Card */}
-                <div className="h-12 sm:h-14 rounded-lg p-1 flex flex-col justify-between bg-[#E10600] text-white shadow-lg shadow-[#E10600]/30 transition-transform hover:scale-105">
+                <div className="h-14 rounded-lg p-1 flex flex-col justify-between bg-[#E10600] text-white shadow-lg shadow-[#E10600]/30 transition-transform hover:scale-105">
                   <span className="text-[7px] font-mono font-bold bg-black/40 px-0.5 rounded w-fit">+140%</span>
                   <div className="flex items-center justify-between">
-                    <span className="text-[8px] sm:text-[9px] font-black font-display leading-none">Nov</span>
+                    <span className="text-[9px] font-black font-display leading-none">Nov</span>
                     <CheckCircle2 className="w-2 h-2 text-white" />
                   </div>
                 </div>
@@ -509,16 +560,16 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
           </div>
 
           {/* RIGHT COLUMN: Card 3 (Future Graph) + Card 4 (Market Revenue) + Card 5 (Age Range) */}
-          <div className="md:col-span-7 flex flex-col gap-1.5 min-h-0 justify-between">
+          <div className="col-span-7 flex flex-col gap-2 min-h-0 justify-between">
             {/* CARD 3: Future Graph Analysis (12-Bar Histogram with Glowing Red Peak Bar) */}
-            <div className="rounded-xl p-2 sm:p-2.5 bg-[#13131a] border border-white/[0.08] shadow-md flex-1 flex flex-col justify-between relative">
+            <div className="rounded-xl p-2.5 bg-[#13131a] border border-white/[0.08] shadow-md h-[215px] flex flex-col justify-between relative">
               <div className="flex items-center justify-between pb-0.5">
                 <div className="flex items-center gap-1.5">
                   <BarChart3 className="w-3 h-3 text-neutral-400" />
-                  <span className="text-[10px] sm:text-[11px] font-bold text-white font-display">
+                  <span className="text-[11px] font-bold text-white font-display">
                     Future Graph Analysis
                   </span>
-                  <span className="text-[7px] sm:text-[8px] text-neutral-400 font-mono hidden sm:inline">
+                  <span className="text-[8px] text-neutral-400 font-mono">
                     (DSA & Placement Readiness)
                   </span>
                 </div>
@@ -529,11 +580,11 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
               </div>
 
               {/* 12 Bars Chart */}
-              <div className="relative pt-3 pb-0.5">
+              <div className="relative pt-4 pb-0.5">
                 {/* Horizontal dotted benchmark line */}
                 <div className="absolute top-1/2 left-0 right-0 border-b border-dashed border-white/15 pointer-events-none" />
 
-                <div className="flex items-end justify-between gap-1 h-16 sm:h-20">
+                <div className="flex items-end justify-between gap-1 h-24">
                   {monthlyData.map((d, idx) => {
                     const isPeak = d.peak;
                     const isHovered = hoveredBarIndex === idx;
@@ -549,7 +600,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                           <motion.div
                             animate={{ y: [0, -2, 0] }}
                             transition={{ duration: 2, repeat: Infinity }}
-                            className="absolute -top-3 px-1 py-0.5 rounded bg-[#E10600] text-white text-[6px] sm:text-[7px] font-black font-mono shadow-lg shadow-[#E10600]/40 whitespace-nowrap z-10"
+                            className="absolute -top-3.5 px-1.5 py-0.5 rounded bg-[#E10600] text-white text-[7px] font-black font-mono shadow-lg shadow-[#E10600]/40 whitespace-nowrap z-10"
                           >
                             {d.ctc}
                           </motion.div>
@@ -572,7 +623,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
 
                         {/* Month Label */}
                         <span
-                          className={`text-[6px] sm:text-[7px] font-mono mt-0.5 ${
+                          className={`text-[7px] font-mono mt-0.5 ${
                             isPeak
                               ? 'text-[#E10600] font-bold'
                               : isHovered
@@ -589,14 +640,14 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
               </div>
             </div>
 
-            {/* BOTTOM ROW: Split into Card 4 (Market Revenue / CTC) & Card 5 (Age Range / Demographics) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 flex-1">
+            {/* BOTTOM ROW: Split side by side into Card 4 (Market CTC) & Card 5 (Demographics) */}
+            <div className="grid grid-cols-2 gap-2 h-[165px]">
               {/* CARD 4: Market Revenue / Placement CTC Trends */}
-              <div className="rounded-xl p-2 sm:p-2.5 bg-[#13131a] border border-white/[0.08] shadow-md flex flex-col justify-between relative overflow-hidden">
+              <div className="rounded-xl p-2.5 bg-[#13131a] border border-white/[0.08] shadow-md flex flex-col justify-between relative overflow-hidden">
                 <div className="flex items-center justify-between pb-0.5">
                   <div className="flex items-center gap-1">
                     <TrendingUp className="w-2.5 h-2.5 text-[#E10600]" />
-                    <span className="text-[10px] sm:text-[11px] font-bold text-white font-display">
+                    <span className="text-[11px] font-bold text-white font-display">
                       Market CTC Trend
                     </span>
                   </div>
@@ -607,7 +658,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                 </div>
 
                 {/* Dual Spline SVG Chart */}
-                <div className="relative h-12 sm:h-14 my-0.5">
+                <div className="relative h-16 my-0.5">
                   <svg className="w-full h-full overflow-visible" viewBox="0 0 200 60" preserveAspectRatio="none">
                     {/* Grid lines */}
                     <line x1="0" y1="15" x2="200" y2="15" stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
@@ -643,7 +694,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                 </div>
 
                 {/* Legend & Stats */}
-                <div className="flex items-center justify-between text-[6px] sm:text-[7px] font-mono text-neutral-400 pt-0.5 border-t border-white/[0.05]">
+                <div className="flex items-center justify-between text-[7px] font-mono text-neutral-400 pt-0.5 border-t border-white/[0.05]">
                   <span className="text-emerald-400 font-bold flex items-center gap-0.5">
                     ▲ +248% Surge
                   </span>
@@ -661,9 +712,9 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
               </div>
 
               {/* CARD 5: Age Range / Batch Demographics (Circular Venn Bubble Chart) */}
-              <div className="rounded-xl p-2 sm:p-2.5 bg-[#13131a] border border-white/[0.08] shadow-md flex flex-col justify-between relative overflow-hidden">
+              <div className="rounded-xl p-2.5 bg-[#13131a] border border-white/[0.08] shadow-md flex flex-col justify-between relative overflow-hidden">
                 <div className="flex items-center justify-between pb-0.5">
-                  <span className="text-[10px] sm:text-[11px] font-bold text-white font-display">
+                  <span className="text-[11px] font-bold text-white font-display">
                     Batch Demographics
                   </span>
                   <div className="flex items-center gap-1 text-[7px] font-mono text-neutral-400">
@@ -673,16 +724,16 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                 </div>
 
                 {/* Overlapping Concentric Circles matching Framer template */}
-                <div className="relative h-12 sm:h-14 flex items-center justify-center">
+                <div className="relative h-16 flex items-center justify-center">
                   {/* Circle 1: 50% Non-Tech to Tech */}
                   <motion.div
                     whileHover={{ scale: 1.08 }}
                     onMouseEnter={() => setHoveredDemographic('50% Non-Tech to Tech')}
                     onMouseLeave={() => setHoveredDemographic(null)}
-                    className="absolute left-4 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#E10600] flex flex-col items-center justify-center text-white shadow-lg shadow-[#E10600]/40 z-10 cursor-pointer border border-white/20"
+                    className="absolute left-3 w-12 h-12 rounded-full bg-[#E10600] flex flex-col items-center justify-center text-white shadow-lg shadow-[#E10600]/40 z-10 cursor-pointer border border-white/20"
                   >
-                    <span className="text-[9px] sm:text-[10px] font-black font-display leading-none">50%</span>
-                    <span className="text-[5px] font-mono text-white/80">Non-Tech</span>
+                    <span className="text-[10px] font-black font-display leading-none">50%</span>
+                    <span className="text-[6px] font-mono text-white/80">Non-Tech</span>
                   </motion.div>
 
                   {/* Circle 2: 30% College Grads */}
@@ -690,10 +741,10 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                     whileHover={{ scale: 1.08 }}
                     onMouseEnter={() => setHoveredDemographic('30% College Grads')}
                     onMouseLeave={() => setHoveredDemographic(null)}
-                    className="absolute right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#991b1b] flex flex-col items-center justify-center text-white z-0 cursor-pointer border border-white/10"
+                    className="absolute right-3 w-11 h-11 rounded-full bg-[#991b1b] flex flex-col items-center justify-center text-white z-0 cursor-pointer border border-white/10"
                   >
-                    <span className="text-[8px] sm:text-[9px] font-black font-display leading-none">30%</span>
-                    <span className="text-[5px] font-mono text-white/80">College</span>
+                    <span className="text-[9px] font-black font-display leading-none">30%</span>
+                    <span className="text-[6px] font-mono text-white/80">College</span>
                   </motion.div>
 
                   {/* Circle 3: 20% Working Pros (Top overlapping) */}
@@ -701,15 +752,15 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                     whileHover={{ scale: 1.08 }}
                     onMouseEnter={() => setHoveredDemographic('20% Working Professionals')}
                     onMouseLeave={() => setHoveredDemographic(null)}
-                    className="absolute top-0 right-10 w-7 h-7 rounded-full bg-[#ef4444] flex flex-col items-center justify-center text-white z-20 cursor-pointer shadow-md border border-white/30"
+                    className="absolute top-0 right-10 w-8 h-8 rounded-full bg-[#ef4444] flex flex-col items-center justify-center text-white z-20 cursor-pointer shadow-md border border-white/30"
                   >
-                    <span className="text-[7px] font-black font-display leading-none">20%</span>
-                    <span className="text-[5px] font-mono text-white/80">Pros</span>
+                    <span className="text-[7.5px] font-black font-display leading-none">20%</span>
+                    <span className="text-[5.5px] font-mono text-white/80">Pros</span>
                   </motion.div>
                 </div>
 
                 {/* Demographic Legend */}
-                <div className="flex items-center justify-between text-[6px] sm:text-[7px] font-mono text-neutral-400 pt-0.5 border-t border-white/[0.05]">
+                <div className="flex items-center justify-between text-[7px] font-mono text-neutral-400 pt-0.5 border-t border-white/[0.05]">
                   <span className="flex items-center gap-0.5 text-neutral-300">
                     <span className="text-[#E10600]">►</span> 18–24
                   </span>
@@ -730,17 +781,51 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
 
   return (
     <div className="w-full relative pb-4">
+      {/* Top Controls: Kicker & View Switcher */}
+      <div className="flex items-center justify-between gap-3 max-w-5xl mx-auto px-3 sm:px-4 mb-3 sm:mb-4">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-[#E10600] animate-ping" />
+          <span className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-neutral-300 font-semibold">
+            TheCodeSpark OS • Live Intelligence
+          </span>
+        </div>
 
+        {/* View Switcher Pill */}
+        <div className="flex items-center rounded-full bg-white/[0.06] border border-white/10 p-0.5 text-[10px] sm:text-xs font-mono">
+          <button
+            onClick={() => setViewMode('hands')}
+            className={`px-2.5 sm:px-3 py-1 rounded-full transition-all cursor-pointer flex items-center gap-1.5 ${
+              viewMode === 'hands'
+                ? 'bg-[#E10600] text-white font-bold shadow-md shadow-[#E10600]/30'
+                : 'text-neutral-400 hover:text-white'
+            }`}
+          >
+            <Minimize2 className="w-3 h-3" />
+            <span>Tablet View</span>
+          </button>
+          <button
+            onClick={() => setViewMode('expanded')}
+            className={`px-2.5 sm:px-3 py-1 rounded-full transition-all cursor-pointer flex items-center gap-1.5 ${
+              viewMode === 'expanded'
+                ? 'bg-[#E10600] text-white font-bold shadow-md shadow-[#E10600]/30'
+                : 'text-neutral-400 hover:text-white'
+            }`}
+          >
+            <Maximize2 className="w-3 h-3" />
+            <span>Expanded View</span>
+          </button>
+        </div>
+      </div>
 
-      {/* RENDER MODE 1: PHOTOREALISTIC HANDS HOLDING TABLET (Exact Framer match) */}
+      {/* RENDER MODE 1: PHOTOREALISTIC HANDS HOLDING TABLET (Exact Framer match, 100% contained) */}
       {viewMode === 'hands' && (
         <div className="relative max-w-5xl mx-auto px-2 sm:px-4">
           {/* Ambient red and cyan glow behind tablet */}
-          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-[#E10600]/20 blur-[130px] pointer-events-none rounded-full" />
-          <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-cyan-500/10 blur-[130px] pointer-events-none rounded-full" />
+          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-72 sm:w-96 h-72 sm:h-96 bg-[#E10600]/20 blur-[130px] pointer-events-none rounded-full" />
+          <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-72 sm:w-96 h-72 sm:h-96 bg-cyan-500/10 blur-[130px] pointer-events-none rounded-full" />
 
           {/* Desktop/Tablet Aspect Container with realistic hands */}
-          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] max-h-[640px] rounded-3xl overflow-hidden shadow-2xl shadow-black border border-white/10 bg-[#09090d]">
+          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] max-h-[640px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-black border border-white/10 bg-[#09090d]">
             {/* Background image of photorealistic hands holding the tablet */}
             <img
               src="/hands_wide_tablet.jpg"
@@ -750,35 +835,32 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
 
             {/* Inner Tablet Screen Area: Perfectly mapped to the tablet screen inside hands */}
             <div
-              className="absolute top-[10.5%] bottom-[15.2%] left-[19.5%] right-[19.5%] rounded-[18px] sm:rounded-[22px] md:rounded-[26px] overflow-hidden shadow-2xl shadow-black border border-white/[0.12] z-10"
+              className="absolute top-[10.5%] bottom-[15.2%] left-[19.5%] right-[19.5%] rounded-[12px] sm:rounded-[22px] md:rounded-[26px] overflow-hidden shadow-2xl shadow-black border border-white/[0.12] z-10"
               style={{
                 boxShadow: 'inset 0 0 20px rgba(0,0,0,0.8), 0 0 35px rgba(225,6,0,0.25)'
               }}
             >
-              {dashboardContent}
+              <ScaledTabletScreen>
+                {dashboardContent}
+              </ScaledTabletScreen>
             </div>
           </div>
         </div>
       )}
 
-      {/* RENDER MODE 2: EXPANDED CINEMA MODE (Full-scale for deep inspection) */}
+      {/* RENDER MODE 2: EXPANDED CINEMA MODE (Full-scale bezel view for deeper inspection) */}
       {viewMode === 'expanded' && (
-        <div className="relative max-w-5xl mx-auto px-3 sm:px-4">
-          <div className="rounded-[28px] sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black bg-[#0d0d12] p-1.5 sm:p-2">
-            {/* Tablet Bezel Frame */}
-            <div className="rounded-[22px] sm:rounded-2xl overflow-hidden border border-white/[0.08] min-h-[460px] sm:min-h-[500px]">
-              {dashboardContent}
+        <div className="relative max-w-5xl mx-auto px-2 sm:px-4">
+          <div className="rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black bg-[#0d0d12] p-1.5 sm:p-2">
+            {/* Tablet Bezel Frame with ambient screen glow */}
+            <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/[0.08] relative aspect-[16/10] sm:aspect-[16/9] min-h-[300px] sm:min-h-[480px]">
+              <ScaledTabletScreen>
+                {dashboardContent}
+              </ScaledTabletScreen>
             </div>
           </div>
         </div>
       )}
-
-      {/* Responsive Fallback: On Mobile (phones < 640px) automatically shows crisp full-width version */}
-      <div className="sm:hidden mt-3 px-3">
-        <div className="rounded-2xl border border-white/10 bg-[#0d0d12] overflow-hidden shadow-xl">
-          {dashboardContent}
-        </div>
-      </div>
     </div>
   );
 };

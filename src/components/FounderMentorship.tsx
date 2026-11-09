@@ -223,34 +223,34 @@ interface FacultyTruth {
 
 const FACULTY_TRUTHS: FacultyTruth[] = [
   {
-    id: 'fac-1',
-    name: 'Aditya Kumar',
+    id: 'fac-aadhya',
+    name: 'Aadhya',
+    role: 'Gen-AI & Vector Architectures Lead',
+    department: 'AI & Machine Learning',
+    experience: 'AI Engineer • Production LLM Specialist',
+    quote: 'AI won\'t replace software engineers, but engineers who build autonomous agents, RAG pipelines, and intelligent workflows will lead the next decade of tech.',
+    photo: '/assets/aistudio/faculty_aadhya.png',
+    skills: ['LangChain', 'Gemini API', 'RAG Pipelines', 'Vector DBs']
+  },
+  {
+    id: 'fac-ishu',
+    name: 'Ishu Sharma',
+    role: 'Placement & Technical Strategy Lead',
+    department: 'Career Strategy & Placements',
+    experience: '500+ Placed Tech Engineers',
+    quote: 'We simulate real interview pressure and live code defenses until answering complex technical architecture questions becomes second nature.',
+    photo: '/assets/aistudio/faculty_ishu_sharma.png',
+    skills: ['Mock Interviews', 'Resume Audits', 'System Design', 'Tech Hiring']
+  },
+  {
+    id: 'fac-nirved',
+    name: 'Nirved Kumar',
     role: 'Tech Lead & Senior Full Stack Mentor',
     department: 'Full Stack & System Design',
     experience: 'Ex-SDE • 6+ Yrs Exp',
     quote: 'Code quality is not an afterthought; it is our foundation. We teach students to write clean, modular, production code that senior engineering teams are proud to deploy.',
-    photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80',
+    photo: '/assets/aistudio/faculty_nirved_kumar.png',
     skills: ['Next.js 15', 'PostgreSQL', 'System Design', 'Microservices']
-  },
-  {
-    id: 'fac-2',
-    name: 'Stephen Francis',
-    role: 'Lead DSA & Algorithms Instructor',
-    department: 'Algorithms & Problem Solving',
-    experience: 'Competitive Programmer • 400+ LeetCode Mentor',
-    quote: 'Algorithms aren\'t about memorizing tricks; they are about understanding invariants, recursion trees, and building spatial logic from first principles.',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80',
-    skills: ['Data Structures', 'Dynamic Programming', 'Graphs', 'Problem Solving']
-  },
-  {
-    id: 'fac-3',
-    name: 'Neha Choudhary',
-    role: 'Gen-AI & Vector Architectures Lead',
-    department: 'AI & Machine Learning',
-    experience: 'AI Engineer • Production LLM Specialist',
-    quote: 'AI won\'t replace software engineers, but engineers who build autonomous agents and RAG pipelines will replace those who don\'t.',
-    photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80',
-    skills: ['LangChain', 'Gemini API', 'RAG', 'pgvector']
   },
   {
     id: 'fac-4',
@@ -259,27 +259,27 @@ const FACULTY_TRUTHS: FacultyTruth[] = [
     department: 'Cloud & Reliability',
     experience: 'AWS Certified • Kubernetes Expert',
     quote: 'A project isn\'t finished when it works on localhost. Every student must master Docker containerization, CI/CD pipelines, and cloud telemetry.',
-    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80',
+    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&auto=format&fit=crop&q=85',
     skills: ['Docker', 'Kubernetes', 'AWS Cloud', 'CI/CD Pipelines']
   },
   {
     id: 'fac-5',
-    name: 'Pooja Sharma',
-    role: 'Placement & Technical Interview Lead',
-    department: 'Career Strategy',
-    experience: '500+ Engineering Candidates Placed',
-    quote: 'We simulate real interview pressure until answering complex technical questions under scrutiny becomes effortless natural instinct.',
-    photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&auto=format&fit=crop&q=80',
-    skills: ['Mock Interviews', 'Resume Audits', 'Tech Placement']
+    name: 'Stephen Francis',
+    role: 'Lead DSA & Algorithms Instructor',
+    department: 'Algorithms & Problem Solving',
+    experience: 'Competitive Programmer • 400+ LeetCode Mentor',
+    quote: 'Algorithms aren\'t about memorizing tricks; they are about understanding invariants, recursion trees, and building spatial logic from first principles.',
+    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=85',
+    skills: ['Data Structures', 'Dynamic Programming', 'Graphs', 'Problem Solving']
   },
   {
     id: 'fac-6',
     name: 'Harsh Vardhan',
     role: 'Indrapuri Campus Operations & Lab Mentor',
     department: 'On-Campus Mentorship',
-    experience: 'Senior Frontend Specialist • Lucknow Hub',
+    experience: 'Senior Frontend • Lucknow Hub',
     quote: 'Having an experienced developer sitting across the table to debug an asynchronous bug or database index saves weeks of isolated struggle.',
-    photo: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80',
+    photo: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=600&auto=format&fit=crop&q=85',
     skills: ['React 19', 'Tailwind CSS', 'TypeScript', 'Desk Mentorship']
   },
   {
@@ -289,7 +289,7 @@ const FACULTY_TRUTHS: FacultyTruth[] = [
     department: 'Backend Engineering',
     experience: 'Distributed Systems • 5+ Yrs Exp',
     quote: 'Real software engineering begins when you think about latency, database concurrency, connection pools, and memory bottlenecks.',
-    photo: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=300&auto=format&fit=crop&q=80',
+    photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&auto=format&fit=crop&q=85',
     skills: ['Node.js', 'Redis', 'PostgreSQL', 'Microservices']
   },
   {
@@ -297,9 +297,9 @@ const FACULTY_TRUTHS: FacultyTruth[] = [
     name: 'Samarth Jain',
     role: 'React & UI Architecture Guide',
     department: 'Frontend Engineering',
-    experience: 'Design Systems & Web Performance',
+    experience: 'Design Systems & Performance',
     quote: 'Clean components, zero layout shifts, and exceptional user experience are non-negotiable standards for modern web applications.',
-    photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&auto=format&fit=crop&q=80',
+    photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop&q=85',
     skills: ['React 19', 'Next.js', 'UI Performance', 'Design Systems']
   }
 ];
@@ -395,18 +395,18 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
           <div 
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
-            className="rounded-[32px] sm:rounded-[36px] bg-[#d5d5d5] border border-black/10 p-6 sm:p-10 lg:p-12 shadow-xl shadow-black/5 relative group"
+            className="rounded-[28px] sm:rounded-[36px] bg-[#d5d5d5] border border-black/10 p-4 sm:p-10 lg:p-12 shadow-xl shadow-black/5 relative group overflow-hidden"
           >
             {/* Auto-scroll indicator badge */}
-            <div className="absolute top-4 right-6 z-20 flex items-center gap-2 text-[10px] font-mono text-neutral-500 bg-white/60 backdrop-blur-md px-3 py-1 rounded-full border border-black/5">
+            <div className="absolute top-3 right-3 sm:top-4 sm:right-6 z-20 flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] font-mono text-neutral-500 bg-white/70 backdrop-blur-md px-2.5 sm:px-3 py-1 rounded-full border border-black/5">
               <span className={`w-2 h-2 rounded-full ${isPaused ? 'bg-amber-500' : 'bg-emerald-500 animate-pulse'}`} />
-              <span>{isPaused ? 'Auto-scroll Paused (Hovering)' : 'Auto-scrolling Live Chat'}</span>
+              <span>{isPaused ? 'Paused' : 'Live Chat'}</span>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
               
               {/* COLUMN 1: LEFT VERTICAL NAVIGATION TABS */}
-              <div className="lg:col-span-3 space-y-3 sm:space-y-4">
+              <div className="lg:col-span-3 space-y-2 sm:space-y-4">
                 {TABS_DATA.map((tab) => {
                   const isActive = tab.id === activeTabId;
                   return (
@@ -424,7 +424,7 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                   );
                 })}
 
-                <div className="pt-2 text-[11px] text-neutral-400 font-mono">
+                <div className="pt-1 text-[11px] text-neutral-400 font-mono">
                   Click any topic or let it auto-play
                 </div>
               </div>
@@ -433,21 +433,21 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
               <div className="lg:col-span-5 relative py-6 sm:py-8 flex justify-center">
                 
                 {/* FLOATING TILE 1: Top-Right (Mr. Rohit Kashyap Photo Tile) */}
-                <div className="absolute -top-3 right-0 sm:right-2 z-20 flex flex-col items-center">
-                  <div className="w-16 h-20 sm:w-20 sm:h-24 rounded-2xl overflow-hidden ring-2 ring-white shadow-xl bg-black">
+                <div className="absolute -top-2 right-1 sm:-top-3 sm:right-2 z-20 flex flex-col items-center">
+                  <div className="w-14 h-16 sm:w-20 sm:h-24 rounded-2xl overflow-hidden ring-2 ring-white shadow-xl bg-black">
                     <img
                       src={rohitPhoto}
                       alt="Mr. Rohit Kashyap"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <span className="mt-1 px-2 py-0.5 rounded-full bg-[#d94412] text-white text-[9px] font-mono font-bold shadow-md">
+                  <span className="mt-1 px-2 py-0.5 rounded-full bg-[#d94412] text-white text-[8px] sm:text-[9px] font-mono font-bold shadow-md">
                     Rohit Kashyap
                   </span>
                 </div>
 
                 {/* FLOATING TILE 2: Right-Middle (Stephen / Lead Mentor Photo Tile) */}
-                <div className="absolute top-1/2 -translate-y-1/2 -right-4 sm:-right-6 z-20 flex flex-col items-center">
+                <div className="hidden sm:flex absolute top-1/2 -translate-y-1/2 -right-4 sm:-right-6 z-20 flex-col items-center">
                   <div className="w-14 h-16 sm:w-16 sm:h-20 rounded-2xl overflow-hidden ring-2 ring-white shadow-xl bg-neutral-800">
                     <img
                       src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80"
@@ -461,15 +461,15 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                 </div>
 
                 {/* FLOATING TILE 3: Bottom-Left (Student / Nathalie Photo Tile) */}
-                <div className="absolute -bottom-3 -left-2 sm:-left-4 z-20 flex flex-col items-center">
-                  <div className="w-16 h-20 sm:w-20 sm:h-24 rounded-2xl overflow-hidden ring-2 ring-white shadow-xl bg-neutral-800">
+                <div className="absolute -bottom-2 left-1 sm:-bottom-3 sm:-left-4 z-20 flex flex-col items-center">
+                  <div className="w-14 h-16 sm:w-20 sm:h-24 rounded-2xl overflow-hidden ring-2 ring-white shadow-xl bg-neutral-800">
                     <img
                       src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80"
                       alt="Student Nathalie"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <span className="mt-1 px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[9px] font-mono font-bold shadow-md">
+                  <span className="mt-1 px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[8px] sm:text-[9px] font-mono font-bold shadow-md">
                     Nathalie
                   </span>
                 </div>
@@ -612,18 +612,21 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                     <span className="text-[11px] font-mono text-neutral-400">Curriculum Head</span>
                   </div>
 
-                  {/* Framed Photo of CEO */}
-                  <div className="relative w-full h-48 sm:h-52 rounded-2xl overflow-hidden ring-1 ring-white/10 bg-neutral-900 group-hover:ring-[#ea580c]/40 transition-all shadow-inner">
+                  {/* Framed Photo of CEO with proper fit */}
+                  <div className="relative w-full h-60 sm:h-68 rounded-2xl overflow-hidden ring-1 ring-[#ea580c]/35 bg-[#211812] group-hover:ring-[#ea580c]/60 transition-all shadow-xl shadow-black/80">
                     <img
-                      src={rohitPhoto}
-                      alt="Mr. Rohit Kashyap"
+                      src="/assets/aistudio/rohit_kashyap_ceo_portrait.png"
+                      alt="Mr. Rohit Kashyap - Founder & CEO"
                       className="w-full h-full object-cover object-top filter brightness-105 group-hover:scale-102 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-3.5">
-                      <h4 className="text-base sm:text-lg font-bold text-white font-display tracking-tight leading-tight">
-                        Mr. Rohit Kashyap
-                      </h4>
-                      <p className="text-[11px] text-neutral-300 font-medium">
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-3.5 sm:p-4">
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-base sm:text-lg font-bold text-white font-display tracking-tight leading-tight">
+                          Mr. Rohit Kashyap
+                        </h4>
+                        <span className="w-2 h-2 rounded-full bg-[#ea580c] shrink-0" />
+                      </div>
+                      <p className="text-[11px] sm:text-xs text-orange-200 font-mono font-medium mt-0.5">
                         Founder & CEO, TheCodeSpark Technologies
                       </p>
                     </div>
@@ -665,23 +668,28 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
               {/* RIGHT: Scrolling Employee / Mentors List */}
               <div className="lg:col-span-7 flex flex-col">
                 <div className="flex items-center justify-between mb-2.5 px-1">
-                  <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">
-                    Faculty & Engineering Mentors
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">
+                      Faculty & Engineering Mentors
+                    </span>
+                    <span className="text-[10px] font-mono text-neutral-400 hidden sm:inline">
+                      • Hover to Pause
+                    </span>
+                  </div>
                   <span className="text-[11px] font-mono text-[#ea580c] bg-[#ea580c]/10 border border-[#ea580c]/20 px-2 py-0.5 rounded">
                     {FACULTY_TRUTHS.length} Active Mentors
                   </span>
                 </div>
 
                 {/* Vertical Scrolling Container matching StudentReviews height */}
-                <div className="relative overflow-hidden h-[540px] sm:h-[600px] rounded-2xl border border-white/[0.06] bg-black/40">
+                <div className="relative overflow-hidden h-[580px] sm:h-[660px] rounded-2xl border border-white/[0.08] bg-black/50 group/faculty-feed">
                   {/* Top and Bottom Fading Gradient Masks */}
-                  <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-[#09090d] via-[#09090d]/80 to-transparent z-10 pointer-events-none" />
-                  <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-[#09090d] via-[#09090d]/80 to-transparent z-10 pointer-events-none" />
+                  <div className="absolute top-0 inset-x-0 h-14 bg-gradient-to-b from-[#09090d] via-[#09090d]/80 to-transparent z-10 pointer-events-none" />
+                  <div className="absolute bottom-0 inset-x-0 h-14 bg-gradient-to-t from-[#09090d] via-[#09090d]/80 to-transparent z-10 pointer-events-none" />
 
-                  {/* Continuous Vertical Scrolling Track */}
-                  <div className="p-3 sm:p-4 overflow-hidden h-full flex flex-col pointer-events-none select-none">
-                    <div className="animate-marquee-vertical flex flex-col gap-4">
+                  {/* Continuous Vertical Scrolling Track with hover-to-pause */}
+                  <div className="p-3 sm:p-4 overflow-y-auto h-full flex flex-col scrollbar-thin scrollbar-thumb-white/10 hover:scrollbar-thumb-[#ea580c]/50">
+                    <div className="animate-marquee-faculty flex flex-col gap-6 group-hover/faculty-feed:[animation-play-state:paused]">
                       {[...FACULTY_TRUTHS, ...FACULTY_TRUTHS].map((fac, idx) => (
                         <FacultyCard key={`${fac.id}-${idx}`} faculty={fac} />
                       ))}
@@ -706,74 +714,74 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
   );
 };
 
-// Faculty Card Component matching compact styling
+// Faculty Card Component with properly fitted employee photo on top and details written beneath
 const FacultyCard: React.FC<{ faculty: FacultyTruth }> = ({ faculty }) => {
-  const initials = faculty.name
-    .split(' ')
-    .map((n) => n[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join('');
-
   return (
-    <div className="bg-[#0e0e13] border border-white/[0.08] rounded-2xl p-4 sm:p-4.5 transition-all duration-300 shadow-md shadow-black/40 flex flex-col justify-between">
-      <div className="space-y-3">
-        {/* Top Header: Avatar + Name + Role + Dept */}
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="relative w-9 h-9 rounded-full overflow-hidden ring-1 ring-white/15 bg-neutral-800 shrink-0">
-              <img
-                src={faculty.photo}
-                alt={faculty.name}
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-                loading="lazy"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
-              <div className="absolute inset-0 flex items-center justify-center font-bold text-[10px] text-white bg-gradient-to-tr from-neutral-800 to-neutral-700 -z-10">
-                {initials}
-              </div>
-            </div>
+    <div className="bg-[#0e0e13] border border-white/[0.09] hover:border-[#ea580c]/50 rounded-2xl p-4 sm:p-5 transition-all duration-300 shadow-xl shadow-black/60 flex flex-col group/card hover:bg-[#121218]">
+      {/* 1. EMPLOYEE IMAGE - Fully fitted portrait, no heavy text overlays covering body */}
+      <div className="relative w-full h-64 sm:h-72 rounded-xl overflow-hidden ring-1 ring-white/10 bg-[#1a1410] mb-4 group-hover/card:ring-[#ea580c]/50 transition-all shadow-inner">
+        <img
+          src={faculty.photo}
+          alt={faculty.name}
+          className="w-full h-full object-cover object-top filter brightness-105 group-hover/card:scale-102 transition-transform duration-500"
+          referrerPolicy="no-referrer"
+          loading="lazy"
+        />
 
-            <div className="min-w-0">
-              <h4 className="text-xs sm:text-[13px] font-bold text-white tracking-tight leading-tight truncate">
-                {faculty.name}
-              </h4>
-              <p className="text-[10.5px] text-[#ea580c] font-mono leading-tight truncate mt-0.5">
-                {faculty.role}
-              </p>
-            </div>
-          </div>
-
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/[0.04] border border-white/[0.08] text-neutral-400 shrink-0 whitespace-nowrap">
+        {/* Top Badges on Employee Image */}
+        <div className="absolute top-2.5 inset-x-2.5 flex items-center justify-between z-10 pointer-events-none">
+          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-white bg-black/75 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/20 shadow-md">
+            {faculty.department}
+          </span>
+          <span className="text-[10px] font-mono font-bold text-[#ea580c] bg-black/85 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-[#ea580c]/40 shadow-md">
             {faculty.experience}
           </span>
         </div>
-
-        {/* Engineering Truth Quote */}
-        <p className="text-xs sm:text-[12.5px] leading-relaxed text-neutral-200/90 font-normal italic">
-          &ldquo;{faculty.quote}&rdquo;
-        </p>
       </div>
 
-      {/* Footer Tags */}
-      <div className="pt-2.5 mt-2.5 border-t border-white/[0.05] flex items-center justify-between gap-2 text-[10px] font-mono">
-        <div className="flex flex-wrap gap-1.5 items-center">
-          {faculty.skills.slice(0, 3).map((skill, sIdx) => (
+      {/* 2. BENEATH THE PHOTO: DETAILS / ABOUT / QUOTE ("unke bre main lekha") */}
+      <div className="space-y-3">
+        {/* Name, Role & Verification Badge */}
+        <div className="flex items-center justify-between gap-2">
+          <div>
+            <div className="flex items-center gap-2">
+              <h4 className="text-lg sm:text-xl font-bold text-white font-display tracking-tight leading-tight">
+                {faculty.name}
+              </h4>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 shadow-sm shadow-emerald-400/50" title="Active Faculty Mentor" />
+            </div>
+            <p className="text-xs sm:text-[13px] text-[#ea580c] font-mono font-semibold mt-0.5 leading-tight">
+              {faculty.role}
+            </p>
+          </div>
+          <span className="text-emerald-400 shrink-0 flex items-center gap-1 text-[10px] font-mono font-semibold bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+            <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+            <span>Mentor</span>
+          </span>
+        </div>
+
+        {/* Engineering Truth & Mentorship Philosophy Quote */}
+        <div className="space-y-1 pt-1">
+          <div className="flex items-center gap-1.5 text-[10.5px] font-mono text-neutral-400">
+            <Quote className="w-3 h-3 text-[#ea580c]" />
+            <span className="uppercase tracking-wider font-semibold text-neutral-300">Engineering Truth & Philosophy</span>
+          </div>
+          <p className="text-xs sm:text-[12.5px] leading-relaxed text-neutral-200 font-normal italic pl-2.5 border-l-2 border-[#ea580c]/40">
+            &ldquo;{faculty.quote}&rdquo;
+          </p>
+        </div>
+
+        {/* Core Tech Skills */}
+        <div className="pt-2.5 border-t border-white/[0.06] flex flex-wrap gap-1.5 items-center">
+          {faculty.skills.map((skill, sIdx) => (
             <span
               key={sIdx}
-              className="px-1.5 py-0.5 rounded bg-white/[0.03] border border-white/[0.05] text-neutral-400"
+              className="px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-[10.5px] font-mono group-hover/card:border-white/20 transition-colors"
             >
               {skill}
             </span>
           ))}
         </div>
-        <span className="text-emerald-400 shrink-0 flex items-center gap-1">
-          <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" />
-          <span>Faculty</span>
-        </span>
       </div>
     </div>
   );

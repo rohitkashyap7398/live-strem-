@@ -9,11 +9,16 @@
     --font-mono: 'JetBrains Mono', monospace;
   }
 
+  html, body {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
   body {
     font-family: var(--font-sans);
     background-color: #2A2A2A;
     color: #e5e7eb;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   h1, h2, h3, h4, .font-display {
@@ -161,6 +166,18 @@
   height: max-content;
   will-change: transform;
   animation: marquee-vertical 29s linear infinite;
+}
+
+.animate-marquee-faculty {
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  will-change: transform;
+  animation: marquee-vertical 52s linear infinite;
+}
+
+.animate-marquee-faculty:hover {
+  animation-play-state: paused;
 }
 
 /* Non-stopping continuous scroll (never pauses on mouse hover) */

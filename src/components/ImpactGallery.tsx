@@ -9,71 +9,90 @@ interface CampusCard {
   tag: string;
   title: string;
   desc: string;
-  image: string;
+  image?: string;
+  videoUrl?: string;
+  type: 'image' | 'video';
   location: string;
 }
 
 const CAMPUS_CARDS: CampusCard[] = [
   {
     id: 'keynote-tour',
-    category: 'Keynote Series',
-    tag: 'Auditorium',
-    title: "TheCodeSpark's Keynote Series",
-    desc: 'Packed auditoriums across top engineering colleges delivering unfiltered career truths, engineering roadmaps, and industry standards.',
-    image: 'https://images.unsplash.com/photo-1544531586-fde5298cdd40?w=800&auto=format&fit=crop&q=80',
-    location: 'IIT & NIT Campuses'
+    category: 'Auditorium Keynote',
+    tag: 'Live Coding',
+    type: 'image',
+    title: "TheCodeSpark's AI & Next.js Keynote",
+    desc: 'Grand auditorium conference showcasing production Next.js architectures, AI coding workflows, and real engineering guidance to over 1,500 developers.',
+    image: '/assets/aistudio/TheCodeSpark_AI_Coding_Conference_d7477d11.png',
+    location: 'National Auditorium • Lucknow'
   },
   {
-    id: 'seminar-tour',
-    category: 'Campus Seminars',
-    tag: 'Engineering Tour',
-    title: "TheCodeSpark's Seminar Tour",
-    desc: 'We Delivered Impactful Seminars Across Multiple Campuses, Sharing Real Engineering Guidance.',
-    image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&auto=format&fit=crop&q=80',
-    location: 'Lucknow & Pan-India'
+    id: 'learning-platform-conference',
+    category: 'Project Keynote',
+    tag: 'EdTech Summit',
+    type: 'image',
+    title: 'AI-Powered Learning Platform Launch',
+    desc: 'Presenting end-to-end full-stack architectures, live system design, and placement roadmaps to thousands of passionate engineers.',
+    image: '/assets/aistudio/AI-Powered_Learning_Platform_Conference_4d9a70e4.png',
+    location: 'TheCodeSpark Annual Summit'
   },
   {
-    id: 'meet-and-greet',
-    category: 'Networking',
-    tag: 'Mentorship',
-    title: 'Meet And Greet',
-    desc: 'Open Conversations About Careers, Coding, Intensive Training, Internships, Real-World Engineering, And Placement Roadmaps.',
-    image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&auto=format&fit=crop&q=80',
-    location: 'TheCodeSpark Tech Hub'
+    id: 'developer-mindset-focus',
+    category: 'Developer Mindset',
+    tag: 'Builder Spirit',
+    type: 'video',
+    title: 'Inner Focus & Builder Mentality',
+    desc: 'Block out distractions and focus on mastery. Cultivating the mental resilience, grit, and focus needed to crack top-tier engineering roles.',
+    videoUrl: '/assets/aistudio/dfef7c106c7be779a3beaa99bfcc24bf_bcbd35b4.mp4',
+    location: 'Mindset & Leadership Series'
   },
   {
-    id: 'campus-life',
-    category: 'Peer Culture',
-    tag: 'Community',
-    title: 'Campus Life & Lawn Meetups',
-    desc: 'Lifelong Friendships, Late-Night Brainstorming, And Peer Bonding That Fuels Engineering Ambition.',
-    image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80',
-    location: 'Green Lawn & Coding Zones'
+    id: 'hackathon-badges',
+    category: 'Hackathon Sprints',
+    tag: 'Build & Deploy',
+    type: 'image',
+    title: 'TCS Hackathon Participant Day',
+    desc: 'Official hacker badges, participant lanyards, and late-night coding sprints where students build, innovate, and deploy live production code.',
+    image: '/assets/aistudio/TCS_Hackathon_Badge_Desk_Scene_04b4ab8b.png',
+    location: '24/7 Hacker Hub & Labs'
   },
   {
-    id: 'hackathon-sprints',
-    category: 'Production Sprints',
-    tag: 'Ship Overnight',
-    title: 'Hackathon Sprints & Product Defense',
-    desc: 'Late-night architecture sprints, deploying live full-stack apps to production, and defending codebase before technical panels.',
-    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&auto=format&fit=crop&q=80',
-    location: '24/7 Hacker Lab'
+    id: 'campus-lecture-hall',
+    category: 'University Seminar',
+    tag: 'Live Lecture',
+    type: 'video',
+    title: 'University Tech Keynote & Lecture',
+    desc: 'Interactive university lecture hall sessions exploring scalable systems, AI applications, and hands-on coding roadmaps with collegiate audiences.',
+    videoUrl: '/assets/aistudio/From_Klickpin.com-_Try_Easy_family_dinner_ideas_that_make_your_next_project_look_polished_and_expensive_for_ideas_worth_saving_right_now-pin-id-75_e4d8fbb9.mp4',
+    location: 'University Auditorium Tour'
   },
   {
-    id: 'desk-mentorship',
-    category: '1-on-1 Guidance',
-    tag: 'Doubt Desk',
-    title: 'In-Person Desk Mentorship',
-    desc: 'Senior tech leads sitting side-by-side with learners, debugging complex state management, optimizing queries, and polishing resumes.',
-    image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&auto=format&fit=crop&q=80',
-    location: 'Counselor & Mentor Hub'
+    id: 'classroom-students',
+    category: 'Classroom Labs',
+    tag: 'Offline Campus',
+    type: 'video',
+    title: 'In-Person Coding & Mentorship Lab',
+    desc: 'Students coding side-by-side on high-performance machines with senior mentors resolving live doubts and doing real code reviews.',
+    videoUrl: '/assets/aistudio/From_Klickpin.com-_Dreamy_vision_board_ideas_that_are_trending_right_now_across_Pinterest_boards_using_ideas_that_balance_beauty_and_everyday_func_4f0cd93c.mp4',
+    location: 'Offline Classroom • Lucknow'
+  },
+  {
+    id: 'humanoid-ai-lab',
+    category: 'Autonomous AI',
+    tag: 'Robotics & Vision',
+    type: 'video',
+    title: 'Next-Gen Humanoid AI & Vision Lab',
+    desc: 'Exploring computer vision, conversational speech models, and physical AI embodiment in cutting-edge robotics.',
+    videoUrl: '/assets/aistudio/ai_humanoid_robot.mp4',
+    location: 'AI Innovation Lab'
   }
 ];
 
 export const ImpactGallery: React.FC = () => {
   const carouselRef = useRef<HTMLDivElement>(null);
-  const [activeCardId, setActiveCardId] = useState<string | null>('seminar-tour');
+  const [activeCardId, setActiveCardId] = useState<string | null>('keynote-tour');
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [modalVideoUrl, setModalVideoUrl] = useState('/assets/aistudio/dfef7c106c7be779a3beaa99bfcc24bf_bcbd35b4.mp4');
 
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -149,21 +168,38 @@ export const ImpactGallery: React.FC = () => {
               <div
                 key={card.id}
                 onMouseEnter={() => setActiveCardId(card.id)}
-                onClick={() => setActiveCardId(card.id)}
+                onClick={() => {
+                  setActiveCardId(card.id);
+                  if (card.type === 'video' && card.videoUrl) {
+                    setModalVideoUrl(card.videoUrl);
+                    setIsVideoModalOpen(true);
+                  }
+                }}
                 className={`relative w-[250px] sm:w-[275px] md:w-[290px] h-[390px] sm:h-[430px] shrink-0 rounded-2xl overflow-hidden cursor-pointer snap-start border transition-all duration-500 group select-none ${
                   isSelected
                     ? 'border-[#ff5722]/60 shadow-2xl shadow-[#ff5722]/20 ring-1 ring-[#ff5722]/30 scale-[1.01]'
                     : 'border-white/10 shadow-xl shadow-black/60 hover:border-white/30'
                 } bg-[#111116]`}
               >
-                {/* Background Photo */}
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                  referrerPolicy="no-referrer"
-                  loading="lazy"
-                />
+                {/* Background Media: Video autoplay loop or High-res Image */}
+                {card.type === 'video' && card.videoUrl ? (
+                  <video
+                    src={card.videoUrl}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  />
+                ) : (
+                  <img
+                    src={card.image}
+                    alt={card.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    referrerPolicy="no-referrer"
+                    loading="lazy"
+                  />
+                )}
 
                 {/* Subtle vignette darkening */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/35 pointer-events-none" />
@@ -174,8 +210,19 @@ export const ImpactGallery: React.FC = () => {
                     {card.category}
                   </span>
 
-                  <div className="w-7 h-7 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white flex items-center justify-center group-hover:bg-[#ff5722] group-hover:border-[#ff5722] transition-colors shadow-lg">
-                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-1.5">
+                    {card.type === 'video' && (
+                      <span className="inline-flex items-center gap-1 text-[9.5px] font-mono font-bold uppercase tracking-wider text-white bg-[#E10600] px-2 py-0.5 rounded-full shadow-md">
+                        <Play className="w-2 h-2 fill-white" /> Video
+                      </span>
+                    )}
+                    <div className="w-7 h-7 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white flex items-center justify-center group-hover:bg-[#ff5722] group-hover:border-[#ff5722] transition-colors shadow-lg">
+                      {card.type === 'video' ? (
+                        <Play className="w-3 h-3 fill-white ml-0.5" />
+                      ) : (
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -192,8 +239,8 @@ export const ImpactGallery: React.FC = () => {
                   <h3 className="text-base font-bold text-white font-display leading-tight">
                     {card.title}
                   </h3>
-                  <span className="text-[10.5px] text-neutral-400 mt-0.5 block">
-                    Hover to view details →
+                  <span className="text-[10.5px] text-neutral-400 mt-0.5 flex items-center gap-1">
+                    {card.type === 'video' ? 'Click to watch video with sound →' : 'Hover to view details →'}
                   </span>
                 </div>
 
@@ -220,7 +267,13 @@ export const ImpactGallery: React.FC = () => {
 
                   <div className="pt-2.5 mt-2.5 border-t border-white/20 flex items-center justify-between text-[10.5px] text-white/90 font-mono">
                     <span>{card.location}</span>
-                    <span className="font-semibold underline underline-offset-2">Live Session</span>
+                    {card.type === 'video' ? (
+                      <span className="font-semibold underline underline-offset-2 flex items-center gap-1">
+                        <Play className="w-2.5 h-2.5 fill-white" /> Watch Fullscreen
+                      </span>
+                    ) : (
+                      <span className="font-semibold underline underline-offset-2">Live Session</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -231,11 +284,11 @@ export const ImpactGallery: React.FC = () => {
         {/* Bottom subtle indicator line */}
         <div className="mt-3.5 flex items-center justify-between text-[11px] text-neutral-500 font-mono">
           <span>TheCodeSpark Technologies Private Limited • Campus Tours</span>
-          <span className="hidden sm:inline">Use arrows or swipe to navigate through campus experiences</span>
+          <span className="hidden sm:inline">Use arrows or swipe to navigate through campus experiences & videos</span>
         </div>
       </div>
 
-      {/* Video Modal playing the user's uploaded video */}
+      {/* Video Modal playing the user's uploaded videos */}
       <AnimatePresence>
         {isVideoModalOpen && (
           <motion.div
@@ -267,7 +320,7 @@ export const ImpactGallery: React.FC = () => {
                       How We Are Doing It Faster And Better Than Others!
                     </h4>
                     <span className="text-[11px] text-neutral-400">
-                      TheCodeSpark Technologies Private Limited • Campus Tour
+                      TheCodeSpark Technologies Private Limited • Campus Media Showcase
                     </span>
                   </div>
                 </div>
@@ -280,10 +333,47 @@ export const ImpactGallery: React.FC = () => {
                 </button>
               </div>
 
+              {/* Video Switcher Tabs inside Modal */}
+              <div className="px-4 py-2.5 bg-neutral-900/90 border-b border-white/10 flex items-center gap-2 overflow-x-auto scrollbar-none">
+                <span className="text-[11px] font-mono text-neutral-400 shrink-0">Switch Video:</span>
+                {[
+                  {
+                    name: 'Inner Focus & Mindset',
+                    url: '/assets/aistudio/dfef7c106c7be779a3beaa99bfcc24bf_bcbd35b4.mp4'
+                  },
+                  {
+                    name: 'University Lecture',
+                    url: '/assets/aistudio/From_Klickpin.com-_Try_Easy_family_dinner_ideas_that_make_your_next_project_look_polished_and_expensive_for_ideas_worth_saving_right_now-pin-id-75_e4d8fbb9.mp4'
+                  },
+                  {
+                    name: 'Classroom Coding Lab',
+                    url: '/assets/aistudio/From_Klickpin.com-_Dreamy_vision_board_ideas_that_are_trending_right_now_across_Pinterest_boards_using_ideas_that_balance_beauty_and_everyday_func_4f0cd93c.mp4'
+                  },
+                  {
+                    name: 'Full Campus Tour',
+                    url: '/assets/aistudio/20261104-1617-28.3796497_bbcbce02.mp4'
+                  }
+                ].map((item) => (
+                  <button
+                    key={item.url}
+                    onClick={() => setModalVideoUrl(item.url)}
+                    className={`px-3 py-1 rounded-full text-xs font-mono whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                      modalVideoUrl === item.url
+                        ? 'bg-[#E10600] text-white font-bold shadow-md shadow-[#E10600]/30'
+                        : 'bg-white/5 hover:bg-white/10 text-neutral-300 border border-white/10'
+                    }`}
+                  >
+                    <Play className="w-2.5 h-2.5 fill-current" />
+                    <span>{item.name}</span>
+                  </button>
+                ))}
+              </div>
+
               {/* Video Player */}
               <div className="relative aspect-video w-full bg-black">
                 <video
-                  src="/assets/aistudio/20261104-1617-28.3796497_bbcbce02.mp4"
+                  key={modalVideoUrl}
+                  src={modalVideoUrl}
                   controls
                   autoPlay
                   className="w-full h-full object-contain"

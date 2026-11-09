@@ -63,33 +63,33 @@ export const Navbar: React.FC<NavbarProps> = ({
         ========================================================================
       */}
       <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#2A2A2A]/95 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
           {/* Zone 1: Brand (Logo + Vertical Divider + Company Name exactly as in image_061ca74a.png) */}
           <motion.button
             onClick={() => onNavigate('home')}
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-3 text-left group shrink-0 cursor-pointer select-none"
+            className="flex items-center gap-2 sm:gap-3 text-left group shrink cursor-pointer select-none min-w-0"
           >
             <img
               src={brandLogo}
               onError={(e) => { e.currentTarget.src = '/logo.png'; }}
               alt="TheCodeSpark Logo"
-              className="h-8 sm:h-9 w-auto max-w-[110px] object-contain filter drop-shadow group-hover:scale-105 transition-transform"
+              className="h-7 sm:h-9 w-auto max-w-[85px] sm:max-w-[110px] object-contain filter drop-shadow group-hover:scale-105 transition-transform shrink-0"
             />
-            {/* Vertical Divider Line exactly matching image_061ca74a.png */}
-            <div className="h-6 w-[1.5px] bg-white/20" />
-            <div className="flex flex-col justify-center">
-              <span className="text-sm font-semibold tracking-tight text-white font-display leading-tight">
+            {/* Vertical Divider Line */}
+            <div className="h-5 sm:h-6 w-[1.5px] bg-white/20 shrink-0" />
+            <div className="flex flex-col justify-center min-w-0">
+              <span className="text-xs sm:text-sm font-semibold tracking-tight text-white font-display leading-tight truncate">
                 TheCodeSpark
               </span>
-              <span className="text-xs font-normal text-neutral-300 leading-tight">
+              <span className="text-[10px] sm:text-xs font-normal text-neutral-300 leading-tight truncate max-w-[125px] xs:max-w-[170px] sm:max-w-none">
                 Technologies Private Limited
               </span>
             </div>
           </motion.button>
 
-          {/* Zone 2: Centered Capsule Bar (exactly matching image_061ca74a.png) */}
+          {/* Zone 2: Centered Capsule Bar */}
           <nav className="hidden lg:flex items-center gap-6 px-6 py-2.5 rounded-2xl bg-[#1e1e1e] border border-white/10 shadow-lg text-sm font-medium">
             {navItems.map((item) => {
               const active = isCurrentActive(item.id);
@@ -107,20 +107,20 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </nav>
 
-          {/* Zone 3: Request Call Pill Button & Sign In (exactly as in image_061ca74a.png) */}
-          <div className="flex items-center gap-4 shrink-0">
+          {/* Zone 3: Request Call Pill Button & Sign In */}
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             {/* Request Call Orange Outline Pill Button */}
             <motion.button
               onClick={onRequestCall}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="flex items-center gap-2 px-4 sm:px-5 py-2 text-xs font-semibold text-white border border-[#E10600] bg-[#E10600]/15 hover:bg-[#E10600] rounded-full shadow-lg shadow-[#E10600]/15 transition-all whitespace-nowrap cursor-pointer"
+              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-5 py-1.5 sm:py-2 text-[11px] sm:text-xs font-semibold text-white border border-[#E10600] bg-[#E10600]/15 hover:bg-[#E10600] rounded-full shadow-lg shadow-[#E10600]/15 transition-all whitespace-nowrap cursor-pointer"
             >
-              <Phone className="w-3.5 h-3.5 text-[#E10600] group-hover:text-white transition-colors" />
+              <Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#E10600] group-hover:text-white transition-colors" />
               <span>Request Call</span>
             </motion.button>
 
-            {/* "Sign In" text button exactly matching image_061ca74a.png */}
+            {/* "Sign In" text button */}
             <button
               onClick={onRequestCall}
               className="hidden sm:inline-block text-xs sm:text-sm text-neutral-300 hover:text-white font-medium cursor-pointer transition-colors px-1"
@@ -128,15 +128,15 @@ export const Navbar: React.FC<NavbarProps> = ({
               Sign In
             </button>
 
-            {/* Mobile / Tablet Menu Button (Side Drawer Trigger) */}
+            {/* Mobile / Tablet Menu Button */}
             <motion.button
               onClick={() => setIsMobileMenuOpen(true)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="lg:hidden w-9 h-9 rounded-xl bg-white/5 border border-white/10 text-neutral-300 hover:text-white flex items-center justify-center cursor-pointer transition-colors"
+              className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/5 border border-white/10 text-neutral-300 hover:text-white flex items-center justify-center cursor-pointer transition-colors shrink-0"
               aria-label="Toggle Navigation Menu"
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
             </motion.button>
           </div>
         </div>
