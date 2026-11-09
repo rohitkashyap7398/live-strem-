@@ -114,7 +114,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
   const samplePrompts = [
     'Analyze DSA progress & mock interview ratings...',
     'Optimizing 2-pointer approach for Trapping Rain Water...',
-    'Batch 2026 average CTC and Tier 1 placement index...'
+    'Batch 2024 average CTC and Tier 1 placement index...'
   ];
 
   const handleRunAiPrompt = (prompt: string) => {
@@ -673,7 +673,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                       className="opacity-70"
                     />
 
-                    {/* Signal Red Line (2026 Surge) */}
+                    {/* Signal Red Line (2024 Surge) */}
                     <path
                       d="M 0,52 Q 60,48 110,14 T 200,8"
                       fill="none"
@@ -701,11 +701,11 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                   <div className="flex items-center gap-1.5">
                     <span className="flex items-center gap-0.5">
                       <span className="w-1 h-1 rounded-full bg-[#06b6d4]" />
-                      <span>2024</span>
+                      <span>2023</span>
                     </span>
                     <span className="flex items-center gap-0.5">
                       <span className="w-1 h-1 rounded-full bg-[#E10600]" />
-                      <span className="text-white">2026</span>
+                      <span className="text-white">2024</span>
                     </span>
                   </div>
                 </div>

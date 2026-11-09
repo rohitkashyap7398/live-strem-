@@ -25,10 +25,10 @@ export const FaqSection: React.FC = () => {
             <Sparkles className="w-3 h-3" /> FAQS
           </div>
           <h2 className="text-3xl md:text-5xl font-extrabold text-white font-display tracking-tight leading-tight">
-            Frequently Asked Questions From Our Students
+            Frequently Asked Questions
           </h2>
           <p className="text-sm text-neutral-400">
-            Have questions before diving in? Here are clear answers to everything you need to know.
+            Find answers to common questions about our training programs, certifications, and more
           </p>
         </motion.div>
 
@@ -60,7 +60,7 @@ export const FaqSection: React.FC = () => {
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                     className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                      isOpen ? 'bg-[#ff5722] text-white shadow-md shadow-[#ff5722]/30' : 'bg-white/5 text-neutral-400'
+                      isOpen ? 'bg-[#E10600] text-white shadow-md shadow-[#E10600]/30' : 'bg-white/5 text-neutral-400'
                     }`}
                   >
                     <ChevronDown className="w-4 h-4" />
@@ -77,7 +77,7 @@ export const FaqSection: React.FC = () => {
                       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="px-6 pb-6 pt-1 text-xs sm:text-sm text-neutral-300 leading-relaxed border-t border-white/5 bg-[#0b0b0f]/80">
+                      <div className="px-6 pb-6 pt-3 text-xs sm:text-sm text-neutral-300 leading-relaxed border-t border-white/5 bg-[#18181b]/60">
                         {faq.answer}
                       </div>
                     </motion.div>

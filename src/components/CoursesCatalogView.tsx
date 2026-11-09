@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
 import { COURSES, Course } from '../data/coursesData';
+import { FAQS } from '../data/websiteContent';
 
 interface CoursesCatalogViewProps {
   onSelectCourse: (course: Course) => void;
@@ -104,28 +105,10 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
   // FAQs state for exact matching accordion
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  const faqs = [
-    {
-      q: 'Are TheCodeSpark Technologies Private Limited courses suitable for beginners?',
-      a: 'Yes, TheCodeSpark Technologies Private Limited provides beginner-friendly courses along with advanced concepts. Our courses are designed in a way that suits beginners as well as professionals who want to learn advance concepts.'
-    },
-    {
-      q: 'Does TheCodeSpark Technologies Private Limited provide placement assistance?',
-      a: 'Yes, we provide dedicated placement assistance including mock interviews, resume reviews, portfolio preparation, direct company referrals, and access to our 80+ hiring partner network.'
-    },
-    {
-      q: 'What programming languages and technologies are covered in the courses?',
-      a: 'We cover modern full-stack development (React 19, Next.js, Node.js, Express, MongoDB, PostgreSQL), Generative AI (LLMs, LangChain, RAG, Multi-Agent systems), Java & JavaScript DSA, and Cloud DevOps.'
-    },
-    {
-      q: 'Are the classes live or pre-recorded, and can I access recordings later?',
-      a: 'All our flagship cohorts are conducted through daily live interactive sessions. Every session is recorded in HD and uploaded to your dashboard with lifetime access and source code notes.'
-    },
-    {
-      q: 'Do students get real-world project experience during the course?',
-      a: 'Yes! You build production-grade scalable systems (such as Loveable AI builder, Pixxo media transformation engine, full-stack SaaS apps, and enterprise ETL data pipelines) deployed on AWS.'
-    }
-  ];
+  const faqs = FAQS.map((faq) => ({
+    q: faq.question,
+    a: faq.answer
+  }));
 
   return (
     <section className="py-12 sm:py-16 bg-[#070709] min-h-screen text-[#f3f4f6] relative overflow-hidden">
@@ -351,8 +334,11 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
               : FAQS :
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-display tracking-tight leading-tight">
-              Frequently Asked Questions From<br className="hidden sm:inline" /> Our Students
+              Frequently Asked Questions
             </h2>
+            <p className="text-sm text-neutral-400">
+              Find answers to common questions about our training programs, certifications, and more
+            </p>
           </div>
 
           {/* FAQ Accordion List */}

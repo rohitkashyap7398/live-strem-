@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Play, ChevronLeft, ChevronRight, X, ExternalLink, Sparkles, Youtube, CheckCircle2 } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
@@ -30,7 +30,7 @@ const TUTORIAL_VIDEOS: TutorialVideo[] = [
   },
   {
     id: 'yt-placement-2025',
-    title: 'How to Get Placed in Tech in 2025/2026 (No Luck, Just Skills)',
+    title: 'How to Get Placed in Tech in 2024 (No Luck, Just Skills)',
     views: '46.5K Views',
     likes: '2.5K Likes',
     duration: '24:18',
@@ -41,7 +41,7 @@ const TUTORIAL_VIDEOS: TutorialVideo[] = [
   },
   {
     id: 'yt-webdev-roadmap',
-    title: 'Complete Web Development Roadmap 2025/2026',
+    title: 'Complete Web Development Roadmap 2024',
     views: '140.6K Views',
     likes: '6.6K Likes',
     duration: '45:10',
@@ -99,6 +99,29 @@ const TUTORIAL_VIDEOS: TutorialVideo[] = [
 export const YoutubeTutorials: React.FC = () => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [selectedVideo, setSelectedVideo] = useState<TutorialVideo | null>(null);
+
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Automatic smooth scroll across tutorial video cards
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      if (carouselRef.current) {
+        const container = carouselRef.current;
+        const maxScroll = container.scrollWidth - container.clientWidth;
+
+        // Loop smoothly when reaching near the end
+        if (container.scrollLeft >= maxScroll - 25) {
+          container.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          container.scrollBy({ left: 320, behavior: 'smooth' });
+        }
+      }
+    }, 3200);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -171,7 +194,11 @@ export const YoutubeTutorials: React.FC = () => {
         */}
         <div
           ref={carouselRef}
-          className="flex gap-4 sm:gap-5 overflow-x-auto pb-5 pt-1 scrollbar-none snap-x snap-mandatory scroll-smooth -mx-4 px-4 sm:-mx-6 sm:px-6"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+          className="flex gap-4 sm:gap-5 overflow-x-auto pb-5 pt-1 scrollbar-none scroll-smooth -mx-4 px-4 sm:-mx-6 sm:px-6"
         >
           {TUTORIAL_VIDEOS.map((video) => (
             <div
@@ -239,7 +266,6 @@ export const YoutubeTutorials: React.FC = () => {
             <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
             <span>TheCodeSpark Technologies Private Limited YouTube Channel • 200+ Free Video Tutorials</span>
           </div>
-          <span className="hidden sm:inline">Use arrows or swipe to explore tutorials</span>
         </div>
       </div>
 

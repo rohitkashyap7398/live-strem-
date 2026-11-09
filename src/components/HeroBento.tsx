@@ -171,8 +171,8 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white font-display tracking-tight leading-[1.08]"
             >
-              The Best Tech School<br />
-              for Modern Developers
+              The Next-Generation Tech School<br />
+              for Tomorrow’s Engineers
             </motion.h1>
 
             {/* 3. Subtitle customized for TheCodeSpark */}
@@ -182,7 +182,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-sm sm:text-base md:text-lg text-neutral-400 max-w-2xl mx-auto font-sans leading-relaxed px-2"
             >
-              Faster, practical path to software engineering roles, DSA mastery & high-growth tech careers.
+              Master full-stack engineering, Gen-AI systems & DSA through hands-on production projects, expert 1-on-1 mentorship, and dedicated placement acceleration.
             </motion.p>
 
             {/* Start Journey Button matching reference pill button */}
@@ -331,7 +331,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
                 <div className="space-y-3">
                   <div className="flex items-center gap-2.5 flex-wrap">
                     <span className="text-2xl sm:text-3xl font-black text-white font-display uppercase tracking-tight">
-                      TRANSFORM
+                      IGNITE
                     </span>
                     {/* 3 overlapping student avatars */}
                     <div className="flex -space-x-2 overflow-hidden py-1 items-center">
@@ -360,15 +360,19 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
                   </div>
 
                   {/* Outline arrow pill button matching reference */}
-                  <div className="inline-flex items-center justify-center px-4 py-1 rounded-full border border-orange-500/60 bg-black/40 text-orange-400 w-fit">
-                    <ArrowRight className="w-4 h-4" />
+                  <div className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1 rounded-full border border-[#E10600]/60 bg-[#E10600]/10 text-[#ff5722] text-xs font-mono font-bold w-fit">
+                    <span>GET STARTED</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </div>
 
                   <h3 className="text-2xl sm:text-3xl font-black text-white font-display uppercase tracking-tight leading-tight">
-                    POTENTIAL INTO
+                    CAREER WITH
                     <br />
-                    PROFESSIONAL SUCCESS!
+                    HIGH-GROWTH TECH ROLES!
                   </h3>
+                  <p className="text-xs text-neutral-400 font-sans leading-relaxed">
+                    Join 2,500+ ambitious learners building production code and breaking into top engineering teams.
+                  </p>
                 </div>
               </motion.div>
             </div>
@@ -395,16 +399,17 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
 
               {/* Top-left: Start Learning */}
               <div className="relative z-10 flex items-start justify-between">
-                <div>
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-[#E10600]/25 border border-[#E10600]/40 text-[#ff5722] text-[10px] font-mono font-bold uppercase tracking-wider mb-2">
+                <div className="max-w-md">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-[#E10600]/25 border border-[#E10600]/40 text-[#ff5722] text-[10px] font-mono font-bold uppercase tracking-wider mb-2.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E10600] animate-pulse" />
-                    <span>Live Studio Video</span>
+                    <span>TheCodeSpark Academy</span>
                   </div>
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-display tracking-tight leading-tight">
-                    Start
-                    <br />
-                    Learning
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white font-display tracking-tight leading-snug">
+                    01 — Skills to Success
                   </h2>
+                  <p className="text-xs sm:text-sm text-neutral-300 font-sans leading-relaxed mt-2 drop-shadow-md">
+                    Transforming passionate learners into skilled professionals through hands-on training.
+                  </p>
                 </div>
 
                 {/* Video controls */}
@@ -434,66 +439,6 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
                 </div>
               </div>
 
-              {/* Video source switcher pill */}
-              <div className="relative z-10 flex items-center gap-1.5 sm:gap-2 pt-4 flex-wrap">
-                <span className="text-[10px] font-mono text-neutral-300">Video:</span>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedVideo('/assets/aistudio/ai_humanoid_robot.mp4');
-                  }}
-                  className={`px-2.5 py-1 rounded-md text-[10px] font-mono cursor-pointer transition-all ${
-                    selectedVideo.includes('ai_humanoid_robot') || selectedVideo.includes('14945650')
-                      ? 'bg-[#E10600] text-white font-bold shadow-md shadow-[#E10600]/30'
-                      : 'bg-black/60 text-neutral-300 hover:text-white border border-white/10'
-                  }`}
-                >
-                  AI Robot Humanoid
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedVideo('/assets/aistudio/Symbols_rotating_around_human_hand_4f0366c3_8e56ab20.mp4');
-                  }}
-                  className={`px-2.5 py-1 rounded-md text-[10px] font-mono cursor-pointer transition-all ${
-                    selectedVideo.includes('Symbols_rotating_around_human_hand')
-                      ? 'bg-[#E10600] text-white font-bold shadow-md shadow-[#E10600]/30'
-                      : 'bg-black/60 text-neutral-300 hover:text-white border border-white/10'
-                  }`}
-                >
-                  Cyber Hand 3D
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedVideo('/assets/aistudio/From_Klickpin.com-_Dreamy_vision_board_ideas_that_are_trending_right_now_across_Pinterest_boards_using_ideas_that_balance_beauty_and_everyday_func_4f0cd93c.mp4');
-                  }}
-                  className={`px-2.5 py-1 rounded-md text-[10px] font-mono cursor-pointer transition-all ${
-                    selectedVideo.includes('Dreamy_vision_board_ideas') || selectedVideo.includes('student_coding_classroom')
-                      ? 'bg-[#E10600] text-white font-bold shadow-md shadow-[#E10600]/30'
-                      : 'bg-black/60 text-neutral-300 hover:text-white border border-white/10'
-                  }`}
-                >
-                  Classroom Lab
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedVideo('/assets/aistudio/20261101-0826-41.9641150_79ea86df.mp4');
-                  }}
-                  className={`px-2.5 py-1 rounded-md text-[10px] font-mono cursor-pointer transition-all ${
-                    selectedVideo.includes('20261101-0826-41')
-                      ? 'bg-[#E10600] text-white font-bold shadow-md shadow-[#E10600]/30'
-                      : 'bg-black/60 text-neutral-300 hover:text-white border border-white/10'
-                  }`}
-                >
-                  Platform Tour
-                </button>
-              </div>
 
               {/* Bottom-left: Get in touch → Button */}
               <div className="relative z-10 pt-6 flex flex-wrap items-center gap-2.5">

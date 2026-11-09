@@ -181,7 +181,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
     },
     {
       q: "How does AI help in this program?",
-      a: "You will build AI-powered applications, leverage LLM APIs (Gemini, LangChain), implement RAG pipelines, and use modern AI workflows that modern tech companies look for in 2026."
+      a: "You will build AI-powered applications, leverage LLM APIs (Gemini, LangChain), implement RAG pipelines, and use modern AI workflows that modern tech companies look for in 2024."
     },
     {
       q: "Will this cohort help me get job-ready?",
@@ -1265,7 +1265,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
                     </span>
                   </div>
                   <span className="text-[9px] font-mono text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-bold">
-                    VERIFIED #TC-2026-COHORT
+                    VERIFIED #TC-2024-COHORT
                   </span>
                 </div>
 
@@ -1305,8 +1305,11 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
               [ FAQS ]
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-white font-display">
-              Frequently Asked Questions From Our Students
+              Frequently Asked Questions
             </h2>
+            <p className="text-xs sm:text-sm text-neutral-400">
+              Find answers to common questions about our training programs, certifications, and more
+            </p>
           </div>
 
           <div className="space-y-3">

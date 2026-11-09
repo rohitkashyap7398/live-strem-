@@ -1791,7 +1791,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
           </div>
 
           <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-400 gap-2">
-            <span>© 2026 TheCodeSpark Technologies Private Limited. All rights reserved.</span>
+            <span>© 2024 TheCodeSpark Technologies Private Limited. All rights reserved.</span>
             <span>Founder &amp; CEO: Mr. Rohit Kashyap</span>
           </div>
 

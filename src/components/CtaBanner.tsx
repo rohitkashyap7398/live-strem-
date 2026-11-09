@@ -94,7 +94,7 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onExploreCourses }) => {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-sm sm:text-base text-neutral-400 max-w-xl mx-auto leading-relaxed"
         >
-          From zero coding background to high-paying engineering offers. Join the 2026 cohort and get mentored by real practitioners.
+          From zero coding background to high-paying engineering offers. Join the 2024 cohort and get mentored by real practitioners.
         </motion.p>
 
         <motion.div 

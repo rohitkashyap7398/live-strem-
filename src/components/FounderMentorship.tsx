@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
-import { Phone, ArrowRight, MessageSquare, CheckCircle2, Mic, Sparkles, Quote } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Phone, ArrowRight, MessageSquare, CheckCircle2, Mic, Sparkles, Quote, ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
 import rohitPhoto from '../assets/Rohit.png';
 
@@ -74,7 +74,7 @@ const TABS_DATA: ChatTabContent[] = [
     id: 'ask',
     label: 'Ask anything',
     heading: 'Direct answers, zero fluff.',
-    paragraph: 'Confused between Full Stack Web Development and Generative AI? Mr. Rohit Kashyap personally answers student doubts, reviews career backgrounds, and recommends the exact engineering track suited for 2026 hiring standards.',
+    paragraph: 'Confused between Full Stack Web Development and Generative AI? Mr. Rohit Kashyap personally answers student doubts, reviews career backgrounds, and recommends the exact engineering track suited for 2024 hiring standards.',
     messages: [
       {
         sender: 'Rahul (Non-Tech)',
@@ -209,7 +209,7 @@ const TABS_DATA: ChatTabContent[] = [
   }
 ];
 
-// Faculty & Engineering Mentors Truths (Matching user's diagram with CEO on left & scrolling employee list on right)
+// Faculty & Engineering Mentors Truths
 interface FacultyTruth {
   id: string;
   name: string;
@@ -227,7 +227,7 @@ const FACULTY_TRUTHS: FacultyTruth[] = [
     name: 'Aadhya',
     role: 'Gen-AI & Vector Architectures Lead',
     department: 'AI & Machine Learning',
-    experience: 'AI Engineer • Production LLM Specialist',
+    experience: 'AI Engineer • LLM Specialist',
     quote: 'AI won\'t replace software engineers, but engineers who build autonomous agents, RAG pipelines, and intelligent workflows will lead the next decade of tech.',
     photo: '/assets/aistudio/faculty_aadhya.png',
     skills: ['LangChain', 'Gemini API', 'RAG Pipelines', 'Vector DBs']
@@ -236,7 +236,7 @@ const FACULTY_TRUTHS: FacultyTruth[] = [
     id: 'fac-ishu',
     name: 'Ishu Sharma',
     role: 'Placement & Technical Strategy Lead',
-    department: 'Career Strategy & Placements',
+    department: 'Career & Placements',
     experience: '500+ Placed Tech Engineers',
     quote: 'We simulate real interview pressure and live code defenses until answering complex technical architecture questions becomes second nature.',
     photo: '/assets/aistudio/faculty_ishu_sharma.png',
@@ -246,61 +246,11 @@ const FACULTY_TRUTHS: FacultyTruth[] = [
     id: 'fac-nirved',
     name: 'Nirved Kumar',
     role: 'Tech Lead & Senior Full Stack Mentor',
-    department: 'Full Stack & System Design',
+    department: 'Full Stack Engineering',
     experience: 'Ex-SDE • 6+ Yrs Exp',
     quote: 'Code quality is not an afterthought; it is our foundation. We teach students to write clean, modular, production code that senior engineering teams are proud to deploy.',
     photo: '/assets/aistudio/faculty_nirved_kumar.png',
     skills: ['Next.js 15', 'PostgreSQL', 'System Design', 'Microservices']
-  },
-  {
-    id: 'fac-4',
-    name: 'Aryan Mehrotra',
-    role: 'DevOps & Cloud Infrastructure Lead',
-    department: 'Cloud & Reliability',
-    experience: 'AWS Certified • Kubernetes Expert',
-    quote: 'A project isn\'t finished when it works on localhost. Every student must master Docker containerization, CI/CD pipelines, and cloud telemetry.',
-    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&auto=format&fit=crop&q=85',
-    skills: ['Docker', 'Kubernetes', 'AWS Cloud', 'CI/CD Pipelines']
-  },
-  {
-    id: 'fac-5',
-    name: 'Stephen Francis',
-    role: 'Lead DSA & Algorithms Instructor',
-    department: 'Algorithms & Problem Solving',
-    experience: 'Competitive Programmer • 400+ LeetCode Mentor',
-    quote: 'Algorithms aren\'t about memorizing tricks; they are about understanding invariants, recursion trees, and building spatial logic from first principles.',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=85',
-    skills: ['Data Structures', 'Dynamic Programming', 'Graphs', 'Problem Solving']
-  },
-  {
-    id: 'fac-6',
-    name: 'Harsh Vardhan',
-    role: 'Indrapuri Campus Operations & Lab Mentor',
-    department: 'On-Campus Mentorship',
-    experience: 'Senior Frontend • Lucknow Hub',
-    quote: 'Having an experienced developer sitting across the table to debug an asynchronous bug or database index saves weeks of isolated struggle.',
-    photo: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=600&auto=format&fit=crop&q=85',
-    skills: ['React 19', 'Tailwind CSS', 'TypeScript', 'Desk Mentorship']
-  },
-  {
-    id: 'fac-7',
-    name: 'Priya Nair',
-    role: 'Backend & Distributed Systems Architect',
-    department: 'Backend Engineering',
-    experience: 'Distributed Systems • 5+ Yrs Exp',
-    quote: 'Real software engineering begins when you think about latency, database concurrency, connection pools, and memory bottlenecks.',
-    photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&auto=format&fit=crop&q=85',
-    skills: ['Node.js', 'Redis', 'PostgreSQL', 'Microservices']
-  },
-  {
-    id: 'fac-8',
-    name: 'Samarth Jain',
-    role: 'React & UI Architecture Guide',
-    department: 'Frontend Engineering',
-    experience: 'Design Systems & Performance',
-    quote: 'Clean components, zero layout shifts, and exceptional user experience are non-negotiable standards for modern web applications.',
-    photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop&q=85',
-    skills: ['React 19', 'Next.js', 'UI Performance', 'Design Systems']
   }
 ];
 
@@ -310,9 +260,31 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
 }) => {
   const [activeTabId, setActiveTabId] = useState<string>('details');
   const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [facultyOffset, setFacultyOffset] = useState<number>(0);
+  const [isFacultyPaused, setIsFacultyPaused] = useState<boolean>(false);
   const chatScrollRef = useRef<HTMLDivElement>(null);
 
   const currentTab = TABS_DATA.find((t) => t.id === activeTabId) || TABS_DATA[0];
+
+  // Auto-rotate the 2 stacked cards on right every 6 seconds, pauses on hover
+  useEffect(() => {
+    if (isFacultyPaused) return;
+    const fTimer = setInterval(() => {
+      setFacultyOffset((prev) => (prev + 1) % FACULTY_TRUTHS.length);
+    }, 6000);
+    return () => clearInterval(fTimer);
+  }, [isFacultyPaused]);
+
+  const handleNextFaculty = () => {
+    setFacultyOffset((prev) => (prev + 1) % FACULTY_TRUTHS.length);
+  };
+
+  const handlePrevFaculty = () => {
+    setFacultyOffset((prev) => (prev - 1 + FACULTY_TRUTHS.length) % FACULTY_TRUTHS.length);
+  };
+
+  const topFaculty = FACULTY_TRUTHS[facultyOffset % FACULTY_TRUTHS.length];
+  const bottomFaculty = FACULTY_TRUTHS[(facultyOffset + 1) % FACULTY_TRUTHS.length];
 
   // 1. Automatic Tab Cycling every 7 seconds (pauses on hover)
   useEffect(() => {
@@ -540,17 +512,36 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                 </p>
 
                 <div className="pt-3 space-y-2.5">
-                  <button
-                    onClick={onRequestCallback}
-                    className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#d94412] hover:bg-[#c23b0e] text-white text-xs sm:text-sm font-bold shadow-lg shadow-[#d94412]/20 transition-all cursor-pointer"
-                  >
-                    <Phone className="w-3.5 h-3.5" />
-                    <span>Talk with Rohit Sir</span>
-                  </button>
+                  <div className="flex items-center gap-2.5 flex-wrap">
+                    <a
+                      href="https://wa.me/917398839769?text=Hello%20Rohit%20Sir%2C%20I%20want%20to%20discuss%20courses%20at%20TheCodeSpark%20Technologies"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white text-xs sm:text-sm font-bold shadow-md shadow-[#25D366]/20 transition-all cursor-pointer hover:scale-[1.02]"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5 fill-white" />
+                      <span>WhatsApp</span>
+                    </a>
+
+                    <a
+                      href="tel:+917398839769"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#d94412] hover:bg-[#c23b0e] text-white text-xs sm:text-sm font-bold shadow-md shadow-[#d94412]/20 transition-all cursor-pointer hover:scale-[1.02]"
+                    >
+                      <Phone className="w-3.5 h-3.5" />
+                      <span>Call Rohit Sir</span>
+                    </a>
+
+                    <button
+                      onClick={onRequestCallback}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-black/60 hover:bg-black/90 text-neutral-300 hover:text-white border border-black/10 text-xs font-semibold transition-all cursor-pointer"
+                    >
+                      <span>Request Callback</span>
+                    </button>
+                  </div>
 
                   <div className="flex flex-col text-[11px] text-neutral-400 font-mono">
-                    <span>Helpline: <a href="tel:+917398839769" className="text-white hover:text-[#ea580c] font-bold">+91 7398839769</a> / <a href="tel:+919548248925" className="text-white hover:text-[#ea580c] font-bold">+91 9548248925</a></span>
-                    <span className="text-neutral-500 text-[10px]">Personalized 1-on-1 counseling • Lucknow & Online</span>
+                    <span>Direct Desk: <a href="tel:+917398839769" className="text-white hover:text-[#ea580c] font-bold">+91 7398839769</a> / <a href="tel:+919548248925" className="text-white hover:text-[#ea580c] font-bold">+91 9548248925</a></span>
+                    <span className="text-neutral-500 text-[10px]">Personalized 1-on-1 counseling • Lucknow &amp; Online</span>
                   </div>
                 </div>
               </div>
@@ -563,226 +554,308 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
 
       {/* 
         ========================================================================
-        PART 2: ENGINEERING TRUTHS THAT DRIVE OUR CULTURE
-        Display size strictly matching "We Help Learners Become Industry-Ready Developers":
-        - Display container: max-w-5xl mx-auto px-4 sm:px-6
-        - Viewport height: h-[540px] sm:h-[600px]
-        - Header size: max-w-4xl mx-auto text-center mb-10 sm:mb-14
-        - Layout matching user diagram (image_196a1cab.png): CEO Card on left & scrolling employee list on right
+        PART 2: EXACT LAYOUT AS DRAWN IN USER DIAGRAM (image_dda56b12.png)
+        - Big Outer Enclosing Container Border
+        - LEFT: "CEO Name And photo ok" (Mr. Rohit Kashyap with centered image)
+        - RIGHT: TWO STACKED CARDS (Top card & Bottom card with centered employee images)
+        - Interactive pagination/auto-cycle to view all 3 mentors seamlessly
         ========================================================================
       */}
       <section className="py-16 md:py-24 bg-[#2A2A2A] text-white relative overflow-hidden border-t border-b border-white/[0.08]">
-        {/* Subtle radial ambient backdrop matching StudentReviews */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-[#E10600]/10 rounded-full blur-[150px] pointer-events-none" />
+        {/* Subtle radial ambient backdrop */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[500px] bg-[#E10600]/10 rounded-full blur-[160px] pointer-events-none" />
 
-        {/* Header Container matching StudentReviews */}
+        {/* Section Header */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center mb-10 sm:mb-14 space-y-3.5">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-xs font-mono tracking-wide">
             <span className="w-1.5 h-1.5 rounded-full bg-[#E10600]" />
-            <span>Meet Our Team & Leadership</span>
+            <span>Meet Our Team &amp; Leadership</span>
           </div>
 
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white font-display tracking-tight leading-tight">
+          <h3 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white font-display tracking-tight leading-tight">
             Meet the Team Behind TheCodeSpark Technologies Private Limited.
           </h3>
 
-          <p className="text-xs sm:text-sm text-neutral-300 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm md:text-base text-neutral-300 max-w-2xl mx-auto leading-relaxed">
             A passionate team of engineers, educators, and technology professionals working together to deliver innovative solutions, industry-focused learning, and excellence in technology.
           </p>
         </div>
 
-        {/* Main Display Container matching StudentReviews exact display size: max-w-5xl */}
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 relative">
-          
-          {/* Outer Bordered Container Box matching image_196a1cab.png */}
-          <div className="border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-[#09090d]/95 relative overflow-hidden backdrop-blur-sm shadow-2xl shadow-black/80">
-            
-            {/* Split Content: CEO Card on Left & Scrolling Employee List on Right */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
+        {/* BIG OUTER ENCLOSING CONTAINER BORDER (Exact outer rectangle from user image) */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+          <div className="border border-white/10 rounded-3xl p-5 sm:p-7 md:p-8 bg-[#0b0b0f]/95 relative overflow-hidden backdrop-blur-md shadow-2xl shadow-black/80">
+            {/* Ambient orange glow in corner */}
+            <div className="absolute -top-24 -right-24 w-80 h-80 bg-[#ea580c]/15 rounded-full blur-[100px] pointer-events-none" />
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
               
-              {/* LEFT: CEO Card ("CEO Name And photo ok") */}
-              <div className="lg:col-span-5 bg-[#0e0e13] border border-[#ea580c]/30 rounded-2xl p-5 sm:p-6 flex flex-col justify-between shadow-xl shadow-black/60 relative overflow-hidden group">
+              {/* ==============================================================
+                  LEFT BOX: "CEO Name And photo ok" (Exact left box from image)
+                  ============================================================== */}
+              <div className="lg:col-span-5 bg-gradient-to-br from-[#181310] via-[#100e0e] to-[#0b0b0f] border-2 border-[#ea580c]/50 rounded-2xl p-5 sm:p-6 flex flex-col justify-between shadow-xl shadow-black/70 relative overflow-hidden group">
                 <div className="space-y-4">
-                  {/* Top status */}
+                  {/* Top Status */}
                   <div className="flex items-center justify-between">
-                    <span className="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold text-[#ea580c] bg-[#ea580c]/10 border border-[#ea580c]/20 px-2.5 py-1 rounded-full">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#ea580c]" />
-                      Founder & CEO
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold text-[#ea580c] bg-[#ea580c]/15 border border-[#ea580c]/30 px-3 py-1 rounded-full uppercase tracking-wider">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#ea580c] animate-pulse" />
+                      Leadership &amp; Founder
                     </span>
-                    <span className="text-[11px] font-mono text-neutral-400">Curriculum Head</span>
+                    <span className="bg-emerald-500/90 text-white font-mono font-bold text-[10px] px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                      <CheckCircle2 className="w-3 h-3" /> Active
+                    </span>
                   </div>
 
-                  {/* Framed Photo of CEO with proper fit */}
-                  <div className="relative w-full h-60 sm:h-68 rounded-2xl overflow-hidden ring-1 ring-[#ea580c]/35 bg-[#211812] group-hover:ring-[#ea580c]/60 transition-all shadow-xl shadow-black/80">
+                  {/* CENTERED Photo of CEO in the middle (mx-auto) with uploaded sweater portrait */}
+                  <div className="relative mx-auto w-56 sm:w-64 aspect-[3/4] rounded-2xl overflow-hidden ring-2 ring-[#ea580c]/60 shadow-[0_0_35px_rgba(234,88,12,0.3)] bg-[#181412] group-hover:ring-[#ea580c] transition-all duration-500 my-1">
                     <img
-                      src="/assets/aistudio/rohit_kashyap_ceo_portrait.png"
+                      src="/assets/aistudio/ChatGPT_Image_Apr_16__2026__02_38_30_AM_9625e7e8.png"
+                      onError={(e) => {
+                        e.currentTarget.src = "/Rohit.png";
+                      }}
                       alt="Mr. Rohit Kashyap - Founder & CEO"
-                      className="w-full h-full object-cover object-top filter brightness-105 group-hover:scale-102 transition-transform duration-500"
+                      className="w-full h-full object-cover object-top filter brightness-105 group-hover:scale-105 transition-transform duration-700"
                     />
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-3.5 sm:p-4">
-                      <div className="flex items-center gap-2">
-                        <h4 className="text-base sm:text-lg font-bold text-white font-display tracking-tight leading-tight">
-                          Mr. Rohit Kashyap
-                        </h4>
-                        <span className="w-2 h-2 rounded-full bg-[#ea580c] shrink-0" />
-                      </div>
-                      <p className="text-[11px] sm:text-xs text-orange-200 font-mono font-medium mt-0.5">
-                        Founder &amp; CEO, TheCodeSpark Technologies Private Limited
-                      </p>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent pointer-events-none" />
+                    
+                    <div className="absolute top-2.5 left-2.5 text-[10px] font-mono font-bold text-white bg-black/80 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/20">
+                      Founder Desk
+                    </div>
+
+                    <div className="absolute bottom-3 inset-x-3 text-center pointer-events-none">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-white bg-black/90 backdrop-blur-md border border-[#ea580c]/60 px-3.5 py-1 rounded-full shadow-lg">
+                        <span className="w-2 h-2 rounded-full bg-[#ea580c] animate-pulse" />
+                        Founder &amp; CEO
+                      </span>
                     </div>
                   </div>
 
-                  {/* Founder's Engineering Truth Quote */}
-                  <div className="space-y-1.5 pt-0.5">
-                    <Quote className="w-4 h-4 text-[#ea580c]/70" />
-                    <p className="text-[12.5px] sm:text-[13px] leading-relaxed text-neutral-200 font-normal">
+                  {/* CEO Name & Title */}
+                  <div className="text-center sm:text-left space-y-1">
+                    <h4 className="text-2xl sm:text-3xl font-extrabold text-white font-display tracking-tight leading-tight">
+                      Mr. Rohit Kashyap
+                    </h4>
+                    <p className="text-xs sm:text-[13px] text-orange-200/90 font-mono font-semibold">
+                      Founder &amp; CEO, TheCodeSpark Technologies Private Limited
+                    </p>
+                    <p className="text-[11px] text-neutral-400 font-mono">
+                      Curriculum Head • Lucknow Indrapuri Campus
+                    </p>
+                  </div>
+
+                  {/* Founder Quote */}
+                  <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] space-y-1.5 relative">
+                    <Quote className="w-4 h-4 text-[#ea580c]" />
+                    <p className="text-xs sm:text-[12.5px] text-neutral-200 leading-relaxed italic">
                       &ldquo;At TheCodeSpark Technologies Private Limited, we do not sell pre-recorded video libraries. We make you write production code, deploy real servers, and build tech products that companies actually pay for.&rdquo;
                     </p>
                   </div>
 
-                  {/* Key Credentials Strip */}
-                  <div className="grid grid-cols-2 gap-2 pt-2.5 border-t border-white/[0.08] text-[10.5px] font-mono text-neutral-400">
-                    <div className="bg-white/[0.03] p-2 rounded-lg border border-white/[0.05]">
-                      <span className="text-white font-bold block text-xs">10+ Years</span>
-                      Mentoring
+                  {/* Credentials Grid */}
+                  <div className="grid grid-cols-2 gap-2 text-center font-mono text-[11px]">
+                    <div className="bg-black/50 p-2 rounded-lg border border-white/5">
+                      <span className="text-white font-bold block text-xs sm:text-sm">3 Yrs</span>
+                      <span className="text-neutral-400 text-[10px]">Mentorship</span>
                     </div>
-                    <div className="bg-white/[0.03] p-2 rounded-lg border border-white/[0.05]">
-                      <span className="text-white font-bold block text-xs">500+ Placed</span>
-                      Engineers
+                    <div className="bg-black/50 p-2 rounded-lg border border-white/5">
+                      <span className="text-white font-bold block text-xs sm:text-sm">500+ Placed</span>
+                      <span className="text-neutral-400 text-[10px]">Engineers</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Action Button */}
-                <div className="pt-4 mt-4 border-t border-white/[0.08]">
+                {/* Direct CTA Options: WhatsApp, Direct Call, Request Callback */}
+                <div className="pt-4 mt-4 border-t border-white/[0.08] space-y-2.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <a
+                      href="https://wa.me/917398839769?text=Hello%20Rohit%20Sir%2C%20I%20want%20to%20connect%20with%20you%20regarding%20TheCodeSpark%20training"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white text-xs sm:text-sm font-bold shadow-md shadow-[#25D366]/20 transition-all cursor-pointer hover:scale-[1.01]"
+                    >
+                      <MessageCircle className="w-4 h-4 fill-white" />
+                      <span>WhatsApp</span>
+                    </a>
+
+                    <a
+                      href="tel:+917398839769"
+                      className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-[#ea580c] hover:bg-[#d94412] text-white text-xs sm:text-sm font-bold shadow-md shadow-[#ea580c]/30 transition-all cursor-pointer hover:scale-[1.01]"
+                    >
+                      <Phone className="w-4 h-4" />
+                      <span>Call Direct</span>
+                    </a>
+                  </div>
+
                   <button
                     onClick={onRequestCallback}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#ea580c] hover:bg-[#d94412] text-white text-xs font-bold shadow-lg shadow-[#ea580c]/25 transition-all cursor-pointer"
+                    className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white border border-white/10 text-xs font-semibold transition-all cursor-pointer"
                   >
-                    <Phone className="w-3.5 h-3.5" />
-                    <span>Connect With Rohit Sir</span>
+                    <span>Request A Scheduled Callback</span>
                   </button>
+
+                  <div className="text-center text-[10.5px] font-mono text-neutral-400">
+                    Direct Desk: <a href="tel:+917398839769" className="text-white hover:text-[#ea580c] font-bold">+91 7398839769</a>
+                  </div>
                 </div>
               </div>
 
-              {/* RIGHT: Scrolling Employee / Mentors List */}
-              <div className="lg:col-span-7 flex flex-col">
-                <div className="flex items-center justify-between mb-2.5 px-1">
+              {/* ==============================================================
+                  RIGHT BOX: TWO STACKED CARDS (Exact 2 stacked boxes from image)
+                  ============================================================== */}
+              <div 
+                onMouseEnter={() => setIsFacultyPaused(true)}
+                onMouseLeave={() => setIsFacultyPaused(false)}
+                className="lg:col-span-7 flex flex-col justify-between space-y-4"
+              >
+                {/* Header above the 2 stacked cards with pagination controls */}
+                <div className="flex items-center justify-between px-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">
-                      Faculty & Engineering Mentors
+                    <span className="text-xs sm:text-sm font-mono font-bold text-white uppercase tracking-wider">
+                      Faculty &amp; Engineering Mentors
                     </span>
                     <span className="text-[10px] font-mono text-neutral-400 hidden sm:inline">
-                      • Hover to Pause
+                      ({facultyOffset + 1} &amp; {((facultyOffset + 1) % FACULTY_TRUTHS.length) + 1} of {FACULTY_TRUTHS.length})
                     </span>
                   </div>
-                  <span className="text-[11px] font-mono text-[#ea580c] bg-[#ea580c]/10 border border-[#ea580c]/20 px-2 py-0.5 rounded">
-                    {FACULTY_TRUTHS.length} Active Mentors
-                  </span>
-                </div>
 
-                {/* Vertical Scrolling Container matching StudentReviews height */}
-                <div className="relative overflow-hidden h-[580px] sm:h-[660px] rounded-2xl border border-white/[0.08] bg-black/50 group/faculty-feed">
-                  {/* Top and Bottom Fading Gradient Masks */}
-                  <div className="absolute top-0 inset-x-0 h-14 bg-gradient-to-b from-[#09090d] via-[#09090d]/80 to-transparent z-10 pointer-events-none" />
-                  <div className="absolute bottom-0 inset-x-0 h-14 bg-gradient-to-t from-[#09090d] via-[#09090d]/80 to-transparent z-10 pointer-events-none" />
-
-                  {/* Continuous Vertical Scrolling Track with hover-to-pause */}
-                  <div className="p-3 sm:p-4 overflow-y-auto h-full flex flex-col scrollbar-thin scrollbar-thumb-white/10 hover:scrollbar-thumb-[#ea580c]/50">
-                    <div className="animate-marquee-faculty flex flex-col gap-6 group-hover/faculty-feed:[animation-play-state:paused]">
-                      {[...FACULTY_TRUTHS, ...FACULTY_TRUTHS].map((fac, idx) => (
-                        <FacultyCard key={`${fac.id}-${idx}`} faculty={fac} />
-                      ))}
+                  {/* Next / Previous & Auto-cycle indicator */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono text-neutral-400 hidden sm:inline">
+                      {isFacultyPaused ? 'Paused' : 'Auto-cycles'}
+                    </span>
+                    <div className="inline-flex items-center rounded-lg border border-white/10 bg-black/60 p-0.5">
+                      <button
+                        onClick={handlePrevFaculty}
+                        className="p-1 sm:p-1.5 rounded-md hover:bg-white/10 text-neutral-300 hover:text-white transition-colors cursor-pointer"
+                        title="Previous Mentor"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={handleNextFaculty}
+                        className="p-1 sm:p-1.5 rounded-md hover:bg-white/10 text-neutral-300 hover:text-white transition-colors cursor-pointer"
+                        title="Next Mentor"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
                 </div>
+
+                {/* STACKED CARD 1 (Top Box in user diagram) */}
+                <HorizontalFacultyCard faculty={topFaculty} />
+
+                {/* STACKED CARD 2 (Bottom Box in user diagram) */}
+                <HorizontalFacultyCard faculty={bottomFaculty} />
+
+                {/* Footer notes under right side */}
+                <div className="flex items-center justify-between text-[11px] font-mono text-neutral-400 px-1 pt-1">
+                  <span>Continuous Desk Mentorship • Lucknow Indrapuri Campus</span>
+                  <div className="flex items-center gap-1.5">
+                    {FACULTY_TRUTHS.map((_, dotIdx) => (
+                      <button
+                        key={dotIdx}
+                        onClick={() => setFacultyOffset(dotIdx)}
+                        className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
+                          dotIdx === facultyOffset % FACULTY_TRUTHS.length
+                            ? 'bg-[#ea580c] w-5'
+                            : 'bg-white/20 hover:bg-white/40'
+                        }`}
+                        title={`View Mentor ${dotIdx + 1}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+
               </div>
 
             </div>
 
-            {/* Footer info line */}
-            <div className="mt-6 pt-5 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-neutral-500">
-              <span>TheCodeSpark Technologies Private Limited • Founder & Mentors Desk</span>
-              <span className="text-neutral-400">Continuous Faculty Feed • Lucknow Indrapuri Campus</span>
+            {/* Bottom Section Footer Note */}
+            <div className="mt-6 pt-5 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-mono text-neutral-500 text-center sm:text-left">
+              <span>TheCodeSpark Technologies Private Limited • Verified Engineering Leadership</span>
+              <span>Indrapuri Campus / Live Online Cohorts</span>
             </div>
 
           </div>
-
         </div>
       </section>
     </div>
   );
 };
 
-// Faculty Card Component with properly fitted employee photo on top and details written beneath
-const FacultyCard: React.FC<{ faculty: FacultyTruth }> = ({ faculty }) => {
+// Horizontal Faculty Card for the two stacked boxes on the right
+const HorizontalFacultyCard: React.FC<{ faculty: FacultyTruth }> = ({ faculty }) => {
   return (
-    <div className="bg-[#0e0e13] border border-white/[0.09] hover:border-[#ea580c]/50 rounded-2xl p-4 sm:p-5 transition-all duration-300 shadow-xl shadow-black/60 flex flex-col group/card hover:bg-[#121218]">
-      {/* 1. EMPLOYEE IMAGE - Fully fitted portrait, no heavy text overlays covering body */}
-      <div className="relative w-full h-64 sm:h-72 rounded-xl overflow-hidden ring-1 ring-white/10 bg-[#1a1410] mb-4 group-hover/card:ring-[#ea580c]/50 transition-all shadow-inner">
-        <img
-          src={faculty.photo}
-          alt={faculty.name}
-          className="w-full h-full object-cover object-top filter brightness-105 group-hover/card:scale-102 transition-transform duration-500"
-          referrerPolicy="no-referrer"
-          loading="lazy"
-        />
+    <div className="bg-[#0e0e13] border border-white/10 hover:border-[#ea580c]/50 rounded-2xl p-4 sm:p-5 transition-all duration-300 shadow-xl shadow-black/60 flex flex-col justify-between group hover:bg-[#121218]">
+      <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+        
+        {/* CENTERED Employee Image in the Middle of photo column (mx-auto) */}
+        <div className="sm:col-span-4 flex flex-col items-center justify-center">
+          <div className="relative mx-auto w-32 sm:w-36 aspect-[3/4] rounded-xl overflow-hidden ring-1 ring-white/15 group-hover:ring-[#ea580c]/60 transition-all duration-500 shadow-lg bg-[#1a1410] flex items-center justify-center">
+            <img
+              src={faculty.photo}
+              alt={faculty.name}
+              className="w-full h-full object-cover object-top filter brightness-105 group-hover:scale-105 transition-transform duration-500"
+              referrerPolicy="no-referrer"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none" />
 
-        {/* Top Badges on Employee Image */}
-        <div className="absolute top-2.5 inset-x-2.5 flex items-center justify-between z-10 pointer-events-none">
-          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-white bg-black/75 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/20 shadow-md">
-            {faculty.department}
-          </span>
-          <span className="text-[10px] font-mono font-bold text-[#ea580c] bg-black/85 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-[#ea580c]/40 shadow-md">
-            {faculty.experience}
-          </span>
-        </div>
-      </div>
-
-      {/* 2. BENEATH THE PHOTO: DETAILS / ABOUT / QUOTE ("unke bre main lekha") */}
-      <div className="space-y-3">
-        {/* Name, Role & Verification Badge */}
-        <div className="flex items-center justify-between gap-2">
-          <div>
-            <div className="flex items-center gap-2">
-              <h4 className="text-lg sm:text-xl font-bold text-white font-display tracking-tight leading-tight">
-                {faculty.name}
-              </h4>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 shadow-sm shadow-emerald-400/50" title="Active Faculty Mentor" />
+            {/* Department tag on top */}
+            <div className="absolute top-1.5 inset-x-1.5 text-center pointer-events-none">
+              <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-white bg-black/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/20">
+                {faculty.department}
+              </span>
             </div>
+
+            {/* Experience tag on bottom */}
+            <div className="absolute bottom-1.5 inset-x-1.5 text-center pointer-events-none">
+              <span className="text-[9.5px] font-mono font-bold text-white bg-[#ea580c]/90 backdrop-blur-md px-2 py-0.5 rounded-full shadow-md">
+                {faculty.experience}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Details & Quote on right */}
+        <div className="sm:col-span-8 space-y-2 text-center sm:text-left">
+          <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+            <span className="text-emerald-400 flex items-center gap-1 text-[10px] font-mono bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Active Mentor
+            </span>
+          </div>
+
+          <div>
+            <h4 className="text-lg sm:text-xl font-bold text-white font-display tracking-tight leading-tight">
+              {faculty.name}
+            </h4>
             <p className="text-xs sm:text-[13px] text-[#ea580c] font-mono font-semibold mt-0.5 leading-tight">
               {faculty.role}
             </p>
           </div>
-          <span className="text-emerald-400 shrink-0 flex items-center gap-1 text-[10px] font-mono font-semibold bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
-            <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-            <span>Mentor</span>
-          </span>
-        </div>
 
-        {/* Engineering Truth & Mentorship Philosophy Quote */}
-        <div className="space-y-1 pt-1">
-          <div className="flex items-center gap-1.5 text-[10.5px] font-mono text-neutral-400">
-            <Quote className="w-3 h-3 text-[#ea580c]" />
-            <span className="uppercase tracking-wider font-semibold text-neutral-300">Engineering Truth & Philosophy</span>
+          {/* Quote */}
+          <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/[0.05] text-left">
+            <p className="text-xs text-neutral-300 leading-relaxed italic line-clamp-2">
+              &ldquo;{faculty.quote}&rdquo;
+            </p>
           </div>
-          <p className="text-xs sm:text-[12.5px] leading-relaxed text-neutral-200 font-normal italic pl-2.5 border-l-2 border-[#ea580c]/40">
-            &ldquo;{faculty.quote}&rdquo;
-          </p>
+
+          {/* Skills tags */}
+          <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 pt-1">
+            {faculty.skills.map((skill, sIdx) => (
+              <span
+                key={sIdx}
+                className="px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-[10px] font-mono group-hover:border-white/20 transition-colors"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
         </div>
 
-        {/* Core Tech Skills */}
-        <div className="pt-2.5 border-t border-white/[0.06] flex flex-wrap gap-1.5 items-center">
-          {faculty.skills.map((skill, sIdx) => (
-            <span
-              key={sIdx}
-              className="px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-[10.5px] font-mono group-hover/card:border-white/20 transition-colors"
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
       </div>
     </div>
   );
 };
+

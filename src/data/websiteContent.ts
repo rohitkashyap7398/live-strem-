@@ -111,40 +111,50 @@ export const TESTIMONIALS: Testimonial[] = [
 export const FAQS: FaqItem[] = [
   {
     id: "faq-1",
-    question: "Are TheCodeSpark Technologies Private Limited courses suitable for beginners?",
-    answer: "Yes, TheCodeSpark Technologies Private Limited provides beginner-friendly courses along with advanced concepts. Our courses are designed in a way that suits complete beginners as well as professionals who want to advance concepts, starting from fundamentals and progressing to production architecture."
+    question: "What are the prerequisites for joining a training program?",
+    answer: "No prior advanced programming knowledge is required for our beginner cohorts—basic computer literacy, curiosity, and a willingness to practice consistently are all you need. We start from ground-zero programming logic and progressively advance to full-stack engineering and cloud architecture. For advanced tracks, basic high school math or familiarity with fundamental logic is helpful."
   },
   {
     id: "faq-2",
-    question: "Does TheCodeSpark Technologies Private Limited provide placement assistance?",
-    answer: "Yes! TheCodeSpark Technologies Private Limited offers placement assistance through career guidance, mock technical interviews, resume preparation, and direct interview opportunities with 50+ hiring partner companies across India."
+    question: "Do you provide placement assistance after course completion?",
+    answer: "Yes, TheCodeSpark Technologies Private Limited offers comprehensive 100% placement assistance. This includes 1-on-1 resume building, LinkedIn and GitHub portfolio enhancement, mock technical and HR interview rounds, aptitude test training, and direct referral opportunities with our network of 50+ hiring partner companies across India."
   },
   {
     id: "faq-3",
-    question: "What programming languages and technologies are covered in the courses?",
-    answer: "Depending on your track, we cover Full Stack Web Development (HTML5, Modern CSS, JavaScript ES6+, React 19, Node.js, Express, PostgreSQL, MongoDB), Python & Generative AI (NumPy, Pandas, PyTorch, LangChain, RAG, Gemini API), Java with DSA, and DevOps."
+    question: "What is the duration and timing of the training programs?",
+    answer: "Our training programs range from 3 months (Skill & Foundation Tracks) to 6 months (Comprehensive Full Stack Engineering & AI tracks), as well as a 100-day full-time intensive Bootcamp. Sessions are held with convenient evening and weekend slots (typically 7:00 PM – 9:30 PM IST or weekend batches) to fit college and working professional schedules."
   },
   {
     id: "faq-4",
-    question: "Are the classes live or pre-recorded, and can I access recordings later?",
-    answer: "Our cohorts feature interactive live masterclasses combined with structured recorded modules for self-paced revision. All live sessions are recorded and made available immediately in your student portal with lifetime access."
+    question: "Are the training programs online or offline?",
+    answer: "We offer both flexible modes! You can attend in-person On-Campus training at our state-of-the-art tech campus in Lucknow (Indrapuri / Gomti Nagar) with direct physical desk mentorship and high-speed computer labs, or join our Live Interactive Online cohorts featuring live streaming, virtual breakout doubt rooms, and 24/7 Discord support."
   },
   {
     id: "faq-5",
-    question: "Do students get real-world project experience during the course?",
-    answer: "Absolutely. We follow a strict 'Learn by Building' philosophy. You will build and deploy multiple full-stack production projects with clean code reviews, Git version control, and real cloud deployment."
+    question: "Will I receive a certificate after completing the course?",
+    answer: "Yes! Upon successfully completing all curriculum milestones, assignments, and capstone project defenses, you will receive an official, industry-recognized Certificate of Completion from TheCodeSpark Technologies Private Limited with an authentic verification credential ID to showcase on your LinkedIn profile and resume."
   },
   {
     id: "faq-6",
-    question: "What is the difference between Online and On-Campus Expert Learning programs?",
-    answer: "Our On-Campus training programs take place at our tech campus in Indrapuri / Gomti Nagar, Lucknow with direct in-person desk mentorship and dedicated computer lab access. The Online cohorts cover the exact same rigorous curriculum with live interactive streaming, breakout rooms, and Discord 1-on-1 assistance."
+    question: "What is the fee structure and payment options?",
+    answer: "Our course pricing is transparent with significant early-bird cohort discounts (up to 50% off). We provide flexible payment facilities including zero-cost EMI plans, monthly installment options, UPI, credit/debit cards, and net banking to ensure high-quality tech education remains accessible to all students."
+  },
+  {
+    id: "faq-7",
+    question: "Do you provide hands-on project experience?",
+    answer: "Yes, absolutely! We strictly practice a 'Learn by Building' approach. Throughout the cohort, you will build 4 to 6 production-ready capstone systems—ranging from scalable full-stack web applications and AI-powered tools to enterprise data pipelines—with automated testing, peer code reviews, Git version control, and cloud deployments."
+  },
+  {
+    id: "faq-8",
+    question: "What is the batch size and student-teacher ratio?",
+    answer: "We purposefully cap our cohorts at small, focused batch sizes (typically 25–35 students) to maintain a healthy 1:10 mentor-to-student ratio. This ensures every student receives individual attention, immediate doubt clarification during live classes, and personalized code feedback."
   }
 ];
 
 export const YOUTUBE_VIDEOS: YoutubeVideo[] = [
   {
     id: "yt-1",
-    title: "How to Get Placed in Tech in 2025/2026 (No Luck, Just Skills)",
+    title: "How to Get Placed in Tech in 2024 (No Luck, Just Skills)",
     views: "48.9K Views",
     likes: "2.2K Likes",
     duration: "24:18",

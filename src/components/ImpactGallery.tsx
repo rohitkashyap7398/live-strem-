@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, ChevronRight, Play, ArrowUpRight, X, Sparkles, MapPin } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
@@ -94,6 +94,29 @@ export const ImpactGallery: React.FC = () => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [modalVideoUrl, setModalVideoUrl] = useState('/assets/aistudio/dfef7c106c7be779a3beaa99bfcc24bf_bcbd35b4.mp4');
 
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Automatic smooth scroll across cards
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      if (carouselRef.current) {
+        const container = carouselRef.current;
+        const maxScroll = container.scrollWidth - container.clientWidth;
+
+        // Loop smoothly when reaching near the end
+        if (container.scrollLeft >= maxScroll - 25) {
+          container.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          container.scrollBy({ left: 310, behavior: 'smooth' });
+        }
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
       const scrollAmount = direction === 'left' ? -380 : 380;
@@ -159,7 +182,11 @@ export const ImpactGallery: React.FC = () => {
         {/* Interactive Horizontal Cards Filmstrip */}
         <div
           ref={carouselRef}
-          className="flex gap-4 sm:gap-5 overflow-x-auto pb-5 pt-1 scrollbar-none snap-x snap-mandatory scroll-smooth -mx-4 px-4 sm:-mx-6 sm:px-6"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+          className="flex gap-4 sm:gap-5 overflow-x-auto pb-5 pt-1 scrollbar-none scroll-smooth -mx-4 px-4 sm:-mx-6 sm:px-6"
         >
           {CAMPUS_CARDS.map((card) => {
             const isSelected = activeCardId === card.id;
@@ -284,7 +311,6 @@ export const ImpactGallery: React.FC = () => {
         {/* Bottom subtle indicator line */}
         <div className="mt-3.5 flex items-center justify-between text-[11px] text-neutral-500 font-mono">
           <span>TheCodeSpark Technologies Private Limited • Campus Tours</span>
-          <span className="hidden sm:inline">Use arrows or swipe to navigate through campus experiences & videos</span>
         </div>
       </div>
 

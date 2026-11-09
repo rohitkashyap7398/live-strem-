@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Phone, Menu, X, ArrowRight, MessageSquare } from 'lucide-react';
+import { Phone, Menu, X, ArrowRight, MessageSquare, MessageCircle } from 'lucide-react';
 
 import brandLogo from '../assets/logo.png';
 
@@ -107,14 +107,26 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </nav>
 
-          {/* Zone 3: Request Call Pill Button & Sign In */}
-          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          {/* Zone 3: Direct WhatsApp, Request Call Pill Button & Sign In */}
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            {/* Direct WhatsApp Quick Connect */}
+            <a
+              href="https://wa.me/917398839769?text=Hello%20Rohit%20Sir%2C%20I%20want%20to%20know%20more%20about%20TheCodeSpark%20Technologies%20courses"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-[11px] sm:text-xs font-semibold text-white bg-[#25D366]/20 hover:bg-[#25D366] border border-[#25D366]/60 rounded-full shadow-md shadow-[#25D366]/20 transition-all cursor-pointer whitespace-nowrap"
+              title="Chat on WhatsApp"
+            >
+              <MessageCircle className="w-3.5 h-3.5 fill-white" />
+              <span className="hidden sm:inline">WhatsApp</span>
+            </a>
+
             {/* Request Call Orange Outline Pill Button */}
             <motion.button
               onClick={onRequestCall}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-5 py-1.5 sm:py-2 text-[11px] sm:text-xs font-semibold text-white border border-[#E10600] bg-[#E10600]/15 hover:bg-[#E10600] rounded-full shadow-lg shadow-[#E10600]/15 transition-all whitespace-nowrap cursor-pointer"
+              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-semibold text-white border border-[#E10600] bg-[#E10600]/15 hover:bg-[#E10600] rounded-full shadow-lg shadow-[#E10600]/15 transition-all whitespace-nowrap cursor-pointer"
             >
               <Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#E10600] group-hover:text-white transition-colors" />
               <span>Request Call</span>
@@ -301,7 +313,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </div>
 
                   <p className="text-[10px] text-neutral-400 font-mono pt-2">
-                    © 2026 TheCodeSpark Technologies Private Limited. All rights reserved.
+                    © 2024 TheCodeSpark Technologies Private Limited. All rights reserved.
                   </p>
                 </div>
               </div>
