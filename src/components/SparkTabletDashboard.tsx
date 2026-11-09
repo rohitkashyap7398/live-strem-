@@ -242,7 +242,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
           {/* Breadcrumb & Title */}
           <div>
             <div className="flex items-center gap-1.5 text-[9px] text-neutral-400 font-mono tracking-wider uppercase">
-              <span>TheCodeSpark OS</span>
+              <span>TheCodeSpark Technologies Private Limited OS</span>
               <span>→</span>
               <span className="text-[#E10600] font-semibold">Live Intelligence</span>
             </div>
@@ -786,7 +786,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[#E10600] animate-ping" />
           <span className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-neutral-300 font-semibold">
-            TheCodeSpark OS • Live Intelligence
+            TheCodeSpark Technologies Private Limited OS • Live Intelligence
           </span>
         </div>
 

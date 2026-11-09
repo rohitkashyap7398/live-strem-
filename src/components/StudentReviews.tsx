@@ -16,7 +16,7 @@ const COLUMN_1_REVIEWS: ReviewItem[] = [
     name: 'Mukti Prasad Dash',
     role: 'Full Stack Developer',
     company: 'Placed at TCS',
-    text: 'TheCodeSpark turned my coding journey into real career growth. The mentors explain full-stack architecture step-by-step. The live project building and doubt sessions made Next.js, Node, and database design effortless to grasp.',
+    text: 'TheCodeSpark Technologies Private Limited turned my coding journey into real career growth. The mentors explain full-stack architecture step-by-step. The live project building and doubt sessions made Next.js, Node, and database design effortless to grasp.',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80'
   },
   {
@@ -32,7 +32,7 @@ const COLUMN_1_REVIEWS: ReviewItem[] = [
     name: 'Avery Collins',
     role: 'James Okafor — CEO, Tech Company',
     company: 'Tech Brand Lead',
-    text: 'TheCodeSpark helped us refine our messaging and scale across platforms with confidence. The clarity they brought to our team was invaluable.',
+    text: 'TheCodeSpark Technologies Private Limited helped us refine our messaging and scale across platforms with confidence. The clarity they brought to our team was invaluable.',
     avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80'
   },
   {
@@ -48,7 +48,7 @@ const COLUMN_1_REVIEWS: ReviewItem[] = [
     name: 'Divya Joshi',
     role: 'Software Associate',
     company: 'Placed at HCLTech',
-    text: 'College theoretical lectures never prepared me for real engineering jobs. TheCodeSpark gave me practical skills, Git workflows, and interview confidence that made an immediate difference.',
+    text: 'College theoretical lectures never prepared me for real engineering jobs. TheCodeSpark Technologies Private Limited gave me practical skills, Git workflows, and interview confidence that made an immediate difference.',
     avatar: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=200&auto=format&fit=crop&q=80'
   },
   {
@@ -67,7 +67,7 @@ const COLUMN_2_REVIEWS: ReviewItem[] = [
     name: 'Aisha Rahman',
     role: 'Creative Director, Skincare Brand',
     company: 'Industry Partner',
-    text: 'TheCodeSpark understands both culture and data. Our community growth feels authentic and strategically driven.',
+    text: 'TheCodeSpark Technologies Private Limited understands both culture and data. Our community growth feels authentic and strategically driven.',
     avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80'
   },
   {
@@ -158,7 +158,7 @@ const COLUMN_3_REVIEWS: ReviewItem[] = [
     name: 'Sneha Kulkarni',
     role: 'React & UI Developer',
     company: 'Placed at Infosys',
-    text: 'Coding alongside ambitious peers at TheCodeSpark gave me the motivation to build consistently every day. The mentors are always approachable, even late at night during project deadlines.',
+    text: 'Coding alongside ambitious peers at TheCodeSpark Technologies Private Limited gave me the motivation to build consistently every day. The mentors are always approachable, even late at night during project deadlines.',
     avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=200&auto=format&fit=crop&q=80'
   }
 ];
@@ -179,7 +179,7 @@ export const StudentReviews: React.FC = () => {
 
         {/* Headline */}
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white font-display tracking-tight leading-tight">
-          We Help Learners Become Industry-Ready Developers.
+          Real Stories. Real Experiences. Real Success.
         </h2>
 
         {/* Subtitle */}

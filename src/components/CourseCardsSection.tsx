@@ -23,11 +23,12 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
 
   const flagshipCards = [
     {
-      course: COURSES[0], // IGNITE 1.0: 2.0 Job Ready AI Powered Cohort
+      course: COURSES[0], // IGNITE 1.0
       cardType: 'light' as const,
-      badge: '2.0 LIVE',
-      title: '2.0 Job Ready AI Powered Cohort',
-      desc: 'Become a job-ready software engineer with our Cohort 2.0. An intensive program covering MERN stack development, DSA, and aptitude training.',
+      badge: '🔥 IGNITE 1.0 LIVE',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: 'IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career',
+      desc: 'Transform your passion for technology into professional skills with our AI-powered learning program. Master Full Stack Web Development, Generative AI, Data Structures & Algorithms, Aptitude & Reasoning, DevOps, Web3, and System Design through practical learning and real-world projects. Build your skills, strengthen your problem-solving abilities, and prepare for opportunities in the technology industry.',
       duration: '260+ Hours',
       certified: 'Yes Certified',
       support: '24/7 Mentor Support',
@@ -35,13 +36,14 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
       originalPrice: 'Rs.11999',
       imageSide: 'left' as const,
       visualType: 'instructor-web' as const,
-      tags: ['Job Ready', 'MERN Stack', 'DSA With JS', 'Placement Focused', 'AI Powered']
+      tags: ['Job Ready', 'Full Stack + GenAI', 'DSA', 'DevOps & Web3', 'System Design']
     },
     {
       course: COURSES[1], // IGNITE 2.0
       cardType: 'orange' as const,
-      badge: 'IGNITE 2.0 Flagship',
-      title: 'Job Ready AI Powered Cohort: Complete Web Development + GenAI + DSA + Aptitude & Reasoning + DevOps + Web3 + System Design',
+      badge: 'IGNITE 2.0 LIVE • COMING SOON',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: 'Future-Ready Developer Program: Full Stack Engineering + AI Integration + Data Structures & Algorithms + Logical Reasoning + Cloud & DevOps + System Architecture',
       desc: 'Complete 9 Master Episodes: Web Fundamentals, React 19 & Next.js, Node.js & MongoDB, GenAI Engineering, DevOps, Micro-Services & Web3, DSA in Java, Aptitude & System Design.',
       duration: '8 Months',
       certified: 'Yes Certified',
@@ -50,13 +52,15 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
       originalPrice: 'Rs.16999',
       imageSide: 'right' as const,
       visualType: 'data-ai' as const,
-      tags: ['Loveable Ai', 'Pixxo (ImageKit)', 'DSA in Java', 'GenAI + System Design']
+      isComingSoon: true,
+      tags: ['Coming Soon', 'Full Stack Eng', 'AI Integration', 'Cloud & DevOps']
     },
     {
-      course: COURSES[2] || COURSES[0], // IGNITE 3.0 / 2.0 Job Ready Cohort
+      course: COURSES[2] || COURSES[0], // IGNITE 3.0 / Next-Gen Developer Cohort
       cardType: 'dark' as const,
-      badge: '2.0 Intensive',
-      title: '2.0 Job Ready AI Powered Cohort: Complete Web Development + DSA + Gen-AI + Aptitude',
+      badge: 'COMING SOON',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: 'Next-Gen Developer Cohort: Web Technologies + MERN Stack + AI Applications + Problem Solving + Cloud Computing + System Design',
       desc: 'Master enterprise full-stack development, modern DSA problem solving, and generative AI workflow integration with placement roadmaps.',
       duration: '200+ Hours',
       certified: 'Yes Certified',
@@ -65,12 +69,14 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
       originalPrice: 'Rs.11999',
       imageSide: 'left' as const,
       visualType: 'laptop-code' as const,
-      tags: ['React 19', 'Docker', 'PostgreSQL', 'DSA in Java']
+      isComingSoon: true,
+      tags: ['Coming Soon', 'MERN Stack', 'AI Applications', 'Cloud Computing', 'System Design']
     },
     {
       course: COURSES[3] || COURSES[1], // IGNITE 4.0 / Modern AI Agent Architecture
       cardType: 'terracotta' as const,
-      badge: 'Advanced AI',
+      badge: 'COMING SOON',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
       title: 'Autonomous AI Agents & Full-Stack LLM Engineering',
       desc: 'Build production-grade multi-agent swarms, custom fine-tuned models, vector databases, and real-time multimodal applications.',
       duration: '4 Months',
@@ -80,7 +86,8 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
       originalPrice: 'Rs.9999',
       imageSide: 'right' as const,
       visualType: 'ai-agents' as const,
-      tags: ['LangChain', 'Gemini API', 'Vector DB', 'Multi-Agent']
+      isComingSoon: true,
+      tags: ['Coming Soon', 'LangChain', 'Gemini API', 'Vector DB', 'Multi-Agent']
     }
   ];
 
@@ -96,8 +103,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
 
           {/* Heading */}
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-[#111116] font-display tracking-tight leading-tight">
-            Not Sure Which Course Fits You? Don't Worry,<br className="hidden sm:inline" />
-            We're Here To Help.
+            Find Your Path. Master Your Skills. Build Your Future.
           </h2>
 
           <p className="text-xs sm:text-sm text-neutral-700 max-w-xl mx-auto font-medium">
@@ -185,7 +191,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                         <span className={`text-[10px] sm:text-[11px] font-mono ${
                           isLight ? 'text-neutral-500' : isOrange ? 'text-white/80' : 'text-neutral-400'
                         }`}>
-                          TheCodeSpark Cohort
+                          {'brandSubtitle' in item && item.brandSubtitle ? item.brandSubtitle : 'TheCodeSpark Technologies Private Limited'}
                         </span>
                       </div>
 
@@ -197,8 +203,8 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                       </h3>
 
                       {/* Description */}
-                      <p className={`text-xs sm:text-sm leading-relaxed max-w-2xl line-clamp-2 sm:line-clamp-none ${
-                        isLight ? 'text-neutral-600' : isOrange ? 'text-white/90' : 'text-neutral-400'
+                      <p className={`text-xs sm:text-sm leading-relaxed max-w-2xl ${
+                        isLight ? 'text-neutral-700' : isOrange ? 'text-white/90' : 'text-neutral-400'
                       }`}>
                         {item.desc}
                       </p>
@@ -279,7 +285,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                                 : 'text-neutral-300 hover:text-white hover:bg-white/10'
                             }`}
                           >
-                            Enroll Now
+                            {'isComingSoon' in item && item.isComingSoon ? 'Pre-Book (Coming Soon)' : 'Enroll Now'}
                           </button>
                         </div>
                       </div>
@@ -342,88 +348,115 @@ const VisualMockup: React.FC<{
       {/* Centerpiece Visual */}
       <div className="relative z-10 my-auto py-2 flex items-center justify-center">
         {type === 'instructor-web' && (
-          <div className="relative w-full max-w-[280px] text-center">
-            <div className="relative mx-auto w-24 h-24 sm:w-36 sm:h-36 rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-white/20 shadow-2xl group-hover:scale-105 transition-transform duration-500">
+          <div className="relative w-full max-w-[260px] sm:max-w-[280px] text-center">
+            <div className="relative mx-auto w-36 h-48 sm:w-44 sm:h-60 rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-[#E10600]/30 shadow-2xl group-hover:scale-105 transition-transform duration-500 bg-[#1a0f0a]">
               <img
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80"
-                alt="Tech Lead Instructor"
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
+                src="/assets/aistudio/Ignite_1.0_Portrait_Poster_05139a11.png"
+                alt="IGNITE 1.0 LIVE - TheCodeSpark Technologies"
+                className="w-full h-full object-cover object-top"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              <div className="absolute bottom-1 inset-x-0 text-center">
-                <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider font-mono">Senior Lead</span>
+              <div className="absolute bottom-1.5 inset-x-0 text-center px-1">
+                <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider font-mono bg-black/60 px-2 py-0.5 rounded-full border border-white/10">
+                  Mr. Rohit Kashyap
+                </span>
               </div>
             </div>
 
             {/* Floating pill tags */}
-            <div className="absolute -top-1.5 -left-1 sm:-top-2 sm:-left-2 bg-black/80 border border-white/20 text-white text-[9px] sm:text-[10px] font-mono px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg">
-              Next.js 15
+            <div className="absolute -top-1.5 -left-1 sm:-top-2 sm:-left-2 bg-black/85 border border-white/20 text-white text-[9px] sm:text-[10px] font-mono px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1.5 backdrop-blur-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              IGNITE 1.0 LIVE
             </div>
-            <div className="absolute -bottom-1.5 -right-1 sm:-bottom-2 sm:-right-2 bg-[#d84414] text-white text-[9px] sm:text-[10px] font-mono font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg">
-              Gen-AI + DSA
+            <div className="absolute -bottom-1.5 -right-1 sm:-bottom-2 sm:-right-2 bg-[#E10600] text-white text-[9px] sm:text-[10px] font-mono font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg">
+              Full Stack + GenAI
             </div>
           </div>
         )}
 
         {type === 'data-ai' && (
-          <div className="relative w-full text-center">
-            <div className="mx-auto w-full max-w-[280px] p-3 sm:p-4 rounded-xl bg-[#14141d] border border-white/10 shadow-2xl space-y-2 sm:space-y-2.5 text-left">
-              <div className="flex items-center justify-between text-[9px] sm:text-[10px] font-mono text-neutral-400 border-b border-white/10 pb-1.5 sm:pb-2">
-                <span className="text-emerald-400 font-bold">● model_training.py</span>
-                <span>Accuracy: 98.4%</span>
+          <div className="relative w-full max-w-[260px] sm:max-w-[280px] text-center">
+            <div className="relative mx-auto w-36 h-48 sm:w-44 sm:h-60 rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-white/25 shadow-2xl group-hover:scale-105 transition-transform duration-500 bg-[#16120e]">
+              <img
+                src="/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png"
+                alt="Future-Ready Developer Program Lead Faculty"
+                className="w-full h-full object-cover object-top"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute bottom-1.5 inset-x-0 text-center px-1">
+                <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider font-mono bg-black/60 px-2 py-0.5 rounded-full border border-white/10">
+                  Lead Engineering Mentor
+                </span>
               </div>
-              <div className="space-y-1 font-mono text-[9px] sm:text-[10px] text-neutral-300">
-                <div className="text-blue-400">&gt; import torch.nn as nn</div>
-                <div className="text-purple-300">&gt; gemini_agent = Agent(llm=gemini)</div>
-                <div className="text-emerald-300">&gt; pipeline.fit(train_dataset)</div>
-              </div>
-              <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-[#d84414] to-yellow-400 w-4/5" />
-              </div>
+            </div>
+
+            {/* Floating pill tags */}
+            <div className="absolute -top-1.5 -left-1 sm:-top-2 sm:-left-2 bg-black/90 border border-amber-400/40 text-white text-[9px] sm:text-[10px] font-mono px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1.5 backdrop-blur-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="font-bold text-amber-300">IGNITE 2.0 LIVE</span>
+              <span className="text-[8px] bg-amber-400 text-black px-1.5 py-0.5 rounded font-extrabold uppercase tracking-wider">Coming Soon</span>
+            </div>
+            <div className="absolute -bottom-1.5 -right-1 sm:-bottom-2 sm:-right-2 bg-gradient-to-r from-[#d84414] to-yellow-500 text-white text-[9px] sm:text-[10px] font-mono font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg">
+              Full Stack + Cloud DevOps
             </div>
           </div>
         )}
 
         {type === 'laptop-code' && (
-          <div className="relative w-full max-w-[300px] text-center">
-            <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-[#14141e] border border-white/15 shadow-2xl space-y-2 sm:space-y-3">
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-red-500/80" />
-                <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-yellow-500/80" />
-                <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500/80" />
-                <span className="text-[9px] sm:text-[10px] font-mono text-neutral-400 ml-1">fullstack-production-app</span>
+          <div className="relative w-full max-w-[260px] sm:max-w-[280px] text-center">
+            <div className="relative mx-auto w-36 h-48 sm:w-44 sm:h-60 rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-white/20 shadow-2xl group-hover:scale-105 transition-transform duration-500 bg-[#16120e]">
+              <img
+                src="/assets/aistudio/Warmly_Branded_Executive_Team_Portrait_67a8e1d1.png"
+                alt="TheCodeSpark Tech Mentorship & Executive Engineering Team"
+                className="w-full h-full object-cover object-top"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
+              <div className="absolute bottom-1.5 inset-x-0 text-center px-1">
+                <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider font-mono bg-black/70 px-2 py-0.5 rounded-full border border-white/10">
+                  Lead Engineering Mentors
+                </span>
               </div>
-              <div className="grid grid-cols-2 gap-2 text-left">
-                <div className="p-1.5 sm:p-2 rounded-lg bg-black/40 border border-white/5">
-                  <span className="text-[8px] sm:text-[9px] font-mono text-neutral-400 block">Frontend</span>
-                  <span className="text-[10px] sm:text-[11px] font-bold text-white font-mono">React 19 + Vite</span>
-                </div>
-                <div className="p-1.5 sm:p-2 rounded-lg bg-black/40 border border-white/5">
-                  <span className="text-[8px] sm:text-[9px] font-mono text-neutral-400 block">Backend</span>
-                  <span className="text-[10px] sm:text-[11px] font-bold text-emerald-400 font-mono">Node & Postgres</span>
-                </div>
-              </div>
+            </div>
+
+            {/* Floating pill tags */}
+            <div className="absolute -top-1.5 -left-1 sm:-top-2 sm:-left-2 bg-black/90 border border-amber-400/40 text-white text-[9px] sm:text-[10px] font-mono px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1.5 backdrop-blur-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="font-bold text-amber-300">IGNITE 3.0</span>
+              <span className="text-[8px] bg-amber-400 text-black px-1.5 py-0.5 rounded font-extrabold uppercase tracking-wider">Coming Soon</span>
+            </div>
+            <div className="absolute -bottom-1.5 -right-1 sm:-bottom-2 sm:-right-2 bg-gradient-to-r from-[#d84414] to-yellow-500 text-white text-[9px] sm:text-[10px] font-mono font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg">
+              Next-Gen Cohort
             </div>
           </div>
         )}
 
         {type === 'ai-agents' && (
-          <div className="relative w-full max-w-[280px]">
-            <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-[#16131c] border border-purple-500/20 shadow-2xl space-y-2 text-left">
-              <div className="flex items-center justify-between text-[9px] sm:text-[10px] font-mono">
-                <span className="text-purple-300 font-bold">Autonomous Swarm</span>
-                <span className="text-emerald-400">Online</span>
+          <div className="relative w-full max-w-[260px] sm:max-w-[280px] text-center">
+            <div className="relative mx-auto w-36 h-48 sm:w-44 sm:h-60 rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-purple-500/30 shadow-2xl group-hover:scale-105 transition-transform duration-500 bg-[#0d0d12]">
+              <video
+                src="/assets/aistudio/From_Klickpin.com-_Need_fresh_inspiration_Try_these_fresh_mindset_reminder_ideas_to_make_your_next_project_easier_and_prettier_with_beginner-frien_f5c2db7f.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute bottom-1.5 inset-x-0 text-center px-1 pointer-events-none">
+                <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider font-mono bg-black/70 px-2 py-0.5 rounded-full border border-purple-500/30">
+                  AI Agents & LLMs
+                </span>
               </div>
-              <div className="flex items-center gap-2 py-1">
-                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-purple-900/60 flex items-center justify-center text-purple-200">
-                  <Cpu className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                </div>
-                <div className="text-[10px] sm:text-[11px] font-mono text-white leading-tight">
-                  <div>Planner & Executor</div>
-                  <div className="text-[8px] sm:text-[9px] text-neutral-400">RAG Vector Search</div>
-                </div>
-              </div>
+            </div>
+
+            {/* Floating pill tags */}
+            <div className="absolute -top-1.5 -left-1 sm:-top-2 sm:-left-2 bg-black/90 border border-amber-400/40 text-white text-[9px] sm:text-[10px] font-mono px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1.5 backdrop-blur-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="font-bold text-amber-300">IGNITE 4.0</span>
+              <span className="text-[8px] bg-amber-400 text-black px-1.5 py-0.5 rounded font-extrabold uppercase tracking-wider">Coming Soon</span>
+            </div>
+            <div className="absolute -bottom-1.5 -right-1 sm:-bottom-2 sm:-right-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-[9px] sm:text-[10px] font-mono font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg">
+              Autonomous Swarms
             </div>
           </div>
         )}

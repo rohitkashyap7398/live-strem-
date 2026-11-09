@@ -131,21 +131,21 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
       role: "Web Developer",
       rating: 4.9,
       img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
-      review: "I Had A Great Experience At TheCodeSpark. The Teachers Are Highly Supportive And Knowledgeable. They Explain Every Complex DSA Concept Very Clearly!"
+      review: "I Had A Great Experience At TheCodeSpark Technologies Private Limited. The Teachers Are Highly Supportive And Knowledgeable. They Explain Every Complex DSA Concept Very Clearly!"
     },
     {
       name: "Parth gupta",
       role: "Frontend Developer",
       rating: 4.7,
       img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
-      review: "Learning at TheCodeSpark Has Been An Amazing Experience! The Mentors Explain Everything From Scratch, And The Discord Community Is Always Active."
+      review: "Learning at TheCodeSpark Technologies Private Limited Has Been An Amazing Experience! The Mentors Explain Everything From Scratch, And The Discord Community Is Always Active."
     },
     {
       name: "Mukti Prasad Dash",
       role: "Full Stack Developer",
       rating: 4.8,
       img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80",
-      review: "TheCodeSpark Is An Excellent Institute For Learning Coding. The Teachers Explain Concepts In Hindi/Hinglish With Real-World Industry Projects."
+      review: "TheCodeSpark Technologies Private Limited Is An Excellent Institute For Learning Coding. The Teachers Explain Concepts In Hindi/Hinglish With Real-World Industry Projects."
     },
     {
       name: "Pragati Nayak",
@@ -482,7 +482,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
               [ COMPARISON ]
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-white font-display">
-              What Sets TheCodeSpark Apart From Other Coders
+              What Sets TheCodeSpark Technologies Private Limited Apart From Other Coders
             </h2>
           </div>
 
@@ -500,7 +500,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
                 />
                 <div>
                   <h3 className="text-base sm:text-lg font-bold text-white font-display">
-                    TheCodeSpark Technologies
+                    TheCodeSpark Technologies Private Limited
                   </h3>
                   <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider">
                     {course.codeName} Flagship
@@ -1240,7 +1240,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-[#ff5722] mt-0.5 text-base">•</span>
-                  <span>Receive Expert Mentorship and Evaluation, Get detailed feedback from TheCodeSpark mentors</span>
+                  <span>Receive Expert Mentorship and Evaluation, Get detailed feedback from TheCodeSpark Technologies Private Limited mentors</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-[#ff5722] mt-0.5 text-base">•</span>
@@ -1261,7 +1261,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
                       className="h-7 w-auto object-contain shrink-0"
                     />
                     <span className="text-[10px] font-bold font-mono tracking-wider text-slate-800">
-                      TheCodeSpark Technologies
+                      TheCodeSpark Technologies Private Limited
                     </span>
                   </div>
                   <span className="text-[9px] font-mono text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-bold">

@@ -111,7 +111,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   const enrolledCourses = [
     {
       id: "ignite-1",
-      title: "TheCodeSpark IGNITE 1.0: 2.0 Job Ready AI Powered Cohort",
+      title: "IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career",
       date: "Bought on September 17, 2025",
       progress: 3.47,
       modulesCompleted: 0,
@@ -119,7 +119,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       subModulesCompleted: 99,
       totalSubModules: 357,
       score: "1.07% / 31.42%",
-      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&auto=format&fit=crop&q=80",
+      image: "/assets/aistudio/Ignite_1.0_Portrait_Poster_05139a11.png",
       isLiveRecording: true
     },
     {
@@ -143,7 +143,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       title: "Before We Start",
       completed: true,
       lessons: [
-        { title: "Welcome & Onboarding to TheCodeSpark", duration: "12m", done: true },
+        { title: "Welcome & Onboarding to TheCodeSpark Technologies Private Limited", duration: "12m", done: true },
         { title: "Setting up IDE, Terminal & Git Keys", duration: "25m", done: true }
       ]
     },
@@ -468,7 +468,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               </button>
               <div>
                 <h2 className="text-sm sm:text-base font-bold text-white font-display line-clamp-1">
-                  TheCodeSpark IGNITE 1.0: 2.0 Job Ready AI Powered Cohort
+                  TheCodeSpark Technologies Private Limited IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career
                 </h2>
                 <div className="flex items-center gap-2 text-[10px] font-mono text-neutral-400">
                   <span className="text-[#ff5722] font-semibold">3.47% Complete</span>

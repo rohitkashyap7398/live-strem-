@@ -112,7 +112,7 @@ const TABS_DATA: ChatTabContent[] = [
     id: 'missed',
     label: 'What did I miss?',
     heading: 'Never fall behind a single lecture.',
-    paragraph: 'Missed a live session due to college exams? Every single masterclass, code walkthrough, and mentor code review is recorded in ultra-high resolution and indexed in your TheCodeSpark student portal with lifetime access.',
+    paragraph: 'Missed a live session due to college exams? Every single masterclass, code walkthrough, and mentor code review is recorded in ultra-high resolution and indexed in your TheCodeSpark Technologies Private Limited student portal with lifetime access.',
     messages: [
       {
         sender: 'Ananya (Student)',
@@ -155,7 +155,7 @@ const TABS_DATA: ChatTabContent[] = [
       {
         sender: 'Mr. Rohit Kashyap (CEO)',
         senderColor: 'text-[#14141a] font-bold',
-        text: 'That is the TheCodeSpark way! We simulate high-pressure tech interviews so the real one feels effortless.'
+        text: 'That is the TheCodeSpark Technologies Private Limited way! We simulate high-pressure tech interviews so the real one feels effortless.'
       },
       {
         sender: 'Akshat (Student)',
@@ -579,15 +579,15 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center mb-10 sm:mb-14 space-y-3.5">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-xs font-mono tracking-wide">
             <span className="w-1.5 h-1.5 rounded-full bg-[#E10600]" />
-            <span>Leadership & Faculty Culture</span>
+            <span>Meet Our Team & Leadership</span>
           </div>
 
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white font-display tracking-tight leading-tight">
-            Engineering Truths That Drive Our Culture.
+            Meet the Team Behind TheCodeSpark Technologies Private Limited.
           </h3>
 
-          <p className="text-xs sm:text-sm text-neutral-400 max-w-xl mx-auto leading-relaxed">
-            Direct vision from our Founder & CEO Mr. Rohit Kashyap alongside our core engineering mentors and faculty.
+          <p className="text-xs sm:text-sm text-neutral-300 max-w-2xl mx-auto leading-relaxed">
+            A passionate team of engineers, educators, and technology professionals working together to deliver innovative solutions, industry-focused learning, and excellence in technology.
           </p>
         </div>
 
@@ -627,7 +627,7 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                         <span className="w-2 h-2 rounded-full bg-[#ea580c] shrink-0" />
                       </div>
                       <p className="text-[11px] sm:text-xs text-orange-200 font-mono font-medium mt-0.5">
-                        Founder & CEO, TheCodeSpark Technologies
+                        Founder &amp; CEO, TheCodeSpark Technologies Private Limited
                       </p>
                     </div>
                   </div>
@@ -636,7 +636,7 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                   <div className="space-y-1.5 pt-0.5">
                     <Quote className="w-4 h-4 text-[#ea580c]/70" />
                     <p className="text-[12.5px] sm:text-[13px] leading-relaxed text-neutral-200 font-normal">
-                      &ldquo;At TheCodeSpark Technologies, we do not sell pre-recorded video libraries. We make you write production code, deploy real servers, and build tech products that companies actually pay for.&rdquo;
+                      &ldquo;At TheCodeSpark Technologies Private Limited, we do not sell pre-recorded video libraries. We make you write production code, deploy real servers, and build tech products that companies actually pay for.&rdquo;
                     </p>
                   </div>
 

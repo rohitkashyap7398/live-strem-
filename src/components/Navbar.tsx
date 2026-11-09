@@ -300,8 +300,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </button>
                   </div>
 
-                  <p className="text-[10px] text-neutral-500 font-mono pt-2">
-                    © 2026 TheCodeSpark Technologies Pvt Ltd
+                  <p className="text-[10px] text-neutral-400 font-mono pt-2">
+                    © 2026 TheCodeSpark Technologies Private Limited. All rights reserved.
                   </p>
                 </div>
               </div>

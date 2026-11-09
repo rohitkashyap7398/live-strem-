@@ -21,7 +21,7 @@ const CAMPUS_CARDS: CampusCard[] = [
     category: 'Auditorium Keynote',
     tag: 'Live Coding',
     type: 'image',
-    title: "TheCodeSpark's AI & Next.js Keynote",
+    title: "TheCodeSpark Technologies Private Limited AI & Next.js Keynote",
     desc: 'Grand auditorium conference showcasing production Next.js architectures, AI coding workflows, and real engineering guidance to over 1,500 developers.',
     image: '/assets/aistudio/TheCodeSpark_AI_Coding_Conference_d7477d11.png',
     location: 'National Auditorium • Lucknow'
@@ -34,7 +34,7 @@ const CAMPUS_CARDS: CampusCard[] = [
     title: 'AI-Powered Learning Platform Launch',
     desc: 'Presenting end-to-end full-stack architectures, live system design, and placement roadmaps to thousands of passionate engineers.',
     image: '/assets/aistudio/AI-Powered_Learning_Platform_Conference_4d9a70e4.png',
-    location: 'TheCodeSpark Annual Summit'
+    location: 'TheCodeSpark Technologies Private Limited Annual Summit'
   },
   {
     id: 'developer-mindset-focus',
@@ -254,7 +254,7 @@ export const ImpactGallery: React.FC = () => {
                 >
                   <div className="inline-flex items-center gap-1.5 text-[9.5px] font-mono uppercase tracking-widest text-orange-200 mb-1 font-bold">
                     <Sparkles className="w-2.5 h-2.5 text-yellow-300" />
-                    <span>TheCodeSpark Impact</span>
+                    <span>TheCodeSpark Technologies Private Limited Impact</span>
                   </div>
 
                   <h3 className="text-base sm:text-lg font-extrabold text-white font-display leading-tight tracking-tight mb-1.5">

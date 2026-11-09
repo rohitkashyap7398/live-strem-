@@ -125,11 +125,11 @@ export const YoutubeTutorials: React.FC = () => {
 
             {/* Heading */}
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white font-display tracking-tight leading-tight">
-              200+ Free Coding Tutorials On TheCodeSpark Technologies Private Limited
+              Learn In-Demand Technologies. Build Real-World Projects.
             </h2>
 
-            <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-              High-yield, zero-fluff video tutorials covering Data Structures, Modern Full Stack Web Development, Generative AI, and Placement Roadmaps.
+            <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed">
+              Explore Industry-Focused Courses, Practical Coding Lessons &amp; Career-Ready Learning Resources.
             </p>
           </div>
 
@@ -237,7 +237,7 @@ export const YoutubeTutorials: React.FC = () => {
         <div className="mt-3.5 flex items-center justify-between text-[11px] text-neutral-500 font-mono">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-            <span>TheCodeSpark YouTube Channel • 200+ Free Video Tutorials</span>
+            <span>TheCodeSpark Technologies Private Limited YouTube Channel • 200+ Free Video Tutorials</span>
           </div>
           <span className="hidden sm:inline">Use arrows or swipe to explore tutorials</span>
         </div>
@@ -272,7 +272,7 @@ export const YoutubeTutorials: React.FC = () => {
                       {selectedVideo.title}
                     </h4>
                     <span className="text-[11px] text-neutral-400">
-                      TheCodeSpark Free Tutorial • {selectedVideo.duration} • {selectedVideo.views}
+                      TheCodeSpark Technologies Private Limited Free Tutorial • {selectedVideo.duration} • {selectedVideo.views}
                     </span>
                   </div>
                 </div>

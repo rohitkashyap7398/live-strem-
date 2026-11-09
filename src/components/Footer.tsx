@@ -12,8 +12,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onRequestCall }) => 
     <footer className="relative bg-[#222222] border-t border-white/[0.08] pt-16 pb-12 overflow-hidden">
       {/* Huge Outline Watermark in Background */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 overflow-hidden select-none pointer-events-none">
-        <div className="text-[12vw] font-black font-display tracking-tight text-stroke-subtle opacity-30 leading-none">
-          TheCodeSpark
+        <div className="text-[6.5vw] font-black font-display tracking-tight text-stroke-subtle opacity-25 leading-none whitespace-nowrap">
+          TheCodeSpark Technologies Private Limited
         </div>
       </div>
 

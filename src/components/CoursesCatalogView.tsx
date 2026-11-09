@@ -65,12 +65,12 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
     },
     {
       id: 'ignite-1-cohort-2',
-      targetCourse: COURSES[0], // 2.0 Job Ready AI Powered Cohort
+      targetCourse: COURSES[0], // IGNITE 1.0
       dots: true,
-      bannerImg: '/course_banners/banner_cohort2.png',
+      bannerImg: '/assets/aistudio/Ignite_1.0_Portrait_Poster_05139a11.png',
       isLive: true,
-      tags: ['Job Ready', 'MERN Stack', 'DSA With JS'],
-      title: '2.0 Job Ready AI Powered Cohort',
+      tags: ['Job Ready', 'Full Stack + GenAI', 'DevOps & Web3'],
+      title: 'IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career',
       price: 5999,
       originalPrice: 11998,
       discount: '50% OFF',
@@ -91,10 +91,10 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
       id: 'ignite-2-flagship',
       targetCourse: COURSES[1] || COURSES[0], // IGNITE 2.0 Flagship
       dots: true,
-      bannerImg: '/course_banners/banner_cohort2.png',
+      bannerImg: '/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png',
       isLive: true,
-      tags: ['Loveable Ai', 'Pixxo (ImageKit)', 'DSA in Java'],
-      title: 'Job Ready AI Powered Cohort: Complete Web Dev + GenAI + DSA',
+      tags: ['Full Stack Eng', 'AI Integration', 'Cloud & DevOps'],
+      title: 'Future-Ready Developer Program: Full Stack Engineering + AI Integration + DSA',
       price: 7999,
       originalPrice: 16999,
       discount: '53% OFF',
@@ -106,11 +106,11 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
 
   const faqs = [
     {
-      q: 'Are TheCodeSpark courses suitable for beginners?',
-      a: 'Yes, TheCodeSpark provides beginner-friendly courses along with advanced concepts. Our courses are designed in a way that suits beginners as well as professionals who want to learn advance concepts.'
+      q: 'Are TheCodeSpark Technologies Private Limited courses suitable for beginners?',
+      a: 'Yes, TheCodeSpark Technologies Private Limited provides beginner-friendly courses along with advanced concepts. Our courses are designed in a way that suits beginners as well as professionals who want to learn advance concepts.'
     },
     {
-      q: 'Does TheCodeSpark Coding School provide placement assistance?',
+      q: 'Does TheCodeSpark Technologies Private Limited provide placement assistance?',
       a: 'Yes, we provide dedicated placement assistance including mock interviews, resume reviews, portfolio preparation, direct company referrals, and access to our 80+ hiring partner network.'
     },
     {
@@ -265,7 +265,7 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
               : COMPARISON :
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-display tracking-tight leading-tight">
-              What Sets TheCodeSpark <span className="text-[#ff5722] italic font-normal">*Apart*</span> From Other Coders
+              What Sets TheCodeSpark Technologies Private Limited <span className="text-[#ff5722] italic font-normal">*Apart*</span> From Other Coders
             </h2>
           </div>
 
@@ -280,16 +280,16 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
                     <img
                       src={brandLogo}
                       onError={(e) => { e.currentTarget.src = '/logo.png'; }}
-                      alt="TheCodeSpark"
+                      alt="TheCodeSpark Technologies Private Limited"
                       className="h-6 w-auto object-contain filter drop-shadow"
                     />
                   </div>
                   <div className="border-l border-white/20 pl-3">
-                    <span className="text-base font-bold text-white font-display block leading-tight">
-                      TheCodeSpark
+                    <span className="text-sm sm:text-base font-bold text-white font-display block leading-tight">
+                      TheCodeSpark Technologies Private Limited
                     </span>
                     <span className="text-xs text-neutral-400 font-mono block">
-                      Coding School
+                      Coding School &amp; Accelerator
                     </span>
                   </div>
                 </div>

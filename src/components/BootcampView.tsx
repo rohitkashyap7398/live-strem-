@@ -246,7 +246,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
   const mentors = [
     { 
       name: "Mr. Rohit Kashyap", 
-      role: "Founder & CEO, TheCodeSpark", 
+      role: "Founder & CEO, TheCodeSpark Technologies Private Limited", 
       subrole: "Chief Mentor & Guide",
       badge: "FOUNDER",
       img: rohitPhoto,
@@ -255,35 +255,35 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
     { 
       name: "Ali Ansari", 
       role: "Frontend Architect", 
-      subrole: "TheCodeSpark Mentors",
+      subrole: "TheCodeSpark Technologies Private Limited",
       badge: "MENTOR",
       img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80" 
     },
     { 
       name: "Devendra Dhote", 
       role: "Backend & Cloud Lead", 
-      subrole: "TheCodeSpark Mentors",
+      subrole: "TheCodeSpark Technologies Private Limited",
       badge: "MENTOR",
       img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80" 
     },
     { 
       name: "Harsh Sharma", 
       role: "Lead Tech Mentor", 
-      subrole: "TheCodeSpark Mentors",
+      subrole: "TheCodeSpark Technologies Private Limited",
       badge: "MENTOR",
       img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80" 
     },
     { 
       name: "Sarthak Sharma", 
       role: "Full Stack Engineer", 
-      subrole: "TheCodeSpark Mentors",
+      subrole: "TheCodeSpark Technologies Private Limited",
       badge: "MENTOR",
       img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&auto=format&fit=crop&q=80" 
     },
     { 
       name: "Ankur Prajapati", 
       role: "DSA & System Coach", 
-      subrole: "TheCodeSpark Mentors",
+      subrole: "TheCodeSpark Technologies Private Limited",
       badge: "MENTOR",
       img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&auto=format&fit=crop&q=80" 
     }
@@ -307,7 +307,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
       a: "Absolutely. Our curriculum is reviewed every quarter with engineering leads from Amazon, Walmart, and high-growth venture-backed startups, incorporating React 19, Next.js, Node.js microservices, Docker, AWS cloud, and GenAI APIs."
     },
     {
-      q: "Is accommodation and food included in the TheCodeSpark Bootcamp?",
+      q: "Is accommodation and food included in the TheCodeSpark Technologies Private Limited Bootcamp?",
       a: "We have partnered verified student PGs and hostels within walking distance of our Lucknow campus (Indrapuri Sector C). Our admissions team assists you with comfortable accommodation options upon enrollment."
     }
   ];
@@ -550,7 +550,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                 alt="Logo"
                 className="h-5 w-auto object-contain shrink-0 filter drop-shadow"
               />
-              <span className="font-semibold text-[11px]">I AM TheCodeSpark</span>
+              <span className="font-semibold text-[11px]">TheCodeSpark Technologies Private Limited</span>
             </div>
           </div>
 
@@ -565,7 +565,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                 KUSHAGRA PATIDAR
               </h3>
               <p className="text-xs text-neutral-400 font-sans mt-0.5">
-                TheCodeSpark Placement Success Story
+                TheCodeSpark Technologies Private Limited Placement Success Story
               </p>
             </div>
 
@@ -677,7 +677,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                   onClick={onApplyNow}
                   className="w-full py-3.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all shadow-md shadow-purple-600/30 cursor-pointer"
                 >
-                  Start with TheCodeSpark →
+                  Start with TheCodeSpark Technologies Private Limited →
                 </button>
               </div>
             </div>
@@ -764,7 +764,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
       <section className="py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="text-center space-y-2">
           <h2 className="text-3xl sm:text-4xl font-black text-white font-display tracking-tight">
-            TheCodeSpark Students Placed At Top Companies
+            TheCodeSpark Technologies Private Limited Students Placed At Top Companies
           </h2>
         </div>
 
@@ -1235,7 +1235,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                 </p>
                 <div className="pt-2">
                   <span className="text-xs font-mono text-purple-300 bg-purple-500/10 border border-purple-500/25 px-3 py-1 rounded-lg inline-block">
-                    The TheCodeSpark Builder Community
+                    The TheCodeSpark Technologies Private Limited Builder Community
                   </span>
                 </div>
               </div>

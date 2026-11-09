@@ -57,9 +57,9 @@ export const COURSES: Course[] = [
   {
     id: "ignite-1",
     codeName: "IGNITE 1.0",
-    title: "2.0 Job Ready AI Powered Cohort",
-    subtitle: "Become a job-ready software engineer with our Cohort 2.0. An intensive program covering MERN stack development, DSA, and aptitude training.",
-    kicker: "CODE. CREATE. CONQUER.",
+    title: "IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career",
+    subtitle: "Transform your passion for technology into professional skills with our AI-powered learning program. Master Full Stack Web Development, Generative AI, Data Structures & Algorithms, Aptitude & Reasoning, DevOps, Web3, and System Design through practical learning and real-world projects. Build your skills, strengthen your problem-solving abilities, and prepare for opportunities in the technology industry.",
+    kicker: "🔥 IGNITE 1.0 LIVE | THECODESPARK TECHNOLOGIES",
     price: 5999,
     originalPrice: 11999,
     discountBadge: "50% OFF",
@@ -317,7 +317,7 @@ export const COURSES: Course[] = [
   {
     id: "ignite-2",
     codeName: "IGNITE 2.0",
-    title: "TheCodeSpark IGNITE 2.0: Job Ready AI Powered Cohort: Complete Web Development + GenAI + DSA + Aptitude & Reasoning + DevOps + Web3 + System Design",
+    title: "Future-Ready Developer Program: Full Stack Engineering + AI Integration + Data Structures & Algorithms + Logical Reasoning + Cloud & DevOps + System Architecture",
     subtitle: "Complete job-ready mastery across 9 foundational episodes: full stack web engineering, generative AI, DSA in Java, aptitude & logical reasoning, cloud DevOps, Web3, and enterprise system design.",
     kicker: "PRODUCTS: LOVEABLE AI + PIXXO (IMAGEKIT) • DSA IN JAVA | COHORT 3.0",
     price: 7999,
@@ -332,9 +332,9 @@ export const COURSES: Course[] = [
     enrolledCount: "70+ Enrolled",
     catalogGraphic: "mobile",
     isPopular: true,
-    isLive: true,
-    isComingSoon: false,
-    comingSoonText: "Admissions Open • Batch Starting Soon",
+    isLive: false,
+    isComingSoon: true,
+    comingSoonText: "Coming Soon • Pre-Book Open",
     videoUrl: "/assets/aistudio/20261101-0901-20.9364903_f39b55c3.mp4",
     instructorImg: "/Rohit.png",
     instructorName: "Mr. Rohit Kashyap (Founder & CEO)",
@@ -587,7 +587,7 @@ export const COURSES: Course[] = [
   {
     id: "ignite-3",
     codeName: "IGNITE 3.0",
-    title: "TheCodeSpark IGNITE 3.0: Complete Data Analytics & Engineering",
+    title: "TheCodeSpark Technologies Private Limited IGNITE 3.0: Complete Data Analytics & Engineering",
     subtitle: "Data Analytics for Engineers: from raw process, business, and production data to decisions you can actually act on. Complete 13-Phase curriculum covering Python, Statistics, NumPy & Pandas, EDA, SQL Mastery, Excel & Power BI, Machine Learning, Data Engineering, and 6 Industry Capstones.",
     kicker: "13 COMPREHENSIVE PHASES • PYTHON • SQL • POWER BI • STATS & ML • 6 CAPSTONES",
     price: 4999,
@@ -647,7 +647,7 @@ export const COURSES: Course[] = [
    {
     id: "ignite-4",
     codeName: "IGNITE 4.0",
-    title: "TheCodeSpark IGNITE 4.0: Java & DSA Domination",
+    title: "TheCodeSpark Technologies Private Limited IGNITE 4.0: Java & DSA Domination",
     subtitle: "Zero-to-advanced Java programming and Data Structures & Algorithms with 500+ LeetCode problems, graph algorithms, and competitive programming patterns.",
     kicker: "JAVA • LOGIC BUILDING • DEEP LEARNING DSA",
     price: 4236,
@@ -695,7 +695,7 @@ export const COURSES: Course[] = [
   {
     id: "ignite-5",
     codeName: "IGNITE 5.0",
-    title: "TheCodeSpark IGNITE 5.0: Cloud DevOps & System Design",
+    title: "TheCodeSpark Technologies Private Limited IGNITE 5.0: Cloud DevOps & System Design",
     subtitle: "Enterprise cloud engineering, Docker, Kubernetes orchestration, Terraform IaC, AWS infrastructure, and high-level system design for modern tech giants.",
     kicker: "DEVOPS • KUBERNETES • AWS CLOUD • SYSTEM DESIGN",
     price: 5999,
@@ -742,7 +742,7 @@ export const COURSES: Course[] = [
   {
     id: "ignite-6",
     codeName: "IGNITE 6.0",
-    title: "TheCodeSpark IGNITE 6.0: Corporate Apprenticeship & Internship",
+    title: "TheCodeSpark Technologies Private Limited IGNITE 6.0: Corporate Apprenticeship & Internship",
     subtitle: "6-Month guaranteed real-industry corporate apprenticeship. Work on production-grade client projects, live codebases, Agile sprints, and receive verified experience certificates with stipend assistance.",
     kicker: "APPRENTICESHIP • TRAINING • REAL WORK EXPERIENCE • PLACEMENT",
     price: 5000,
@@ -772,7 +772,7 @@ export const COURSES: Course[] = [
         "Work on live client repositories with senior code reviewers",
         "Daily Agile standups, sprint planning, and JIRA ticket tracking",
         "Monthly stipend assistance and performance bonuses",
-        "Official experience letter & recommendation letter from TheCodeSpark Technologies",
+        "Official experience letter & recommendation letter from TheCodeSpark Technologies Private Limited",
         "Direct interview referral network with 80+ hiring tech companies"
       ]
     },

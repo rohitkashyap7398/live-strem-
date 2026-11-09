@@ -405,7 +405,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent flex items-end p-5">
                         <div>
-                          <h4 className="text-base font-bold text-white font-display">TheCodeSpark Community Culture</h4>
+                          <h4 className="text-base font-bold text-white font-display">TheCodeSpark Technologies Private Limited Community Culture</h4>
                           <p className="text-xs text-neutral-300 font-mono">Keep Learning After Hours With Peer Discussions</p>
                         </div>
                       </div>
@@ -503,7 +503,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
               { id: 'web', label: 'Web Development' },
               { id: 'python', label: 'Python with Data Science' },
               { id: 'java', label: 'Java & DSA' },
-              { id: 'ignite', label: 'TheCodeSpark IGNITE' }
+              { id: 'ignite', label: 'TheCodeSpark Technologies Private Limited IGNITE' }
             ].map((tab) => (
               <button
                 key={tab.id}
