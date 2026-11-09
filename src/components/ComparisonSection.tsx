@@ -53,14 +53,14 @@ export const ComparisonSection: React.FC = () => {
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-emerald-500/5 blur-[120px] pointer-events-none rounded-full" />
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-red-500/5 blur-[120px] pointer-events-none rounded-full" />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-14 space-y-3"
+          className="text-center max-w-3xl mx-auto mb-12 space-y-3"
         >
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#E10600]/15 border border-[#E10600]/30 text-[#E10600] text-xs font-mono font-semibold uppercase tracking-widest">
             <Sparkles className="w-3 h-3" /> COMPARISON
@@ -74,14 +74,14 @@ export const ComparisonSection: React.FC = () => {
         </motion.div>
 
         {/* Side-by-Side Comparison Container (Matching Reference Image) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
           {/* Left: TheCodeSpark Technologies Private Limited */}
           <motion.div 
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="rounded-[28px] p-6 sm:p-9 bg-[#0e1612] border-2 border-emerald-500/80 shadow-[0_0_50px_rgba(16,185,129,0.14)] space-y-7 relative flex flex-col justify-between"
+            className="rounded-2xl p-5 sm:p-7 bg-[#0e1612] border-2 border-emerald-500/80 shadow-[0_0_50px_rgba(16,185,129,0.14)] space-y-6 relative flex flex-col justify-between"
           >
             {/* Header matching screenshot */}
             <div className="flex items-center gap-4 border-b border-emerald-500/20 pb-6">
@@ -137,7 +137,7 @@ export const ComparisonSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="rounded-[28px] p-6 sm:p-9 bg-[#171213] border border-red-500/30 shadow-[0_0_40px_rgba(239,68,68,0.06)] space-y-7 relative flex flex-col justify-between"
+            className="rounded-2xl p-5 sm:p-7 bg-[#171213] border border-red-500/30 shadow-[0_0_40px_rgba(239,68,68,0.06)] space-y-6 relative flex flex-col justify-between"
           >
             {/* Header matching screenshot */}
             <div className="flex items-center gap-4 border-b border-red-500/15 pb-6">

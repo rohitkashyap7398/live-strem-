@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
+import { MagneticButton } from './MagneticButton';
 
 interface CtaBannerProps {
   onExploreCourses: () => void;
@@ -104,15 +105,15 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onExploreCourses }) => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="pt-4 flex flex-wrap items-center justify-center gap-4"
         >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <MagneticButton
             onClick={onExploreCourses}
-            className="px-8 py-3.5 rounded-full bg-[#E10600] hover:bg-[#c70500] text-white text-sm font-bold shadow-xl shadow-[#E10600]/25 transition-all flex items-center gap-2 cursor-pointer"
-          >
-            <span>Explore Courses</span>
-            <ArrowRight className="w-4 h-4" />
-          </motion.button>
+            variant="primary"
+            size="lg"
+            icon={<ArrowRight className="w-4 h-4" />}
+            iconPosition="right"
+            text="Explore Courses"
+            className="shadow-xl shadow-[#E10600]/25"
+          />
         </motion.div>
 
         <div className="pt-2 flex flex-wrap items-center justify-center gap-2 text-xs text-neutral-400 font-mono">

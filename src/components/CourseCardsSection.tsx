@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Clock, Award, Headphones, ArrowRight, Laptop, Sparkles, Layers, Cpu, Database, Terminal, Flame } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
 import { COURSES, Course } from '../data/coursesData';
+import { MagneticButton } from './MagneticButton';
 
 interface CourseCardsSectionProps {
   onSelectCourse: (course: Course) => void;
@@ -93,16 +94,16 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
 
   return (
     <section id="courses-section" className="py-16 md:py-24 bg-[#C0C0C0] text-[#111116] relative transition-colors">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Header Block exactly matching Screen_Recording_2026-11-04_215816_ec2e6877.mp4 */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-4">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-3.5">
           {/* Badge: [ COURSES ] in rounded outline pill with dark red/orange borders */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-md text-[11px] font-mono font-bold tracking-widest text-[#E10600] border border-[#E10600]/30 bg-[#E10600]/10 uppercase shadow-xs">
             [ COURSES ]
           </div>
 
           {/* Heading */}
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-[#111116] font-display tracking-tight leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#111116] font-display tracking-tight leading-tight">
             Find Your Path. Master Your Skills. Build Your Future.
           </h2>
 
@@ -112,15 +113,15 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
 
           {/* Explore Courses Button */}
           <div className="pt-2">
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
+            <MagneticButton
               onClick={onExploreAll}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#E10600] hover:bg-[#c70500] text-white text-xs sm:text-sm font-bold shadow-lg shadow-[#E10600]/25 transition-all cursor-pointer"
-            >
-              <span>Explore Courses</span>
-              <ArrowRight className="w-4 h-4" />
-            </motion.button>
+              variant="primary"
+              size="md"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
+              text="Explore Courses"
+              className="!rounded-xl shadow-lg shadow-[#E10600]/25"
+            />
           </div>
         </div>
 
@@ -129,7 +130,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
           Directly matching desktop experience on both mobile & desktop:
           Each card sticks beneath the header and stacks progressively over previous cards on scroll.
         */}
-        <div className="relative space-y-12 sm:space-y-20 pb-16 sm:pb-24">
+        <div className="relative space-y-8 sm:space-y-12 pb-12 sm:pb-16">
           {flagshipCards.map((item, idx) => {
             const isLight = item.cardType === 'light';
             const isOrange = item.cardType === 'orange';
@@ -151,7 +152,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                   initial={false}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, ease: 'easeOut' }}
-                  className={`rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 shadow-2xl transition-all duration-300 border ${
+                  className={`rounded-2xl p-4 sm:p-6 md:p-7 shadow-xl transition-all duration-300 border ${
                     isLight
                       ? 'bg-[#d8d8d8] text-[#111116] border-black/10 shadow-black/20 hover:shadow-black/30'
                       : isOrange
@@ -259,34 +260,35 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                         </div>
 
                         <div className="flex items-center gap-2 sm:gap-2.5">
-                          <motion.button
-                            whileHover={{ scale: 1.04 }}
-                            whileTap={{ scale: 0.96 }}
+                          <MagneticButton
                             onClick={() => onSelectCourse(item.course)}
-                            className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all flex items-center gap-1.5 cursor-pointer shadow-md ${
+                            variant={isLight ? 'secondary' : isOrange ? 'primary' : 'primary'}
+                            size="sm"
+                            icon={<ArrowRight className="w-3.5 h-3.5" />}
+                            iconPosition="right"
+                            text="Check Course"
+                            className={`!rounded-xl ${
                               isLight
-                                ? 'bg-[#141419] hover:bg-black text-white'
+                                ? '!bg-[#141419] hover:!bg-black !text-white'
                                 : isOrange
-                                ? 'bg-white hover:bg-neutral-100 text-[#E10600]'
-                                : 'bg-white hover:bg-neutral-200 text-[#111116]'
+                                ? '!bg-white hover:!bg-neutral-100 !text-[#E10600]'
+                                : '!bg-white hover:!bg-neutral-200 !text-[#111116]'
                             }`}
-                          >
-                            <span>Check Course</span>
-                            <ArrowRight className="w-3.5 h-3.5" />
-                          </motion.button>
+                          />
 
-                          <button
+                          <MagneticButton
                             onClick={() => onEnrollCourse(item.course)}
-                            className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                            variant="ghost"
+                            size="sm"
+                            text={'isComingSoon' in item && item.isComingSoon ? 'Pre-Book' : 'Enroll Now'}
+                            className={`!rounded-xl ${
                               isLight
-                                ? 'text-neutral-700 hover:text-black hover:bg-black/5'
+                                ? '!text-neutral-700 hover:!text-black hover:!bg-black/5'
                                 : isOrange
-                                ? 'text-white/90 hover:text-white hover:bg-white/10'
-                                : 'text-neutral-300 hover:text-white hover:bg-white/10'
+                                ? '!text-white/90 hover:!text-white hover:!bg-white/10'
+                                : '!text-neutral-300 hover:!text-white hover:!bg-white/10'
                             }`}
-                          >
-                            {'isComingSoon' in item && item.isComingSoon ? 'Pre-Book (Coming Soon)' : 'Enroll Now'}
-                          </button>
+                          />
                         </div>
                       </div>
                     </div>

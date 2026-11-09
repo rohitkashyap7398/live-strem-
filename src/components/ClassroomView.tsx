@@ -219,7 +219,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     <div className="min-h-screen bg-[#07070a] text-[#f3f4f6]">
       {/* View 1: Main Classroom Dashboard (Video 5: 00:00 - 00:06) */}
       {activeMode === 'dashboard' ? (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
           {/* Dashboard Header Bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-white/5">
             <div>

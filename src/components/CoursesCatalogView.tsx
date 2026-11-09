@@ -12,6 +12,7 @@ import {
 import brandLogo from '../assets/logo.png';
 import { COURSES, Course } from '../data/coursesData';
 import { FAQS } from '../data/websiteContent';
+import { MagneticButton } from './MagneticButton';
 
 interface CoursesCatalogViewProps {
   onSelectCourse: (course: Course) => void;
@@ -116,17 +117,17 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
       {/* Background subtle radial glow behind heading */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[#d84414]/10 blur-[150px] pointer-events-none rounded-full" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
         
         {/* Exact Heading matching Video 20261106-1501-44.8191487_302b3e4d.mp4 (00:00) */}
-        <div className="text-center max-w-4xl mx-auto mb-14 sm:mb-16">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white font-display tracking-tight leading-tight">
+        <div className="text-center max-w-4xl mx-auto mb-10 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white font-display tracking-tight leading-tight">
             Level Up Your Coding Skills With<br className="hidden sm:inline" /> Expert-Led Courses
           </h1>
         </div>
 
         {/* 6-CARD GRID (Exact layout matching Video 20261106-1501-44.8191487_302b3e4d.mp4 00:00 - 00:03) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {catalogCards.map((item) => {
             const course = item.targetCourse;
 
@@ -216,22 +217,27 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
 
                 {/* Bottom Button Row: Check Course → matching video */}
                 <div className="pt-3 flex items-center justify-between gap-2 border-t border-white/5">
-                  <button
+                  {/* Check Course Button with Magnetic & Rolling text */}
+                  <MagneticButton
                     onClick={() => onSelectCourse(course)}
-                    className="px-5 py-2.5 rounded-xl border border-white/20 bg-white/5 hover:bg-[#ff5722] hover:border-[#ff5722] text-white text-xs sm:text-sm font-semibold transition-all inline-flex items-center gap-2 cursor-pointer shadow-md group-hover:border-[#ff5722]"
-                  >
-                    <span>Check Course</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                    variant="primary"
+                    size="sm"
+                    icon={<ArrowRight className="w-3.5 h-3.5" />}
+                    iconPosition="right"
+                    text="Check Course"
+                    className="!rounded-xl"
+                  />
 
                   {/* Quick Syllabus Trigger */}
-                  <button
+                  <MagneticButton
                     onClick={() => onViewSyllabus(course)}
-                    className="px-3 py-2 rounded-xl border border-white/10 hover:border-white/25 text-neutral-400 hover:text-white text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <FileText className="w-3.5 h-3.5 text-[#ff5722]" />
-                    <span className="hidden sm:inline text-[11px]">Syllabus</span>
-                  </button>
+                    variant="ghost"
+                    size="sm"
+                    icon={<FileText className="w-3.5 h-3.5 text-[#ff5722]" />}
+                    iconPosition="left"
+                    text="Syllabus"
+                    className="!rounded-xl border border-white/10 hover:border-white/25 text-neutral-400 hover:text-white"
+                  />
                 </div>
               </motion.div>
             );

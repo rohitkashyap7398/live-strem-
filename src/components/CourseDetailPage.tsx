@@ -35,6 +35,7 @@ import brandLogo from '../assets/logo.png';
 import rohitPhoto from '../assets/Rohit.png';
 import { Course, COURSES } from '../data/coursesData';
 import { StudentReviews } from './StudentReviews';
+import { MagneticButton } from './MagneticButton';
 
 interface CourseDetailPageProps {
   course: Course;
@@ -199,7 +200,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
     <div className="min-h-screen bg-[#070709] text-[#e5e7eb] pb-32 relative selection:bg-[#ff5722] selection:text-white">
       {/* Top Breadcrumb Navigation */}
       <div className="bg-[#0e0e13] border-b border-white/5 py-2.5 px-4 sticky top-18 z-30">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 overflow-x-auto">
+        <div className="max-w-5xl mx-auto flex items-center justify-between gap-4 overflow-x-auto">
           <div className="flex items-center gap-2 text-xs text-neutral-400 font-mono whitespace-nowrap">
             <button onClick={onNavigateHome} className="hover:text-white transition-colors cursor-pointer">
               Home
@@ -237,7 +238,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
       <section className="relative pt-12 pb-20 overflow-hidden border-b border-white/5">
         <div className="absolute top-1/4 left-1/3 -translate-y-1/2 w-[600px] h-[350px] bg-[#ff5722]/15 blur-[140px] pointer-events-none rounded-full" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
             {/* Left Hero Column */}
@@ -270,23 +271,27 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
                 </span>
               </div>
 
-              {/* CTA Buttons Row */}
+              {/* CTA Buttons Row with Magnetic and Rolling animations */}
               <div className="flex flex-wrap items-center gap-4 pt-2">
-                <button
+                <MagneticButton
                   onClick={handleOpenDiscount}
-                  className="px-7 py-3 rounded-full bg-gradient-to-r from-[#ff5722] to-[#e64a19] hover:from-[#f4511e] hover:to-[#d84315] text-white text-sm font-bold shadow-lg shadow-[#ff5722]/30 active:scale-95 transition-all flex items-center gap-2 cursor-pointer"
-                >
-                  <span>Buy Now</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+                  variant="primary"
+                  size="md"
+                  icon={<ArrowRight className="w-4 h-4" />}
+                  iconPosition="right"
+                  text="Buy Now"
+                  className="shadow-lg shadow-[#ff5722]/30"
+                />
 
-                <button
+                <MagneticButton
                   onClick={handleLearnMore}
-                  className="px-6 py-3 rounded-full bg-transparent hover:bg-white/5 border border-white/20 text-white text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer"
-                >
-                  <span>Learn More</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+                  variant="outline"
+                  size="md"
+                  icon={<ArrowRight className="w-4 h-4" />}
+                  iconPosition="right"
+                  text="Learn More"
+                  className="!border-white/20 hover:!border-white/40"
+                />
               </div>
             </div>
 
@@ -370,7 +375,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
 
       {/* 2. "Get Placed with job ready AI powered cohort*" Section (Video exact: 00:08 - 00:11) */}
       <section className="py-20 bg-[#070709] relative overflow-hidden border-b border-white/5 text-center">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-10">
           
           {/* Main Heading */}
           <div className="space-y-2">
@@ -475,7 +480,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
 
       {/* 4. COMPARISON SECTION: "What Sets TheCodeSpark Apart From Other Coders" (Video exact: 00:13 - 00:15) */}
       <section className="py-20 bg-[#070709] border-b border-white/5">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-12">
           
           <div className="text-center space-y-3">
             <div className="inline-block px-3 py-1 rounded-md text-[11px] font-mono font-bold tracking-widest text-[#ff5722] border border-[#ff5722]/30 bg-[#ff5722]/10 uppercase">
@@ -555,7 +560,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
 
       {/* 5. CURRICULUM SECTION: "Structured Curriculum Designed For Real Growth" (Video exact: 00:15 - 00:18) */}
       <section id="curriculum-section" className="py-20 bg-[#09090c] border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-12">
           
           <div className="text-center space-y-3">
             <div className="inline-block px-3 py-1 rounded-md text-[11px] font-mono font-bold tracking-widest text-[#ff5722] border border-[#ff5722]/30 bg-[#ff5722]/10 uppercase">
@@ -1209,7 +1214,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
 
       {/* 6. HIRING PARTNERS & STUDENT REVIEWS */}
       <section className="pt-16 pb-4 bg-[#050507] border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 mb-6">
           {/* Hiring Partners Logos Bar */}
           <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-14 opacity-70 filter grayscale hover:grayscale-0 transition-all">
             {hiringCompanies.map((comp, idx) => (
@@ -1345,7 +1350,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
 
       {/* 9. BIG OUTLINE TEXT IN FOOTER (Video exact: 00:23 - 00:25) */}
       <section className="py-16 bg-[#050507] overflow-hidden text-center relative select-none">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="font-display font-black text-6xl sm:text-8xl md:text-9xl text-transparent tracking-tighter opacity-15 stroke-white" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.25)' }}>
             TheCodeSpark
           </div>

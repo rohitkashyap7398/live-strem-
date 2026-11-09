@@ -206,3 +206,55 @@
   color: transparent;
   user-select: none;
 }
+
+/* Custom cursor click ripple effect */
+@keyframes cursor-ripple {
+  0% {
+    width: 0px;
+    height: 0px;
+    opacity: 0.9;
+  }
+  100% {
+    width: 90px;
+    height: 90px;
+    opacity: 0;
+  }
+}
+
+.animate-cursor-ripple {
+  animation: cursor-ripple 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Universal Button text roll utility */
+.btn-roll-container {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 1.25em;
+  line-height: 1.25em;
+}
+
+.btn-roll-primary {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-roll-secondary {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:hover .btn-roll-primary,
+.group:hover .btn-roll-primary {
+  transform: translateY(-100%);
+}
+
+button:hover .btn-roll-secondary,
+.group:hover .btn-roll-secondary {
+  transform: translateY(-100%);
+}
+

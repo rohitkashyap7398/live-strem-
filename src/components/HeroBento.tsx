@@ -3,6 +3,7 @@ import { motion, type Variants } from 'motion/react';
 import { Play, Pause, Volume2, VolumeX, ArrowRight, Star, Phone, Sparkles } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
 import { SparkTabletDashboard } from './SparkTabletDashboard';
+import { MagneticButton } from './MagneticButton';
 
 interface HeroBentoProps {
   onStartJourney: () => void;
@@ -98,7 +99,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
         className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[380px] bg-[#E10600] blur-[150px] pointer-events-none rounded-full"
       />
 
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative">
         {/* ======================================================== */}
         {/* NEW TOP HERO SECTION: Exactly matching image_4fd053f0.png */}
         {/* Placed directly above 'TheCodeSpark OS • Live Intelligence' */}
@@ -185,20 +186,22 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
               Master full-stack engineering, Gen-AI systems & DSA through hands-on production projects, expert 1-on-1 mentorship, and dedicated placement acceleration.
             </motion.p>
 
-            {/* Start Journey Button matching reference pill button */}
+            {/* Start Journey Button with magnetic pull and rolling text */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               className="pt-2 sm:pt-3"
             >
-              <button
+              <MagneticButton
                 onClick={onStartJourney}
-                className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#E10600] hover:bg-[#c70500] text-white text-xs sm:text-sm font-bold tracking-wide shadow-xl shadow-[#E10600]/35 transition-all cursor-pointer hover:scale-105 active:scale-95"
-              >
-                <span>Start Journey</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+                variant="primary"
+                size="md"
+                icon={<ArrowRight className="w-4 h-4" />}
+                iconPosition="right"
+                text="Start Journey"
+                className="!px-8 !py-3.5 shadow-xl shadow-[#E10600]/35 text-sm sm:text-base font-bold"
+              />
             </motion.div>
           </div>
         </div>
@@ -249,18 +252,14 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
           </motion.div>
 
           {/* Start Journey Button */}
-          <motion.button
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <MagneticButton
             onClick={onStartJourney}
-            className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#E10600] hover:bg-[#c70500] text-white text-xs font-semibold tracking-wide shadow-lg shadow-[#E10600]/30 transition-all cursor-pointer shrink-0"
-          >
-            <span>Start Journey</span>
-            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-          </motion.button>
+            variant="primary"
+            size="sm"
+            icon={<ArrowRight className="w-3.5 h-3.5" />}
+            iconPosition="right"
+            text="Start Journey"
+          />
         </div>
 
         {/* ======================================================== */}
@@ -442,17 +441,16 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
 
               {/* Bottom-left: Get in touch → Button */}
               <div className="relative z-10 pt-6 flex flex-wrap items-center gap-2.5">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                <MagneticButton
                   onClick={(e) => {
                     e.stopPropagation();
                     onGetInTouch();
                   }}
-                  className="px-5 py-2.5 rounded-xl bg-[#E10600] hover:bg-[#c70500] text-white border border-white/20 text-xs font-bold backdrop-blur-md transition-all shadow-lg cursor-pointer"
-                >
-                  Get in touch →
-                </motion.button>
+                  variant="primary"
+                  size="sm"
+                  text="Get in touch →"
+                  className="!rounded-xl border border-white/20"
+                />
 
                 <div className="flex items-center gap-1.5 text-[11px] font-mono text-neutral-300 bg-black/70 backdrop-blur-md px-3 py-2 rounded-xl border border-white/10">
                   <Phone className="w-3 h-3 text-[#ff5722]" />

@@ -370,7 +370,7 @@ export const TechnologiesMarquee: React.FC = () => {
       {/* Top Subtle Amber/Ember Glow Bloom */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[220px] bg-[#E10600]/15 blur-[120px] pointer-events-none rounded-full" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10 space-y-8">
         
         {/* Header Block matching Video (00:00 - 00:01) */}
         <div className="text-center max-w-3xl mx-auto space-y-3">

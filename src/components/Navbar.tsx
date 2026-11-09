@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Phone, Menu, X, ArrowRight, MessageSquare, MessageCircle } from 'lucide-react';
 
 import brandLogo from '../assets/logo.png';
+import { MagneticButton } from './MagneticButton';
 
 interface NavbarProps {
   currentPage: 'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'course-detail';
@@ -63,7 +64,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         ========================================================================
       */}
       <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#2A2A2A]/95 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-18 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
           {/* Zone 1: Brand (Logo + Vertical Divider + Company Name exactly as in image_061ca74a.png) */}
           <motion.button
             onClick={() => onNavigate('home')}
@@ -110,34 +111,42 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Zone 3: Direct WhatsApp, Request Call Pill Button & Sign In */}
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             {/* Direct WhatsApp Quick Connect */}
-            <a
-              href="https://wa.me/917398839769?text=Hello%20Rohit%20Sir%2C%20I%20want%20to%20know%20more%20about%20TheCodeSpark%20Technologies%20courses"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-[11px] sm:text-xs font-semibold text-white bg-[#25D366]/20 hover:bg-[#25D366] border border-[#25D366]/60 rounded-full shadow-md shadow-[#25D366]/20 transition-all cursor-pointer whitespace-nowrap"
-              title="Chat on WhatsApp"
-            >
-              <MessageCircle className="w-3.5 h-3.5 fill-white" />
-              <span className="hidden sm:inline">WhatsApp</span>
-            </a>
+            <div className="hidden sm:block">
+              <MagneticButton
+                onClick={() =>
+                  window.open(
+                    'https://wa.me/917398839769?text=Hello%20Rohit%20Sir%2C%20I%20want%20to%20know%20more%20about%20TheCodeSpark%20Technologies%20courses',
+                    '_blank'
+                  )
+                }
+                variant="whatsapp"
+                size="xs"
+                icon={<MessageCircle className="w-3.5 h-3.5 fill-white" />}
+                iconPosition="left"
+                text="WhatsApp"
+              />
+            </div>
 
-            {/* Request Call Orange Outline Pill Button */}
-            <motion.button
+            {/* Request Call Pill Button with Magnetic physics & rolling text */}
+            <MagneticButton
               onClick={onRequestCall}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-semibold text-white border border-[#E10600] bg-[#E10600]/15 hover:bg-[#E10600] rounded-full shadow-lg shadow-[#E10600]/15 transition-all whitespace-nowrap cursor-pointer"
-            >
-              <Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#E10600] group-hover:text-white transition-colors" />
-              <span>Request Call</span>
-            </motion.button>
+              variant="outline"
+              size="xs"
+              icon={<Phone className="w-3 h-3 text-[#E10600] group-hover:text-white transition-colors" />}
+              iconPosition="left"
+              text="Request Call"
+              className="!border-[#E10600] !bg-[#E10600]/15 hover:!bg-[#E10600]"
+            />
 
-            {/* "Sign In" text button */}
+            {/* "Sign In" text button with rolling text */}
             <button
               onClick={onRequestCall}
-              className="hidden sm:inline-block text-xs sm:text-sm text-neutral-300 hover:text-white font-medium cursor-pointer transition-colors px-1"
+              className="group hidden sm:inline-flex items-center text-xs sm:text-sm text-neutral-300 hover:text-white font-medium cursor-pointer transition-colors px-1"
             >
-              Sign In
+              <span className="btn-roll-container">
+                <span className="btn-roll-primary">Sign In</span>
+                <span className="btn-roll-secondary text-[#E10600]">Sign In</span>
+              </span>
             </button>
 
             {/* Mobile / Tablet Menu Button */}

@@ -188,7 +188,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
     <div className="min-h-screen bg-[#07070a] text-[#f3f4f6] pb-28 relative overflow-hidden">
       {/* SECTION 1: HERO (Video 7: 00:00) */}
       <section className="relative pt-16 pb-20 border-b border-white/5 bg-[#08080d]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             {/* Left Content */}
             <motion.div 
@@ -292,7 +292,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
 
       {/* SECTION 2: "What Makes Us Different From Others" (Video 7: 00:01 - 00:05) */}
       <section className="py-24 bg-[#07070a] border-b border-white/5">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-16">
           <div className="text-center max-w-3xl mx-auto space-y-2">
             <h2 className="text-3xl sm:text-5xl font-extrabold text-white font-display">
               What Makes Us <span className="text-[#ff5722] italic font-serif">Different</span> From Others
@@ -445,7 +445,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
 
       {/* SECTION 3: "Be The Part Of TheCodeSpark Community" Polaroid Cards (Video 7: 00:06 - 00:19) */}
       <section className="py-24 bg-gradient-to-b from-[#bd350d] via-[#a82d09] to-[#7f1d00] text-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-12">
           <div className="text-center space-y-2">
             <h2 className="text-3xl sm:text-5xl font-extrabold font-display">
               Be The Part Of <span className="italic font-serif">TheCodeSpark Technologies Private Limited Community</span>
@@ -486,7 +486,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
 
       {/* SECTION 4: "TheCodeSpark Classroom To Career Program" (Video 7: 00:20 - 00:23) */}
       <section id="classroom-to-career" className="py-24 bg-[#07070a] border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-10">
           <div className="text-center space-y-2 max-w-3xl mx-auto">
             <h2 className="text-3xl sm:text-5xl font-extrabold text-white font-display">
               TheCodeSpark Technologies Private Limited <span className="text-[#ff5722]">Code Studio</span> To Career Program
@@ -577,7 +577,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
 
       {/* SECTION 5: "Solve Real time doubts and Problems with Live challenges" (Video 7: 00:24 - 00:25) */}
       <section className="py-20 bg-[#09090e] border-b border-white/5">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="rounded-3xl p-8 bg-gradient-to-r from-[#14121a] via-[#100e16] to-[#1c0f08] border border-white/10 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Photo */}
             <div className="lg:col-span-5 rounded-2xl overflow-hidden aspect-video bg-neutral-900">
@@ -678,7 +678,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
 
       {/* SECTION 7: "Learn From Industry Level Experts" Carousel (Video 7: 00:29 - 00:36) */}
       <section className="py-24 bg-[#07070a] border-b border-white/5">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-12">
           <div className="text-center space-y-2">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-display">
               Learn From <span className="text-[#ff5722]">Industry Level</span> Experts
@@ -730,7 +730,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
 
       {/* SECTION 8: "Get Yourself Placed In 8 Months!" (Video 7: 00:37 - 00:39) */}
       <section className="py-24 bg-[#09090e] border-b border-white/5">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-5 space-y-4">
               <h2 className="text-3xl sm:text-5xl font-extrabold text-white font-display leading-tight">

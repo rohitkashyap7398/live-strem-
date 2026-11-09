@@ -21,11 +21,16 @@ import { CourseDetailPage } from './components/CourseDetailPage';
 import { RequestCallbackModal } from './components/RequestCallbackModal';
 import { EnrollModal } from './components/EnrollModal';
 import { SyllabusModal } from './components/SyllabusModal';
+import { CustomCursor } from './components/CustomCursor';
+import { useGlobalButtonEffects } from './hooks/useGlobalButtonEffects';
 import { COURSES, Course } from './data/coursesData';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'course-detail'>('home');
   const [selectedCourse, setSelectedCourse] = useState<Course>(COURSES[0]);
+
+  // Activate global magnetic and rolling button effects across all buttons
+  useGlobalButtonEffects();
 
   // Modal states
   const [isCallbackOpen, setIsCallbackOpen] = useState(false);
@@ -207,6 +212,9 @@ export default function App() {
         onClose={() => setIsSyllabusOpen(false)}
         course={activeCourseForModal}
       />
+
+      {/* Luxury Fluid Mouse Follower & Button Cursor Animation */}
+      <CustomCursor />
     </div>
   );
 }

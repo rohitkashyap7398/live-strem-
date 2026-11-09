@@ -592,7 +592,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
 
       {/* 4. COMPARISON: "Why Some Students Grow Faster Than Others" (Video exact: 00:04 - 00:07) */}
       <section className="py-20 bg-[#060609] border-t border-white/5 relative">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-12">
           
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <h2 className="text-3xl sm:text-5xl font-black text-white font-display tracking-tight">
@@ -761,7 +761,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
       </section>
 
       {/* 5. STUDENTS PLACED AT TOP COMPANIES (Video exact: 00:07 - 00:09) */}
-      <section className="py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <section className="py-20 max-w-5xl mx-auto px-4 sm:px-6 space-y-10">
         <div className="text-center space-y-2">
           <h2 className="text-3xl sm:text-4xl font-black text-white font-display tracking-tight">
             TheCodeSpark Technologies Private Limited Students Placed At Top Companies
@@ -940,7 +940,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
 
       {/* 7. WHY YOU NEED TO BECOME A DEVELOPER: CURRICULUM TABS (Video exact: 00:12 - 00:15) */}
       <section className="py-20 bg-[#08080c] border-t border-white/5 relative">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-12">
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -1078,7 +1078,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
 
       {/* 8. REAL PROJECTS. REAL COMPLEXITY. REAL PROOF OF SKILL (Video exact: 00:15 - 00:17) */}
       <section className="py-20 bg-[#050508] border-t border-white/5 relative">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-10">
           
           <div className="text-center space-y-2">
             <h2 className="text-3xl sm:text-4xl font-black text-white font-display tracking-tight">
@@ -1282,7 +1282,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
 
       {/* 10. 3D PERSPECTIVE ROTATING TILT CARDS (Video exact: 00:23 - 00:25) */}
       <section className="py-20 bg-[#050508] border-t border-white/5 relative overflow-hidden">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-12">
           
           <div className="text-center space-y-2">
             <span className="text-[10px] font-mono uppercase tracking-widest text-purple-400 font-bold bg-purple-500/10 border border-purple-500/30 px-3 py-1 rounded-full">
@@ -1470,7 +1470,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
 
       {/* 12. LEARN FROM PEOPLE WHO'VE ACTUALLY DONE THE WORK (Video exact: 00:26 - 00:28) */}
       <section className="py-20 bg-[#050508] border-t border-white/5 relative">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-10">
           
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -1694,7 +1694,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
           THECODESPARK
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10 space-y-12">
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             

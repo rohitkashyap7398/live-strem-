@@ -340,10 +340,10 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
         ========================================================================
       */}
       <section className="py-20 md:py-28 bg-[#C0C0C0] text-[#1c1c24] relative overflow-hidden transition-colors border-t border-black/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
           
           {/* Header Block */}
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3.5">
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-3.5">
             <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#E10600]/15 border border-[#E10600]/30 text-[#E10600] text-xs font-mono font-bold uppercase tracking-wider shadow-xs">
               <img
                 src={brandLogo}
@@ -367,7 +367,7 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
           <div 
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
-            className="rounded-[28px] sm:rounded-[36px] bg-[#d5d5d5] border border-black/10 p-4 sm:p-10 lg:p-12 shadow-xl shadow-black/5 relative group overflow-hidden"
+            className="rounded-2xl sm:rounded-3xl bg-[#d5d5d5] border border-black/10 p-4 sm:p-7 lg:p-8 shadow-xl shadow-black/5 relative group overflow-hidden"
           >
             {/* Auto-scroll indicator badge */}
             <div className="absolute top-3 right-3 sm:top-4 sm:right-6 z-20 flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] font-mono text-neutral-500 bg-white/70 backdrop-blur-md px-2.5 sm:px-3 py-1 rounded-full border border-black/5">
@@ -582,8 +582,8 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
         </div>
 
         {/* BIG OUTER ENCLOSING CONTAINER BORDER (Exact outer rectangle from user image) */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-          <div className="border border-white/10 rounded-3xl p-5 sm:p-7 md:p-8 bg-[#0b0b0f]/95 relative overflow-hidden backdrop-blur-md shadow-2xl shadow-black/80">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+          <div className="border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 bg-[#0b0b0f]/95 relative overflow-hidden backdrop-blur-md shadow-2xl shadow-black/80">
             {/* Ambient orange glow in corner */}
             <div className="absolute -top-24 -right-24 w-80 h-80 bg-[#ea580c]/15 rounded-full blur-[100px] pointer-events-none" />
 

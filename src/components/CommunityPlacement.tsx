@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowUpRight, Sparkles, Play, Award, ArrowRight } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
+import { MagneticButton } from './MagneticButton';
 
 interface CommunityPlacementProps {
   onExploreCourses: () => void;
@@ -34,15 +35,15 @@ export const CommunityPlacement: React.FC<CommunityPlacementProps> = ({
             They Came. They Cooked. They Got Placed.
           </h2>
           <div className="pt-2">
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
+            <MagneticButton
               onClick={onExploreCourses}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#E10600] hover:bg-[#c70500] text-white text-xs sm:text-sm font-bold tracking-wide shadow-lg shadow-[#E10600]/25 transition-all cursor-pointer"
-            >
-              <span>Explore Courses</span>
-              <ArrowRight className="w-4 h-4" />
-            </motion.button>
+              variant="primary"
+              size="md"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
+              text="Explore Courses"
+              className="!rounded-xl shadow-lg shadow-[#E10600]/25"
+            />
           </div>
         </motion.div>
 

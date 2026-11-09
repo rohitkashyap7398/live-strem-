@@ -11,13 +11,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onRequestCall }) => 
   return (
     <footer className="relative bg-[#222222] border-t border-white/[0.08] pt-16 pb-12 overflow-hidden">
       {/* Huge Outline Watermark in Background */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 overflow-hidden select-none pointer-events-none">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 mb-8 overflow-hidden select-none pointer-events-none">
         <div className="text-[6.5vw] font-black font-display tracking-tight text-stroke-subtle opacity-25 leading-none whitespace-nowrap">
           TheCodeSpark Technologies Private Limited
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/5">
           {/* Brand info (col 1-4) */}
           <div className="md:col-span-4 space-y-4">
