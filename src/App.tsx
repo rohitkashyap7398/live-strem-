@@ -28,6 +28,31 @@ import { COURSES, Course } from './data/coursesData';
 export default function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'course-detail'>('home');
   const [selectedCourse, setSelectedCourse] = useState<Course>(COURSES[0]);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem('thecodespark-theme');
+      if (saved === 'light') return false;
+      if (saved === 'dark') return true;
+    } catch {
+      // safe fallback
+    }
+    return true;
+  });
+
+  // Sync `.dark` class on <html> and persist theme selection
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDarkMode) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    try {
+      localStorage.setItem('thecodespark-theme', isDarkMode ? 'dark' : 'light');
+    } catch {
+      // ignore storage errors in restricted frames
+    }
+  }, [isDarkMode]);
 
   // Activate global magnetic and rolling button effects across all buttons
   useGlobalButtonEffects();
@@ -73,12 +98,14 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#2A2A2A] text-[#f3f4f6] selection:bg-[#E10600] selection:text-white">
+    <div className="min-h-screen bg-[#FFFFFF] dark:bg-[#2A2A2A] text-[#0F172A] dark:text-[#f3f4f6] selection:bg-[#E10600] selection:text-white transition-colors duration-300">
       {/* Universal Top Navigation */}
       <Navbar
         currentPage={currentPage}
         onNavigate={handleNavigate}
         onRequestCall={() => setIsCallbackOpen(true)}
+        isDarkMode={isDarkMode}
+        onToggleTheme={() => setIsDarkMode((prev) => !prev)}
       />
 
       {/* Main View Switcher */}

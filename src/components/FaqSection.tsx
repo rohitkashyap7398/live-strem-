@@ -11,7 +11,7 @@ export const FaqSection: React.FC = () => {
   };
 
   return (
-    <section className="py-20 bg-[#2A2A2A] border-t border-white/[0.08] relative overflow-hidden">
+    <section className="py-20 bg-slate-50 dark:bg-[#2A2A2A] border-t border-slate-200 dark:border-white/[0.08] relative overflow-hidden transition-colors">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <motion.div 
@@ -24,10 +24,10 @@ export const FaqSection: React.FC = () => {
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#E10600]/15 border border-[#E10600]/30 text-[#E10600] text-xs font-mono font-semibold uppercase tracking-widest">
             <Sparkles className="w-3 h-3" /> FAQS
           </div>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-white font-display tracking-tight leading-tight">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white font-display tracking-tight leading-tight">
             Frequently Asked Questions
           </h2>
-          <p className="text-sm text-neutral-400">
+          <p className="text-sm text-slate-600 dark:text-neutral-400">
             Find answers to common questions about our training programs, certifications, and more
           </p>
         </motion.div>
@@ -44,15 +44,17 @@ export const FaqSection: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
                 className={`glass-card rounded-2xl border transition-all ${
-                  isOpen ? 'border-[#E10600]/40 bg-[#1e1e1e] shadow-lg shadow-[#E10600]/10' : 'border-white/5 hover:border-white/10'
+                  isOpen
+                    ? 'border-[#E10600]/40 bg-white dark:bg-[#1e1e1e] shadow-lg shadow-[#E10600]/10'
+                    : 'border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10'
                 }`}
               >
                 <button
                   onClick={() => toggleFaq(faq.id)}
-                  className="w-full px-6 py-5 flex items-center justify-between text-left gap-4 hover:bg-white/[0.02] transition-colors cursor-pointer"
+                  className="w-full px-6 py-5 flex items-center justify-between text-left gap-4 hover:bg-slate-100/60 dark:hover:bg-white/[0.02] transition-colors cursor-pointer"
                 >
                   <span className={`text-sm sm:text-base font-semibold font-display transition-colors ${
-                    isOpen ? 'text-[#E10600]' : 'text-white'
+                    isOpen ? 'text-[#E10600]' : 'text-slate-900 dark:text-white'
                   }`}>
                     {faq.question}
                   </span>
@@ -60,7 +62,9 @@ export const FaqSection: React.FC = () => {
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                     className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                      isOpen ? 'bg-[#E10600] text-white shadow-md shadow-[#E10600]/30' : 'bg-white/5 text-neutral-400'
+                      isOpen
+                        ? 'bg-[#E10600] text-white shadow-md shadow-[#E10600]/30'
+                        : 'bg-slate-200 dark:bg-white/5 text-slate-600 dark:text-neutral-400'
                     }`}
                   >
                     <ChevronDown className="w-4 h-4" />
@@ -77,7 +81,7 @@ export const FaqSection: React.FC = () => {
                       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="px-6 pb-6 pt-3 text-xs sm:text-sm text-neutral-300 leading-relaxed border-t border-white/5 bg-[#18181b]/60">
+                      <div className="px-6 pb-6 pt-3 text-xs sm:text-sm text-slate-700 dark:text-neutral-300 leading-relaxed border-t border-slate-200 dark:border-white/5 bg-slate-50/80 dark:bg-[#18181b]/60">
                         {faq.answer}
                       </div>
                     </motion.div>

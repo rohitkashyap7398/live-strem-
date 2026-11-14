@@ -13,23 +13,23 @@ const PARTNERS = [
 
 export const CompaniesMarquee: React.FC = () => {
   return (
-    <section className="py-10 border-y border-white/5 bg-[#242424] overflow-hidden">
+    <section className="py-10 border-y border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-[#242424] overflow-hidden transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 text-center">
-        <p className="text-[11px] font-mono uppercase tracking-[2px] text-neutral-400">
+        <p className="text-[11px] font-mono uppercase tracking-[2px] text-slate-600 dark:text-neutral-400">
           Our Alumni Are Hired At Top Global Tech Giants & Fast-Growing Startups
         </p>
       </div>
 
       <div className="relative w-full overflow-hidden flex items-center">
         {/* Left and right fade gradients */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#242424] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#242424] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-slate-50 dark:from-[#242424] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-slate-50 dark:from-[#242424] to-transparent z-10 pointer-events-none" />
 
         <div className="animate-marquee flex items-center gap-16 py-2">
           {[...PARTNERS, ...PARTNERS, ...PARTNERS].map((partner, index) => (
             <div
               key={index}
-              className="flex items-center gap-2 text-neutral-400 hover:text-white transition-colors select-none"
+              className="flex items-center gap-2 text-slate-600 dark:text-neutral-400 hover:text-slate-950 dark:hover:text-white transition-colors select-none"
             >
               {partner.name === 'Amazon' && (
                 <div className="flex items-center gap-1.5 font-display text-lg font-bold tracking-tight">
@@ -45,7 +45,7 @@ export const CompaniesMarquee: React.FC = () => {
               {partner.name === 'TCS' && (
                 <div className="flex flex-col text-left leading-none">
                   <span className="font-bold text-base tracking-widest">tcs</span>
-                  <span className="text-[8px] uppercase tracking-wider text-neutral-400">Consultancy Services</span>
+                  <span className="text-[8px] uppercase tracking-wider text-slate-500 dark:text-neutral-400">Consultancy Services</span>
                 </div>
               )}
               {partner.name === 'Rapidops' && (

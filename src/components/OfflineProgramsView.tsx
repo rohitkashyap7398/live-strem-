@@ -185,9 +185,9 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
   ];
 
   return (
-    <div className="min-h-screen bg-[#07070a] text-[#f3f4f6] pb-28 relative overflow-hidden">
+    <div className="min-h-screen bg-white dark:bg-[#07070a] text-slate-900 dark:text-[#f3f4f6] pb-28 relative overflow-hidden transition-colors duration-300">
       {/* SECTION 1: HERO (Video 7: 00:00) */}
-      <section className="relative pt-16 pb-20 border-b border-white/5 bg-[#08080d]">
+      <section className="relative pt-16 pb-20 border-b border-slate-200 dark:border-white/5 bg-slate-50/70 dark:bg-[#08080d]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             {/* Left Content */}
@@ -197,7 +197,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
               transition={{ duration: 0.6 }}
               className="lg:col-span-7 space-y-6"
             >
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/[0.04] border border-[#ff5722]/30 shadow-lg shadow-[#ff5722]/10 backdrop-blur-md">
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white dark:bg-white/[0.04] border border-[#ff5722]/30 shadow-lg shadow-[#ff5722]/10 backdrop-blur-md">
                 <img
                   src={brandLogo}
                   onError={(e) => { e.currentTarget.src = '/logo.png'; }}
@@ -205,16 +205,16 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                   className="h-7 w-auto object-contain filter drop-shadow shrink-0"
                 />
                 <div className="text-left">
-                  <span className="text-xs sm:text-sm font-black text-white tracking-tight block font-display">
+                  <span className="text-xs sm:text-sm font-black text-slate-900 dark:text-white tracking-tight block font-display">
                     TheCodeSpark Technologies <span className="text-[#ff5722]">Private Limited</span>
                   </span>
-                  <span className="text-[10px] text-neutral-400 font-mono tracking-wider uppercase block">
+                  <span className="text-[10px] text-slate-500 dark:text-neutral-400 font-mono tracking-wider uppercase block">
                     Lucknow On-Campus • In-Person Engineering
                   </span>
                 </div>
               </div>
 
-              <h1 className="text-4xl sm:text-6xl font-black font-display text-white tracking-tight leading-tight">
+              <h1 className="text-4xl sm:text-6xl font-black font-display text-slate-900 dark:text-white tracking-tight leading-tight">
                 Learn Coding from India&apos;s <br />
                 <span className="text-[#ff5722]">renowned professors</span>
               </h1>
@@ -223,30 +223,30 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
                 <motion.div 
                   whileHover={{ scale: 1.03 }}
-                  className="p-5 rounded-2xl bg-[#14141d] border border-white/5 space-y-1 shadow-lg"
+                  className="p-5 rounded-2xl bg-white dark:bg-[#14141d] border border-slate-200 dark:border-white/5 space-y-1 shadow-md dark:shadow-lg"
                 >
-                  <span className="text-2xl sm:text-3xl font-black text-white font-mono block">1,000,000+</span>
-                  <p className="text-[11px] text-neutral-400 leading-snug font-mono">
+                  <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono block">1,000,000+</span>
+                  <p className="text-[11px] text-slate-600 dark:text-neutral-400 leading-snug font-mono">
                     Brilliant Students Taught in TheCodeSpark Technologies Private Limited
                   </p>
                 </motion.div>
 
                 <motion.div 
                   whileHover={{ scale: 1.03 }}
-                  className="p-5 rounded-2xl bg-[#14141d] border border-white/5 space-y-1 shadow-lg"
+                  className="p-5 rounded-2xl bg-white dark:bg-[#14141d] border border-slate-200 dark:border-white/5 space-y-1 shadow-md dark:shadow-lg"
                 >
                   <span className="text-2xl sm:text-3xl font-black text-[#ff5722] font-mono block">733K+</span>
-                  <p className="text-[11px] text-neutral-400 leading-snug font-mono">
+                  <p className="text-[11px] text-slate-600 dark:text-neutral-400 leading-snug font-mono">
                     YouTube Subscribers On Our Channel
                   </p>
                 </motion.div>
 
                 <motion.div 
                   whileHover={{ scale: 1.03 }}
-                  className="p-5 rounded-2xl bg-[#14141d] border border-white/5 space-y-1 shadow-lg"
+                  className="p-5 rounded-2xl bg-white dark:bg-[#14141d] border border-slate-200 dark:border-white/5 space-y-1 shadow-md dark:shadow-lg"
                 >
-                  <span className="text-2xl sm:text-3xl font-black text-white font-mono block">20+</span>
-                  <p className="text-[11px] text-neutral-400 leading-snug font-mono">
+                  <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono block">20+</span>
+                  <p className="text-[11px] text-slate-600 dark:text-neutral-400 leading-snug font-mono">
                     Professional Instructors With Industry Level Experience
                   </p>
                 </motion.div>
@@ -291,13 +291,13 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
       </section>
 
       {/* SECTION 2: "What Makes Us Different From Others" (Video 7: 00:01 - 00:05) */}
-      <section className="py-24 bg-[#07070a] border-b border-white/5">
+      <section className="py-24 bg-white dark:bg-[#07070a] border-b border-slate-200 dark:border-white/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-16">
           <div className="text-center max-w-3xl mx-auto space-y-2">
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-white font-display">
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white font-display">
               What Makes Us <span className="text-[#ff5722] italic font-serif">Different</span> From Others
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-400">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400">
               Learn in a focused, distraction-free expert learning environment with expert mentors guiding you at every step.
             </p>
           </div>
@@ -306,19 +306,19 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
             {/* Left Connected Numbers (01 / 02 / 03) */}
             <div className="lg:col-span-5 space-y-8 relative">
               {/* Vertical timeline line */}
-              <div className="absolute left-6 top-8 bottom-8 w-0.5 bg-gradient-to-b from-[#ff5722] via-[#ff5722]/40 to-neutral-800" />
+              <div className="absolute left-6 top-8 bottom-8 w-0.5 bg-gradient-to-b from-[#ff5722] via-[#ff5722]/40 to-slate-200 dark:to-neutral-800" />
 
               {/* 01: Learn By Building */}
               <div 
                 onClick={() => setActiveDiffStep(0)}
-                className={`flex items-start gap-5 cursor-pointer p-3 rounded-2xl transition-all ${activeDiffStep === 0 ? 'bg-white/5' : 'opacity-70 hover:opacity-100'}`}
+                className={`flex items-start gap-5 cursor-pointer p-3 rounded-2xl transition-all ${activeDiffStep === 0 ? 'bg-slate-100 dark:bg-white/5' : 'opacity-75 hover:opacity-100'}`}
               >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-black font-mono text-2xl shrink-0 z-10 ${activeDiffStep === 0 ? 'bg-[#ff5722] text-white shadow-lg shadow-[#ff5722]/30' : 'bg-[#181820] text-neutral-400'}`}>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-black font-mono text-2xl shrink-0 z-10 ${activeDiffStep === 0 ? 'bg-[#ff5722] text-white shadow-lg shadow-[#ff5722]/30' : 'bg-slate-200 dark:bg-[#181820] text-slate-600 dark:text-neutral-400'}`}>
                   01
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-xl font-bold text-white font-display">Learn By Building</h3>
-                  <p className="text-xs text-neutral-400 leading-relaxed">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">Learn By Building</h3>
+                  <p className="text-xs text-slate-600 dark:text-neutral-400 leading-relaxed">
                     No boring lectures, build 10+ real-world projects with hands-on learning from day one.
                   </p>
                 </div>
@@ -327,14 +327,14 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
               {/* 02: Strong Community Backing */}
               <div 
                 onClick={() => setActiveDiffStep(1)}
-                className={`flex items-start gap-5 cursor-pointer p-3 rounded-2xl transition-all ${activeDiffStep === 1 ? 'bg-white/5' : 'opacity-70 hover:opacity-100'}`}
+                className={`flex items-start gap-5 cursor-pointer p-3 rounded-2xl transition-all ${activeDiffStep === 1 ? 'bg-slate-100 dark:bg-white/5' : 'opacity-75 hover:opacity-100'}`}
               >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-black font-mono text-2xl shrink-0 z-10 ${activeDiffStep === 1 ? 'bg-[#ff5722] text-white shadow-lg shadow-[#ff5722]/30' : 'bg-[#181820] text-neutral-400'}`}>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-black font-mono text-2xl shrink-0 z-10 ${activeDiffStep === 1 ? 'bg-[#ff5722] text-white shadow-lg shadow-[#ff5722]/30' : 'bg-slate-200 dark:bg-[#181820] text-slate-600 dark:text-neutral-400'}`}>
                   02
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-xl font-bold text-white font-display">Strong Community Backing</h3>
-                  <p className="text-xs text-neutral-400 leading-relaxed">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">Strong Community Backing</h3>
+                  <p className="text-xs text-slate-600 dark:text-neutral-400 leading-relaxed">
                     Be part of 25,000+ active learners, peer coding, group learning & real growth culture.
                   </p>
                 </div>
@@ -343,14 +343,14 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
               {/* 03: Job-Focused Learning */}
               <div 
                 onClick={() => setActiveDiffStep(2)}
-                className={`flex items-start gap-5 cursor-pointer p-3 rounded-2xl transition-all ${activeDiffStep === 2 ? 'bg-white/5' : 'opacity-70 hover:opacity-100'}`}
+                className={`flex items-start gap-5 cursor-pointer p-3 rounded-2xl transition-all ${activeDiffStep === 2 ? 'bg-slate-100 dark:bg-white/5' : 'opacity-75 hover:opacity-100'}`}
               >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-black font-mono text-2xl shrink-0 z-10 ${activeDiffStep === 2 ? 'bg-[#ff5722] text-white shadow-lg shadow-[#ff5722]/30' : 'bg-[#181820] text-neutral-400'}`}>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-black font-mono text-2xl shrink-0 z-10 ${activeDiffStep === 2 ? 'bg-[#ff5722] text-white shadow-lg shadow-[#ff5722]/30' : 'bg-slate-200 dark:bg-[#181820] text-slate-600 dark:text-neutral-400'}`}>
                   03
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-xl font-bold text-white font-display">Job-Focused Learning</h3>
-                  <p className="text-xs text-neutral-400 leading-relaxed">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">Job-Focused Learning</h3>
+                  <p className="text-xs text-slate-600 dark:text-neutral-400 leading-relaxed">
                     Everything you learn is aligned to real interviews, real skills, real hiring needs.
                   </p>
                 </div>
@@ -366,7 +366,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    className="rounded-3xl overflow-hidden glass-card border border-white/10 p-3 bg-[#0d0d12] shadow-2xl"
+                    className="rounded-3xl overflow-hidden glass-card border border-slate-200 dark:border-white/10 p-3 bg-slate-100 dark:bg-[#0d0d12] shadow-xl dark:shadow-2xl"
                   >
                     <div className="aspect-video rounded-2xl overflow-hidden relative">
                       <img
@@ -394,7 +394,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    className="rounded-3xl overflow-hidden glass-card border border-white/10 p-3 bg-[#0d0d12] shadow-2xl"
+                    className="rounded-3xl overflow-hidden glass-card border border-slate-200 dark:border-white/10 p-3 bg-slate-100 dark:bg-[#0d0d12] shadow-xl dark:shadow-2xl"
                   >
                     <div className="aspect-video rounded-2xl overflow-hidden relative">
                       <img
@@ -419,7 +419,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    className="rounded-3xl overflow-hidden glass-card border border-white/10 p-3 bg-[#0d0d12] shadow-2xl"
+                    className="rounded-3xl overflow-hidden glass-card border border-slate-200 dark:border-white/10 p-3 bg-slate-100 dark:bg-[#0d0d12] shadow-xl dark:shadow-2xl"
                   >
                     <div className="aspect-video rounded-2xl overflow-hidden relative">
                       <img
@@ -485,13 +485,13 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
       </section>
 
       {/* SECTION 4: "TheCodeSpark Classroom To Career Program" (Video 7: 00:20 - 00:23) */}
-      <section id="classroom-to-career" className="py-24 bg-[#07070a] border-b border-white/5">
+      <section id="classroom-to-career" className="py-24 bg-white dark:bg-[#07070a] border-b border-slate-200 dark:border-white/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-10">
           <div className="text-center space-y-2 max-w-3xl mx-auto">
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-white font-display">
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white font-display">
               TheCodeSpark Technologies Private Limited <span className="text-[#ff5722]">Code Studio</span> To Career Program
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-400">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400">
               From our code studio to career success, build real skills that get you hired.
             </p>
           </div>
@@ -511,7 +511,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                 className={`relative px-5 py-2 rounded-full text-xs font-mono font-bold transition-all cursor-pointer ${
                   activeCourseCategory === tab.id
                     ? 'text-white'
-                    : 'text-neutral-400 hover:text-white bg-[#121218] border border-white/5'
+                    : 'text-slate-600 hover:text-slate-900 dark:text-neutral-400 dark:hover:text-white bg-slate-100 dark:bg-[#121218] border border-slate-200 dark:border-white/5'
                 }`}
               >
                 {activeCourseCategory === tab.id && (
@@ -535,10 +535,10 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="rounded-3xl p-6 bg-[#0e0e15] border border-white/10 hover:border-[#ff5722]/40 transition-all flex flex-col justify-between space-y-6 shadow-xl group"
+                className="rounded-3xl p-6 bg-slate-50 dark:bg-[#0e0e15] border border-slate-200 dark:border-white/10 hover:border-[#ff5722]/40 transition-all flex flex-col justify-between space-y-6 shadow-lg dark:shadow-xl group"
               >
                 <div className="space-y-4">
-                  <div className="aspect-video rounded-2xl overflow-hidden bg-neutral-900 relative">
+                  <div className="aspect-video rounded-2xl overflow-hidden bg-slate-200 dark:bg-neutral-900 relative">
                     <img
                       src={course.img}
                       alt={course.title}
@@ -551,17 +551,17 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-bold text-white font-display group-hover:text-[#ff5722] transition-colors">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white font-display group-hover:text-[#ff5722] transition-colors">
                       {course.title}
                     </h3>
-                    <p className="text-xs text-neutral-400 mt-2 leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-neutral-400 mt-2 leading-relaxed">
                       {course.desc}
                     </p>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-white/5 flex items-center justify-between">
-                  <span className="text-[11px] font-mono text-neutral-400">{course.mentors}</span>
+                <div className="pt-4 border-t border-slate-200 dark:border-white/5 flex items-center justify-between">
+                  <span className="text-[11px] font-mono text-slate-500 dark:text-neutral-400">{course.mentors}</span>
                   <button
                     onClick={onApplyOffline}
                     className="px-4 py-2 rounded-xl bg-[#ff5722] hover:bg-[#f4511e] text-white text-xs font-bold shadow-md cursor-pointer"
@@ -576,11 +576,11 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
       </section>
 
       {/* SECTION 5: "Solve Real time doubts and Problems with Live challenges" (Video 7: 00:24 - 00:25) */}
-      <section className="py-20 bg-[#09090e] border-b border-white/5">
+      <section className="py-20 bg-slate-50 dark:bg-[#09090e] border-b border-slate-200 dark:border-white/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="rounded-3xl p-8 bg-gradient-to-r from-[#14121a] via-[#100e16] to-[#1c0f08] border border-white/10 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="rounded-3xl p-8 bg-white dark:bg-gradient-to-r dark:from-[#14121a] dark:via-[#100e16] dark:to-[#1c0f08] border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Photo */}
-            <div className="lg:col-span-5 rounded-2xl overflow-hidden aspect-video bg-neutral-900">
+            <div className="lg:col-span-5 rounded-2xl overflow-hidden aspect-video bg-slate-200 dark:bg-neutral-900">
               <img
                 src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&auto=format&fit=crop&q=80"
                 alt="Mentor Coaching"
@@ -595,25 +595,25 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                 <span className="text-[10px] font-mono text-[#ff5722] uppercase tracking-wider font-bold">
                   Learn Directly From The Experts
                 </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-white font-display">
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-display">
                   Solve Real time doubts and Problems with Live challenges
                 </h3>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1">
-                  <h4 className="text-xs font-bold text-white font-display">Live Doubt Solving</h4>
-                  <p className="text-[11px] text-neutral-400">Solve Problems Instantly During Sessions</p>
+                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 space-y-1">
+                  <h4 className="text-xs font-bold text-slate-900 dark:text-white font-display">Live Doubt Solving</h4>
+                  <p className="text-[11px] text-slate-600 dark:text-neutral-400">Solve Problems Instantly During Sessions</p>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1">
-                  <h4 className="text-xs font-bold text-white font-display">Live Coding Challenge</h4>
-                  <p className="text-[11px] text-neutral-400">Test Your Skills With Real-Time Challenges</p>
+                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 space-y-1">
+                  <h4 className="text-xs font-bold text-slate-900 dark:text-white font-display">Live Coding Challenge</h4>
+                  <p className="text-[11px] text-slate-600 dark:text-neutral-400">Test Your Skills With Real-Time Challenges</p>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1">
-                  <h4 className="text-xs font-bold text-white font-display">Interactive Sessions</h4>
-                  <p className="text-[11px] text-neutral-400">Engage, Ask, And Learn Actively</p>
+                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 space-y-1">
+                  <h4 className="text-xs font-bold text-slate-900 dark:text-white font-display">Interactive Sessions</h4>
+                  <p className="text-[11px] text-slate-600 dark:text-neutral-400">Engage, Ask, And Learn Actively</p>
                 </div>
               </div>
 
@@ -629,19 +629,19 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
       </section>
 
       {/* SECTION 6: "How Students Are Being Taught At TheCodeSpark Classroom" MacBook Video (Video 7: 00:26 - 00:28) */}
-      <section className="py-20 bg-[#07070a] border-b border-white/5">
+      <section className="py-20 bg-white dark:bg-[#07070a] border-b border-slate-200 dark:border-white/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-10">
           <div className="space-y-2">
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-white font-display">
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white font-display">
               How Students Are Being Taught At <span className="text-[#ff5722]">TheCodeSpark Technologies Private Limited Code Studio</span>
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-400">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400">
               Learn In A Focused, Distraction-Free Code Studio Environment With Expert Mentors Guiding You At Every Step.
             </p>
           </div>
 
           {/* MacBook Pro Mockup Frame */}
-          <div className="max-w-4xl mx-auto rounded-3xl p-3 sm:p-4 bg-[#23232a] border border-white/10 shadow-2xl">
+          <div className="max-w-4xl mx-auto rounded-3xl p-3 sm:p-4 bg-slate-200 dark:bg-[#23232a] border border-slate-300 dark:border-white/10 shadow-2xl">
             <div className="rounded-2xl overflow-hidden aspect-video bg-black relative">
               <video
                 ref={videoRef}
@@ -677,13 +677,13 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
       </section>
 
       {/* SECTION 7: "Learn From Industry Level Experts" Carousel (Video 7: 00:29 - 00:36) */}
-      <section className="py-24 bg-[#07070a] border-b border-white/5">
+      <section className="py-24 bg-slate-50 dark:bg-[#07070a] border-b border-slate-200 dark:border-white/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-12">
           <div className="text-center space-y-2">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-display">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-display">
               Learn From <span className="text-[#ff5722]">Industry Level</span> Experts
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-400">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400">
               Learn directly from industry experts working on real-world products and technologies.
             </p>
           </div>
@@ -716,12 +716,12 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
           <div className="flex items-center justify-center gap-3">
             <button
               onClick={() => setMentorPage(0)}
-              className={`w-3 h-3 rounded-full transition-all cursor-pointer ${mentorPage === 0 ? 'bg-[#ff5722] w-6' : 'bg-white/20'}`}
+              className={`w-3 h-3 rounded-full transition-all cursor-pointer ${mentorPage === 0 ? 'bg-[#ff5722] w-6' : 'bg-slate-300 dark:bg-white/20'}`}
               aria-label="Previous Page"
             />
             <button
               onClick={() => setMentorPage(1)}
-              className={`w-3 h-3 rounded-full transition-all cursor-pointer ${mentorPage === 1 ? 'bg-[#ff5722] w-6' : 'bg-white/20'}`}
+              className={`w-3 h-3 rounded-full transition-all cursor-pointer ${mentorPage === 1 ? 'bg-[#ff5722] w-6' : 'bg-slate-300 dark:bg-white/20'}`}
               aria-label="Next Page"
             />
           </div>
@@ -729,15 +729,15 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
       </section>
 
       {/* SECTION 8: "Get Yourself Placed In 8 Months!" (Video 7: 00:37 - 00:39) */}
-      <section className="py-24 bg-[#09090e] border-b border-white/5">
+      <section className="py-24 bg-white dark:bg-[#09090e] border-b border-slate-200 dark:border-white/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-5 space-y-4">
-              <h2 className="text-3xl sm:text-5xl font-extrabold text-white font-display leading-tight">
+              <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white font-display leading-tight">
                 Get Yourself <br />
                 <span className="text-[#ff5722]">Placed In 8 Months!</span>
               </h2>
-              <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400 leading-relaxed">
                 Learn in a focused, distraction-free expert learning environment with expert mentors guiding you at every step.
               </p>
               <div className="pt-2">
@@ -753,8 +753,8 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
             {/* Placed Students Grid */}
             <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-4">
               {placedStudents.map((p, idx) => (
-                <div key={idx} className="rounded-2xl p-4 bg-[#12121a] border border-white/5 text-center space-y-2 group hover:border-[#ff5722]/30 transition-all">
-                  <div className="aspect-square rounded-xl overflow-hidden bg-neutral-900 mx-auto w-16 h-16">
+                <div key={idx} className="rounded-2xl p-4 bg-slate-50 dark:bg-[#12121a] border border-slate-200 dark:border-white/5 text-center space-y-2 group hover:border-[#ff5722]/30 transition-all">
+                  <div className="aspect-square rounded-xl overflow-hidden bg-slate-200 dark:bg-neutral-900 mx-auto w-16 h-16">
                     <img
                       src={p.img}
                       alt={p.name}
@@ -763,9 +763,9 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                     />
                   </div>
                   <div>
-                    <span className="text-xs font-bold text-white font-display block uppercase">{p.name}</span>
-                    <span className="text-[10px] font-mono text-emerald-400 font-bold block">{p.lpa}</span>
-                    <span className="text-[10px] font-mono text-neutral-400 block">{p.logoText}</span>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white font-display block uppercase">{p.name}</span>
+                    <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold block">{p.lpa}</span>
+                    <span className="text-[10px] font-mono text-slate-500 dark:text-neutral-400 block">{p.logoText}</span>
                   </div>
                 </div>
               ))}
@@ -816,9 +816,9 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
       </section>
 
       {/* SECTION 10: "Transform Your Learning Journey" Banner (Video 7: 00:45) */}
-      <section className="py-20 bg-[#07070a] border-t border-white/5 text-center space-y-6">
+      <section className="py-20 bg-slate-50 dark:bg-[#07070a] border-t border-slate-200 dark:border-white/5 text-center space-y-6">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white font-display">
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white font-display">
             Transform Your <span className="text-[#ff5722]">Learning</span> Journey <br />
             Into A Career Breakthrough With TheCodeSpark Technologies Private Limited
           </h2>
@@ -834,85 +834,85 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
       </section>
 
       {/* SECTION 11: "Apply For Placement Assistance" Form (Video 7: 00:46 - 00:48) */}
-      <section className="py-24 bg-[#09090e] border-t border-white/5">
+      <section className="py-24 bg-white dark:bg-[#09090e] border-t border-slate-200 dark:border-white/5">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="text-center space-y-2">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-display">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-display">
               Apply For <span className="text-[#ff5722]">Placement Assistance</span>
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-400">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400">
               Register for the upcoming On-Campus cohort at our Lucknow campus.
             </p>
           </div>
 
           {isSubmitted ? (
-            <div className="p-8 rounded-3xl bg-[#0e0e15] border border-emerald-500/40 text-center space-y-3 shadow-2xl">
-              <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto" />
-              <h3 className="text-xl font-bold text-white font-display">Application Received!</h3>
-              <p className="text-xs text-neutral-300">
-                Thank you, <strong className="text-white">{name}</strong>. Our campus admissions team will call you at <span className="font-mono text-[#ff5722]">{phone}</span> to schedule your in-person campus visit and demo class.
+            <div className="p-8 rounded-3xl bg-slate-50 dark:bg-[#0e0e15] border border-emerald-500/40 text-center space-y-3 shadow-xl dark:shadow-2xl">
+              <CheckCircle2 className="w-12 h-12 text-emerald-600 dark:text-emerald-400 mx-auto" />
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">Application Received!</h3>
+              <p className="text-xs text-slate-600 dark:text-neutral-300">
+                Thank you, <strong className="text-slate-900 dark:text-white">{name}</strong>. Our campus admissions team will call you at <span className="font-mono text-[#ff5722]">{phone}</span> to schedule your in-person campus visit and demo class.
               </p>
             </div>
           ) : (
-            <form onSubmit={handleFormSubmit} className="p-8 rounded-3xl bg-[#0e0e15] border border-white/10 space-y-4 shadow-2xl">
+            <form onSubmit={handleFormSubmit} className="p-8 rounded-3xl bg-slate-50 dark:bg-[#0e0e15] border border-slate-200 dark:border-white/10 space-y-4 shadow-xl dark:shadow-2xl">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-mono text-neutral-300 block mb-1">Full Name *</label>
+                  <label className="text-xs font-mono text-slate-700 dark:text-neutral-300 block mb-1">Full Name *</label>
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Enter Full Name"
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#14141f] border border-white/10 text-xs text-white focus:outline-none focus:border-[#ff5722]"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#14141f] border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ff5722]"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-mono text-neutral-300 block mb-1">Phone Number *</label>
+                  <label className="text-xs font-mono text-slate-700 dark:text-neutral-300 block mb-1">Phone Number *</label>
                   <input
                     type="tel"
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="Enter Phone Number"
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#14141f] border border-white/10 text-xs text-white focus:outline-none focus:border-[#ff5722] font-mono"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#14141f] border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ff5722] font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-mono text-neutral-300 block mb-1">Email Address *</label>
+                  <label className="text-xs font-mono text-slate-700 dark:text-neutral-300 block mb-1">Email Address *</label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter Email Address"
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#14141f] border border-white/10 text-xs text-white focus:outline-none focus:border-[#ff5722]"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#14141f] border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ff5722]"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-mono text-neutral-300 block mb-1">City *</label>
+                  <label className="text-xs font-mono text-slate-700 dark:text-neutral-300 block mb-1">City *</label>
                   <input
                     type="text"
                     required
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder="Enter City (e.g. Lucknow, Kanpur, Bhopal)"
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#14141f] border border-white/10 text-xs text-white focus:outline-none focus:border-[#ff5722]"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#14141f] border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ff5722]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-mono text-neutral-300 block mb-1">Notes / Doubts</label>
+                <label className="text-xs font-mono text-slate-700 dark:text-neutral-300 block mb-1">Notes / Doubts</label>
                 <textarea
                   rows={3}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Have any questions or doubts? Share them here..."
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#14141f] border border-white/10 text-xs text-white focus:outline-none focus:border-[#ff5722]"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#14141f] border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ff5722]"
                 />
               </div>
 
@@ -923,11 +923,11 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                 Submit Application →
               </button>
 
-              <div className="pt-2 text-center text-xs text-neutral-400 font-mono">
+              <div className="pt-2 text-center text-xs text-slate-500 dark:text-neutral-400 font-mono">
                 <span>Campus Helpline: </span>
-                <a href="tel:+917398839769" className="text-white hover:text-[#ff5722] font-bold">+91 7398839769</a>
-                <span className="mx-1.5 text-neutral-600">/</span>
-                <a href="tel:+919548248925" className="text-white hover:text-[#ff5722] font-bold">+91 9548248925</a>
+                <a href="tel:+917398839769" className="text-slate-900 dark:text-white hover:text-[#ff5722] font-bold">+91 7398839769</a>
+                <span className="mx-1.5 text-slate-400 dark:text-neutral-600">/</span>
+                <a href="tel:+919548248925" className="text-slate-900 dark:text-white hover:text-[#ff5722] font-bold">+91 9548248925</a>
               </div>
             </form>
           )}
@@ -936,10 +936,10 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
 
       {/* Floating Bottom Sticky Bar */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
-        <div className="p-1.5 rounded-2xl bg-[#141419]/95 border border-white/15 backdrop-blur-xl shadow-2xl shadow-black/80 flex items-center gap-2">
+        <div className="p-1.5 rounded-2xl bg-white/95 dark:bg-[#141419]/95 border border-slate-200 dark:border-white/15 backdrop-blur-xl shadow-2xl shadow-slate-900/15 dark:shadow-black/80 flex items-center gap-2">
           <button
             onClick={onRequestCallback}
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-neutral-200 hover:text-white hover:bg-white/10 transition-all cursor-pointer whitespace-nowrap"
+            className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-slate-950 hover:bg-slate-100 dark:text-neutral-200 dark:hover:text-white dark:hover:bg-white/10 transition-all cursor-pointer whitespace-nowrap"
           >
             Request Callback
           </button>

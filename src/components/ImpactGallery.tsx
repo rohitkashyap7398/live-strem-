@@ -125,25 +125,25 @@ export const ImpactGallery: React.FC = () => {
   };
 
   return (
-    <section id="impact-section" className="py-16 md:py-24 bg-[#2A2A2A] text-white relative overflow-hidden border-t border-b border-white/[0.08]">
+    <section id="impact-section" className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
       {/* Subtle background ambient glows matching other sections */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[400px] bg-[#E10600]/10 rounded-full blur-[140px] pointer-events-none" />
 
       {/* Main Container strictly matching max-w-5xl display size */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Header Block with synchronized typography */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-8 sm:mb-10 pb-4 border-b border-white/[0.08]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-8 sm:mb-10 pb-4 border-b border-slate-200 dark:border-white/[0.08]">
           <div className="max-w-2xl space-y-2.5">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-xs font-mono tracking-wide">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-neutral-300 text-xs font-mono tracking-wide">
               <span className="w-1.5 h-1.5 rounded-full bg-[#E10600]" />
               <span>Campus Impact & Culture</span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white font-display tracking-tight leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white font-display tracking-tight leading-tight">
               How We Are Doing It Faster And Better Than Others!
             </h2>
 
-            <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400 leading-relaxed">
               Experience the energy inside our seminars, tech campuses, and community meetups where real builders connect, write production code, and launch high-impact tech careers.
             </p>
           </div>
@@ -152,7 +152,7 @@ export const ImpactGallery: React.FC = () => {
           <div className="flex items-center gap-2.5 shrink-0">
             <button
               onClick={() => setIsVideoModalOpen(true)}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#E10600]/15 hover:bg-[#E10600]/25 border border-[#E10600]/40 text-white text-xs font-semibold transition-all cursor-pointer shadow-lg shadow-[#E10600]/10 group"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#E10600]/10 dark:bg-[#E10600]/15 hover:bg-[#E10600]/20 dark:hover:bg-[#E10600]/25 border border-[#E10600]/40 text-slate-900 dark:text-white text-xs font-semibold transition-all cursor-pointer shadow-md dark:shadow-lg shadow-[#E10600]/10 group"
             >
               <div className="w-4 h-4 rounded-full bg-[#E10600] text-white flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Play className="w-2 h-2 fill-current ml-0.5" />
@@ -163,14 +163,14 @@ export const ImpactGallery: React.FC = () => {
             <div className="flex items-center gap-1.5">
               <button
                 onClick={() => scroll('left')}
-                className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white flex items-center justify-center transition-all cursor-pointer active:scale-95"
+                className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-white flex items-center justify-center transition-all cursor-pointer active:scale-95"
                 aria-label="Scroll Left"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={() => scroll('right')}
-                className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white flex items-center justify-center transition-all cursor-pointer active:scale-95"
+                className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-white flex items-center justify-center transition-all cursor-pointer active:scale-95"
                 aria-label="Scroll Right"
               >
                 <ChevronRight className="w-4 h-4" />

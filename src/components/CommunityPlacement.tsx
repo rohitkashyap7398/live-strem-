@@ -12,7 +12,7 @@ export const CommunityPlacement: React.FC<CommunityPlacementProps> = ({
   onExploreCourses
 }) => {
   return (
-    <section id="community-section" className="py-16 md:py-24 bg-[#C0C0C0] text-[#121217] relative overflow-hidden transition-colors">
+    <section id="community-section" className="py-16 md:py-24 bg-slate-100 dark:bg-[#C0C0C0] text-[#121217] relative overflow-hidden transition-colors border-t border-slate-200 dark:border-black/5">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
         <motion.div 

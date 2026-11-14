@@ -42,15 +42,15 @@ export const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 dark:bg-black/85 backdrop-blur-md">
       <div 
-        className="relative w-full max-w-lg bg-[#0e0e12] border border-white/10 rounded-3xl shadow-2xl overflow-hidden card-inner-glow max-h-[92vh] flex flex-col"
+        className="relative w-full max-w-lg bg-white dark:bg-[#0e0e12] border border-slate-200 dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden card-inner-glow max-h-[92vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-[#121217] shrink-0">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-[#121217] shrink-0">
           <div className="flex items-center gap-3">
-            <div className="h-10 px-2.5 py-1 rounded-xl bg-white/5 border border-[#E10600]/30 flex items-center justify-center shrink-0 shadow-md">
+            <div className="h-10 px-2.5 py-1 rounded-xl bg-white dark:bg-white/5 border border-[#E10600]/30 flex items-center justify-center shrink-0 shadow-sm dark:shadow-md">
               <img
                 src={brandLogo}
                 onError={(e) => { e.currentTarget.src = '/logo.png'; }}
@@ -59,13 +59,13 @@ export const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({
               />
             </div>
             <div>
-              <h3 className="text-sm sm:text-base font-bold text-white font-display">Talk with Rohit Sir &amp; Team</h3>
+              <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white font-display">Talk with Rohit Sir &amp; Team</h3>
               <p className="text-[11px] font-semibold text-[#ea580c] font-mono">TheCodeSpark Technologies Private Limited</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-neutral-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
+            className="p-1.5 text-slate-500 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-200/70 dark:hover:bg-white/5 transition-colors cursor-pointer"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -76,10 +76,10 @@ export const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({
           {/* DIRECT 1-CLICK OPTIONS: WHATSAPP & DIRECT CALL */}
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-neutral-400 font-bold">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-neutral-400 font-bold">
                 Instant Direct Connect:
               </span>
-              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              <span className="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
                 Online Now
               </span>
             </div>
@@ -106,35 +106,35 @@ export const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({
               </a>
             </div>
 
-            <div className="text-center text-[10.5px] font-mono text-neutral-400 pt-1">
+            <div className="text-center text-[10.5px] font-mono text-slate-500 dark:text-neutral-400 pt-1">
               <span>CEO Helpline: </span>
-              <a href="tel:+917398839769" className="text-white hover:text-[#ea580c] font-bold">+91 7398839769</a>
-              <span className="mx-1 text-neutral-600">/</span>
-              <a href="tel:+919548248925" className="text-white hover:text-[#ea580c] font-bold">+91 9548248925</a>
+              <a href="tel:+917398839769" className="text-slate-900 dark:text-white hover:text-[#ea580c] font-bold">+91 7398839769</a>
+              <span className="mx-1 text-slate-400 dark:text-neutral-600">/</span>
+              <a href="tel:+919548248925" className="text-slate-900 dark:text-white hover:text-[#ea580c] font-bold">+91 9548248925</a>
             </div>
           </div>
 
           {/* Divider */}
           <div className="relative flex items-center justify-center">
-            <div className="border-t border-white/10 w-full" />
-            <span className="bg-[#0e0e12] px-3 text-[10.5px] font-mono text-neutral-500 uppercase tracking-widest shrink-0">
+            <div className="border-t border-slate-200 dark:border-white/10 w-full" />
+            <span className="bg-white dark:bg-[#0e0e12] px-3 text-[10.5px] font-mono text-slate-500 dark:text-neutral-500 uppercase tracking-widest shrink-0">
               Or Request A Scheduled Callback
             </span>
           </div>
 
           {isSuccess ? (
-            <div className="py-6 text-center space-y-3 bg-white/[0.02] rounded-2xl border border-white/5 p-4">
-              <div className="w-12 h-12 mx-auto rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+            <div className="py-6 text-center space-y-3 bg-slate-50 dark:bg-white/[0.02] rounded-2xl border border-slate-200 dark:border-white/5 p-4">
+              <div className="w-12 h-12 mx-auto rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                 <CheckCircle className="w-6 h-6" />
               </div>
-              <h4 className="text-base font-bold text-white font-display">Callback Scheduled!</h4>
-              <p className="text-xs text-neutral-300 max-w-sm mx-auto">
-                Thank you, <span className="font-semibold text-white">{name}</span>. Rohit Sir and our technical mentorship team will call you at <span className="font-mono text-[#ea580c]">{phone}</span> shortly.
+              <h4 className="text-base font-bold text-slate-900 dark:text-white font-display">Callback Scheduled!</h4>
+              <p className="text-xs text-slate-600 dark:text-neutral-300 max-w-sm mx-auto">
+                Thank you, <span className="font-semibold text-slate-900 dark:text-white">{name}</span>. Rohit Sir and our technical mentorship team will call you at <span className="font-mono text-[#ea580c]">{phone}</span> shortly.
               </p>
               <div className="pt-2">
                 <button
                   onClick={handleReset}
-                  className="py-2 px-5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-xl transition-all cursor-pointer"
+                  className="py-2 px-5 bg-slate-900 hover:bg-slate-800 dark:bg-white/10 dark:hover:bg-white/20 text-white text-xs font-semibold rounded-xl transition-all cursor-pointer"
                 >
                   Done
                 </button>
@@ -143,7 +143,7 @@ export const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({
           ) : (
             <form onSubmit={handleSubmit} className="space-y-3.5">
               <div className="space-y-1">
-                <label className="text-xs font-medium text-neutral-300 flex items-center gap-1.5">
+                <label className="text-xs font-medium text-slate-700 dark:text-neutral-300 flex items-center gap-1.5">
                   <User className="w-3.5 h-3.5 text-[#ea580c]" /> Full Name <span className="text-[#ea580c]">*</span>
                 </label>
                 <input
@@ -152,12 +152,12 @@ export const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Rahul Sharma"
-                  className="w-full px-3.5 py-2.5 bg-[#16161c] border border-white/10 rounded-xl text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ea580c] transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#16161c] border border-slate-200 dark:border-white/10 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ea580c] transition-colors"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-medium text-neutral-300 flex items-center gap-1.5">
+                <label className="text-xs font-medium text-slate-700 dark:text-neutral-300 flex items-center gap-1.5">
                   <Phone className="w-3.5 h-3.5 text-[#ea580c]" /> Phone Number <span className="text-[#ea580c]">*</span>
                 </label>
                 <input
@@ -166,12 +166,12 @@ export const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+91 7398839769"
-                  className="w-full px-3.5 py-2.5 bg-[#16161c] border border-white/10 rounded-xl text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ea580c] transition-colors font-mono"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#16161c] border border-slate-200 dark:border-white/10 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ea580c] transition-colors font-mono"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-medium text-neutral-300 flex items-center gap-1.5">
+                <label className="text-xs font-medium text-slate-700 dark:text-neutral-300 flex items-center gap-1.5">
                   <Mail className="w-3.5 h-3.5 text-[#ea580c]" /> Email Address (Optional)
                 </label>
                 <input
@@ -179,28 +179,28 @@ export const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full px-3.5 py-2.5 bg-[#16161c] border border-white/10 rounded-xl text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#ea580c] transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#16161c] border border-slate-200 dark:border-white/10 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ea580c] transition-colors"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-medium text-neutral-300 flex items-center gap-1.5">
+                <label className="text-xs font-medium text-slate-700 dark:text-neutral-300 flex items-center gap-1.5">
                   <BookOpen className="w-3.5 h-3.5 text-[#ea580c]" /> Interested Program
                 </label>
                 <select
                   value={selectedCourse}
                   onChange={(e) => setSelectedCourse(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-[#16161c] border border-white/10 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-[#ea580c] transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#16161c] border border-slate-200 dark:border-white/10 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:border-[#ea580c] transition-colors"
                 >
                   {COURSES.map((c) => (
-                    <option key={c.id} value={c.id} className="bg-[#121217] text-white">
+                    <option key={c.id} value={c.id} className="bg-white dark:bg-[#121217] text-slate-900 dark:text-white">
                       {c.title} {c.price > 0 ? `(₹${c.price.toLocaleString()})` : '(FREE)'}
                     </option>
                   ))}
                 </select>
               </div>
 
-              <div className="p-3 bg-[#181820] rounded-xl border border-white/5 flex items-start gap-2.5 text-[11px] text-neutral-400">
+              <div className="p-3 bg-slate-100 dark:bg-[#181820] rounded-xl border border-slate-200 dark:border-white/5 flex items-start gap-2.5 text-[11px] text-slate-600 dark:text-neutral-400">
                 <Sparkles className="w-4 h-4 text-[#ea580c] shrink-0 mt-0.5" />
                 <span>Free 1-on-1 career counselling with Mr. Rohit Kashyap &amp; mentorship team.</span>
               </div>

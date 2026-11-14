@@ -165,45 +165,37 @@ const COLUMN_3_REVIEWS: ReviewItem[] = [
 
 export const StudentReviews: React.FC = () => {
   return (
-    <section className="py-16 md:py-24 bg-[#2A2A2A] relative overflow-hidden text-white border-t border-b border-white/[0.08]">
+    <section className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] relative overflow-hidden text-slate-900 dark:text-white border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
       {/* Subtle radial ambient backdrop */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-[#E10600]/10 rounded-full blur-[150px] pointer-events-none" />
 
       {/* Header Container */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center mb-10 sm:mb-14 space-y-3.5">
         {/* Subtle pill kicker */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-xs font-mono tracking-wide">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-neutral-300 text-xs font-mono tracking-wide">
           <span className="w-1.5 h-1.5 rounded-full bg-[#E10600]" />
           <span>Student Testimonials & Reviews</span>
         </div>
 
         {/* Headline */}
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white font-display tracking-tight leading-tight">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white font-display tracking-tight leading-tight">
           Real Stories. Real Experiences. Real Success.
         </h2>
 
         {/* Subtitle */}
-        <p className="text-xs sm:text-sm text-neutral-400 max-w-xl mx-auto leading-relaxed">
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400 max-w-xl mx-auto leading-relaxed">
           Authentic feedback from our ambitious community of student developers, placed alumni, and engineering fellows across India.
         </p>
       </div>
 
-      {/* 
-        3-COLUMN VERTICAL CONTINUOUS MARQUEE WALL
-        Matching exact design from user image:
-        - Quote text is INSIDE the rounded dark bubble box
-        - Author profile (avatar + name + role) is OUTSIDE below the box
-        - Compact size matching reference image
-        - Never stops or pauses on mouse hover (continuous smooth scroll)
-      */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative">
         <div className="relative overflow-hidden h-[540px] sm:h-[600px] md:h-[660px]">
           
           {/* Top Edge Gradient Mask */}
-          <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-[#2A2A2A] via-[#2A2A2A]/85 to-transparent z-20 pointer-events-none" />
+          <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-white via-white/85 dark:from-[#2A2A2A] dark:via-[#2A2A2A]/85 to-transparent z-20 pointer-events-none" />
 
           {/* Bottom Edge Gradient Mask */}
-          <div className="absolute bottom-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-t from-[#2A2A2A] via-[#2A2A2A]/85 to-transparent z-20 pointer-events-none" />
+          <div className="absolute bottom-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-t from-white via-white/85 dark:from-[#2A2A2A] dark:via-[#2A2A2A]/85 to-transparent z-20 pointer-events-none" />
 
           {/* 3-Column Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 h-full items-start">
@@ -256,8 +248,8 @@ const ExactBubbleCard: React.FC<{ review: ReviewItem }> = ({ review }) => {
   return (
     <div className="flex flex-col w-full">
       {/* 1. Rounded Bubble Box for Quote text only */}
-      <div className="bg-[#1e1e1e] border border-white/[0.08] rounded-2xl p-4 sm:p-5 shadow-md shadow-black/50">
-        <p className="text-[12.5px] sm:text-[13px] leading-relaxed text-neutral-200/95 font-normal">
+      <div className="bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/[0.08] rounded-2xl p-4 sm:p-5 shadow-sm dark:shadow-md dark:shadow-black/50">
+        <p className="text-[12.5px] sm:text-[13px] leading-relaxed text-slate-700 dark:text-neutral-200/95 font-normal">
           &ldquo;{review.text}&rdquo;
         </p>
       </div>
@@ -265,7 +257,7 @@ const ExactBubbleCard: React.FC<{ review: ReviewItem }> = ({ review }) => {
       {/* 2. Author Profile OUTSIDE the box, directly underneath */}
       <div className="mt-2.5 sm:mt-3 flex items-center gap-2.5 px-1">
         {/* Avatar with resilient fallback */}
-        <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden ring-1 ring-white/10 shrink-0 bg-neutral-800">
+        <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden ring-1 ring-slate-200 dark:ring-white/10 shrink-0 bg-slate-200 dark:bg-neutral-800">
           <img
             src={review.avatar}
             alt={review.name}
@@ -283,10 +275,10 @@ const ExactBubbleCard: React.FC<{ review: ReviewItem }> = ({ review }) => {
 
         {/* Name and Role */}
         <div className="min-w-0 flex flex-col">
-          <h4 className="text-xs sm:text-[12.5px] font-semibold text-white tracking-tight leading-snug truncate">
+          <h4 className="text-xs sm:text-[12.5px] font-semibold text-slate-900 dark:text-white tracking-tight leading-snug truncate">
             {review.name}
           </h4>
-          <p className="text-[10.5px] sm:text-[11px] text-neutral-400 font-normal leading-snug truncate">
+          <p className="text-[10.5px] sm:text-[11px] text-slate-500 dark:text-neutral-400 font-normal leading-snug truncate">
             {review.role}
           </p>
         </div>

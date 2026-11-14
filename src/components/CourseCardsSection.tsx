@@ -145,7 +145,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
   ];
 
   return (
-    <section id="courses-section" className="py-16 md:py-24 bg-[#C0C0C0] text-[#111116] relative transition-colors">
+    <section id="courses-section" className="py-16 md:py-24 bg-slate-50 dark:bg-[#C0C0C0] text-[#111116] relative transition-colors border-t border-slate-200 dark:border-black/5">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Header Block exactly matching Screen_Recording_2026-11-04_215816_ec2e6877.mp4 */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-3.5">
@@ -219,7 +219,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                   transition={{ duration: 0.4, ease: 'easeOut' }}
                   className={`rounded-2xl p-4 sm:p-6 md:p-7 shadow-xl transition-all duration-300 border ${
                     isLight
-                      ? 'bg-[#d8d8d8] text-[#111116] border-black/10 shadow-black/20 hover:shadow-black/30'
+                      ? 'bg-white dark:bg-[#d8d8d8] text-[#111116] border-slate-200 dark:border-black/10 shadow-slate-200/70 dark:shadow-black/20 hover:shadow-black/30'
                       : isOrange
                       ? 'bg-gradient-to-r from-[#E10600] via-[#c70500] to-[#b30500] text-white border-white/20 shadow-[#E10600]/30'
                       : isDark
@@ -438,9 +438,9 @@ const VisualMockup: React.FC<{
       <div className="relative z-10 my-auto py-2.5 flex items-center justify-center">
         {type === 'instructor-web' && (
           <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#ebeae6]">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#2b1000]">
               <img
-                src="/assets/aistudio/IGNITE_1.0_Job-Ready_Tech_Career_Poster_13daf013.png"
+                src="/assets/aistudio/Ignite_1.0_Portrait_Poster_05139a11.png"
                 alt="IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career"
                 className="w-full h-full object-cover object-top"
               />

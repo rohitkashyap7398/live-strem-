@@ -366,9 +366,9 @@ export const TechnologiesMarquee: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 md:py-20 bg-[#2A2A2A] text-white relative overflow-hidden border-t border-white/[0.08]">
+    <section className="py-16 md:py-20 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-slate-200 dark:border-white/[0.08] transition-colors">
       {/* Top Subtle Amber/Ember Glow Bloom */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[220px] bg-[#E10600]/15 blur-[120px] pointer-events-none rounded-full" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[220px] bg-[#E10600]/10 dark:bg-[#E10600]/15 blur-[120px] pointer-events-none rounded-full" />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10 space-y-8">
         
@@ -379,11 +379,11 @@ export const TechnologiesMarquee: React.FC = () => {
             <Cpu className="w-5 h-5" />
           </div>
 
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white font-display tracking-tight leading-tight">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-white font-display tracking-tight leading-tight">
             Technologies &amp; Frameworks
           </h3>
 
-          <p className="text-xs sm:text-sm text-neutral-400 font-sans max-w-xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400 font-sans max-w-xl mx-auto leading-relaxed">
             Master the most in-demand technologies and frameworks used by top companies worldwide
           </p>
         </div>
@@ -392,8 +392,8 @@ export const TechnologiesMarquee: React.FC = () => {
         <div className="relative pt-4 space-y-4">
           
           {/* Left & Right Gradient Fade Masks */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-28 bg-gradient-to-r from-[#2A2A2A] via-[#2A2A2A]/90 to-transparent z-20" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-28 bg-gradient-to-l from-[#2A2A2A] via-[#2A2A2A]/90 to-transparent z-20" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-28 bg-gradient-to-r from-white via-white/90 dark:from-[#2A2A2A] dark:via-[#2A2A2A]/90 to-transparent z-20" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-28 bg-gradient-to-l from-white via-white/90 dark:from-[#2A2A2A] dark:via-[#2A2A2A]/90 to-transparent z-20" />
 
           {/* Row 1 (Moving Left) */}
           <div className="overflow-hidden">
@@ -401,16 +401,16 @@ export const TechnologiesMarquee: React.FC = () => {
               {[...row1Techs, ...row1Techs, ...row1Techs].map((tech, idx) => (
                 <div
                   key={`r1-${tech.name}-${idx}`}
-                  className="w-28 sm:w-32 h-28 sm:h-30 rounded-2xl bg-[#1e1e1e] border border-white/10 hover:border-[#E10600]/50 hover:bg-[#252525] transition-all p-3 sm:p-3.5 flex flex-col items-center justify-center text-center gap-2.5 shrink-0 group shadow-md hover:shadow-xl hover:shadow-[#E10600]/10 cursor-default select-none"
+                  className="w-28 sm:w-32 h-28 sm:h-30 rounded-2xl bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/10 hover:border-[#E10600]/50 hover:bg-white dark:hover:bg-[#252525] transition-all p-3 sm:p-3.5 flex flex-col items-center justify-center text-center gap-2.5 shrink-0 group shadow-sm dark:shadow-md hover:shadow-xl hover:shadow-[#E10600]/10 cursor-default select-none"
                 >
                   <div className="group-hover:scale-110 transition-transform duration-300 filter drop-shadow">
                     {tech.icon}
                   </div>
                   <div className="space-y-0.5">
-                    <span className="text-xs font-semibold text-white group-hover:text-[#E10600] transition-colors block leading-tight">
+                    <span className="text-xs font-semibold text-slate-900 dark:text-white group-hover:text-[#E10600] transition-colors block leading-tight">
                       {tech.name}
                     </span>
-                    <span className="text-[10px] font-mono text-neutral-400 block leading-none">
+                    <span className="text-[10px] font-mono text-slate-500 dark:text-neutral-400 block leading-none">
                       {tech.category}
                     </span>
                   </div>
@@ -425,16 +425,16 @@ export const TechnologiesMarquee: React.FC = () => {
               {[...row2Techs, ...row2Techs, ...row2Techs].map((tech, idx) => (
                 <div
                   key={`r2-${tech.name}-${idx}`}
-                  className="w-28 sm:w-32 h-28 sm:h-30 rounded-2xl bg-[#1e1e1e] border border-white/10 hover:border-[#E10600]/50 hover:bg-[#252525] transition-all p-3 sm:p-3.5 flex flex-col items-center justify-center text-center gap-2.5 shrink-0 group shadow-md hover:shadow-xl hover:shadow-[#E10600]/10 cursor-default select-none"
+                  className="w-28 sm:w-32 h-28 sm:h-30 rounded-2xl bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/10 hover:border-[#E10600]/50 hover:bg-white dark:hover:bg-[#252525] transition-all p-3 sm:p-3.5 flex flex-col items-center justify-center text-center gap-2.5 shrink-0 group shadow-sm dark:shadow-md hover:shadow-xl hover:shadow-[#E10600]/10 cursor-default select-none"
                 >
                   <div className="group-hover:scale-110 transition-transform duration-300 filter drop-shadow">
                     {tech.icon}
                   </div>
                   <div className="space-y-0.5">
-                    <span className="text-xs font-semibold text-white group-hover:text-[#E10600] transition-colors block leading-tight">
+                    <span className="text-xs font-semibold text-slate-900 dark:text-white group-hover:text-[#E10600] transition-colors block leading-tight">
                       {tech.name}
                     </span>
-                    <span className="text-[10px] font-mono text-neutral-400 block leading-none">
+                    <span className="text-[10px] font-mono text-slate-500 dark:text-neutral-400 block leading-none">
                       {tech.category}
                     </span>
                   </div>

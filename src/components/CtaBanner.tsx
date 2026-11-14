@@ -10,7 +10,7 @@ interface CtaBannerProps {
 
 export const CtaBanner: React.FC<CtaBannerProps> = ({ onExploreCourses }) => {
   return (
-    <section className="py-24 bg-[#2A2A2A] relative overflow-hidden border-t border-white/[0.08]">
+    <section className="py-24 bg-white dark:bg-[#2A2A2A] relative overflow-hidden border-t border-slate-200 dark:border-white/[0.08] transition-colors">
       {/* Background radial glow with continuous breathing animation */}
       <motion.div 
         animate={{ 
@@ -29,32 +29,32 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onExploreCourses }) => {
       <motion.div 
         animate={{ y: [0, -10, 0], rotate: [-6, -4, -6] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute left-10 top-12 hidden lg:block opacity-40 hover:opacity-100 transition-opacity"
+        className="absolute left-10 top-12 hidden lg:block opacity-60 dark:opacity-40 hover:opacity-100 transition-opacity"
       >
-        <div className="w-28 p-2 rounded-xl bg-[#1e1e1e] border border-white/10 shadow-2xl">
+        <div className="w-28 p-2 rounded-xl bg-white dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-2xl">
           <img
             src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
             alt="Student"
             className="w-full h-16 object-cover rounded-lg"
             referrerPolicy="no-referrer"
           />
-          <div className="text-[9px] font-mono text-center text-white mt-1">Placed at TCS</div>
+          <div className="text-[9px] font-mono text-center text-slate-900 dark:text-white mt-1">Placed at TCS</div>
         </div>
       </motion.div>
 
       <motion.div 
         animate={{ y: [0, 10, 0], rotate: [8, 10, 8] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        className="absolute right-12 top-16 hidden lg:block opacity-40 hover:opacity-100 transition-opacity"
+        className="absolute right-12 top-16 hidden lg:block opacity-60 dark:opacity-40 hover:opacity-100 transition-opacity"
       >
-        <div className="w-28 p-2 rounded-xl bg-[#1e1e1e] border border-white/10 shadow-2xl">
+        <div className="w-28 p-2 rounded-xl bg-white dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-2xl">
           <img
             src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
             alt="Student"
             className="w-full h-16 object-cover rounded-lg"
             referrerPolicy="no-referrer"
           />
-          <div className="text-[9px] font-mono text-center text-white mt-1">Placed at Walmart</div>
+          <div className="text-[9px] font-mono text-center text-slate-900 dark:text-white mt-1">Placed at Walmart</div>
         </div>
       </motion.div>
 
@@ -65,7 +65,7 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onExploreCourses }) => {
           viewport={{ once: true }}
           className="flex justify-center"
         >
-          <div className="h-16 px-4 py-2 rounded-2xl bg-white/[0.04] border border-[#E10600]/30 flex items-center justify-center shadow-xl backdrop-blur-md">
+          <div className="h-16 px-4 py-2 rounded-2xl bg-slate-100 dark:bg-white/[0.04] border border-[#E10600]/30 flex items-center justify-center shadow-lg dark:shadow-xl backdrop-blur-md">
             <img
               src={brandLogo}
               onError={(e) => { e.currentTarget.src = '/logo.png'; }}
@@ -80,7 +80,7 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onExploreCourses }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-3xl sm:text-5xl lg:text-6xl font-black text-white font-display tracking-tight leading-tight"
+          className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white font-display tracking-tight leading-tight"
         >
           Transform Your Learning Journey Into A Career Breakthrough With{' '}
           <span className="text-[#E10600] underline decoration-[#E10600]/40 underline-offset-8">
@@ -93,7 +93,7 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onExploreCourses }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-sm sm:text-base text-neutral-400 max-w-xl mx-auto leading-relaxed"
+          className="text-sm sm:text-base text-slate-600 dark:text-neutral-400 max-w-xl mx-auto leading-relaxed"
         >
           From zero coding background to high-paying engineering offers. Join the 2024 cohort and get mentored by real practitioners.
         </motion.p>
@@ -116,11 +116,11 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onExploreCourses }) => {
           />
         </motion.div>
 
-        <div className="pt-2 flex flex-wrap items-center justify-center gap-2 text-xs text-neutral-400 font-mono">
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-2 text-xs text-slate-500 dark:text-neutral-400 font-mono">
           <span>Admissions Helpline:</span>
-          <a href="tel:+917398839769" className="text-white hover:text-[#E10600] font-bold">+91 7398839769</a>
-          <span className="text-neutral-500">/</span>
-          <a href="tel:+919548248925" className="text-white hover:text-[#E10600] font-bold">+91 9548248925</a>
+          <a href="tel:+917398839769" className="text-slate-900 dark:text-white hover:text-[#E10600] font-bold">+91 7398839769</a>
+          <span className="text-slate-400 dark:text-neutral-500">/</span>
+          <a href="tel:+919548248925" className="text-slate-900 dark:text-white hover:text-[#E10600] font-bold">+91 9548248925</a>
         </div>
       </div>
     </section>

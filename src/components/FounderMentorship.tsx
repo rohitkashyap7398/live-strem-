@@ -339,7 +339,7 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
         PART 1: INTERACTIVE CHAT WITH FOUNDER & CEO MR. ROHIT KASHYAP (VIDEO 1)
         ========================================================================
       */}
-      <section className="py-20 md:py-28 bg-[#C0C0C0] text-[#1c1c24] relative overflow-hidden transition-colors border-t border-black/5">
+      <section className="py-20 md:py-28 bg-slate-100 dark:bg-[#C0C0C0] text-[#1c1c24] relative overflow-hidden transition-colors border-t border-black/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
           
           {/* Header Block */}
@@ -367,7 +367,7 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
           <div 
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
-            className="rounded-2xl sm:rounded-3xl bg-[#d5d5d5] border border-black/10 p-4 sm:p-7 lg:p-8 shadow-xl shadow-black/5 relative group overflow-hidden"
+            className="rounded-2xl sm:rounded-3xl bg-white dark:bg-[#d5d5d5] border border-black/10 p-4 sm:p-7 lg:p-8 shadow-xl shadow-black/5 relative group overflow-hidden"
           >
             {/* Auto-scroll indicator badge */}
             <div className="absolute top-3 right-3 sm:top-4 sm:right-6 z-20 flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] font-mono text-neutral-500 bg-white/70 backdrop-blur-md px-2.5 sm:px-3 py-1 rounded-full border border-black/5">
@@ -533,15 +533,15 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
 
                     <button
                       onClick={onRequestCallback}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-black/60 hover:bg-black/90 text-neutral-300 hover:text-white border border-black/10 text-xs font-semibold transition-all cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white border border-black/10 text-xs font-semibold transition-all cursor-pointer shadow-sm"
                     >
                       <span>Request Callback</span>
                     </button>
                   </div>
 
-                  <div className="flex flex-col text-[11px] text-neutral-400 font-mono">
-                    <span>Direct Desk: <a href="tel:+917398839769" className="text-white hover:text-[#ea580c] font-bold">+91 7398839769</a> / <a href="tel:+919548248925" className="text-white hover:text-[#ea580c] font-bold">+91 9548248925</a></span>
-                    <span className="text-neutral-500 text-[10px]">Personalized 1-on-1 counseling • Lucknow &amp; Online</span>
+                  <div className="flex flex-col text-[11px] text-slate-600 font-mono">
+                    <span>Direct Desk: <a href="tel:+917398839769" className="text-slate-900 hover:text-[#ea580c] font-bold">+91 7398839769</a> / <a href="tel:+919548248925" className="text-slate-900 hover:text-[#ea580c] font-bold">+91 9548248925</a></span>
+                    <span className="text-slate-500 text-[10px]">Personalized 1-on-1 counseling • Lucknow &amp; Online</span>
                   </div>
                 </div>
               </div>
@@ -561,29 +561,29 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
         - Interactive pagination/auto-cycle to view all 3 mentors seamlessly
         ========================================================================
       */}
-      <section className="py-16 md:py-24 bg-[#2A2A2A] text-white relative overflow-hidden border-t border-b border-white/[0.08]">
+      <section className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
         {/* Subtle radial ambient backdrop */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[500px] bg-[#E10600]/10 rounded-full blur-[160px] pointer-events-none" />
 
         {/* Section Header */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center mb-10 sm:mb-14 space-y-3.5">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-xs font-mono tracking-wide">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-neutral-300 text-xs font-mono tracking-wide">
             <span className="w-1.5 h-1.5 rounded-full bg-[#E10600]" />
             <span>Meet Our Team &amp; Leadership</span>
           </div>
 
-          <h3 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white font-display tracking-tight leading-tight">
+          <h3 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white font-display tracking-tight leading-tight">
             Meet the Team Behind TheCodeSpark Technologies Private Limited.
           </h3>
 
-          <p className="text-xs sm:text-sm md:text-base text-neutral-300 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm md:text-base text-slate-600 dark:text-neutral-300 max-w-2xl mx-auto leading-relaxed">
             A passionate team of engineers, educators, and technology professionals working together to deliver innovative solutions, industry-focused learning, and excellence in technology.
           </p>
         </div>
 
         {/* BIG OUTER ENCLOSING CONTAINER BORDER (Exact outer rectangle from user image) */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
-          <div className="border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 bg-[#0b0b0f]/95 relative overflow-hidden backdrop-blur-md shadow-2xl shadow-black/80">
+          <div className="border border-slate-200 dark:border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 bg-slate-50 dark:bg-[#0b0b0f]/95 relative overflow-hidden backdrop-blur-md shadow-xl dark:shadow-2xl dark:shadow-black/80 transition-colors">
             {/* Ambient orange glow in corner */}
             <div className="absolute -top-24 -right-24 w-80 h-80 bg-[#ea580c]/15 rounded-full blur-[100px] pointer-events-none" />
 
@@ -709,30 +709,30 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                 {/* Header above the 2 stacked cards with pagination controls */}
                 <div className="flex items-center justify-between px-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs sm:text-sm font-mono font-bold text-white uppercase tracking-wider">
+                    <span className="text-xs sm:text-sm font-mono font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                       Faculty &amp; Engineering Mentors
                     </span>
-                    <span className="text-[10px] font-mono text-neutral-400 hidden sm:inline">
+                    <span className="text-[10px] font-mono text-slate-500 dark:text-neutral-400 hidden sm:inline">
                       ({facultyOffset + 1} &amp; {((facultyOffset + 1) % FACULTY_TRUTHS.length) + 1} of {FACULTY_TRUTHS.length})
                     </span>
                   </div>
 
                   {/* Next / Previous & Auto-cycle indicator */}
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono text-neutral-400 hidden sm:inline">
+                    <span className="text-[10px] font-mono text-slate-500 dark:text-neutral-400 hidden sm:inline">
                       {isFacultyPaused ? 'Paused' : 'Auto-cycles'}
                     </span>
-                    <div className="inline-flex items-center rounded-lg border border-white/10 bg-black/60 p-0.5">
+                    <div className="inline-flex items-center rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-black/60 p-0.5">
                       <button
                         onClick={handlePrevFaculty}
-                        className="p-1 sm:p-1.5 rounded-md hover:bg-white/10 text-neutral-300 hover:text-white transition-colors cursor-pointer"
+                        className="p-1 sm:p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-white/10 text-slate-600 dark:text-neutral-300 hover:text-slate-950 dark:hover:text-white transition-colors cursor-pointer"
                         title="Previous Mentor"
                       >
                         <ChevronLeft className="w-4 h-4" />
                       </button>
                       <button
                         onClick={handleNextFaculty}
-                        className="p-1 sm:p-1.5 rounded-md hover:bg-white/10 text-neutral-300 hover:text-white transition-colors cursor-pointer"
+                        className="p-1 sm:p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-white/10 text-slate-600 dark:text-neutral-300 hover:text-slate-950 dark:hover:text-white transition-colors cursor-pointer"
                         title="Next Mentor"
                       >
                         <ChevronRight className="w-4 h-4" />
@@ -786,12 +786,12 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
 // Horizontal Faculty Card for the two stacked boxes on the right
 const HorizontalFacultyCard: React.FC<{ faculty: FacultyTruth }> = ({ faculty }) => {
   return (
-    <div className="bg-[#0e0e13] border border-white/10 hover:border-[#ea580c]/50 rounded-2xl p-4 sm:p-5 transition-all duration-300 shadow-xl shadow-black/60 flex flex-col justify-between group hover:bg-[#121218]">
+    <div className="bg-white dark:bg-[#0e0e13] border border-slate-200 dark:border-white/10 hover:border-[#ea580c]/50 rounded-2xl p-4 sm:p-5 transition-all duration-300 shadow-md dark:shadow-xl dark:shadow-black/60 flex flex-col justify-between group hover:bg-slate-50/80 dark:hover:bg-[#121218]">
       <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
         
         {/* CENTERED Employee Image in the Middle of photo column (mx-auto) */}
         <div className="sm:col-span-4 flex flex-col items-center justify-center">
-          <div className="relative mx-auto w-32 sm:w-36 aspect-[3/4] rounded-xl overflow-hidden ring-1 ring-white/15 group-hover:ring-[#ea580c]/60 transition-all duration-500 shadow-lg bg-[#1a1410] flex items-center justify-center">
+          <div className="relative mx-auto w-32 sm:w-36 aspect-[3/4] rounded-xl overflow-hidden ring-1 ring-slate-200 dark:ring-white/15 group-hover:ring-[#ea580c]/60 transition-all duration-500 shadow-lg bg-[#1a1410] flex items-center justify-center">
             <img
               src={faculty.photo}
               alt={faculty.name}
@@ -820,13 +820,13 @@ const HorizontalFacultyCard: React.FC<{ faculty: FacultyTruth }> = ({ faculty })
         {/* Details & Quote on right */}
         <div className="sm:col-span-8 space-y-2 text-center sm:text-left">
           <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
-            <span className="text-emerald-400 flex items-center gap-1 text-[10px] font-mono bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-              <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Active Mentor
+            <span className="text-emerald-700 dark:text-emerald-400 flex items-center gap-1 text-[10px] font-mono bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Active Mentor
             </span>
           </div>
 
           <div>
-            <h4 className="text-lg sm:text-xl font-bold text-white font-display tracking-tight leading-tight">
+            <h4 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-display tracking-tight leading-tight">
               {faculty.name}
             </h4>
             <p className="text-xs sm:text-[13px] text-[#ea580c] font-mono font-semibold mt-0.5 leading-tight">
@@ -835,8 +835,8 @@ const HorizontalFacultyCard: React.FC<{ faculty: FacultyTruth }> = ({ faculty })
           </div>
 
           {/* Quote */}
-          <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/[0.05] text-left">
-            <p className="text-xs text-neutral-300 leading-relaxed italic line-clamp-2">
+          <div className="p-2.5 rounded-lg bg-slate-100/80 dark:bg-white/[0.02] border border-slate-200 dark:border-white/[0.05] text-left">
+            <p className="text-xs text-slate-700 dark:text-neutral-300 leading-relaxed italic line-clamp-2">
               &ldquo;{faculty.quote}&rdquo;
             </p>
           </div>
@@ -846,7 +846,7 @@ const HorizontalFacultyCard: React.FC<{ faculty: FacultyTruth }> = ({ faculty })
             {faculty.skills.map((skill, sIdx) => (
               <span
                 key={sIdx}
-                className="px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-[10px] font-mono group-hover:border-white/20 transition-colors"
+                className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-neutral-300 text-[10px] font-mono group-hover:border-slate-300 dark:group-hover:border-white/20 transition-colors"
               >
                 {skill}
               </span>

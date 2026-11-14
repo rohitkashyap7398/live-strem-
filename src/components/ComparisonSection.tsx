@@ -48,7 +48,7 @@ export const ComparisonSection: React.FC = () => {
   ];
 
   return (
-    <section id="comparison-section" className="py-20 bg-[#2A2A2A] border-t border-white/[0.08] relative overflow-hidden">
+    <section id="comparison-section" className="py-20 bg-white dark:bg-[#2A2A2A] border-t border-slate-200 dark:border-white/[0.08] relative overflow-hidden transition-colors">
       {/* Background glow effects */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-emerald-500/5 blur-[120px] pointer-events-none rounded-full" />
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-red-500/5 blur-[120px] pointer-events-none rounded-full" />
@@ -65,10 +65,10 @@ export const ComparisonSection: React.FC = () => {
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#E10600]/15 border border-[#E10600]/30 text-[#E10600] text-xs font-mono font-semibold uppercase tracking-widest">
             <Sparkles className="w-3 h-3" /> COMPARISON
           </div>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-white font-display tracking-tight leading-tight">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white font-display tracking-tight leading-tight">
             TheCodeSpark Advantage
           </h2>
-          <p className="text-sm text-neutral-400">
+          <p className="text-sm text-slate-600 dark:text-neutral-400">
             See the honest differences that make our students consistently outperform traditional college and training academies.
           </p>
         </motion.div>
@@ -81,11 +81,11 @@ export const ComparisonSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="rounded-2xl p-5 sm:p-7 bg-[#0e1612] border-2 border-emerald-500/80 shadow-[0_0_50px_rgba(16,185,129,0.14)] space-y-6 relative flex flex-col justify-between"
+            className="rounded-2xl p-5 sm:p-7 bg-emerald-50/75 dark:bg-[#0e1612] border-2 border-emerald-500/70 dark:border-emerald-500/80 shadow-lg dark:shadow-[0_0_50px_rgba(16,185,129,0.14)] space-y-6 relative flex flex-col justify-between transition-colors"
           >
             {/* Header matching screenshot */}
             <div className="flex items-center gap-4 border-b border-emerald-500/20 pb-6">
-              <div className="w-28 h-14 rounded-2xl bg-[#07110c] border border-emerald-500/40 p-2 flex items-center justify-center shrink-0 shadow-md">
+              <div className="w-28 h-14 rounded-2xl bg-white dark:bg-[#07110c] border border-emerald-500/40 p-2 flex items-center justify-center shrink-0 shadow-sm dark:shadow-md">
                 <img
                   src={brandLogo}
                   onError={(e) => { e.currentTarget.src = '/logo.png'; }}
@@ -94,10 +94,10 @@ export const ComparisonSection: React.FC = () => {
                 />
               </div>
               <div>
-                <h3 className="text-lg sm:text-2xl font-black text-white font-display leading-tight tracking-tight">
+                <h3 className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white font-display leading-tight tracking-tight">
                   TheCodeSpark Technologies<br className="hidden sm:inline" /> Private Limited
                 </h3>
-                <span className="text-xs sm:text-sm font-mono text-emerald-400 font-extrabold uppercase tracking-widest mt-1 inline-block">
+                <span className="text-xs sm:text-sm font-mono text-emerald-700 dark:text-emerald-400 font-extrabold uppercase tracking-widest mt-1 inline-block">
                   INDUSTRY STANDARD STANDARDIZED
                 </span>
               </div>
@@ -114,10 +114,10 @@ export const ComparisonSection: React.FC = () => {
                   transition={{ delay: 0.05 + idx * 0.04 }}
                   className="flex items-center gap-3.5 group"
                 >
-                  <div className="w-6 h-6 rounded-full border border-emerald-500/70 bg-emerald-500/15 flex items-center justify-center text-emerald-400 shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.3)] group-hover:scale-110 transition-transform">
-                    <CheckCircle2 className="w-4 h-4 fill-emerald-500/30 text-emerald-400" />
+                  <div className="w-6 h-6 rounded-full border border-emerald-500/70 bg-emerald-500/15 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.2)] group-hover:scale-110 transition-transform">
+                    <CheckCircle2 className="w-4 h-4 fill-emerald-500/25 text-emerald-600 dark:text-emerald-400" />
                   </div>
-                  <span className="text-xs sm:text-sm md:text-base font-semibold text-neutral-100 font-display leading-snug group-hover:text-emerald-300 transition-colors">
+                  <span className="text-xs sm:text-sm md:text-base font-semibold text-slate-800 dark:text-neutral-100 font-display leading-snug group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
                     {p.codeSpark}
                   </span>
                 </motion.div>
@@ -125,7 +125,7 @@ export const ComparisonSection: React.FC = () => {
             </div>
 
             {/* Bottom Trust Badge */}
-            <div className="pt-4 border-t border-emerald-500/20 flex items-center justify-between text-xs text-emerald-400/80 font-mono">
+            <div className="pt-4 border-t border-emerald-500/20 flex items-center justify-between text-xs text-emerald-700 dark:text-emerald-400/80 font-mono">
               <span>✓ Verified Production Curriculum</span>
               <span>100% Practical</span>
             </div>
@@ -137,18 +137,18 @@ export const ComparisonSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="rounded-2xl p-5 sm:p-7 bg-[#171213] border border-red-500/30 shadow-[0_0_40px_rgba(239,68,68,0.06)] space-y-6 relative flex flex-col justify-between"
+            className="rounded-2xl p-5 sm:p-7 bg-red-50/70 dark:bg-[#171213] border border-red-300 dark:border-red-500/30 shadow-md dark:shadow-[0_0_40px_rgba(239,68,68,0.06)] space-y-6 relative flex flex-col justify-between transition-colors"
           >
             {/* Header matching screenshot */}
-            <div className="flex items-center gap-4 border-b border-red-500/15 pb-6">
-              <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 shrink-0 shadow-inner">
+            <div className="flex items-center gap-4 border-b border-red-200 dark:border-red-500/15 pb-6">
+              <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-600 dark:text-red-400 shrink-0 shadow-inner">
                 <XCircle className="w-7 h-7" />
               </div>
               <div>
-                <h3 className="text-lg sm:text-2xl font-black text-white font-display leading-tight tracking-tight">
+                <h3 className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white font-display leading-tight tracking-tight">
                   Others
                 </h3>
-                <span className="text-xs sm:text-sm font-mono text-red-400 font-extrabold uppercase tracking-widest mt-1 inline-block">
+                <span className="text-xs sm:text-sm font-mono text-red-600 dark:text-red-400 font-extrabold uppercase tracking-widest mt-1 inline-block">
                   TRADITIONAL TRAINING PROGRAMS & ACADEMIES
                 </span>
               </div>
@@ -163,12 +163,12 @@ export const ComparisonSection: React.FC = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.05 + idx * 0.04 }}
-                  className="flex items-center gap-3.5 opacity-85 group"
+                  className="flex items-center gap-3.5 opacity-90 dark:opacity-85 group"
                 >
-                  <div className="w-6 h-6 rounded-full border border-red-500/40 bg-red-500/10 flex items-center justify-center text-red-400 shrink-0 group-hover:scale-110 transition-transform">
-                    <XCircle className="w-4 h-4 fill-red-500/20 text-red-400" />
+                  <div className="w-6 h-6 rounded-full border border-red-500/40 bg-red-500/10 flex items-center justify-center text-red-600 dark:text-red-400 shrink-0 group-hover:scale-110 transition-transform">
+                    <XCircle className="w-4 h-4 fill-red-500/20 text-red-600 dark:text-red-400" />
                   </div>
-                  <span className="text-xs sm:text-sm md:text-base font-medium text-neutral-300 font-display leading-snug">
+                  <span className="text-xs sm:text-sm md:text-base font-medium text-slate-700 dark:text-neutral-300 font-display leading-snug">
                     {p.others}
                   </span>
                 </motion.div>
@@ -176,7 +176,7 @@ export const ComparisonSection: React.FC = () => {
             </div>
 
             {/* Bottom Caution Badge */}
-            <div className="pt-4 border-t border-red-500/15 flex items-center justify-between text-xs text-red-400/70 font-mono">
+            <div className="pt-4 border-t border-red-200 dark:border-red-500/15 flex items-center justify-between text-xs text-red-600 dark:text-red-400/70 font-mono">
               <span>✕ Outdated Learning Models</span>
               <span>Zero Guarantees</span>
             </div>

@@ -785,19 +785,19 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
       <div className="flex items-center justify-between gap-3 max-w-5xl mx-auto px-3 sm:px-4 mb-3 sm:mb-4">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[#E10600] animate-ping" />
-          <span className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-neutral-300 font-semibold">
+          <span className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-slate-700 dark:text-neutral-300 font-semibold">
             TheCodeSpark Technologies Private Limited OS • Live Intelligence
           </span>
         </div>
 
         {/* View Switcher Pill */}
-        <div className="flex items-center rounded-full bg-white/[0.06] border border-white/10 p-0.5 text-[10px] sm:text-xs font-mono">
+        <div className="flex items-center rounded-full bg-slate-200/80 dark:bg-white/[0.06] border border-slate-300 dark:border-white/10 p-0.5 text-[10px] sm:text-xs font-mono">
           <button
             onClick={() => setViewMode('hands')}
             className={`px-2.5 sm:px-3 py-1 rounded-full transition-all cursor-pointer flex items-center gap-1.5 ${
               viewMode === 'hands'
                 ? 'bg-[#E10600] text-white font-bold shadow-md shadow-[#E10600]/30'
-                : 'text-neutral-400 hover:text-white'
+                : 'text-slate-600 dark:text-neutral-400 hover:text-slate-950 dark:hover:text-white'
             }`}
           >
             <Minimize2 className="w-3 h-3" />
@@ -808,7 +808,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
             className={`px-2.5 sm:px-3 py-1 rounded-full transition-all cursor-pointer flex items-center gap-1.5 ${
               viewMode === 'expanded'
                 ? 'bg-[#E10600] text-white font-bold shadow-md shadow-[#E10600]/30'
-                : 'text-neutral-400 hover:text-white'
+                : 'text-slate-600 dark:text-neutral-400 hover:text-slate-950 dark:hover:text-white'
             }`}
           >
             <Maximize2 className="w-3 h-3" />

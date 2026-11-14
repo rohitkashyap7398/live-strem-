@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   ArrowRight,
+  ArrowUpRight,
+  ArrowUp,
   Play,
   Pause,
   Volume2,
@@ -12,25 +14,43 @@ import {
   ChevronLeft,
   ChevronRight,
   Phone,
-  ShieldCheck,
-  Terminal,
-  Sparkles,
   Award,
   Code2,
   Database,
-  Layers,
   Cpu,
-  Users,
-  Rocket,
   CheckCircle2,
+  TrendingUp,
+  Building2,
+  Globe,
 } from 'lucide-react';
 import rohitPhoto from '../assets/Rohit.png';
+import {
+  SectionSeamDropSvg,
+  HeroKineticThread,
+  SemicircleBranchSvg,
+  AnimatedRupeeCounter,
+  FingerprintImprintSvg,
+  InteractiveUntangleSvg,
+  StickyStackedMissesSection,
+  Perspective3DRigorCards,
+} from './BootcampKineticSvgs';
 
 interface BootcampViewProps {
   onApplyNow: () => void;
   onRequestCallback: () => void;
   onViewSyllabus?: () => void;
 }
+
+const HIRING_LOGOS = [
+  { name: 'TCS', sub: 'CONSULTANCY SERVICES' },
+  { name: 'Microsoft', sub: '' },
+  { name: 'accenture', sub: '' },
+  { name: 'Razorpay', sub: '' },
+  { name: 'amazon', sub: '' },
+  { name: 'Google', sub: '' },
+  { name: 'Flipkart', sub: '' },
+  { name: 'Walmart', sub: '*' },
+];
 
 export const BootcampView: React.FC<BootcampViewProps> = ({
   onApplyNow,
@@ -41,7 +61,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
 
-  // Module tab state (Video default: Module 03 Backend Engineering)
+  // Module tab state (Default: Module 03 Backend Engineering)
   const [activeModuleTab, setActiveModuleTab] = useState(2);
 
   // Project accordion state
@@ -50,11 +70,8 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
   // FAQ accordion state
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
 
-  // Mentors carousel slide state
-  const [mentorSlide, setMentorSlide] = useState(0);
-
-  // 3D card tilt hover states
-  const [hovered3dCard, setHovered3dCard] = useState<number | null>(null);
+  // Mentors carousel rotation offset
+  const [mentorOffset, setMentorOffset] = useState(0);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -73,30 +90,68 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
     setIsMuted(!isMuted);
   };
 
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const scrollToTop = () => {
+    try {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch {
+      // safe fallback
+    }
+  };
+
+  const heroStats = [
+    {
+      value: '7.5 Lakh',
+      label: 'Average Package',
+      icon: <TrendingUp className="w-4 h-4 text-[#EA2814]" />,
+    },
+    {
+      value: '47 Lakh',
+      label: 'Highest Package',
+      icon: <Award className="w-4 h-4 text-[#EA2814]" />,
+    },
+    {
+      value: '300+',
+      label: 'Hiring Partners',
+      icon: <Building2 className="w-4 h-4 text-[#EA2814]" />,
+    },
+    {
+      value: '10M+',
+      label: 'Monthly Tech Reach',
+      icon: <Globe className="w-4 h-4 text-[#EA2814]" />,
+    },
+  ];
+
   const placedAlumniCards = [
     {
+      packageLpa: '47+ LPA',
       company: 'AMAZON',
       name: 'Rohan Gupta',
-      role: 'SDE-I',
       photo: '/assets/aistudio/faculty_nirved_kumar.png',
     },
     {
+      packageLpa: '18+ LPA',
       company: 'AIRTEL',
       name: 'Pooja Sharma',
-      role: 'Backend Engineer',
       photo: '/assets/aistudio/faculty_aadhya.png',
     },
     {
+      packageLpa: '17+ LPA',
       company: 'CISCO',
       name: 'Ananya Verma',
-      role: 'Cloud Developer',
-      photo: '/assets/aistudio/faculty_ishu_sharma.png',
+      photo: '/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png',
     },
     {
+      packageLpa: '12+ LPA',
       company: 'SYNCHRONY',
       name: 'Akshat Sahu',
-      role: 'Full Stack Engineer',
-      photo: '/Rohit.png',
+      photo: '/assets/aistudio/faculty_ishu_sharma.png',
     },
   ];
 
@@ -241,54 +296,62 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
   const mentors = [
     {
       name: 'Mr. Rohit Kashyap',
-      role: 'Founder & CEO · Principal Architect',
-      company: 'TheCodeSpark Technologies Private Limited',
-      photo: rohitPhoto,
-      quote:
-        'Students don’t struggle because coding is impossible—they struggle because nobody enforces daily execution, live debugging, and real architectural accountability.',
-      badges: ['Full Stack Systems', 'GenAI Agents', 'System Design'],
+      role: 'Founder & CEO, TheCodeSpark',
+      tag: 'CHIEF MENTOR & GUIDE',
+      isChief: true,
+      photo: '/assets/aistudio/rohit_kashyap_ceo_portrait.png',
     },
     {
-      name: 'Aadhya',
-      role: 'Senior Frontend & Product UI Mentor',
-      company: 'TheCodeSpark Core Faculty',
-      photo: '/assets/aistudio/faculty_aadhya.png',
-      quote:
-        'We review pull requests line-by-line just like senior product teams do, turning messy component trees into clean, responsive production interfaces.',
-      badges: ['React 19', 'TypeScript', 'UI Architecture'],
-    },
-    {
-      name: 'Ishu Sharma',
-      role: 'Backend & Cloud Infrastructure Lead',
-      company: 'TheCodeSpark Core Faculty',
-      photo: '/assets/aistudio/faculty_ishu_sharma.png',
-      quote:
-        'From schema indexing to AWS deployments and Docker containers, every student learns to ship reliable services beyond localhost.',
-      badges: ['Node.js', 'Docker & AWS', 'Database Tuning'],
-    },
-    {
-      name: 'Nirved Kumar',
-      role: 'DSA & Coding Interview Coach',
-      company: 'TheCodeSpark Core Faculty',
+      name: 'Ali Ansari',
+      role: 'Backend & Cloud Lead',
+      tag: 'THECODESPARK MENTORS',
+      isChief: false,
       photo: '/assets/aistudio/faculty_nirved_kumar.png',
-      quote:
-        'Visualizing recursion trees, sliding windows, and graph patterns transforms intimidating interview problems into repeatable engineering muscle memory.',
-      badges: ['Java Core', '350+ DSA Drills', 'Mock Rounds'],
+    },
+    {
+      name: 'Devendra Dhote',
+      role: 'Full Stack Developer',
+      tag: 'THECODESPARK MENTORS',
+      isChief: false,
+      photo: '/assets/aistudio/faculty_aadhya.png',
+    },
+    {
+      name: 'Harsh Sharma',
+      role: 'Senior Tech Lead',
+      tag: 'THECODESPARK MENTORS',
+      isChief: false,
+      photo: '/assets/aistudio/faculty_ishu_sharma.png',
+    },
+    {
+      name: 'Sarthak Sharma',
+      role: 'Full Stack Engineer',
+      tag: 'THECODESPARK MENTORS',
+      isChief: false,
+      photo: '/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png',
+    },
+    {
+      name: 'Ankur Prajapati',
+      role: 'DSA & System Coach',
+      tag: 'THECODESPARK MENTORS',
+      isChief: false,
+      photo: rohitPhoto,
     },
   ];
+
+  const orderedMentors = mentors.map((_, idx) => mentors[(idx + mentorOffset) % mentors.length]);
 
   const faqs = [
     {
       q: 'Do I need any prior coding experience to join the Bootcamp?',
-      a: 'Yes, basic programming knowledge is helpful, or strong willingness to put in daily practice. The Intensive Training Bootcamp takes you systematically from Web & Programming fundamentals all the way to Full Stack Engineering, GenAI, DevOps, and System Design.',
+      a: 'Yes, basic programming knowledge is required. This Bootcamp is designed for students who already understand programming fundamentals and want to become industry-ready full stack developers. We start with frontend foundations and gradually move towards advanced backend, DevOps, cloud deployment, and system design, so having basic coding familiarity will help you get the most out of the program.',
     },
     {
       q: 'Will you help me get placed, and what kind of career support is included?',
-      a: 'Yes! You receive 1-on-1 resume & GitHub portfolio reviews, weekly live mock interviews, communication & presentation training, aptitude drills, and direct placement referrals across our hiring partner network.',
+      a: 'Yes! You receive 1-on-1 resume & GitHub portfolio reviews, weekly live mock interviews, communication & presentation training, aptitude drills, and direct placement referrals across our 300+ hiring partner network.',
     },
     {
       q: 'How much time does the Intensive Training take daily?',
-      a: 'Plan for structured daily lectures, live build challenges, problem sets, and mentor reviews. Consistent daily execution ensures every concept sticks through real code rather than passive watching.',
+      a: 'Plan for structured 11 AM to 5 PM full-time execution with daily lectures, live build challenges, problem sets, and mentor reviews. Consistent daily practice ensures every concept sticks through real shipped code.',
     },
     {
       q: 'What happens if I get stuck on bugs or assignments?',
@@ -298,315 +361,149 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
 
   const activeModule = syllabusModules[activeModuleTab];
   const currentProject = realProjects[openProjectIdx ?? 0];
-  const currentMentor = mentors[mentorSlide];
 
   return (
-    <div className="bg-[#07070b] text-white min-h-screen pb-24 selection:bg-[#9333EA] selection:text-white overflow-x-clip">
+    <div className="bg-[#F1EFE9] text-[#0E0E0E] min-h-screen selection:bg-[#EA2814] selection:text-white overflow-x-clip">
       {/* =========================================================================
-          1. HERO SECTION (100-DAY INTENSIVE COHORT + LIVE LAB VIDEO)
+          EDITORIAL SECTION NAV STRIP
           ========================================================================= */}
-      <section className="relative pt-14 pb-16 border-b border-white/[0.06] overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="absolute -top-28 left-1/2 -translate-x-1/2 w-[720px] h-[340px] bg-[#7C3AED]/20 rounded-full blur-[150px] pointer-events-none"
-        />
-
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55 }}
-            className="lg:col-span-6 space-y-6"
-          >
-            <span className="inline-block text-[11px] font-mono font-bold uppercase tracking-widest text-[#A855F7]">
-              THECODESPARK INTENSIVE TRAINING · 100 DAYS OF EXECUTION
-            </span>
-
-            <h1 className="text-3xl sm:text-5xl font-black font-display tracking-tight leading-[1.08] text-white">
-              Structured Around <span className="text-[#A855F7]">Real Building</span>, Not Passive Lectures.
-            </h1>
-
-            <p className="text-sm sm:text-base text-neutral-300 leading-relaxed max-w-xl">
-              Join an immersive engineering cohort by <span className="text-white font-semibold">TheCodeSpark Technologies Private Limited</span>. 500+ hours of guided sprints, 40+ build challenges, live project defenses, and dedicated career placement prep.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-3.5 pt-2">
-              <button
-                onClick={onApplyNow}
-                className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:brightness-110 text-white font-bold text-sm shadow-lg shadow-[#7C3AED]/30 transition-all cursor-pointer flex items-center gap-2"
-              >
-                <span>Apply to Intensive Training</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-
-              {onViewSyllabus && (
-                <button
-                  onClick={onViewSyllabus}
-                  className="px-5 py-3.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-white font-semibold text-sm transition-colors cursor-pointer"
-                >
-                  View Syllabus →
-                </button>
-              )}
-            </div>
-          </motion.div>
-
-          {/* Right Classroom Lab Video Card */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-6"
-          >
-            <div className="rounded-3xl overflow-hidden bg-[#111118] border border-[#8B5CF6]/30 shadow-[0_0_50px_-15px_rgba(139,92,246,0.35)]">
-              <div className="aspect-video relative">
-                <video
-                  ref={videoRef}
-                  src="/assets/aistudio/tcs_actual_classroom_lab.mp4"
-                  autoPlay
-                  loop
-                  muted={isMuted}
-                  playsInline
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
-
-                <div className="absolute top-3.5 right-3.5 flex items-center gap-2">
-                  <button
-                    onClick={togglePlay}
-                    aria-label={isPlaying ? 'Pause video' : 'Play video'}
-                    className="w-8 h-8 rounded-full bg-black/70 hover:bg-black text-white border border-white/15 flex items-center justify-center cursor-pointer"
-                  >
-                    {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-                  </button>
-                  <button
-                    onClick={toggleMute}
-                    aria-label={isMuted ? 'Unmute video' : 'Mute video'}
-                    className="w-8 h-8 rounded-full bg-black/70 hover:bg-black text-white border border-white/15 flex items-center justify-center cursor-pointer"
-                  >
-                    {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-                  </button>
-                </div>
-
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-2 text-xs font-mono text-white/90">
-                  <span className="px-2.5 py-1 rounded-md bg-black/65 border border-white/10">
-                    Live Cohort Classroom · Lucknow &amp; Online
-                  </span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          2. COMPARISON: THECODESPARK BOOTCAMP vs TYPICAL BOOTCAMP (Frame 00:00)
-          ========================================================================= */}
-      <section className="py-16 sm:py-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-          {/* Left: THECODESPARK BOOTCAMP */}
-          <div className="rounded-3xl bg-[#11101a] border border-[#8B5CF6]/45 p-7 sm:p-8 flex flex-col justify-between space-y-6 shadow-[0_0_45px_-18px_rgba(139,92,246,0.4)]">
-            <div className="space-y-6">
-              <div className="space-y-2 border-b border-white/10 pb-5">
-                <h2 className="text-lg sm:text-xl font-black font-display tracking-wide text-white uppercase">
-                  THECODESPARK BOOTCAMP
-                </h2>
-                <p className="text-xs sm:text-sm text-neutral-300">
-                  100 days. Structured 9 AM to 7 PM. Built around execution, not attendance.
-                </p>
-              </div>
-
-              <div className="space-y-5">
-                {[
-                  {
-                    title: 'PRACTICE COMES BEFORE THEORY',
-                    desc: '5 core lectures every week, followed by guided practice, problem sets, and mini tasks. Topics are not just introduced. Students are trained to use them.',
-                  },
-                  {
-                    title: 'EVERYTHING IS BUILT IN REAL TIME',
-                    desc: '2 activities every week, including full-day challenges, startup MVPs, team competitions and project defenses. Students learn to identify problems, build solutions and present their thinking.',
-                  },
-                  {
-                    title: 'YOUR PROGRESS CANNOT HIDE',
-                    desc: 'Daily tasks, submissions, assessments, attendance, mentor reviews, house points, and leaderboards make every student’s performance visible.',
-                  },
-                  {
-                    title: 'COMPLETE CAREER TRAINING',
-                    desc: 'Communication sessions every week, along with full-stack development, AI research, presentations, interview preparation and startup thinking.',
-                  },
-                ].map((pt) => (
-                  <div key={pt.title} className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-1" />
-                    <div className="space-y-1">
-                      <div className="text-xs font-mono font-bold text-white tracking-wider uppercase">
-                        {pt.title}
-                      </div>
-                      <p className="text-xs text-neutral-400 leading-relaxed">{pt.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <button
-              onClick={onApplyNow}
-              className="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:brightness-110 text-white text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-lg shadow-[#7C3AED]/25 text-center"
-            >
-              Start With TheCodeSpark Technologies Private Limited →
+      <div className="bg-[#F1EFE9] border-b border-[#0E0E0E]/15">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 font-mono text-[11px] font-bold tracking-[0.18em] uppercase text-[#0E0E0E]">
+            <span className="w-2 h-2 rounded-full bg-[#EA2814] animate-pulse" />
+            <span>TCS / INTENSIVE TRAINING · 100 DAYS</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-4 sm:gap-7 font-mono text-[10px] sm:text-[11px] tracking-[0.18em] uppercase text-[#0E0E0E]/75">
+            <button onClick={() => scrollToSection('it-outcomes')} className="hover:text-[#EA2814] cursor-pointer transition-colors">
+              OUTCOMES
+            </button>
+            <button onClick={() => scrollToSection('it-comparison')} className="hover:text-[#EA2814] cursor-pointer transition-colors">
+              COMPARISON
+            </button>
+            <button onClick={() => scrollToSection('it-modules')} className="hover:text-[#EA2814] cursor-pointer transition-colors">
+              MODULES
+            </button>
+            <button onClick={() => scrollToSection('it-projects')} className="hover:text-[#EA2814] cursor-pointer transition-colors">
+              PROJECTS
+            </button>
+            <button onClick={() => scrollToSection('it-mentors')} className="hover:text-[#EA2814] cursor-pointer transition-colors">
+              MENTORS
+            </button>
+            <button onClick={() => scrollToSection('it-cohort')} className="hover:text-[#EA2814] cursor-pointer transition-colors">
+              COHORT
             </button>
           </div>
-
-          {/* Right: TYPICAL BOOTCAMP */}
-          <div className="rounded-3xl bg-[#101014] border border-white/[0.08] p-7 sm:p-8 flex flex-col justify-between space-y-6">
-            <div className="space-y-6">
-              <div className="space-y-2 border-b border-white/10 pb-5">
-                <h2 className="text-lg sm:text-xl font-black font-display tracking-wide text-neutral-300 uppercase">
-                  TYPICAL BOOTCAMP
-                </h2>
-                <p className="text-xs sm:text-sm text-neutral-400">
-                  Only 2 to 3 hours of class a day. Most of the rest, learning is left for you to figure out later.
-                </p>
-              </div>
-
-              <div className="space-y-5">
-                {[
-                  {
-                    title: 'THEORY IS KEPT LIMITED',
-                    desc: 'Topics keep moving because the syllabus must finish. Whether you understand, practice or can apply them is often your problem.',
-                  },
-                  {
-                    title: 'PROJECTS YOU CAN SHOW, NOT DEFEND',
-                    desc: 'Students follow the instructor, copy similar projects and submit similar work. The project reaches the resume, but the understanding does not.',
-                  },
-                  {
-                    title: 'YOU CAN FALL BEHIND QUIETLY',
-                    desc: 'Assignments remain unchecked, doubts keep piling up and weak performance goes unnoticed until the course is almost over.',
-                  },
-                  {
-                    title: 'THE CERTIFICATE COMES FIRST',
-                    desc: 'Projects are given at the end, and interview preparation and real problem-solving are either rushed at the end or completely left out.',
-                  },
-                ].map((pt) => (
-                  <div key={pt.title} className="flex items-start gap-3">
-                    <X className="w-4 h-4 text-rose-400/80 shrink-0 mt-1" />
-                    <div className="space-y-1">
-                      <div className="text-xs font-mono font-bold text-neutral-300 tracking-wider uppercase">
-                        {pt.title}
-                      </div>
-                      <p className="text-xs text-neutral-500 leading-relaxed">{pt.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="py-3 text-center text-xs font-mono text-neutral-500 border-t border-white/[0.06]">
-              Avoid passive learning loops
-            </div>
-          </div>
         </div>
-      </section>
+      </div>
 
       {/* =========================================================================
-          3. PLACED ALUMNI PORTRAITS + "64+ Students Placed Last Month" STRIP (Frame 00:01)
+          BAND 1 (CREAM #F1EFE9): HERO + SCROLL-DRAWN RED THREAD + STATS + LOGOS
+          Matches Video 00:00 - 00:01
           ========================================================================= */}
-      <section className="py-10">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-5">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {placedAlumniCards.map((item) => (
-              <div
-                key={item.name}
-                className="rounded-2xl overflow-hidden bg-[#121218] border border-white/10 group"
-              >
-                <div className="aspect-[4/5] relative overflow-hidden">
-                  <img
-                    src={item.photo}
-                    onError={(e) => {
-                      e.currentTarget.src = rohitPhoto;
-                    }}
-                    alt={item.name}
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
-                </div>
-                <div className="p-3 bg-[#101015] border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono">
-                  <span className="font-bold text-white">{item.company}</span>
-                  <span className="text-neutral-400 truncate ml-2">{item.role}</span>
+      <section className="bg-[#F1EFE9] text-[#0E0E0E] pt-10 sm:pt-16 pb-16 relative">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Left Swiss Editorial Stacked Headline */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="lg:col-span-7 space-y-8"
+            >
+              <h1 className="text-4xl sm:text-6xl lg:text-[78px] font-black font-display uppercase tracking-[-0.045em] leading-[0.88] text-[#0E0E0E]">
+                FROM WHAT
+                <br />
+                STUDENTS NEED
+                <br />
+                TO WHAT
+                <br />
+                <span className="text-[#EA2814]">LANDS OFFERS.</span>
+              </h1>
+
+              <div className="pt-4 border-t border-[#0E0E0E]/15 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+                <p className="font-mono text-xs sm:text-sm text-[#0E0E0E]/75 max-w-md leading-relaxed">
+                  100 full-time days, 11 AM to 5 PM. Structured around execution, live debugging, and production systems — not passive lectures.
+                </p>
+
+                <div className="flex flex-wrap items-center gap-3 shrink-0">
+                  <button
+                    onClick={onApplyNow}
+                    className="px-5 py-3 bg-[#0E0E0E] hover:bg-[#EA2814] text-[#F1EFE9] font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer inline-flex items-center gap-2"
+                  >
+                    <span>Apply Now</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </button>
+                  {onViewSyllabus && (
+                    <button
+                      onClick={onViewSyllabus}
+                      className="px-5 py-3 border border-[#0E0E0E]/30 hover:border-[#0E0E0E] text-[#0E0E0E] font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+                    >
+                      Syllabus →
+                    </button>
+                  )}
                 </div>
               </div>
+            </motion.div>
+
+            {/* Right Organic Scroll-Drawn Red Thread */}
+            <div className="lg:col-span-5">
+              <HeroKineticThread />
+            </div>
+          </div>
+
+          {/* 4-Metric Ledger Strip */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 border border-[#0E0E0E]/20 bg-white/60">
+            {heroStats.map((stat, idx) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.08 }}
+                className={`p-5 flex items-center gap-3.5 ${
+                  idx < 3 ? 'border-b lg:border-b-0 lg:border-r border-[#0E0E0E]/15' : ''
+                }`}
+              >
+                <div className="w-10 h-10 border border-[#0E0E0E]/20 bg-[#F1EFE9] flex items-center justify-center shrink-0">
+                  {stat.icon}
+                </div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-black font-display text-[#0E0E0E] leading-none">
+                    {stat.value}
+                  </div>
+                  <div className="font-mono text-[10px] uppercase tracking-wider text-[#0E0E0E]/65 mt-1">
+                    {stat.label}
+                  </div>
+                </div>
+              </motion.div>
             ))}
           </div>
 
-          <div className="rounded-2xl bg-[#111118] border border-white/10 px-5 py-3 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="flex -space-x-2">
-                {['AP', 'SK', 'RG', 'PA'].map((init, i) => (
-                  <div
-                    key={i}
-                    className="w-7 h-7 rounded-full bg-[#7C3AED] border-2 border-[#111118] flex items-center justify-center text-[10px] font-mono font-bold text-white"
-                  >
-                    {init}
-                  </div>
-                ))}
-              </div>
-              <span className="text-xs font-semibold text-neutral-200">
-                <strong className="text-white">64+ Students</strong> Placed Last Month
-              </span>
-            </div>
+          {/* Hiring Partners Monochrome Marquee */}
+          <div className="relative overflow-hidden py-3 border-y border-[#0E0E0E]/15">
+            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#F1EFE9] to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#F1EFE9] to-transparent z-10 pointer-events-none" />
 
-            <button
-              onClick={onApplyNow}
-              className="px-3.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white transition-colors cursor-pointer"
-            >
-              View All
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          4. "One Journey. Every Skill That Matters." (Frame 00:01 - 00:02)
-          ========================================================================= */}
-      <section className="py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-8 text-center">
-          <h2 className="text-3xl sm:text-5xl font-black font-display tracking-tight text-white">
-            One Journey. Every Skill That Matters.
-          </h2>
-
-          <div className="rounded-3xl bg-gradient-to-b from-[#171226] to-[#0f0f15] border border-[#8B5CF6]/35 p-6 sm:p-10 shadow-[0_0_60px_-20px_rgba(139,92,246,0.35)]">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
-              {[
-                {
-                  kicker: 'HUMAN LOGIC',
-                  title: 'Deep First-Principles',
-                  desc: 'Think and reason like an engineer, not just syntax-scanners.',
-                },
-                {
-                  kicker: 'PRODUCTION APPS',
-                  title: 'End-to-End Deploys',
-                  desc: 'Ship real, deployed products end to end with CI/CD pipelines.',
-                },
-                {
-                  kicker: 'AI WORKFLOWS',
-                  title: 'LLM & RAG Ready',
-                  desc: 'Build with LLMs and autonomous agents, not just talk about them.',
-                },
-                {
-                  kicker: 'AI PRODUCTIVITY',
-                  title: 'Autonomous Tools',
-                  desc: 'Mock interviews, resumes, and referrals until you land it.',
-                },
-              ].map((col) => (
+            <div className="animate-marquee flex items-center gap-12 sm:gap-16">
+              {[...HIRING_LOGOS, ...HIRING_LOGOS, ...HIRING_LOGOS].map((logo, idx) => (
                 <div
-                  key={col.kicker}
-                  className="rounded-2xl bg-black/35 border border-white/10 p-5 space-y-2"
+                  key={idx}
+                  className="flex items-center gap-1.5 text-[#0E0E0E]/75 hover:text-[#EA2814] transition-colors select-none shrink-0"
                 >
-                  <div className="text-[10px] font-mono font-bold text-[#A855F7] tracking-widest">
-                    {col.kicker}
-                  </div>
-                  <div className="text-base font-bold text-white font-display">
-                    {col.title}
-                  </div>
-                  <p className="text-xs text-neutral-400 leading-relaxed">{col.desc}</p>
+                  {logo.name === 'TCS' ? (
+                    <div className="flex items-center gap-2 leading-none">
+                      <span className="font-black text-lg tracking-tight">tcs</span>
+                      <div className="flex flex-col text-[7px] font-mono uppercase tracking-wider opacity-75 leading-tight">
+                        <span>TATA</span>
+                        <span>CONSULTANCY</span>
+                        <span>SERVICES</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <span className="font-display font-extrabold text-base sm:text-lg tracking-tight">
+                      {logo.name}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
@@ -615,166 +512,692 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
       </section>
 
       {/* =========================================================================
-          5. "Why You Need To Become A Developer" — 5 INTERACTIVE MODULE TABS (Frames 00:02 - 00:03)
+          BAND 2 (VOID BLACK #0A0A0A): "WE TRAIN THE BUILDER." + 8-NODE SEMICIRCLE ARC
+          Matches Video 00:02 - 00:05
           ========================================================================= */}
-      <section className="py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-10">
-          <h2 className="text-3xl sm:text-4xl font-black font-display tracking-tight text-white text-center">
-            Why You Need To Become A Developer
-          </h2>
+      <section className="bg-[#0A0A0A] text-[#F5F4F0] py-16 sm:py-24 relative">
+        <SectionSeamDropSvg variant="center" />
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            {/* Left 5 Selector Cards */}
-            <div className="lg:col-span-5 space-y-3">
-              {syllabusModules.map((mod, idx) => {
-                const isActive = idx === activeModuleTab;
-                return (
-                  <button
-                    key={mod.id}
-                    onClick={() => setActiveModuleTab(idx)}
-                    className={`w-full text-left px-5 py-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
-                      isActive
-                        ? 'bg-gradient-to-r from-[#5B21B6]/45 to-[#7C3AED]/25 border-[#8B5CF6] text-white shadow-lg'
-                        : 'bg-[#111118] border-white/[0.07] text-neutral-300 hover:border-white/20 hover:text-white'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <Sparkles
-                        className={`w-4 h-4 shrink-0 ${
-                          isActive ? 'text-[#C084FC]' : 'text-neutral-500'
-                        }`}
-                      />
-                      <span className="text-xs sm:text-sm font-semibold truncate">
-                        {mod.label}
-                      </span>
-                    </div>
-                    <span className="text-xs font-mono text-neutral-400 shrink-0">
-                      {mod.id}
-                    </span>
-                  </button>
-                );
-              })}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.55 }}
+            className="space-y-4"
+          >
+            <div className="font-mono text-[10px] tracking-[0.2em] uppercase text-neutral-400">
+              ONE JOURNEY · EVERY SKILL THAT MATTERS
+            </div>
+            <h2 className="text-4xl sm:text-6xl lg:text-[72px] font-black font-display uppercase tracking-[-0.04em] leading-[0.88] text-white">
+              WE TRAIN THE BUILDER.
+              <br />
+              AND THE SYSTEM THINKING
+              <br />
+              <span className="text-[#EA2814]">BEHIND IT.</span>
+            </h2>
+          </motion.div>
+
+          {/* Center Kinetic Bridge Badge */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-white/10">
+            <div className="font-mono text-xs text-neutral-400">
+              <span className="text-[#EA2814] font-bold">HUMAN LOGIC:</span> Deep First-Principles
+            </div>
+            <div className="px-5 py-2 border border-[#EA2814] bg-[#EA2814]/15 font-mono text-xs font-black tracking-[0.2em] text-white uppercase shadow-[0_0_25px_rgba(234,40,20,0.35)]">
+              CODE + GEN-AI + SHIP
+            </div>
+            <div className="font-mono text-xs text-neutral-400">
+              <span className="text-[#EA2814] font-bold">AI PRODUCTIVITY:</span> Autonomous Tools
+            </div>
+          </div>
+
+          {/* Scroll-Drawn 8-Node Semicircle Branch */}
+          <SemicircleBranchSvg
+            leftLabel="HUMAN LOGIC · FIRST PRINCIPLES"
+            rightLabel="AI SYSTEMS · PRODUCTION DEPLOY"
+            leftNodes={[
+              {
+                title: 'Foundations',
+                sub: 'Think and reason like an engineer, not just write syntax.',
+              },
+              {
+                title: 'Clean Architecture',
+                sub: 'Write maintainable TypeScript, React, and backend modules.',
+              },
+              {
+                title: 'Full Stack Dev',
+                sub: 'Ship real, deployed products end-to-end with CI/CD pipelines.',
+              },
+              {
+                title: 'System Design',
+                sub: 'Scale APIs, Redis caching, queues, and distributed databases.',
+              },
+            ]}
+            rightNodes={[
+              {
+                title: 'AI Engineering',
+                sub: 'Build with LLMs and autonomous workflows, not just talk about them.',
+              },
+              {
+                title: 'RAG & Vector Ops',
+                sub: 'Ground responses in pgvector retrieval and structured tool calling.',
+              },
+              {
+                title: 'Cloud & Docker',
+                sub: 'Containerize services and ship zero-downtime AWS deployments.',
+              },
+              {
+                title: 'Placement Prep',
+                sub: 'Mock interviews, resumes, and direct referrals until you land it.',
+              },
+            ]}
+          />
+        </div>
+      </section>
+
+      {/* =========================================================================
+          BAND 3 (CREAM #F1EFE9): 01 / PLACEMENT OUTCOMES (EIGNA BLUEPRINT PARALLAX)
+          Matches Video 00:06 - 00:08
+          ========================================================================= */}
+      <section id="it-outcomes" className="bg-[#F1EFE9] text-[#0E0E0E] py-16 sm:py-24 relative">
+        <SectionSeamDropSvg variant="center" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
+          {/* Section Header Bar */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#0E0E0E]/15 pb-4">
+            <span className="font-mono text-[11px] font-bold tracking-[0.18em] uppercase text-[#0E0E0E]">
+              01 / PLACEMENT OUTCOMES
+            </span>
+            <span className="font-mono text-xs text-[#0E0E0E]/70">
+              Verified offers, live classroom training, and real student breakthroughs.
+            </span>
+          </div>
+
+          {/* Blueprint Overlapping Showcase with Desk-Angle Parallax */}
+          <div className="relative py-4">
+            {/* Giant Display Wordmark */}
+            <div className="text-[12vw] sm:text-[96px] lg:text-[124px] font-black font-display tracking-[-0.05em] leading-[0.85] text-[#0E0E0E] uppercase select-none">
+              KUSHAGRA
+              <span className="block text-[#0E0E0E]/20">₹47 LAKHS</span>
             </div>
 
-            {/* Right Active Module Purple Card */}
-            <div className="lg:col-span-7">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeModule.code}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.25 }}
-                  className="rounded-3xl bg-gradient-to-b from-[#171126] to-[#111018] border border-[#8B5CF6]/40 p-7 sm:p-8 space-y-6 shadow-2xl"
-                >
-                  <div className="flex flex-wrap items-start justify-between gap-4 border-b border-white/10 pb-5">
-                    <div className="space-y-1.5 max-w-sm">
-                      <span className="text-[11px] font-mono font-bold text-[#A855F7]">
-                        {activeModule.code}
-                      </span>
-                      <h3 className="text-xl sm:text-2xl font-black text-white font-display leading-snug">
-                        {activeModule.title}
-                      </h3>
-                    </div>
+            {/* Overlapping Schematic Video + Offer Ledger Cards connected by red SVG line */}
+            <div className="relative -mt-6 sm:-mt-12 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+              {/* Red Schematic Connector SVG on Desktop */}
+              <svg
+                viewBox="0 0 900 120"
+                fill="none"
+                className="hidden lg:block absolute -top-10 left-0 w-full h-24 pointer-events-none z-20"
+                aria-hidden="true"
+              >
+                <motion.path
+                  d="M 180 60 L 420 60 C 445 60, 455 20, 485 20 L 680 20"
+                  stroke="#EA2814"
+                  strokeWidth="1.8"
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: false, amount: 0.3 }}
+                  transition={{ duration: 0.9 }}
+                />
+                <circle cx="180" cy="60" r="4" fill="#EA2814" />
+                <circle cx="680" cy="20" r="4" fill="#EA2814" />
+              </svg>
 
-                    <div className="flex items-center gap-5 text-right font-mono">
-                      <div>
-                        <div className="text-lg font-black text-white">{activeModule.projects}</div>
-                        <div className="text-[10px] text-neutral-400 uppercase">Projects</div>
-                      </div>
-                      <div>
-                        <div className="text-lg font-black text-white">{activeModule.duration}</div>
-                        <div className="text-[10px] text-neutral-400 uppercase">Duration</div>
-                      </div>
-                    </div>
+              {/* Left Classroom Lab Video Blueprint Card with Tilt-to-Level Entrance */}
+              <motion.div
+                initial={{ opacity: 0, rotate: -2, y: 24 }}
+                whileInView={{ opacity: 1, rotate: 0, y: 0 }}
+                viewport={{ once: false, amount: 0.25 }}
+                transition={{ duration: 0.55, ease: 'easeOut' }}
+                className="lg:col-span-6 bg-white border-2 border-[#0E0E0E] p-3 shadow-[8px_8px_0px_#0E0E0E] relative z-10"
+              >
+                <div className="aspect-video relative overflow-hidden bg-black">
+                  <video
+                    ref={videoRef}
+                    src="/assets/aistudio/tcs_actual_classroom_lab.mp4"
+                    autoPlay
+                    loop
+                    muted={isMuted}
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 pointer-events-none" />
+
+                  <div className="absolute top-3 left-3 px-2.5 py-1 bg-[#EA2814] text-white font-mono text-[10px] font-bold uppercase tracking-wider">
+                    LIVE CLASSROOM LAB
                   </div>
 
-                  <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed">
-                    {activeModule.desc}
-                  </p>
-
-                  <div className="space-y-2.5">
-                    {activeModule.subtopics.map((t, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-2.5 text-xs text-neutral-200 bg-black/30 border border-white/[0.06] rounded-xl px-4 py-3"
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-[#A855F7] shrink-0 mt-0.5" />
-                        <span>{t}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="rounded-2xl bg-black/40 border border-white/[0.08] p-5 space-y-3">
-                    <div className="text-xs font-mono font-bold text-white flex items-center gap-2">
-                      <Database className="w-4 h-4 text-[#A855F7]" />
-                      <span>{activeModule.dbTitle}</span>
-                    </div>
-                    <ul className="space-y-1.5 text-xs text-neutral-400 list-disc pl-5">
-                      {activeModule.dbPoints.map((pt, i) => (
-                        <li key={i}>{pt}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <div className="absolute top-3 right-3 flex items-center gap-1.5">
                     <button
-                      onClick={onApplyNow}
-                      className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#7C3AED] to-[#A855F7] text-white text-xs font-bold cursor-pointer hover:brightness-110 transition-all"
+                      onClick={togglePlay}
+                      aria-label={isPlaying ? 'Pause video' : 'Play video'}
+                      className="w-8 h-8 bg-[#0E0E0E]/85 hover:bg-[#EA2814] text-white flex items-center justify-center cursor-pointer transition-colors"
                     >
-                      Apply Now →
+                      {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                     </button>
-                    {onViewSyllabus && (
-                      <button
-                        onClick={onViewSyllabus}
-                        className="px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-200 text-xs font-semibold cursor-pointer transition-colors"
-                      >
-                        View Syllabus →
-                      </button>
-                    )}
+                    <button
+                      onClick={toggleMute}
+                      aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+                      className="w-8 h-8 bg-[#0E0E0E]/85 hover:bg-[#EA2814] text-white flex items-center justify-center cursor-pointer transition-colors"
+                    >
+                      {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                    </button>
+                  </div>
+
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white font-mono text-[11px]">
+                    <span>Lucknow &amp; Live Online Cohort</span>
+                    <span className="px-2 py-0.5 bg-white text-[#0E0E0E] font-bold">
+                      THECODESPARK
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Right Paper Offer Ledger Card with Tilt-to-Level Entrance */}
+              <motion.div
+                initial={{ opacity: 0, rotate: 2, y: 24 }}
+                whileInView={{ opacity: 1, rotate: 0, y: 0 }}
+                viewport={{ once: false, amount: 0.25 }}
+                transition={{ duration: 0.55, delay: 0.08, ease: 'easeOut' }}
+                className="lg:col-span-6 bg-[#FAF8F3] border-2 border-[#0E0E0E] p-6 sm:p-8 shadow-[8px_8px_0px_#EA2814] space-y-5 relative z-10"
+              >
+                <div className="flex items-center justify-between border-b border-[#0E0E0E]/20 pb-3 font-mono text-[11px]">
+                  <span className="font-bold uppercase tracking-widest text-[#EA2814]">
+                    PLACEMENT CYCLE · RECORD 01
+                  </span>
+                  <span className="px-2 py-0.5 border border-[#0E0E0E] text-[#0E0E0E] font-bold">
+                    AMAZON
+                  </span>
+                </div>
+
+                <div>
+                  <h3 className="text-2xl sm:text-4xl font-black font-display uppercase tracking-tight text-[#0E0E0E]">
+                    KUSHAGRA PATIDAR
+                  </h3>
+                  <p className="font-mono text-xs text-[#0E0E0E]/70 mt-1">
+                    TheCodeSpark Placement Success Story
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 py-3 border-y border-dashed border-[#0E0E0E]/25 font-mono">
+                  <div>
+                    <div className="text-[10px] uppercase text-[#0E0E0E]/60">ANNUAL PACKAGE</div>
+                    <div className="text-2xl sm:text-3xl font-black font-display text-[#0E0E0E]">
+                      ₹47 LAKHS
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-[10px] uppercase text-[#0E0E0E]/60">SECURED AT</div>
+                    <div className="text-xl sm:text-2xl font-black font-display text-[#EA2814]">
+                      amazon
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={onApplyNow}
+                  className="w-full py-3.5 px-5 bg-[#0E0E0E] hover:bg-[#EA2814] text-white font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer flex items-center justify-between"
+                >
+                  <span>Apply to Intensive Training</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </button>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* 4 Placed Alumni Paper Dossiers + 64+ Placed Strip */}
+          <div className="space-y-4 pt-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {placedAlumniCards.map((item, idx) => (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.45, delay: idx * 0.08 }}
+                  className="bg-white border border-[#0E0E0E]/25 hover:border-[#EA2814] p-3 space-y-2.5 transition-colors group"
+                >
+                  <div className="flex items-center justify-between font-mono text-[11px]">
+                    <span className="font-bold text-[#0E0E0E]">{item.packageLpa}</span>
+                    <span className="w-5 h-5 bg-[#0E0E0E] text-white text-[10px] font-black flex items-center justify-center">
+                      in
+                    </span>
+                  </div>
+                  <div className="aspect-[4/5] overflow-hidden bg-[#ECEAE3]">
+                    <img
+                      src={item.photo}
+                      onError={(e) => {
+                        e.currentTarget.src = rohitPhoto;
+                      }}
+                      alt={item.name}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="text-center pt-1 font-mono text-xs font-bold tracking-[0.2em] text-[#0E0E0E]">
+                    {item.company}
                   </div>
                 </motion.div>
-              </AnimatePresence>
+              ))}
+            </div>
+
+            <div className="bg-white border border-[#0E0E0E]/25 px-5 py-3.5 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-2">
+                  {[
+                    { init: 'KP', bg: 'bg-[#0E0E0E]' },
+                    { init: 'RG', bg: 'bg-[#EA2814]' },
+                    { init: 'PS', bg: 'bg-[#333333]' },
+                  ].map((avatar, i) => (
+                    <div
+                      key={i}
+                      className={`w-7 h-7 rounded-full ${avatar.bg} border-2 border-white flex items-center justify-center text-[10px] font-mono font-bold text-white`}
+                    >
+                      {avatar.init}
+                    </div>
+                  ))}
+                </div>
+                <span className="font-mono text-xs font-bold text-[#0E0E0E]">
+                  64+ Students Placed Last Month
+                </span>
+              </div>
+
+              <button
+                onClick={onApplyNow}
+                className="px-4 py-1.5 bg-[#0E0E0E] hover:bg-[#EA2814] text-white font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+              >
+                View All ↗
+              </button>
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          6. "Real Projects. Real Complexity. Real Proof of Skill." (Frames 00:03 - 00:04)
+          BAND 4 (VOID BLACK #0A0A0A): 02 / COMPARISON & ORBIT SATELLITE MODULES
+          Matches Video 00:08 - 00:10
           ========================================================================= */}
-      <section className="py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-10">
-          <h2 className="text-3xl sm:text-5xl font-black font-display tracking-tight text-white text-center leading-tight">
-            Real Projects. Real Complexity.
-            <br />
-            Real Proof of Skill.
-          </h2>
+      <section id="it-comparison" className="bg-[#0A0A0A] text-[#F5F4F0] py-16 sm:py-24 relative overflow-hidden">
+        <SectionSeamDropSvg variant="right" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-20">
+          {/* Part A: Why Some Students Grow Faster Than Others */}
+          <div className="space-y-10">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-5">
+              <div>
+                <div className="font-mono text-[11px] font-bold tracking-[0.18em] uppercase text-[#EA2814]">
+                  02 / EXECUTION ENVIRONMENT
+                </div>
+                <h2 className="text-3xl sm:text-5xl font-black font-display uppercase tracking-[-0.03em] leading-[0.95] text-white mt-2">
+                  Why Some Students Grow
+                  <br />
+                  Faster Than Others
+                </h2>
+              </div>
+              <p className="font-mono text-xs text-neutral-400 max-w-sm">
+                The honest breakdown of our rigorous education environment versus traditional walk-through bootcamps.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+              {/* Left: THECODESPARK BOOTCAMP */}
+              <motion.div
+                initial={{ opacity: 0, x: -16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5 }}
+                className="bg-[#111111] border-2 border-[#EA2814] p-7 sm:p-8 flex flex-col justify-between space-y-7 shadow-[0_0_50px_-20px_rgba(234,40,20,0.4)]"
+              >
+                <div className="space-y-6">
+                  <div className="space-y-2 border-b border-white/10 pb-5">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-xl font-black font-display tracking-wide text-white uppercase">
+                        THECODESPARK BOOTCAMP
+                      </h3>
+                      <span className="px-2 py-0.5 bg-[#EA2814] text-white font-mono text-[10px] font-bold">
+                        RECOMMENDED
+                      </span>
+                    </div>
+                    <p className="text-xs font-mono text-neutral-300">
+                      100 full-time days, 11 AM to 5 PM. Built around execution, not attendance.
+                    </p>
+                  </div>
+
+                  <div className="space-y-5">
+                    {[
+                      {
+                        title: 'DEPTH BEFORE DEADLINES',
+                        desc: '5 core lectures every week, followed by guided practice, debugging and mentor support. Topics are not just introduced. Students are trained to use them.',
+                      },
+                      {
+                        title: 'FROM CODES TO CREATOR',
+                        desc: '2 activities every week, including full-day challenges, startup MVPs, team competitions and project defenses. Students learn to identify problems, build solutions and present their thinking.',
+                      },
+                      {
+                        title: 'YOUR PROGRESS CANNOT HIDE',
+                        desc: 'Daily tasks, submissions, assessments, attendance, mentor reviews, house points, and leaderboards make every student’s performance visible.',
+                      },
+                      {
+                        title: 'COMPLETE CAREER TRAINING',
+                        desc: 'Communication sessions every week, along with full-stack development, AI research, presentations, interview preparation and startup thinking.',
+                      },
+                    ].map((pt) => (
+                      <div key={pt.title} className="flex items-start gap-3">
+                        <Check className="w-4 h-4 text-[#EA2814] shrink-0 mt-1" />
+                        <div className="space-y-1">
+                          <div className="text-xs font-mono font-bold text-white tracking-wider uppercase">
+                            {pt.title}
+                          </div>
+                          <p className="text-xs text-neutral-400 leading-relaxed">{pt.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  onClick={onApplyNow}
+                  className="w-full py-3.5 px-5 bg-[#EA2814] hover:bg-white hover:text-[#0E0E0E] text-white font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer text-center"
+                >
+                  Start with TheCodeSpark →
+                </button>
+              </motion.div>
+
+              {/* Right: TYPICAL BOOTCAMP */}
+              <motion.div
+                initial={{ opacity: 0, x: 16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5 }}
+                className="bg-[#0D0D0D] border border-white/15 p-7 sm:p-8 flex flex-col justify-between space-y-7"
+              >
+                <div className="space-y-6">
+                  <div className="space-y-2 border-b border-white/10 pb-5">
+                    <h3 className="text-xl font-black font-display tracking-wide text-neutral-400 uppercase">
+                      TYPICAL BOOTCAMP
+                    </h3>
+                    <p className="text-xs font-mono text-neutral-500">
+                      Short classes. Rushed modules. Most of the real learning is left for you to figure out later.
+                    </p>
+                  </div>
+
+                  <div className="space-y-5">
+                    {[
+                      {
+                        title: 'THE CALENDAR DECIDES THE SPEED',
+                        desc: 'Topics keep moving because the syllabus must finish. Whether you understand, practice or can apply them is often your problem.',
+                      },
+                      {
+                        title: 'PROJECTS YOU CAN SHOW, NOT DEFEND',
+                        desc: 'Students follow the instructor, copy similar projects and submit similar work. The project reaches the resume, but the understanding does not.',
+                      },
+                      {
+                        title: 'YOU CAN FALL BEHIND QUIETLY',
+                        desc: 'Assignments remain unchecked, doubts keep piling up and weak performance goes unnoticed until the course is almost over.',
+                      },
+                      {
+                        title: 'THE CERTIFICATE COMES FIRST',
+                        desc: 'Communication, teamwork, interview preparation and real problem-solving are either rushed at the end or completely left out.',
+                      },
+                    ].map((pt) => (
+                      <div key={pt.title} className="flex items-start gap-3">
+                        <X className="w-4 h-4 text-neutral-500 shrink-0 mt-1" />
+                        <div className="space-y-1">
+                          <div className="text-xs font-mono font-bold text-neutral-300 tracking-wider uppercase">
+                            {pt.title}
+                          </div>
+                          <p className="text-xs text-neutral-500 leading-relaxed">{pt.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="py-3 text-center text-xs font-mono text-neutral-500 border-t border-white/[0.08] uppercase tracking-widest">
+                  Avoid passive learning loops
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Part B: Interactive 5-Module Syllabus (ORBIT Floating Satellite Cards + Sweeping Red Orbit Curves) */}
+          <div id="it-modules" className="relative space-y-8 pt-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div>
+                <div className="font-mono text-[11px] font-bold tracking-[0.18em] uppercase text-[#EA2814]">
+                  CURRICULUM ARCHITECTURE
+                </div>
+                <h2 className="text-3xl sm:text-5xl font-black font-display uppercase tracking-[-0.03em] text-white mt-1">
+                  Why You Need To Become A Developer
+                </h2>
+              </div>
+              <span className="font-mono text-xs text-neutral-400">
+                5 Core Modules • Select to Inspect
+              </span>
+            </div>
+
+            {/* Satellite Terminal Strip (Orbiting Telemetry Cards matching video 00:09 - 00:10) */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 relative z-10">
+              {[
+                { tag: 'DAILY SCHEDULE', val: '11 AM – 5 PM', sub: '100 Full-Time Days' },
+                { tag: 'DOUBT ROOMS', val: 'LIVE 1-ON-1', sub: 'Instant Mentor Breakdown' },
+                { tag: 'PROJECT REPOS', val: '40+ BUILDS', sub: 'Defended Before Jury' },
+                { tag: 'HIRING TARGET', val: '300+ PARTNERS', sub: 'Direct Referrals' },
+              ].map((sat, i) => (
+                <motion.div
+                  key={sat.tag}
+                  animate={{ y: [0, i % 2 === 0 ? -4 : 4, 0] }}
+                  transition={{ duration: 4 + i * 0.4, repeat: Infinity, ease: 'easeInOut' }}
+                  className="bg-[#121212] border border-white/15 p-3.5 space-y-1 font-mono"
+                >
+                  <div className="text-[9px] text-[#EA2814] font-bold tracking-widest flex items-center justify-between">
+                    <span>{sat.tag}</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#EA2814]" />
+                  </div>
+                  <div className="text-sm font-black text-white font-display">{sat.val}</div>
+                  <div className="text-[10px] text-neutral-500">{sat.sub}</div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Giant Background Watermark Typography + Red Orbit Loop */}
+            <div className="relative">
+              <svg
+                viewBox="0 0 1000 180"
+                fill="none"
+                className="hidden lg:block absolute -top-12 left-0 w-full h-36 pointer-events-none z-0"
+                aria-hidden="true"
+              >
+                <motion.path
+                  d="M 80 10 C 200 110, 380 40, 520 90 C 680 140, 820 40, 940 120"
+                  stroke="#EA2814"
+                  strokeOpacity="0.55"
+                  strokeWidth="1.6"
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: false, amount: 0.25 }}
+                  transition={{ duration: 1.1 }}
+                />
+              </svg>
+
+              <div
+                aria-hidden="true"
+                className="text-[16vw] sm:text-[130px] font-black font-display uppercase tracking-[-0.06em] text-white/[0.05] leading-none select-none text-center -mb-8 sm:-mb-14 pointer-events-none"
+              >
+                MODULES
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start relative z-10">
+                {/* Left 5 Selector Cards */}
+                <div className="lg:col-span-5 space-y-2.5">
+                  {syllabusModules.map((mod, idx) => {
+                    const isActive = idx === activeModuleTab;
+                    return (
+                      <button
+                        key={mod.id}
+                        onClick={() => setActiveModuleTab(idx)}
+                        className={`w-full text-left px-5 py-4 border transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                          isActive
+                            ? 'bg-[#EA2814] border-[#EA2814] text-white shadow-[0_0_30px_rgba(234,40,20,0.4)]'
+                            : 'bg-[#121212] border-white/10 text-neutral-300 hover:border-white/30 hover:text-white'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <Cpu className="w-4 h-4 shrink-0" />
+                          <span className="text-xs sm:text-sm font-bold truncate font-display">
+                            {mod.label}
+                          </span>
+                        </div>
+                        <span className="text-xs font-mono font-bold shrink-0">{mod.id}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Right Cream Floating Terminal Window (ORBIT center window style) */}
+                <div className="lg:col-span-7">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeModule.code}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.25 }}
+                      className="bg-[#F1EFE9] text-[#0E0E0E] border-2 border-white p-6 sm:p-8 space-y-6 shadow-[10px_10px_0px_#EA2814]"
+                    >
+                      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-[#0E0E0E]/15 pb-4">
+                        <div className="space-y-1 max-w-md">
+                          <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#EA2814]">
+                            {activeModule.code}
+                          </span>
+                          <h3 className="text-xl sm:text-2xl font-black font-display leading-snug text-[#0E0E0E]">
+                            {activeModule.title}
+                          </h3>
+                        </div>
+
+                        <div className="flex items-center gap-5 text-right font-mono">
+                          <div>
+                            <div className="text-lg font-black text-[#0E0E0E]">{activeModule.projects}</div>
+                            <div className="text-[10px] text-[#0E0E0E]/60 uppercase">Projects</div>
+                          </div>
+                          <div>
+                            <div className="text-lg font-black text-[#0E0E0E]">{activeModule.duration}</div>
+                            <div className="text-[10px] text-[#0E0E0E]/60 uppercase">Duration</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-[#0E0E0E]/80 leading-relaxed">
+                        {activeModule.desc}
+                      </p>
+
+                      <div className="space-y-2">
+                        {activeModule.subtopics.map((t, i) => (
+                          <div
+                            key={i}
+                            className="flex items-start gap-2.5 text-xs text-[#0E0E0E] bg-white border border-[#0E0E0E]/15 px-4 py-3 font-mono"
+                          >
+                            <CheckCircle2 className="w-4 h-4 text-[#EA2814] shrink-0 mt-0.5" />
+                            <span>{t}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="bg-white border border-[#0E0E0E]/20 p-5 space-y-2.5">
+                        <div className="text-xs font-mono font-bold text-[#0E0E0E] flex items-center gap-2 uppercase">
+                          <Database className="w-4 h-4 text-[#EA2814]" />
+                          <span>{activeModule.dbTitle}</span>
+                        </div>
+                        <ul className="space-y-1.5 text-xs text-[#0E0E0E]/75 list-disc pl-5">
+                          {activeModule.dbPoints.map((pt, i) => (
+                            <li key={i}>{pt}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-3 pt-1">
+                        <button
+                          onClick={onApplyNow}
+                          className="px-5 py-2.5 bg-[#0E0E0E] hover:bg-[#EA2814] text-white font-mono text-xs font-bold uppercase tracking-wider cursor-pointer transition-colors"
+                        >
+                          Apply Now →
+                        </button>
+                        {onViewSyllabus && (
+                          <button
+                            onClick={onViewSyllabus}
+                            className="px-5 py-2.5 border border-[#0E0E0E]/30 hover:border-[#0E0E0E] text-[#0E0E0E] font-mono text-xs font-bold uppercase tracking-wider cursor-pointer transition-colors"
+                          >
+                            View Syllabus →
+                          </button>
+                        )}
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          BAND 5 (CREAM #F1EFE9): 03 / REAL PROJECTS (MEALOPS EDITORIAL STYLE)
+          Matches Video 00:11
+          ========================================================================= */}
+      <section id="it-projects" className="bg-[#F1EFE9] text-[#0E0E0E] py-16 sm:py-24 relative">
+        <SectionSeamDropSvg variant="left" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#0E0E0E]/15 pb-4">
+            <span className="font-mono text-[11px] font-bold tracking-[0.18em] uppercase text-[#0E0E0E]">
+              03 / REAL PRODUCTION PROJECTS
+            </span>
+            <span className="font-mono text-xs text-[#0E0E0E]/70">
+              Real Projects. Real Complexity. Real Proof of Skill.
+            </span>
+          </div>
+
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 relative">
+            <div className="text-[13vw] sm:text-[104px] font-black font-display uppercase tracking-[-0.05em] leading-[0.86] text-[#0E0E0E]">
+              REAL PROOF.
+            </div>
+
+            {/* Speech-bubble + Connector Badge (MEALOPS style) */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.45 }}
+              className="bg-[#0E0E0E] text-white px-4 py-3 font-mono text-[11px] border border-[#0E0E0E] shadow-[4px_4px_0px_#EA2814] max-w-xs"
+            >
+              <div className="text-[#EA2814] font-bold uppercase">DEPLOYMENT STATUS</div>
+              <div className="mt-0.5">CI/CD pipeline passed. Live production URL verified.</div>
+            </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            {/* Left Dynamic Project Repo Preview */}
+            {/* Left Dynamic Project Repo Preview Card */}
             <div className="lg:col-span-5">
-              <div className="rounded-3xl bg-gradient-to-b from-[#171126] to-[#111018] border border-[#8B5CF6]/40 p-6 sm:p-7 space-y-6 shadow-xl">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-[#A855F7] font-bold">
+              <div className="bg-white border-2 border-[#0E0E0E] p-6 sm:p-8 space-y-6 shadow-[8px_8px_0px_#EA2814]">
+                <div className="flex items-center justify-between font-mono">
+                  <span className="text-[11px] text-[#EA2814] font-bold">
                     {currentProject.repoTag}
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#7C3AED]/25 border border-[#8B5CF6]/40 text-[10px] font-mono font-bold text-[#C084FC]">
+                  <span className="px-2.5 py-0.5 bg-[#0E0E0E] text-white text-[10px] font-bold">
                     ATS-FRIENDLY
                   </span>
                 </div>
 
-                <div className="space-y-2 py-4">
-                  <h3 className="text-xl font-black text-white font-display">
+                <div className="space-y-2 py-4 border-y border-dashed border-[#0E0E0E]/20">
+                  <h3 className="text-2xl font-black text-[#0E0E0E] font-display uppercase">
                     {currentProject.heading}
                   </h3>
-                  <div className="text-xs font-mono text-neutral-300">
+                  <div className="text-xs font-mono text-[#0E0E0E]/70">
                     {currentProject.stack}
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-white/10 flex items-center gap-2 text-xs text-emerald-400 font-mono">
-                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <div className="flex items-center gap-2 text-xs text-[#0E0E0E] font-mono font-bold">
+                  <CheckCircle2 className="w-4 h-4 text-[#EA2814] shrink-0" />
                   <span>{currentProject.footer}</span>
                 </div>
               </div>
@@ -787,23 +1210,23 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                 return (
                   <div
                     key={proj.title}
-                    className={`rounded-2xl border overflow-hidden transition-colors ${
+                    className={`border transition-colors ${
                       isOpen
-                        ? 'bg-[#171224] border-[#8B5CF6]/50'
-                        : 'bg-[#111118] border-white/[0.08]'
+                        ? 'bg-white border-[#0E0E0E] shadow-[4px_4px_0px_#0E0E0E]'
+                        : 'bg-white/60 border-[#0E0E0E]/20'
                     }`}
                   >
                     <button
                       onClick={() => setOpenProjectIdx(isOpen ? null : idx)}
                       className="w-full px-5 py-4 flex items-center justify-between gap-4 text-left cursor-pointer"
                     >
-                      <span className="text-sm font-bold text-white flex items-center gap-2.5">
-                        <Code2 className="w-4 h-4 text-[#A855F7] shrink-0" />
+                      <span className="text-sm sm:text-base font-bold font-display text-[#0E0E0E] flex items-center gap-2.5">
+                        <Code2 className="w-4 h-4 text-[#EA2814] shrink-0" />
                         <span>{proj.title}</span>
                       </span>
                       <ChevronDown
-                        className={`w-4 h-4 text-neutral-400 transition-transform ${
-                          isOpen ? 'rotate-180 text-white' : ''
+                        className={`w-4 h-4 text-[#0E0E0E]/60 transition-transform ${
+                          isOpen ? 'rotate-180 text-[#EA2814]' : ''
                         }`}
                       />
                     </button>
@@ -817,7 +1240,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                           transition={{ duration: 0.22 }}
                           className="overflow-hidden"
                         >
-                          <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-neutral-300 leading-relaxed">
+                          <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-[#0E0E0E]/75 leading-relaxed border-t border-[#0E0E0E]/10">
                             {proj.desc}
                           </div>
                         </motion.div>
@@ -832,284 +1255,130 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
       </section>
 
       {/* =========================================================================
-          7. "Built Around Everything a Student Usually Misses" — 01, 02, 03 STACK (Frames 00:05 - 00:06)
+          BAND 6 (VOID BLACK #0A0A0A): 04 / BUILT AROUND EVERYTHING (STICKY STACKING DECK)
+          Matches Video 00:00 - 00:03
           ========================================================================= */}
-      <section className="py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-8">
-          <h2 className="text-3xl sm:text-4xl font-black font-display tracking-tight text-white text-center">
-            Built Around Everything a Student Usually Misses
-          </h2>
+      <section className="bg-[#0A0A0A] text-[#F5F4F0] py-16 sm:py-24 relative overflow-x-clip">
+        <SectionSeamDropSvg variant="center" />
 
-          <div className="space-y-5">
-            {[
-              {
-                num: '01',
-                title: 'Your 100 Days Are Already Designed',
-                desc: 'Every week combines technical learning, communicative training and hands-on challenges. You learn, practice, build, present and get reviewed without wasting weeks figuring out what to do next.',
-                chips: ['01 Technical Classes', '02 Communication', '03 Build Challenges'],
-                img: '/assets/aistudio/AI-Powered_Learning_Platform_Conference_4d9a70e4.png',
-              },
-              {
-                num: '02',
-                title: 'You Never Stay Stuck Alone',
-                desc: 'Mentors stay involved throughout your journey. Prompt review sessions, code breakdowns, dedicated doubt rooms, and career support ensure you get help while the problem is still right in front of you.',
-                chips: ['1:1 Code & Doubt Support'],
-                img: '/assets/aistudio/Warmly_Branded_Executive_Team_Portrait_67a8e1d1.png',
-              },
-              {
-                num: '03',
-                title: 'You Learn to Create, Not Just Code',
-                desc: 'Startup sprints, team challenges, product demos and competitions push you beyond textbook projects. You learn how to spot problems, build solutions and confidently defend what you create.',
-                chips: ['TheCodeSpark Technologies Pvt Ltd Live Sprints'],
-                img: '/assets/aistudio/TheCodeSpark_AI_Coding_Conference_d7477d11.png',
-              },
-            ].map((step) => (
-              <div
-                key={step.num}
-                className="rounded-3xl bg-[#111118] border border-white/10 p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center"
-              >
-                <div className="lg:col-span-7 space-y-4">
-                  <div className="text-3xl font-black font-display text-[#A855F7]">
-                    {step.num}
-                  </div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-white font-display">
-                    {step.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                    {step.desc}
-                  </p>
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {step.chips.map((c) => (
-                      <span
-                        key={c}
-                        className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[11px] font-mono text-neutral-300"
-                      >
-                        {c}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="lg:col-span-5">
-                  <div className="aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 bg-[#0b0b10]">
-                    <img
-                      src={step.img}
-                      onError={(e) => {
-                        e.currentTarget.src = rohitPhoto;
-                      }}
-                      alt={step.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-5">
+            <div>
+              <div className="font-mono text-[11px] font-bold tracking-[0.18em] uppercase text-[#EA2814]">
+                04 / WHAT STUDENTS MISS
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          8. "Built To Make You Sharper. Every Single Day." — 3-CARD PURPLE SPOTLIGHT (Frame 00:07)
-          ========================================================================= */}
-      <section className="py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-10 text-center">
-          <div className="space-y-2">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-[#A855F7]">
-              IMMERSIVE RIGOR
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-black font-display tracking-tight text-white">
-              Built To Make You Sharper. Every Single Day.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-            {/* Left Card */}
-            <motion.div
-              onMouseEnter={() => setHovered3dCard(0)}
-              onMouseLeave={() => setHovered3dCard(null)}
-              animate={{ y: hovered3dCard === 0 ? -4 : 0 }}
-              className="rounded-3xl bg-[#111118] border border-white/10 p-8 flex flex-col justify-between text-left"
-            >
-              <div>
-                <div className="text-4xl font-black text-white font-display">
-                  100 <span className="text-lg font-normal text-neutral-400">Days</span>
-                </div>
-                <div className="text-xs font-mono font-bold text-[#A855F7] mt-1">
-                  No Room for Passive Learning
-                </div>
-              </div>
-              <p className="text-xs text-neutral-400 leading-relaxed mt-8">
-                You code, build, present and are challenged throughout the programme. Watching classes alone is never considered progress.
-              </p>
-            </motion.div>
-
-            {/* Elevated Purple Center Card */}
-            <motion.div
-              onMouseEnter={() => setHovered3dCard(1)}
-              onMouseLeave={() => setHovered3dCard(null)}
-              animate={{ y: hovered3dCard === 1 ? -6 : 0 }}
-              className="rounded-3xl bg-gradient-to-b from-[#6D28D9] to-[#4C1D95] border border-[#A855F7]/50 p-8 flex flex-col justify-between text-center shadow-[0_0_60px_-10px_rgba(139,92,246,0.6)] md:-my-3"
-            >
-              <div>
-                <div className="text-5xl font-black text-white font-display">
-                  500+ <span className="text-lg font-medium text-white/80">Hours</span>
-                </div>
-                <div className="text-xs font-semibold text-white/90 mt-1">
-                  Professional learning space
-                </div>
-              </div>
-              <p className="text-xs text-white/85 leading-relaxed mt-8">
-                Daily training, live mentorship, hands-on practice, and constant feedback designed to keep your growth on track.
-              </p>
-            </motion.div>
-
-            {/* Right Card */}
-            <motion.div
-              onMouseEnter={() => setHovered3dCard(2)}
-              onMouseLeave={() => setHovered3dCard(null)}
-              animate={{ y: hovered3dCard === 2 ? -4 : 0 }}
-              className="rounded-3xl bg-[#111118] border border-white/10 p-8 flex flex-col justify-between text-left"
-            >
-              <div>
-                <div className="text-4xl font-black text-white font-display">
-                  40 <span className="text-lg font-normal text-neutral-400">Challenges</span>
-                </div>
-                <div className="text-xs font-mono font-bold text-[#A855F7] mt-1">
-                  Where Knowledge Gets Tested
-                </div>
-              </div>
-              <p className="text-xs text-neutral-400 leading-relaxed mt-8">
-                Design sprints, team competitions, startup activities and debugging challenges that reveal what you can actually do.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          9. MENTORS CAROUSEL + STUDENT SPOTLIGHTS (Frames 00:08 - 00:11)
-          ========================================================================= */}
-      <section className="py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-12">
-          {/* Mentors Header */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div className="space-y-1.5">
-              <h2 className="text-2xl sm:text-4xl font-black font-display text-white">
-                Learn From People Who’ve Actually Done the Work
+              <h2 className="text-3xl sm:text-5xl font-black font-display uppercase tracking-[-0.03em] text-white mt-1">
+                Built Around Everything a Student Usually Misses
               </h2>
-              <p className="text-xs sm:text-sm text-neutral-400">
-                Taught directly by Founders, Tech Leads &amp; Principal Engineers
-              </p>
             </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setMentorSlide((p) => (p - 1 + mentors.length) % mentors.length)}
-                aria-label="Previous mentor"
-                className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center cursor-pointer"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setMentorSlide((p) => (p + 1) % mentors.length)}
-                aria-label="Next mentor"
-                className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center cursor-pointer"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
+
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#EA2814] animate-pulse">
+                SCANNING DAILY EXECUTION...
+              </span>
+              <span className="px-2.5 py-1 border border-[#EA2814] text-[#EA2814] font-mono text-[10px] font-bold uppercase -rotate-3">
+                VERIFIED ✓
+              </span>
             </div>
           </div>
 
-          <AnimatePresence mode="wait">
+          {/* Animated Red Laser Scanner Line */}
+          <div className="relative h-0.5 bg-white/10 overflow-hidden">
             <motion.div
-              key={currentMentor.name}
-              initial={{ opacity: 0, x: 12 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -12 }}
-              transition={{ duration: 0.25 }}
-              className="rounded-3xl bg-[#111118] border border-white/10 p-6 sm:p-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center"
-            >
-              <div className="md:col-span-4 aspect-[4/4] rounded-2xl overflow-hidden border border-white/10">
-                <img
-                  src={currentMentor.photo}
-                  onError={(e) => {
-                    e.currentTarget.src = rohitPhoto;
-                  }}
-                  alt={currentMentor.name}
-                  className="w-full h-full object-cover object-top"
-                />
-              </div>
-              <div className="md:col-span-8 space-y-3">
-                <div className="text-xs font-mono font-bold text-[#A855F7]">
-                  {currentMentor.company}
+              animate={{ x: ['-30%', '130%'] }}
+              transition={{ duration: 3.2, repeat: Infinity, ease: 'linear' }}
+              className="w-1/3 h-full bg-gradient-to-r from-transparent via-[#EA2814] to-transparent"
+            />
+          </div>
+
+          {/* Sticky Stacking Card Deck (01 -> 02 -> 03) + Classroom Showcase */}
+          <StickyStackedMissesSection
+            fallbackPhoto={rohitPhoto}
+            onMeetMentors={() => scrollToSection('it-mentors')}
+          />
+        </div>
+      </section>
+
+      {/* =========================================================================
+          BAND 7 (CREAM #F1EFE9): 05 / IMMERSIVE RIGOR + SPOTLIGHTS (SCRIBE CALLOUT)
+          Matches Video 00:13 - 00:14
+          ========================================================================= */}
+      <section className="bg-[#F1EFE9] text-[#0E0E0E] py-16 sm:py-24 relative">
+        <SectionSeamDropSvg variant="right" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-16">
+          {/* 100 Days / 500+ Hours / 40 Challenges */}
+          <div className="space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#0E0E0E]/15 pb-4">
+              <div>
+                <div className="font-mono text-[11px] font-bold tracking-[0.18em] uppercase text-[#EA2814]">
+                  05 / IMMERSIVE RIGOR
                 </div>
-                <h3 className="text-2xl font-black text-white font-display">
-                  {currentMentor.name}
-                </h3>
-                <div className="text-xs text-neutral-400">{currentMentor.role}</div>
-                <p className="text-sm text-neutral-300 leading-relaxed pt-1">
-                  “{currentMentor.quote}”
-                </p>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {currentMentor.badges.map((b) => (
-                    <span
-                      key={b}
-                      className="px-3 py-1 rounded-full bg-[#7C3AED]/15 border border-[#8B5CF6]/30 text-[11px] font-mono text-[#C084FC]"
-                    >
-                      {b}
-                    </span>
-                  ))}
-                </div>
+                <h2 className="text-3xl sm:text-5xl font-black font-display uppercase tracking-[-0.03em] text-[#0E0E0E] mt-1">
+                  Built To Make You Sharper. Every Single Day.
+                </h2>
               </div>
-            </motion.div>
-          </AnimatePresence>
+
+              {/* SCRIBE-style Floating Dashed Callout Tag */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false, amount: 0.4 }}
+                transition={{ type: 'spring', stiffness: 160, damping: 16 }}
+                className="px-4 py-2 border border-dashed border-[#EA2814] bg-white font-mono text-[11px] font-bold text-[#0E0E0E] shrink-0"
+              >
+                <span className="text-[#EA2814]">●</span> Updated every cohort • Live Reviews ✓
+              </motion.div>
+            </div>
+
+            <Perspective3DRigorCards />
+          </div>
 
           {/* Student Spotlights */}
-          <div className="space-y-6 pt-4">
-            <h2 className="text-3xl sm:text-4xl font-black font-display text-white text-center leading-tight">
-              Why So Many Students Say,
-              <br />
-              I Should’ve Joined Earlier
-            </h2>
+          <div className="space-y-8">
+            <h3 className="text-2xl sm:text-4xl font-black font-display uppercase tracking-tight text-[#0E0E0E]">
+              Why So Many Students Say, I Should’ve Joined Earlier
+            </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="rounded-3xl bg-[#111118] border border-white/10 p-5 sm:p-6 space-y-4">
+              <div className="bg-white border-2 border-[#0E0E0E] p-5 sm:p-6 space-y-4 shadow-[6px_6px_0px_#0E0E0E]">
                 <div className="flex items-center justify-between text-[10px] font-mono">
-                  <span className="px-2.5 py-0.5 rounded bg-[#7C3AED]/20 text-[#C084FC] font-bold">
+                  <span className="px-2.5 py-0.5 bg-[#0E0E0E] text-white font-bold">
                     STUDENTS SPOTLIGHT
                   </span>
-                  <span className="text-neutral-400">MERN BATCH</span>
+                  <span className="text-[#0E0E0E]/60 font-bold">MERN BATCH</span>
                 </div>
-                <div className="aspect-[16/10] rounded-2xl overflow-hidden border border-white/10">
+                <div className="aspect-[16/10] overflow-hidden border border-[#0E0E0E]/20">
                   <img
                     src="/assets/aistudio/TheCodeSpark_AI_Coding_Conference_d7477d11.png"
                     onError={(e) => {
                       e.currentTarget.src = rohitPhoto;
                     }}
-                    alt="Winner Team"
+                    alt="Winner Team 3 Tigada"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <div className="text-[11px] font-mono text-[#A855F7] font-bold">
+                  <div className="text-[11px] font-mono text-[#EA2814] font-bold">
                     WINNER TEAM · 3 TIGADA
                   </div>
-                  <h4 className="text-lg font-bold text-white font-display">
-                    Mini Hedghest Winner
+                  <h4 className="text-lg font-black text-[#0E0E0E] font-display uppercase">
+                    Mini HedSprint Winner
                   </h4>
-                  <p className="text-xs text-neutral-400 leading-relaxed">
-                    Big congratulations to Team 3 Tigada for winning our Mini Project Batch. A well deserved win, and we hope this is just the beginning of many more milestones for the team. Keep building, keep learning, and keep leading!
+                  <p className="text-xs text-[#0E0E0E]/75 leading-relaxed">
+                    Big congratulations to Team 3 Tigada for winning our Mini HedSprint in Batch. A well deserved win, and we hope this is just the beginning of many more milestones for the team. Keep building, keep learning, and keep inspiring!
                   </p>
                 </div>
               </div>
 
-              <div className="rounded-3xl bg-[#111118] border border-white/10 p-5 sm:p-6 space-y-4">
+              <div className="bg-white border-2 border-[#0E0E0E] p-5 sm:p-6 space-y-4 shadow-[6px_6px_0px_#EA2814]">
                 <div className="flex items-center justify-between text-[10px] font-mono">
-                  <span className="px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">
+                  <span className="px-2.5 py-0.5 bg-[#EA2814] text-white font-bold">
                     THECODESPARK SUCCESS
                   </span>
-                  <span className="text-neutral-400">OFF-CAMPUS CRACKED</span>
+                  <span className="text-[#0E0E0E]/60 font-bold">OFF-CAMPUS CRACKED</span>
                 </div>
-                <div className="aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 relative">
+                <div className="aspect-[16/10] overflow-hidden border border-[#0E0E0E]/20 relative">
                   <img
                     src="/assets/aistudio/faculty_nirved_kumar.png"
                     onError={(e) => {
@@ -1118,19 +1387,19 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                     alt="Off-Campus Cracked Offer"
                     className="w-full h-full object-cover object-top"
                   />
-                  <span className="absolute bottom-3 left-3 px-2.5 py-1 rounded bg-[#7C3AED] text-white text-[10px] font-mono font-bold">
+                  <span className="absolute bottom-3 left-3 px-2.5 py-1 bg-[#EA2814] text-white text-[10px] font-mono font-bold">
                     GOT PLACED IN RECESSION
                   </span>
                 </div>
                 <div className="space-y-1.5">
-                  <div className="text-[11px] font-mono text-[#A855F7] font-bold">
+                  <div className="text-[11px] font-mono text-[#EA2814] font-bold">
                     CRACKED SDE ROLE
                   </div>
-                  <h4 className="text-lg font-bold text-white font-display">
+                  <h4 className="text-lg font-black text-[#0E0E0E] font-display uppercase">
                     How He Cracked 18+ LPA in Slowdown
                   </h4>
-                  <p className="text-xs text-neutral-400 leading-relaxed">
-                    He cracked a top package at a high-growth tech startup during a tight hiring cycle. Mastered backend architecture, microservices, and system design from scratch through daily accountability.
+                  <p className="text-xs text-[#0E0E0E]/75 leading-relaxed">
+                    He cracked a top package at a high-growth tech startup during the market slowdown. Mastered backend architecture, microservices, and system design from scratch through daily accountability.
                   </p>
                 </div>
               </div>
@@ -1140,36 +1409,259 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
       </section>
 
       {/* =========================================================================
-          10. FREQUENTLY ASKED QUESTIONS & CTA (Frame 00:12)
+          BAND 8 (VOID BLACK #0A0A0A): 06 / MENTORS & CREDIFLOW ROLLING PRICING LEDGER
+          Matches Video 00:15 - 00:19
           ========================================================================= */}
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-10">
-          {/* Pre-FAQ Action Card */}
-          <div className="rounded-3xl bg-gradient-to-r from-[#171126] to-[#111118] border border-[#8B5CF6]/35 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-            <div className="space-y-2 text-xs sm:text-sm text-neutral-300">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#A855F7]" />
-                <span>1-on-1 Code Review &amp; Doubt Mentorship</span>
+      <section id="it-mentors" className="bg-[#0A0A0A] text-[#F5F4F0] py-16 sm:py-24 relative">
+        <SectionSeamDropSvg variant="center" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-20">
+          {/* 6-Card Mentor Grid */}
+          <div className="space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-5">
+              <div>
+                <div className="font-mono text-[11px] font-bold tracking-[0.18em] uppercase text-[#EA2814]">
+                  06 / FACULTY &amp; MENTORS
+                </div>
+                <h2 className="text-2xl sm:text-4xl font-black font-display uppercase text-white mt-1">
+                  Learn From People Who’ve Actually Done the Work
+                </h2>
+                <p className="text-xs font-mono text-neutral-400 mt-1">
+                  Taught directly by Founders, Tech Leads &amp; Principal Engineers
+                </p>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#A855F7]" />
-                <span>100% Placement Support &amp; Referral Access</span>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={() => setMentorOffset((p) => (p - 1 + mentors.length) % mentors.length)}
+                  aria-label="Previous mentor"
+                  className="w-10 h-10 bg-white/5 hover:bg-[#EA2814] border border-white/15 flex items-center justify-center cursor-pointer transition-colors"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setMentorOffset((p) => (p + 1) % mentors.length)}
+                  aria-label="Next mentor"
+                  className="w-10 h-10 bg-white/5 hover:bg-[#EA2814] border border-white/15 flex items-center justify-center cursor-pointer transition-colors"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
               </div>
             </div>
 
-            <button
-              onClick={onApplyNow}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:brightness-110 text-white text-xs sm:text-sm font-bold cursor-pointer shrink-0 shadow-lg shadow-[#7C3AED]/25"
-            >
-              Apply to Intensive Training →
-            </button>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+              {orderedMentors.map((mentor) => (
+                <motion.div
+                  key={mentor.name}
+                  layout
+                  transition={{ duration: 0.28 }}
+                  className="bg-[#111111] border border-white/15 hover:border-[#EA2814] flex flex-col justify-between group transition-colors"
+                >
+                  <div className="aspect-[4/4.3] overflow-hidden bg-black">
+                    <img
+                      src={mentor.photo}
+                      onError={(e) => {
+                        e.currentTarget.src = rohitPhoto;
+                      }}
+                      alt={mentor.name}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-3 space-y-2 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="text-xs font-bold text-white font-display leading-snug truncate">
+                        {mentor.name}
+                      </div>
+                      <div className="text-[10px] text-neutral-400 leading-tight truncate mt-0.5">
+                        {mentor.role}
+                      </div>
+                    </div>
+                    <div className="pt-1">
+                      <span
+                        className={`inline-block w-full text-center px-1.5 py-1 text-[8px] font-mono font-bold tracking-wider uppercase truncate ${
+                          mentor.isChief
+                            ? 'bg-[#EA2814] text-white'
+                            : 'bg-white/[0.05] border border-white/10 text-neutral-400'
+                        }`}
+                      >
+                        {mentor.tag}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Cohort Pricing (CREDIFLOW Rolling Number Counter + Checklist) */}
+          <div id="it-cohort" className="space-y-8">
+            <div className="text-center space-y-2">
+              <div className="font-mono text-[11px] font-bold tracking-[0.2em] uppercase text-[#EA2814]">
+                UPCOMING COHORT ADMISSIONS
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-black font-display uppercase tracking-[-0.03em] text-white leading-tight">
+                Build The Best Version Of Yourself In 4 Months.
+              </h2>
+            </div>
+
+            <div className="bg-[#111111] border-2 border-[#EA2814] p-7 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch shadow-[0_0_70px_-20px_rgba(234,40,20,0.35)]">
+              <div className="lg:col-span-5 flex flex-col justify-between space-y-6 text-left">
+                <div className="space-y-5">
+                  <div className="flex items-center justify-between border-b border-white/15 pb-3.5">
+                    <div className="text-[11px] font-mono font-bold tracking-widest text-[#EA2814] uppercase">
+                      THECODESPARK BOOTCAMP
+                    </div>
+                    <span className="font-mono text-[10px] text-emerald-400 uppercase tracking-wider font-bold">
+                      ● COHORT OPEN
+                    </span>
+                  </div>
+
+                  {/* Live Animated Rolling Rupee Counter */}
+                  <div className="space-y-2 pt-1">
+                    <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-400">
+                      TOTAL PROGRAM INVESTMENT
+                    </div>
+                    <div className="flex items-baseline gap-2.5">
+                      <span className="text-5xl sm:text-6xl font-black font-display text-white tracking-tight">
+                        <AnimatedRupeeCounter target={35000} />
+                      </span>
+                      <span className="text-xs text-neutral-400 font-mono font-semibold">
+                        (+GST)
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-xs sm:text-sm font-mono text-neutral-300 leading-relaxed border-l-2 border-[#EA2814] pl-3.5 py-0.5">
+                    Special cohort fee applicable exclusively for the upcoming 100-day batch. Includes full studio access, live project defenses, and career placement support.
+                  </p>
+                </div>
+
+                <div className="space-y-3 pt-4 border-t border-white/10">
+                  <button
+                    onClick={onApplyNow}
+                    className="w-full py-4 px-6 bg-[#EA2814] hover:bg-white hover:text-[#0E0E0E] text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider cursor-pointer transition-colors flex items-center justify-center gap-2"
+                  >
+                    <span>Apply to Intensive Training</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                  <div className="text-center font-mono text-[10px] tracking-wider uppercase text-neutral-500">
+                    Limited Seats Per Cohort • Seat Reservation &amp; EMI Available
+                  </div>
+                </div>
+              </div>
+
+              <div className="lg:col-span-7 bg-[#F1EFE9] text-[#0E0E0E] border-2 border-white p-6 sm:p-8 flex flex-col justify-between">
+                <div className="flex items-center justify-between border-b-2 border-[#0E0E0E] pb-3 mb-2">
+                  <span className="text-[11px] font-mono font-black tracking-widest text-[#EA2814] uppercase">
+                    WHAT YOUR 100 DAYS INCLUDE
+                  </span>
+                  <span className="text-[10px] font-mono font-bold text-[#0E0E0E]/60 uppercase">
+                    06 CORE DELIVERABLES
+                  </span>
+                </div>
+
+                <div className="divide-y divide-[#0E0E0E]/15">
+                  {[
+                    {
+                      title: 'Full-Time Immersive Studio (11 AM – 5 PM)',
+                      sub: '6 hours of daily structured execution, coding drills, and live studio mentorship.',
+                    },
+                    {
+                      title: '5 Technical Engineering Classes Every Week',
+                      sub: 'Hands-on mastery across Frontend, Backend, System Design, Cloud & GenAI.',
+                    },
+                    {
+                      title: '3 Communication & Career Sessions Every Week',
+                      sub: 'Dedicated fluency, technical presentation, and HR/behavioral confidence training.',
+                    },
+                    {
+                      title: '2 Full-Day Build Challenges Every Week',
+                      sub: 'Real-world sprints, startup MVPs, and live jury project defenses under deadlines.',
+                    },
+                    {
+                      title: '1-on-1 Code Reviews & Doubt Mentorship',
+                      sub: 'Line-by-line PR walkthroughs and direct debugging so you never stay stuck.',
+                    },
+                    {
+                      title: '100% Placement Support & Referral Access',
+                      sub: 'ATS resume engineering, mock interviews, and direct referrals to 300+ partners.',
+                    },
+                  ].map((item, i) => (
+                    <motion.div
+                      key={item.title}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ duration: 0.35, delay: i * 0.06 }}
+                      className="py-3 first:pt-2 last:pb-0 flex items-start gap-3"
+                    >
+                      <CheckCircle2 className="w-4 h-4 text-[#EA2814] shrink-0 mt-0.5" />
+                      <div className="space-y-0.5">
+                        <div className="text-xs sm:text-sm font-display font-extrabold text-[#0E0E0E] leading-snug">
+                          {item.title}
+                        </div>
+                        <p className="text-[11px] font-mono text-[#0E0E0E]/70 leading-relaxed">
+                          {item.sub}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          BAND 9 (CREAM #F1EFE9): "EVERY ENGINEER CARRIES A REAL IMPRINT."
+          + SCROLL-DRAWN RED FINGERPRINT + FREQUENTLY ASKED QUESTIONS
+          Matches Video 00:19 - 00:22
+          ========================================================================= */}
+      <section className="bg-[#F1EFE9] text-[#0E0E0E] py-16 sm:py-24 relative">
+        <SectionSeamDropSvg variant="left" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-20">
+          {/* Human Imprint + Scroll-Drawn Red Fingerprint */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <div className="lg:col-span-7 space-y-8">
+              <h2 className="text-4xl sm:text-6xl font-black font-display uppercase tracking-[-0.04em] leading-[0.9] text-[#0E0E0E]">
+                EVERY ENGINEER
+                <br />
+                CARRIES A
+                <br />
+                <span className="text-[#EA2814]">REAL IMPRINT.</span>
+              </h2>
+
+              <p className="font-mono text-xs sm:text-sm text-[#0E0E0E]/75 max-w-md leading-relaxed">
+                Mine comes from enforcing daily accountability, shaping how engineers think, and building production systems that hold up in real interviews.
+              </p>
+
+              <div className="pt-4 border-t border-[#0E0E0E]/20 max-w-sm">
+                <div className="text-lg font-black font-display uppercase text-[#0E0E0E]">
+                  MR. ROHIT KASHYAP.
+                </div>
+                <div className="font-mono text-xs text-[#0E0E0E]/65">
+                  Founder &amp; CEO, TheCodeSpark Technologies Private Limited.
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5">
+              <FingerprintImprintSvg />
+            </div>
           </div>
 
           {/* FAQ Accordion */}
-          <div className="space-y-6">
-            <h2 className="text-2xl sm:text-4xl font-black font-display text-white text-center">
-              Frequently Asked Questions
-            </h2>
+          <div className="space-y-8 border-t border-[#0E0E0E]/15 pt-14">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+              <h3 className="text-2xl sm:text-4xl font-black font-display uppercase text-[#0E0E0E]">
+                Frequently Asked Questions
+              </h3>
+              <span className="font-mono text-xs text-[#0E0E0E]/65">
+                Admissions &amp; Curriculum Support
+              </span>
+            </div>
 
             <div className="space-y-3">
               {faqs.map((f, idx) => {
@@ -1177,16 +1669,20 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                 return (
                   <div
                     key={f.q}
-                    className="rounded-2xl bg-[#111118] border border-white/10 overflow-hidden"
+                    className={`border transition-colors ${
+                      isOpen ? 'bg-white border-[#0E0E0E]' : 'bg-white/60 border-[#0E0E0E]/20'
+                    }`}
                   >
                     <button
                       onClick={() => setOpenFaqIdx(isOpen ? null : idx)}
-                      className="w-full px-6 py-4 flex items-center justify-between gap-4 text-left cursor-pointer hover:bg-white/[0.02] transition-colors"
+                      className="w-full px-6 py-4 flex items-center justify-between gap-4 text-left cursor-pointer"
                     >
-                      <span className="text-sm font-bold text-white">{f.q}</span>
+                      <span className="text-sm sm:text-base font-bold font-display text-[#0E0E0E]">
+                        {f.q}
+                      </span>
                       <ChevronDown
-                        className={`w-4 h-4 text-neutral-400 shrink-0 transition-transform ${
-                          isOpen ? 'rotate-180 text-[#A855F7]' : ''
+                        className={`w-4 h-4 text-[#0E0E0E]/60 shrink-0 transition-transform ${
+                          isOpen ? 'rotate-180 text-[#EA2814]' : ''
                         }`}
                       />
                     </button>
@@ -1199,7 +1695,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                           transition={{ duration: 0.22 }}
                           className="overflow-hidden"
                         >
-                          <div className="px-6 pb-5 pt-2 border-t border-white/[0.06] text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                          <div className="px-6 pb-5 pt-2 border-t border-[#0E0E0E]/10 text-xs sm:text-sm text-[#0E0E0E]/75 leading-relaxed">
                             {f.a}
                           </div>
                         </motion.div>
@@ -1214,15 +1710,70 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
       </section>
 
       {/* =========================================================================
-          FLOATING STICKY BOTTOM ACTION PILL BAR (Exact match to video frames)
+          BAND 10 (VOID BLACK #0A0A0A): "HAVE A CAREER WORTH UNTANGLING?"
+          + DRAGGABLE / HOVERABLE UNTANGLE THREAD
+          Matches Video 00:23 - 00:25
+          ========================================================================= */}
+      <section className="bg-[#0A0A0A] text-[#F5F4F0] pt-16 sm:pt-24 pb-28 relative">
+        <SectionSeamDropSvg variant="center" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <div className="lg:col-span-7 space-y-8">
+              <h2 className="text-4xl sm:text-6xl lg:text-[74px] font-black font-display uppercase tracking-[-0.04em] leading-[0.88] text-white">
+                HAVE A CAREER
+                <br />
+                WORTH
+                <br />
+                <span className="text-[#EA2814]">UNTANGLING?</span>
+              </h2>
+
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                <button
+                  onClick={onApplyNow}
+                  className="inline-flex items-center gap-2 font-mono text-sm sm:text-base font-bold uppercase tracking-wider text-white border-b-2 border-[#EA2814] pb-1.5 hover:text-[#EA2814] transition-colors cursor-pointer"
+                >
+                  <span>APPLY TO INTENSIVE TRAINING</span>
+                  <ArrowUpRight className="w-5 h-5" />
+                </button>
+
+                <button
+                  onClick={onRequestCallback}
+                  className="px-5 py-2.5 border border-white/25 hover:border-[#EA2814] font-mono text-xs font-bold uppercase tracking-wider text-neutral-300 hover:text-white transition-colors cursor-pointer"
+                >
+                  REQUEST CALLBACK →
+                </button>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5">
+              <InteractiveUntangleSvg />
+            </div>
+          </div>
+
+          <div className="border-t border-white/10 pt-6 flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] text-neutral-400">
+            <button
+              onClick={scrollToTop}
+              className="inline-flex items-center gap-1.5 hover:text-[#EA2814] transition-colors cursor-pointer uppercase tracking-widest"
+            >
+              <span>BACK TO TOP</span>
+              <ArrowUp className="w-3.5 h-3.5" />
+            </button>
+            <span>© 2026 TheCodeSpark Technologies Private Limited • 7398839769 / 9548248925</span>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          FLOATING STICKY BOTTOM ACTION PILL BAR
           ========================================================================= */}
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[94%] max-w-2xl">
-        <div className="rounded-2xl bg-[#14141d]/95 backdrop-blur-md border border-white/15 px-3.5 sm:px-5 py-2.5 shadow-2xl flex items-center justify-between gap-3">
+        <div className="bg-[#0E0E0E]/95 backdrop-blur-md border border-white/20 px-4 sm:px-5 py-2.5 shadow-2xl flex items-center justify-between gap-3">
           <button
             onClick={onRequestCallback}
-            className="flex items-center gap-2 text-xs font-semibold text-neutral-200 hover:text-white cursor-pointer shrink-0"
+            className="flex items-center gap-2 font-mono text-xs font-bold text-neutral-200 hover:text-[#EA2814] cursor-pointer shrink-0 transition-colors"
           >
-            <Phone className="w-3.5 h-3.5 text-[#A855F7]" />
+            <Phone className="w-3.5 h-3.5 text-[#EA2814]" />
             <span>Request Callback</span>
           </button>
 
@@ -1232,7 +1783,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
 
           <button
             onClick={onApplyNow}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#7C3AED] to-[#A855F7] hover:brightness-110 text-white text-xs font-bold cursor-pointer shrink-0 shadow-md shadow-[#7C3AED]/30"
+            className="px-4 py-2 bg-[#EA2814] hover:bg-white hover:text-[#0E0E0E] text-white font-mono text-xs font-bold uppercase tracking-wider cursor-pointer shrink-0 transition-colors"
           >
             Apply to Intensive Training →
           </button>
