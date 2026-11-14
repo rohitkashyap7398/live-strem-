@@ -13,8 +13,8 @@ export function useGlobalButtonEffects() {
     let activeBtn: HTMLElement | null = null;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const target = e.target as HTMLElement | null;
-      if (!target) return;
+      const target = e.target;
+      if (!(target instanceof Element)) return;
 
       const button = target.closest('button:not([data-magnetic="true"]):not([disabled])') as HTMLElement | null;
 
@@ -37,8 +37,8 @@ export function useGlobalButtonEffects() {
     };
 
     const handleMouseOut = (e: MouseEvent) => {
-      const target = e.target as HTMLElement | null;
-      if (target && target.tagName === 'BUTTON') {
+      const target = e.target;
+      if (target instanceof HTMLElement && target.tagName === 'BUTTON') {
         target.style.transform = 'translate3d(0px, 0px, 0px)';
         target.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
       }

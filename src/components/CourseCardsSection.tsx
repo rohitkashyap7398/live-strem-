@@ -26,7 +26,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
     {
       course: COURSES[0], // IGNITE 1.0
       cardType: 'light' as const,
-      badge: '🔥 IGNITE 1.0 LIVE',
+      badge: '🔥 LIVE NOW',
       brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
       title: 'IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career',
       desc: 'Transform your passion for technology into professional skills with our AI-powered learning program. Master Full Stack Web Development, Generative AI, Data Structures & Algorithms, Aptitude & Reasoning, DevOps, Web3, and System Design through practical learning and real-world projects. Build your skills, strengthen your problem-solving abilities, and prepare for opportunities in the technology industry.',
@@ -37,12 +37,13 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
       originalPrice: 'Rs.11999',
       imageSide: 'left' as const,
       visualType: 'instructor-web' as const,
+      isComingSoon: false,
       tags: ['Job Ready', 'Full Stack + GenAI', 'DSA', 'DevOps & Web3', 'System Design']
     },
     {
       course: COURSES[1], // IGNITE 2.0
       cardType: 'orange' as const,
-      badge: 'IGNITE 2.0 LIVE • COMING SOON',
+      badge: 'COMING SOON',
       brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
       title: 'Future-Ready Developer Program: Full Stack Engineering + AI Integration + Data Structures & Algorithms + Logical Reasoning + Cloud & DevOps + System Architecture',
       desc: 'Complete 9 Master Episodes: Web Fundamentals, React 19 & Next.js, Node.js & MongoDB, GenAI Engineering, DevOps, Micro-Services & Web3, DSA in Java, Aptitude & System Design.',
@@ -89,6 +90,57 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
       visualType: 'ai-agents' as const,
       isComingSoon: true,
       tags: ['Coming Soon', 'LangChain', 'Gemini API', 'Vector DB', 'Multi-Agent']
+    },
+    {
+      course: COURSES[3] || COURSES[0], // Java & DSA Domination
+      cardType: 'light' as const,
+      badge: 'COMING SOON',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: 'Java & DSA Domination: Core Java + Data Structures & Algorithms + Logic Building + Deep Learning',
+      desc: 'Master Object-Oriented Java, Data Structures & Algorithms, deep problem-solving logic, and FAANG-level coding interview patterns with structured live mentorship.',
+      duration: '160+ Hours',
+      certified: 'Yes Certified',
+      support: '24/7 Mentor Support',
+      price: 'Rs.4236',
+      originalPrice: 'Rs.10000',
+      imageSide: 'left' as const,
+      visualType: 'java-dsa' as const,
+      isComingSoon: true,
+      tags: ['Coming Soon', 'Java & DSA', 'Logic Building', 'Deep Learning']
+    },
+    {
+      course: COURSES[4] || COURSES[0], // Complete Developer Toolkit
+      cardType: 'dark' as const,
+      badge: 'COMING SOON • AI • CODING • TOOLS',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: 'Complete Developer Toolkit: Programming Languages + Code Editors (Free) + AI Coding Tools & Workflow',
+      desc: 'Learn multiple languages (Python, C++, JS, Java, C#, TypeScript, Go, Kotlin, Swift), industry-standard code editors (VS Code, Visual Studio, IntelliJ IDEA, WebStorm, GoLand), and AI coding tools (GitHub Copilot, Replit AI, Google Colab AI, Codeium, Cursor IDE, Windsurf) from Code → Build → Test → Deploy → Automate → Scale.',
+      duration: '120+ Hours',
+      certified: 'Yes Certified',
+      support: '24/7 Mentor Support',
+      price: 'Rs.4999',
+      originalPrice: 'Rs.9999',
+      imageSide: 'right' as const,
+      visualType: 'dev-toolkit' as const,
+      isComingSoon: true,
+      tags: ['Coming Soon', 'Languages', 'Code Editors', 'AI Coding Tools', 'Dev Workflow']
+    },
+    {
+      course: COURSES.find((c) => c.id === 'trading-mastery') || COURSES[COURSES.length - 1], // Stock Market, Crypto & Algo Trading Mastery
+      cardType: 'terracotta' as const,
+      badge: 'COMING SOON',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: 'Stock Market, Options & Algo Trading Mastery: Price Action + Crypto Spot + F&O & Automated Bots',
+      desc: 'Master candlestick price action, order book depth, BTC/USDT & equity spot markets, NIFTY/BankNifty options, multi-timeframe risk management, and Python algorithmic trading bots.',
+      duration: '140+ Hours',
+      certified: 'Yes Certified',
+      support: '24/7 Mentor Support',
+      price: 'Rs.6499',
+      originalPrice: 'Rs.14999',
+      imageSide: 'left' as const,
+      visualType: 'trading-pro' as const,
+      isComingSoon: true,
+      tags: ['Coming Soon', 'Price Action', 'Crypto & Spot', 'Options & F&O', 'Algo Trading']
     }
   ];
 
@@ -137,8 +189,21 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
             const isDark = item.cardType === 'dark';
             const isTerracotta = item.cardType === 'terracotta';
 
-            // Z-index increases so subsequent cards cleanly overlap previous cards on scroll
-            const zIndexClass = idx === 0 ? 'z-10' : idx === 1 ? 'z-20' : idx === 2 ? 'z-30' : 'z-40';
+            // Z-index increases so subsequent cards cleanly overlap previous cards on scroll while staying below Navbar (z-50)
+            const zIndexClass =
+              idx === 0
+                ? 'z-[11]'
+                : idx === 1
+                ? 'z-[12]'
+                : idx === 2
+                ? 'z-[13]'
+                : idx === 3
+                ? 'z-[14]'
+                : idx === 4
+                ? 'z-[15]'
+                : idx === 5
+                ? 'z-[16]'
+                : 'z-[17]';
             // Stepped sticky offset creates the visible card-deck tabs effect on both mobile and desktop
             const stickyTop = `calc(clamp(70px, 8.5vh, 90px) + ${idx * 14}px)`;
 
@@ -317,7 +382,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
 
 // High-fidelity visual mockup container replicating the cards from the screen recording
 const VisualMockup: React.FC<{
-  type: 'instructor-web' | 'data-ai' | 'laptop-code' | 'ai-agents';
+  type: 'instructor-web' | 'data-ai' | 'laptop-code' | 'ai-agents' | 'java-dsa' | 'dev-toolkit' | 'trading-pro';
   tags: string[];
   isDarkCard?: boolean;
   isOrangeCard?: boolean;
@@ -337,7 +402,21 @@ const VisualMockup: React.FC<{
       <div className="relative z-10 flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-black/70 backdrop-blur-md border border-white/15 text-[9px] sm:text-[10px] font-mono text-white">
           <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#ff5722]" />
-          <span>Interactive Cohort</span>
+          <span>
+            {type === 'instructor-web'
+              ? 'LIVE NOW • IGNITE 1.0'
+              : type === 'data-ai'
+              ? 'COMING SOON • IGNITE 2.0'
+              : type === 'laptop-code'
+              ? 'COMING SOON • IGNITE 3.0'
+              : type === 'ai-agents'
+              ? 'COMING SOON • IGNITE 4.0'
+              : type === 'java-dsa'
+              ? 'COMING SOON • JAVA & DSA'
+              : type === 'dev-toolkit'
+              ? 'COMING SOON • DEV TOOLKIT'
+              : 'COMING SOON • TRADING PRO'}
+          </span>
         </div>
 
         {tags[1] && (
@@ -348,117 +427,87 @@ const VisualMockup: React.FC<{
       </div>
 
       {/* Centerpiece Visual */}
-      <div className="relative z-10 my-auto py-2 flex items-center justify-center">
+      <div className="relative z-10 my-auto py-2.5 flex items-center justify-center">
         {type === 'instructor-web' && (
-          <div className="relative w-full max-w-[260px] sm:max-w-[280px] text-center">
-            <div className="relative mx-auto w-36 h-48 sm:w-44 sm:h-60 rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-[#E10600]/30 shadow-2xl group-hover:scale-105 transition-transform duration-500 bg-[#1a0f0a]">
+          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#ebeae6]">
               <img
-                src="/assets/aistudio/Ignite_1.0_Portrait_Poster_05139a11.png"
-                alt="IGNITE 1.0 LIVE - TheCodeSpark Technologies"
+                src="/assets/aistudio/IGNITE_1.0_Job-Ready_Tech_Career_Poster_13daf013.png"
+                alt="IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career"
                 className="w-full h-full object-cover object-top"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              <div className="absolute bottom-1.5 inset-x-0 text-center px-1">
-                <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider font-mono bg-black/60 px-2 py-0.5 rounded-full border border-white/10">
-                  Mr. Rohit Kashyap
-                </span>
-              </div>
-            </div>
-
-            {/* Floating pill tags */}
-            <div className="absolute -top-1.5 -left-1 sm:-top-2 sm:-left-2 bg-black/85 border border-white/20 text-white text-[9px] sm:text-[10px] font-mono px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1.5 backdrop-blur-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              IGNITE 1.0 LIVE
-            </div>
-            <div className="absolute -bottom-1.5 -right-1 sm:-bottom-2 sm:-right-2 bg-[#E10600] text-white text-[9px] sm:text-[10px] font-mono font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg">
-              Full Stack + GenAI
             </div>
           </div>
         )}
 
         {type === 'data-ai' && (
-          <div className="relative w-full max-w-[260px] sm:max-w-[280px] text-center">
-            <div className="relative mx-auto w-36 h-48 sm:w-44 sm:h-60 rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-white/25 shadow-2xl group-hover:scale-105 transition-transform duration-500 bg-[#16120e]">
+          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-blue-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#051238]">
               <img
-                src="/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png"
-                alt="Future-Ready Developer Program Lead Faculty"
+                src="/assets/aistudio/Ignite_2.0_Developer_Program_Poster_0af3eb9a.png"
+                alt="IGNITE 2.0 - Future-Ready Developer Program"
                 className="w-full h-full object-cover object-top"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              <div className="absolute bottom-1.5 inset-x-0 text-center px-1">
-                <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider font-mono bg-black/60 px-2 py-0.5 rounded-full border border-white/10">
-                  Lead Engineering Mentor
-                </span>
-              </div>
-            </div>
-
-            {/* Floating pill tags */}
-            <div className="absolute -top-1.5 -left-1 sm:-top-2 sm:-left-2 bg-black/90 border border-amber-400/40 text-white text-[9px] sm:text-[10px] font-mono px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1.5 backdrop-blur-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-              <span className="font-bold text-amber-300">IGNITE 2.0 LIVE</span>
-              <span className="text-[8px] bg-amber-400 text-black px-1.5 py-0.5 rounded font-extrabold uppercase tracking-wider">Coming Soon</span>
-            </div>
-            <div className="absolute -bottom-1.5 -right-1 sm:-bottom-2 sm:-right-2 bg-gradient-to-r from-[#d84414] to-yellow-500 text-white text-[9px] sm:text-[10px] font-mono font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg">
-              Full Stack + Cloud DevOps
             </div>
           </div>
         )}
 
         {type === 'laptop-code' && (
-          <div className="relative w-full max-w-[260px] sm:max-w-[280px] text-center">
-            <div className="relative mx-auto w-36 h-48 sm:w-44 sm:h-60 rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-white/20 shadow-2xl group-hover:scale-105 transition-transform duration-500 bg-[#16120e]">
+          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-orange-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#0b0907]">
               <img
-                src="/assets/aistudio/Warmly_Branded_Executive_Team_Portrait_67a8e1d1.png"
-                alt="TheCodeSpark Tech Mentorship & Executive Engineering Team"
+                src="/assets/aistudio/IGNITE_3.0_Developer_Cohort_Poster_2_2e0454b4.png"
+                alt="Next-Gen Developer Cohort: Web Technologies + MERN Stack + AI Applications + Problem Solving + Cloud Computing + System Design"
                 className="w-full h-full object-cover object-top"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
-              <div className="absolute bottom-1.5 inset-x-0 text-center px-1">
-                <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider font-mono bg-black/70 px-2 py-0.5 rounded-full border border-white/10">
-                  Lead Engineering Mentors
-                </span>
-              </div>
-            </div>
-
-            {/* Floating pill tags */}
-            <div className="absolute -top-1.5 -left-1 sm:-top-2 sm:-left-2 bg-black/90 border border-amber-400/40 text-white text-[9px] sm:text-[10px] font-mono px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1.5 backdrop-blur-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-              <span className="font-bold text-amber-300">IGNITE 3.0</span>
-              <span className="text-[8px] bg-amber-400 text-black px-1.5 py-0.5 rounded font-extrabold uppercase tracking-wider">Coming Soon</span>
-            </div>
-            <div className="absolute -bottom-1.5 -right-1 sm:-bottom-2 sm:-right-2 bg-gradient-to-r from-[#d84414] to-yellow-500 text-white text-[9px] sm:text-[10px] font-mono font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg">
-              Next-Gen Cohort
             </div>
           </div>
         )}
 
         {type === 'ai-agents' && (
-          <div className="relative w-full max-w-[260px] sm:max-w-[280px] text-center">
-            <div className="relative mx-auto w-36 h-48 sm:w-44 sm:h-60 rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-purple-500/30 shadow-2xl group-hover:scale-105 transition-transform duration-500 bg-[#0d0d12]">
-              <video
-                src="/assets/aistudio/From_Klickpin.com-_Need_fresh_inspiration_Try_these_fresh_mindset_reminder_ideas_to_make_your_next_project_easier_and_prettier_with_beginner-frien_f5c2db7f.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-cover"
+          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#062b16]">
+              <img
+                src="/assets/aistudio/Autonomous_AI_Agents_Tech_Talk_Poster_db3b38b0.png"
+                alt="Autonomous AI Agents & Full-Stack LLM Engineering"
+                className="w-full h-full object-cover object-top"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-1.5 inset-x-0 text-center px-1 pointer-events-none">
-                <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider font-mono bg-black/70 px-2 py-0.5 rounded-full border border-purple-500/30">
-                  AI Agents & LLMs
-                </span>
-              </div>
             </div>
+          </div>
+        )}
 
-            {/* Floating pill tags */}
-            <div className="absolute -top-1.5 -left-1 sm:-top-2 sm:-left-2 bg-black/90 border border-amber-400/40 text-white text-[9px] sm:text-[10px] font-mono px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1.5 backdrop-blur-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-              <span className="font-bold text-amber-300">IGNITE 4.0</span>
-              <span className="text-[8px] bg-amber-400 text-black px-1.5 py-0.5 rounded font-extrabold uppercase tracking-wider">Coming Soon</span>
+        {type === 'java-dsa' && (
+          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-indigo-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#b8c4de]">
+              <img
+                src="/assets/aistudio/JAVALogic__Building_Deep_Learning_399f2731.png"
+                alt="Java & DSA Domination - Logic Building & Deep Learning"
+                className="w-full h-full object-cover object-top"
+              />
             </div>
-            <div className="absolute -bottom-1.5 -right-1 sm:-bottom-2 sm:-right-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-[9px] sm:text-[10px] font-mono font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-lg">
-              Autonomous Swarms
+          </div>
+        )}
+
+        {type === 'dev-toolkit' && (
+          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-amber-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#120b04]">
+              <img
+                src="/assets/aistudio/TheCodeSpark_Developer_Toolkit_Poster_1d5ebe66.png"
+                alt="Complete Developer Toolkit - Languages, Code Editors & AI Coding Tools"
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+          </div>
+        )}
+
+        {type === 'trading-pro' && (
+          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#0a0b0e]">
+              <img
+                src="/assets/aistudio/Focused_Crypto_Trading_Workspace_58db5cbb.png"
+                alt="Stock Market, Options & Algo Trading Mastery"
+                className="w-full h-full object-cover object-top"
+              />
             </div>
           </div>
         )}

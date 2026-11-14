@@ -26,7 +26,7 @@ export interface Course {
   tags: string[];
   weeksBadge?: string;
   enrolledCount?: string;
-  catalogGraphic?: 'fullstack' | 'datascience' | 'mobile' | 'devops' | 'uiux' | 'cybersecurity';
+  catalogGraphic?: 'fullstack' | 'datascience' | 'mobile' | 'devops' | 'uiux' | 'cybersecurity' | 'trading';
   isLive?: boolean;
   isPopular?: boolean;
   isFree?: boolean;
@@ -58,8 +58,8 @@ export const COURSES: Course[] = [
     id: "ignite-1",
     codeName: "IGNITE 1.0",
     title: "IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career",
-    subtitle: "Transform your passion for technology into professional skills with our AI-powered learning program. Master Full Stack Web Development, Generative AI, Data Structures & Algorithms, Aptitude & Reasoning, DevOps, Web3, and System Design through practical learning and real-world projects. Build your skills, strengthen your problem-solving abilities, and prepare for opportunities in the technology industry.",
-    kicker: "🔥 IGNITE 1.0 LIVE | THECODESPARK TECHNOLOGIES",
+    subtitle: "Your Path to a Job-Ready Tech Career — Master Full Stack Web Development + Generative AI, Data Structures & Algorithms (DSA), DevOps & Web3, and System Design through real-world engineering builds. Build Real Skills. Get Real Jobs.",
+    kicker: "🔥 IGNITE 1.0 LIVE • THECODESPARK TECHNOLOGIES PRIVATE LIMITED",
     price: 5999,
     originalPrice: 11999,
     discountBadge: "50% OFF",
@@ -67,14 +67,14 @@ export const COURSES: Course[] = [
     hours: "260+ Hours",
     modulesCount: "180+ Lectures",
     questionsCount: "1k+ Questions",
-    tags: ["Job Ready", "MERN Stack", "DSA With JS", "Placement Focused", "AI Powered"],
+    tags: ["Job Ready", "Full Stack + GenAI", "DSA", "DevOps & Web3", "System Design"],
     weeksBadge: "12 Weeks",
     enrolledCount: "100+ Enrolled",
     catalogGraphic: "fullstack",
     isLive: true,
     isPopular: true,
     isComingSoon: false,
-    comingSoonText: "Admissions Open • Batch Starting Soon",
+    comingSoonText: "LIVE NOW • Admissions Open",
     videoUrl: "/assets/aistudio/20261101-0901-20.9364903_f39b55c3.mp4",
     instructorImg: "/Rohit.png",
     instructorName: "Mr. Rohit Kashyap (Founder & CEO)",
@@ -783,6 +783,136 @@ export const COURSES: Course[] = [
       { id: 4, name: "SPRINT 4", title: "Production Deployment & Monitoring", desc: "Staging to production release cycles, smoke tests, and monitoring real-time error logs with Sentry.", topics: ["Staging environment validation & release notes", "Zero-downtime blue-green deployments on AWS", "Monitoring error rates & APM telemetry"] },
       { id: 5, name: "SPRINT 5", title: "Corporate Code Review & Architecture Review", desc: "Conducting peer code reviews, writing design docs (RFCs), and presenting engineering trade-offs.", topics: ["Authoring Technical Design Documents (RFCs)", "Security vulnerability audits & dependency patching", "Cross-team communication and stakeholder demo"] },
       { id: 6, name: "SPRINT 6", title: "Placement Drive & Interview Conversion", desc: "Resume polishing with actual metrics, mock system design rounds, and hiring partner referrals.", topics: ["Metric-driven resume formatting (impact, numbers, scale)", "Senior engineer mock interviews & live coding rounds", "Direct referrals to top product startups and MNCs"] }
+    ]
+  },
+  {
+    id: "trading-mastery",
+    codeName: "TRADING PRO",
+    title: "Stock Market, Options & Algo Trading Mastery",
+    subtitle: "Master institutional Price Action, Nifty/BankNifty Options Trading, Risk Management, TradingView Pine Script, and Automated Python Algo Trading Strategies with live market sessions.",
+    kicker: "📈 PRICE ACTION • OPTIONS F&O • ALGO TRADING",
+    price: 6499,
+    originalPrice: 14999,
+    discountBadge: "57% OFF",
+    duration: "4 Months",
+    weeksBadge: "16 Weeks",
+    enrolledCount: "140+ Traders",
+    hours: "150+ Hours",
+    modulesCount: "6 Master Modules",
+    questionsCount: "50+ Live Market Setups",
+    tags: ["Price Action", "Options & F&O", "Algo Trading", "Risk Management"],
+    catalogGraphic: "trading",
+    isLive: false,
+    isPopular: true,
+    isComingSoon: true,
+    comingSoonText: "Coming Soon • Pre-Booking Open",
+    videoUrl: "/assets/aistudio/20261101-0901-20.9364903_f39b55c3.mp4",
+    instructorImg: "/Rohit.png",
+    instructorName: "Mr. Rohit Kashyap & Quant Trading Desk",
+    prerequisites: {
+      level: "Beginner to Pro Trader",
+      duration: "16 Weeks (4 Months)",
+      schedule: "Live Market Sessions (9:15 AM) & Evening Theory",
+      language: "Hinglish",
+      classType: "Live Market Trading + Algo Lab",
+      highlights: [
+        "Complete Stock Market Foundations, Candlestick & Chart Patterns",
+        "Smart Money Concepts (SMC), Liquidity Sweeps & Order Blocks",
+        "Nifty, BankNifty & FinNifty Options Buying, Selling & Hedging",
+        "Option Chain Analysis, Open Interest (OI) & Option Greeks",
+        "Automated Trading Bots using Python & TradingView Pine Script",
+        "Strict Risk-Reward, Position Sizing & Trading Psychology Mastery"
+      ]
+    },
+    comparisonPoints: {
+      positive: [
+        "Live Market Execution & Real-Time Chart Breakdown",
+        "Institutional Price Action + Python Algo Automation Combined",
+        "Strict Risk Management & Capital Protection Rules",
+        "TradingView Pine Script Custom Indicator Building",
+        "Weekly Backtesting & Live Trade Review Sessions"
+      ],
+      negative: [
+        "Fake Tip-Giving & Signal Channels With Zero Logic",
+        "Outdated Indicators That Lag In Live Volatile Markets",
+        "No Risk Management Leading To Blown Accounts",
+        "Pure Theory Without Real Live Market Execution",
+        "Zero Knowledge Of Algorithmic Backtesting"
+      ]
+    },
+    modules: [
+      {
+        id: 1,
+        name: "MODULE 1",
+        title: "Stock Market Foundations & Technical Price Action",
+        desc: "Market structure, candlestick psychology, multi-timeframe support & resistance, trendlines, volume profile, and breakout vs fakeout confirmation.",
+        topics: [
+          "NSE/BSE, Equity, Indices (Nifty 50, BankNifty), Futures & Commodities basics",
+          "Japanese Candlesticks anatomy: Engulfing, Pin Bar, Morning/Evening Star, Inside Bar",
+          "Market Structure: Higher Highs/Lows, Break of Structure (BOS) & Change of Character",
+          "Multi-Timeframe Analysis (15m, 1H, Daily, Weekly) & Volume Spike confirmation"
+        ]
+      },
+      {
+        id: 2,
+        name: "MODULE 2",
+        title: "Smart Money Concepts (SMC) & Institutional Trading",
+        desc: "Order blocks, Fair Value Gaps (FVG), liquidity grabs, stop-loss hunting, and institutional entry models.",
+        topics: [
+          "Institutional Order Flow: Accumulation, Manipulation & Distribution phases",
+          "Identifying high-probability Order Blocks (OB) & Fair Value Gaps (FVG)",
+          "Liquidity Sweeps: Equal Highs/Lows, Trendline Liquidity & Stop Hunts",
+          "Intraday Scalping vs Positional Swing Trading Playbooks"
+        ]
+      },
+      {
+        id: 3,
+        name: "MODULE 3",
+        title: "Options Trading, Greeks & Option Chain Mastery",
+        desc: "Complete Derivatives & F&O mastery covering Call/Put mechanics, Option Greeks (Delta, Theta, Gamma, Vega), OI decoding, and hedged spreads.",
+        topics: [
+          "Calls, Puts, Strike Price Selection (ITM, ATM, OTM) & Expiry Dynamics",
+          "Option Greeks in Action: Managing Theta Decay & Vega IV Crush",
+          "Live Option Chain Reading, PCR Ratio, Max Pain & Short Covering Rallies",
+          "Low-Risk Option Selling & Hedging: Iron Condor, Bull Call Spread & Straddles"
+        ]
+      },
+      {
+        id: 4,
+        name: "MODULE 4",
+        title: "TradingView Pine Script & Custom Indicators",
+        desc: "Build your own custom indicators, multi-condition alerts, and strategy backtesters directly on TradingView using Pine Script v5.",
+        topics: [
+          "Pine Script v5 syntax, series variables, plots & custom candlestick coloring",
+          "Coding automated EMA, RSI, VWAP & Supertrend confluence indicators",
+          "Building non-repainting Buy/Sell signal engines with Webhook alerts",
+          "Backtesting Win-Rate, Profit Factor & Max Drawdown on historical data"
+        ]
+      },
+      {
+        id: 5,
+        name: "MODULE 5",
+        title: "Python Algorithmic Trading & Broker API Automation",
+        desc: "Automate order execution with Zerodha Kite / Dhan / Angel One APIs using Python, pandas, and real-time WebSocket tick data.",
+        topics: [
+          "Fetching historical OHLCV data & real-time WebSocket ticks in Python",
+          "Backtesting quantitative strategies with Pandas & Backtrader",
+          "Connecting TradingView Webhooks to Flask/FastAPI automated execution bots",
+          "Automated Stop-Loss, Trailing SL, and Target Order placement via Broker APIs"
+        ]
+      },
+      {
+        id: 6,
+        name: "MODULE 6",
+        title: "Risk Management, Capital Allocation & Trading Psychology",
+        desc: "Master position sizing, 1% risk rule, drawdown recovery, trading journal systems, and overcoming FOMO & revenge trading.",
+        topics: [
+          "Position Sizing formula & Risk-to-Reward (1:2, 1:3) expectancy math",
+          "Daily & Weekly Max Loss Lockout rules to protect trading capital",
+          "Overcoming FOMO, Fear, Greed, Overtrading & Revenge Trading traps",
+          "Building an automated Notion/Excel Trading Journal & Weekly Performance Audit"
+        ]
+      }
     ]
   }
 ];

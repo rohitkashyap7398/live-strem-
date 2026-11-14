@@ -1,35 +1,22 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { 
   CheckCircle2, 
   X, 
   Sparkles, 
-  Play, 
-  Pause, 
-  Volume2, 
-  VolumeX, 
   ChevronDown, 
   ChevronUp, 
   ArrowRight, 
   Clock, 
   Award, 
-  Star,
   Check, 
   Percent,
   TrendingUp,
   FileText,
-  ShieldCheck,
-  Download,
-  Users,
-  Compass,
   Briefcase,
-  HelpCircle,
-  ExternalLink,
   Layers,
   Terminal,
   Bot,
-  Gauge,
-  Cpu,
-  FolderGit2
+  Gauge
 } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
 import rohitPhoto from '../assets/Rohit.png';
@@ -63,27 +50,6 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
   const [curriculumTab, setCurriculumTab] = useState<'episodes' | 'products' | 'dsa' | 'capstones'>('episodes');
   const [activeProductIndex, setActiveProductIndex] = useState<number>(0);
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
-
-  const togglePlay = () => {
-    if (!videoRef.current) return;
-    if (isPlaying) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      videoRef.current.play().catch(() => {});
-      setIsPlaying(true);
-    }
-  };
-
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !isMuted;
-    setIsMuted(!isMuted);
-  };
-
   const toggleModule = (id: number) => {
     setOpenModuleId(openModuleId === id ? null : id);
   };
@@ -103,6 +69,30 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
     setIsDiscountModalOpen(false);
     onBuyNow(course);
   };
+
+  const uploadedLogo = '/assets/aistudio/tcs_logo_cropped-removebg-preview_8334b4c5.png';
+  const isIgnite1 = course.id === 'ignite-1';
+
+  const getCoursePoster = (courseId: string) => {
+    switch (courseId) {
+      case 'ignite-1':
+        return '/assets/aistudio/IGNITE_1.0_Job-Ready_Tech_Career_Poster_13daf013.png';
+      case 'ignite-2':
+        return '/assets/aistudio/Ignite_2.0_Developer_Program_Poster_0af3eb9a.png';
+      case 'ignite-3':
+        return '/assets/aistudio/IGNITE_3.0_Developer_Cohort_Poster_2_2e0454b4.png';
+      case 'ignite-4':
+        return '/assets/aistudio/JAVALogic__Building_Deep_Learning_399f2731.png';
+      case 'ignite-5':
+        return '/assets/aistudio/TheCodeSpark_Developer_Toolkit_Poster_1d5ebe66.png';
+      case 'trading-mastery':
+        return '/assets/aistudio/Focused_Crypto_Trading_Workspace_58db5cbb.png';
+      default:
+        return '/assets/aistudio/Autonomous_AI_Agents_Tech_Talk_Poster_db3b38b0.png';
+    }
+  };
+
+  const coursePosterImg = getCoursePoster(course.id);
 
   const visibleModules = showAllModules ? course.modules : course.modules.slice(0, 5);
 
@@ -182,7 +172,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
     },
     {
       q: "How does AI help in this program?",
-      a: "You will build AI-powered applications, leverage LLM APIs (Gemini, LangChain), implement RAG pipelines, and use modern AI workflows that modern tech companies look for in 2024."
+      a: "You will build AI-powered applications, leverage LLM APIs (Gemini, LangChain), implement RAG pipelines, and use modern AI workflows that modern tech companies look for today."
     },
     {
       q: "Will this cohort help me get job-ready?",
@@ -242,12 +232,24 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
             {/* Left Hero Column */}
-            <div className="lg:col-span-6 space-y-6 text-left">
-              <div className="inline-block text-xs font-mono font-bold tracking-widest text-[#ff5722] uppercase">
-                {course.kicker || 'CODE. CREATE. CONQUER.'}
+            <div className="lg:col-span-6 space-y-5 text-left">
+              <div className="flex flex-wrap items-center gap-2">
+                {course.isLive ? (
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 text-[10px] font-mono font-bold uppercase tracking-wider">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    LIVE NOW
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400 text-black text-[10px] font-mono font-extrabold uppercase tracking-wider">
+                    COMING SOON
+                  </span>
+                )}
+                <span className="text-[11px] font-mono font-bold tracking-widest text-[#ff5722] uppercase">
+                  THECODESPARK TECHNOLOGIES PRIVATE LIMITED
+                </span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white font-display tracking-tight leading-tight">
+              <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-black text-white font-display tracking-tight leading-tight">
                 {course.title}
               </h1>
 
@@ -256,7 +258,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
               </p>
 
               {/* Price Row: Price Rs.5999 Rs.11999 (+GST) */}
-              <div className="flex items-baseline gap-2.5 pt-2">
+              <div className="flex items-baseline gap-2.5 pt-1">
                 <span className="text-base text-neutral-300 font-mono">Price</span>
                 <span className="text-3xl sm:text-4xl font-extrabold text-[#ff5722] font-mono">
                   Rs.{course.price}
@@ -272,14 +274,14 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
               </div>
 
               {/* CTA Buttons Row with Magnetic and Rolling animations */}
-              <div className="flex flex-wrap items-center gap-4 pt-2">
+              <div className="flex flex-wrap items-center gap-4 pt-1">
                 <MagneticButton
                   onClick={handleOpenDiscount}
                   variant="primary"
                   size="md"
                   icon={<ArrowRight className="w-4 h-4" />}
                   iconPosition="right"
-                  text="Buy Now"
+                  text={course.isComingSoon ? 'Pre-Book Now' : 'Enroll / Buy Now'}
                   className="shadow-lg shadow-[#ff5722]/30"
                 />
 
@@ -295,7 +297,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
               </div>
             </div>
 
-            {/* Right Hero Column: macOS Browser Mockup with Instructor & Floating Widgets */}
+            {/* Right Hero Column: macOS Browser Mockup with Course Poster & Pillars */}
             <div className="lg:col-span-6 space-y-4">
               <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-[#0e0e14] shadow-2xl p-2.5">
                 {/* Browser top bar with red, yellow, green dots */}
@@ -308,57 +310,62 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
                   <div className="flex-1 text-center text-[11px] font-mono text-neutral-400 truncate">
                     thecodespark.io/cohorts/{course.id}
                   </div>
+                  {course.isLive ? (
+                    <span className="text-[9px] font-mono font-bold text-emerald-400 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      LIVE
+                    </span>
+                  ) : (
+                    <span className="text-[9px] font-mono font-bold text-amber-300">
+                      COMING SOON
+                    </span>
+                  )}
                 </div>
 
-                {/* Main Visual Display */}
-                <div className="relative aspect-video rounded-b-2xl overflow-hidden bg-black flex items-center justify-center">
+                {/* Main Visual Display matching Selected Course Card Poster */}
+                <div className="relative aspect-[16/11] rounded-b-2xl overflow-hidden bg-[#0a0a0f] flex items-center justify-center">
+                  {/* Blurred ambient backdrop */}
                   <img
-                    src={rohitPhoto}
-                    onError={(e) => { e.currentTarget.src = course.instructorImg || '/Rohit.png'; }}
-                    alt="Instructor Mr. Rohit Kashyap"
-                    className="w-full h-full object-cover object-top filter brightness-95"
+                    src={coursePosterImg}
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-cover scale-110 blur-md opacity-45 pointer-events-none"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
+                  {/* Crisp full course poster */}
+                  <img
+                    src={coursePosterImg}
+                    onError={(e) => { e.currentTarget.src = rohitPhoto; }}
+                    alt={course.title}
+                    className="relative z-10 h-full w-auto max-w-full object-contain drop-shadow-2xl"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/25 pointer-events-none z-10" />
 
-                  {/* Floating Widget 1: Login Widget top left */}
-                  <div className="absolute top-4 left-4 p-2 rounded-xl bg-black/60 backdrop-blur-md border border-white/15 flex items-center gap-2 text-xs text-white shadow-lg pointer-events-none">
-                    <div className="w-5 h-5 rounded-full bg-[#ff5722] flex items-center justify-center text-[10px] font-bold">
-                      ✓
-                    </div>
-                    <span className="font-mono text-[11px]">Login</span>
+                  {/* Top-left Status Badge */}
+                  <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md border border-white/15 flex items-center gap-1.5 text-[10px] font-mono text-white shadow-lg pointer-events-none">
+                    <span className={`w-1.5 h-1.5 rounded-full ${course.isLive ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
+                    <span className="font-bold">{course.codeName}</span>
                   </div>
 
-                  {/* Floating Widget 2: Websites pill center left */}
-                  <div className="absolute bottom-16 left-6 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-xs font-mono text-white shadow-lg pointer-events-none flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                    <span>Websites</span>
+                  {/* Top-right Brand / Program Pill */}
+                  <div className="absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md border border-white/15 text-[10px] font-mono text-neutral-200 shadow-lg pointer-events-none">
+                    {isIgnite1 ? 'Job Ready Program' : 'Pre-Book Cohort'}
                   </div>
 
-                  {/* Floating Widget 3: $62,970 Revenue badge top right */}
-                  <div className="absolute top-4 right-4 p-2.5 rounded-xl bg-black/70 backdrop-blur-md border border-emerald-500/30 text-right shadow-lg pointer-events-none">
-                    <div className="text-[10px] text-neutral-400 font-mono uppercase">Revenue</div>
-                    <div className="text-sm font-mono font-bold text-emerald-400">$62,970</div>
+                  {/* Bottom-left Hashtag / Stack Tagline */}
+                  <div className="absolute bottom-3 left-3 z-20 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md border border-emerald-500/30 text-[10px] font-mono text-emerald-300 shadow-lg pointer-events-none">
+                    {isIgnite1 ? '#JobReady | #FullStack | #GenAI' : `${course.duration} • ${course.hours}`}
                   </div>
 
-                  {/* Floating Widget 4: DSA pill with cursor click bottom right */}
-                  <div className="absolute bottom-6 right-6 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-[#ff5722]/40 text-xs font-mono text-white shadow-lg pointer-events-none flex items-center gap-2">
-                    <span className="text-[#ff5722] font-bold">DSA</span>
-                    <span className="text-xs">👆</span>
+                  {/* Bottom-right Outcome Tag */}
+                  <div className="hidden sm:flex absolute bottom-3 right-3 z-20 px-2.5 py-1 rounded-lg bg-[#ff5722]/90 text-[10px] font-mono font-bold text-white shadow-lg pointer-events-none">
+                    {isIgnite1 ? 'Build Real Skills. Get Real Jobs.' : course.codeName}
                   </div>
-
-                  {/* Center Play Button Overlay */}
-                  <button 
-                    onClick={togglePlay}
-                    className="w-14 h-14 rounded-full bg-[#ff5722]/90 hover:bg-[#ff5722] text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-transform hover:scale-110 cursor-pointer"
-                  >
-                    <Play className="w-6 h-6 fill-white ml-0.5" />
-                  </button>
                 </div>
               </div>
 
-              {/* 5 Pill Badges beneath the video mockup (exact Video 00:03) */}
+              {/* Pill Badges beneath mockup */}
               <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-                {(course.tags && course.tags.length > 0 ? course.tags : ['Job Ready', 'MERN Stack', 'DSA With JS', 'Placement Focused', 'AI Powered']).map((tag, idx) => (
+                {(course.tags && course.tags.length > 0 ? course.tags : ['Job Ready', 'Full Stack + GenAI', 'DSA', 'DevOps & Web3', 'System Design']).map((tag, idx) => (
                   <span
                     key={idx}
                     className="px-3.5 py-1.5 rounded-full bg-[#121217] border border-white/10 text-xs font-mono text-neutral-300 hover:border-[#ff5722]/40 hover:text-white transition-colors"
@@ -373,7 +380,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
         </div>
       </section>
 
-      {/* 2. "Get Placed with job ready AI powered cohort*" Section (Video exact: 00:08 - 00:11) */}
+      {/* 2. "Get Placed / Build Real Skills" Section */}
       <section className="py-20 bg-[#070709] relative overflow-hidden border-b border-white/5 text-center">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-10">
           
@@ -381,11 +388,13 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
           <div className="space-y-2">
             <h2 className="text-4xl sm:text-6xl font-black font-display tracking-tight">
               <span className="bg-gradient-to-r from-cyan-300 via-sky-200 to-white bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(56,189,248,0.3)]">
-                Get Placed
+                {isIgnite1 ? 'Build Real Skills. Get Real Jobs.' : 'Get Placed'}
               </span>
             </h2>
             <p className="text-lg sm:text-2xl font-light text-neutral-300 tracking-wide font-sans">
-              with job ready AI powered cohort*
+              {isIgnite1
+                ? 'IGNITE 1.0 — Your Path to a Job-Ready Tech Career'
+                : 'with job ready AI powered cohort*'}
             </p>
           </div>
 
@@ -396,10 +405,12 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
               <div className="w-full h-full rounded-xl overflow-hidden bg-[#050508] relative flex items-center justify-center">
                 {/* Galaxy background */}
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900/60 via-purple-950/40 to-black" />
-                <div className="relative text-center space-y-1 z-10">
+                <div className="relative text-center space-y-1.5 z-10 px-4">
                   <Sparkles className="w-8 h-8 text-[#ff5722] mx-auto animate-pulse" />
                   <div className="text-xs font-mono text-cyan-300 font-bold uppercase tracking-wider">
-                    Placement Engineering Lab
+                    {isIgnite1
+                      ? 'Full Stack + GenAI • DSA • DevOps & Web3 • System Design'
+                      : 'Placement Engineering Lab'}
                   </div>
                   <div className="text-[10px] text-neutral-400 font-mono">
                     TheCodeSpark Technologies Private Limited
@@ -498,8 +509,8 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
             <div className="p-7 sm:p-8 rounded-3xl bg-[#0b130e] border-2 border-emerald-500/50 shadow-2xl shadow-emerald-500/10 space-y-6">
               <div className="flex items-center gap-3 pb-4 border-b border-emerald-500/20">
                 <img
-                  src={brandLogo}
-                  onError={(e) => { e.currentTarget.src = '/logo.png'; }}
+                  src={uploadedLogo}
+                  onError={(e) => { e.currentTarget.src = brandLogo; }}
                   alt="TheCodeSpark Logo"
                   className="h-8 w-auto object-contain filter drop-shadow"
                 />
@@ -1227,7 +1238,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
         <StudentReviews />
       </section>
 
-      {/* 7. CERTIFICATE OF COMPLETION (Video exact: 00:20 - 00:21) */}
+      {/* 7. CERTIFICATE OF COMPLETION (Dark Framed Ribbon Wave Design with User Logo & Company Name) */}
       <section className="py-20 bg-[#09090d] border-b border-white/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
@@ -1249,50 +1260,123 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-[#ff5722] mt-0.5 text-base">•</span>
-                  <span>Earn a Globally Recognized Certificate On completion, receive a verified certificate</span>
+                  <span>Earn a Globally Recognized Certificate On completion, receive a verified certificate from TheCodeSpark Technologies Private Limited</span>
                 </div>
               </div>
             </div>
 
-            {/* Right Column: Certificate Graphic Mockup */}
+            {/* Right Column: Dark Framed Flowing Gradient Wave Certificate Mockup */}
             <div className="lg:col-span-6">
-              <div className="rounded-2xl p-6 sm:p-7 bg-white text-slate-900 border-4 border-[#ff5722] shadow-2xl relative font-sans space-y-4">
-                <div className="flex items-center justify-between border-b pb-3">
-                  <div className="flex items-center gap-2">
-                    <img
-                      src={brandLogo}
-                      onError={(e) => { e.currentTarget.src = '/logo.png'; }}
-                      alt="Logo"
-                      className="h-7 w-auto object-contain shrink-0"
+              <div className="rounded-xl p-2 sm:p-2.5 bg-[#0a0a0e] border-[6px] sm:border-[8px] border-[#15151d] shadow-[0_25px_70px_-15px_rgba(0,0,0,0.95)] ring-1 ring-white/10 relative">
+                <div className="relative rounded-lg overflow-hidden bg-[#06070c] p-5 sm:p-7 aspect-[16/11] flex flex-col justify-between text-white font-sans select-none">
+                  {/* Flowing Blue-Cyan-Emerald Gradient Wave SVG matching uploaded certificate style */}
+                  <svg
+                    viewBox="0 0 800 550"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                  >
+                    <defs>
+                      <radialGradient id="certGlowBg" cx="25%" cy="20%" r="75%">
+                        <stop offset="0%" stopColor="#1e1b4b" stopOpacity="0.45" />
+                        <stop offset="60%" stopColor="#06070c" stopOpacity="0.95" />
+                        <stop offset="100%" stopColor="#040509" stopOpacity="1" />
+                      </radialGradient>
+                      <linearGradient id="certWaveGrad" x1="80" y1="450" x2="760" y2="110" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stopColor="#2563eb" stopOpacity="0.7" />
+                        <stop offset="35%" stopColor="#4f46e5" stopOpacity="0.9" />
+                        <stop offset="68%" stopColor="#06b6d4" stopOpacity="0.88" />
+                        <stop offset="100%" stopColor="#34d399" stopOpacity="0.9" />
+                      </linearGradient>
+                      <linearGradient id="certOrbGrad" x1="650" y1="220" x2="800" y2="480" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.85" />
+                        <stop offset="100%" stopColor="#1d4ed8" stopOpacity="0.6" />
+                      </linearGradient>
+                      <filter id="waveBlur" x="-10%" y="-10%" width="120%" height="120%">
+                        <feGaussianBlur stdDeviation="12" />
+                      </filter>
+                    </defs>
+                    <rect width="800" height="550" fill="url(#certGlowBg)" />
+                    {/* Sweeping 3D ribbon wave */}
+                    <path
+                      d="M -40 310 C 60 120, 210 110, 270 280 C 330 450, 440 430, 560 220 C 650 65, 740 40, 840 90 L 840 210 C 750 185, 670 245, 585 375 C 455 565, 290 540, 200 375 C 145 275, 50 300, -40 430 Z"
+                      fill="url(#certWaveGrad)"
+                      opacity="0.88"
                     />
-                    <span className="text-[10px] font-bold font-mono tracking-wider text-slate-800">
-                      TheCodeSpark Technologies Private Limited
+                    {/* Soft glow trail */}
+                    <path
+                      d="M -20 330 C 75 145, 215 140, 270 295 C 330 460, 445 435, 565 230 C 655 75, 745 55, 835 100"
+                      stroke="#60a5fa"
+                      strokeWidth="24"
+                      strokeOpacity="0.25"
+                      filter="url(#waveBlur)"
+                    />
+                    {/* Right floating sphere accent */}
+                    <circle cx="775" cy="360" r="115" fill="url(#certOrbGrad)" opacity="0.82" />
+                  </svg>
+
+                  {/* Top Row: Brand Logo + Company Name (Left) & Course Title (Right) */}
+                  <div className="relative z-10 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <img
+                        src={uploadedLogo}
+                        onError={(e) => { e.currentTarget.src = brandLogo; }}
+                        alt="TheCodeSpark Technologies Logo"
+                        className="h-7 sm:h-8 w-auto object-contain shrink-0 drop-shadow-[0_2px_10px_rgba(255,255,255,0.25)]"
+                      />
+                      <span className="text-[9.5px] sm:text-[11px] font-bold tracking-tight text-white leading-tight truncate">
+                        TheCodeSpark Technologies Pvt. Ltd.
+                      </span>
+                    </div>
+                    <span className="text-[8.5px] sm:text-[10px] font-mono font-bold uppercase tracking-widest text-white/90 text-right shrink-0">
+                      {course.codeName} • COHORT
                     </span>
                   </div>
-                  <span className="text-[9px] font-mono text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-bold">
-                    VERIFIED #TC-2024-COHORT
-                  </span>
-                </div>
 
-                <div className="text-center py-2 space-y-1">
-                  <div className="text-[10px] uppercase font-mono tracking-widest text-slate-500 font-bold">
-                    CERTIFICATE OF COMPLETION
-                  </div>
-                  <div className="text-[11px] text-slate-500">Presented To:</div>
-                  <h3 className="text-xl font-extrabold font-serif text-slate-950">
-                    JOHN DOE
-                  </h3>
-                  <p className="text-[11px] text-slate-600 max-w-xs mx-auto">
-                    For successfully completing the intensive <span className="font-bold text-slate-900">{course.title}</span> covering Full Stack, Generative AI, and Data Structures.
-                  </p>
-                </div>
+                  {/* Center-Left Certificate Content */}
+                  <div className="relative z-10 my-auto space-y-2 max-w-[85%] pt-2">
+                    <div>
+                      <h3 className="text-2xl sm:text-3xl font-black tracking-wide text-white leading-none font-display">
+                        CERTIFICATE
+                      </h3>
+                      <p className="text-[10px] sm:text-xs text-neutral-200/90 mt-1 font-medium">
+                        is issued to certify that
+                      </p>
+                    </div>
 
-                <div className="flex items-center justify-between pt-3 border-t text-[10px] text-slate-500 font-mono">
-                  <span>Mr. Rohit Kashyap (CEO)</span>
-                  <div className="w-8 h-8 rounded bg-slate-900 text-white flex items-center justify-center text-[8px] font-mono">
-                    QR
+                    <div className="w-8 h-[1.5px] bg-white/80 my-1.5" />
+
+                    <div className="text-lg sm:text-2xl font-extrabold text-white tracking-tight font-display">
+                      Aarav Sharma
+                    </div>
+
+                    <p className="text-[9.5px] sm:text-[11px] text-neutral-200/90 leading-relaxed max-w-sm">
+                      has successfully completed <span className="font-semibold text-white">{course.title}</span> with creativity, practical engineering mastery, and excellence at{' '}
+                      <span className="font-semibold text-white">TheCodeSpark Technologies Private Limited</span>. Your real-world builds speak louder than words!
+                    </p>
                   </div>
-                  <span>Authorized Certificate</span>
+
+                  {/* Bottom Row: CEO Signature (Left) & Date / Verified Credential (Right) */}
+                  <div className="relative z-10 flex items-end justify-between gap-4 pt-2 border-t border-white/15">
+                    <div>
+                      <div className="text-[10px] sm:text-xs font-bold text-white leading-tight">
+                        Rohit Kashyap
+                      </div>
+                      <div className="text-[8.5px] sm:text-[9.5px] text-neutral-300/90 font-mono">
+                        CEO, TheCodeSpark Technologies Private Limited
+                      </div>
+                    </div>
+
+                    <div className="text-right">
+                      <div className="text-[9px] sm:text-[10px] font-mono font-semibold text-cyan-300">
+                        Verified #TCS-{course.codeName.replace(/\s+/g, '')}
+                      </div>
+                      <div className="text-[8.5px] sm:text-[9.5px] text-neutral-300/80 font-mono">
+                        Authorized Credential
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1378,7 +1462,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
             onClick={handleOpenDiscount}
             className="px-5 py-2 rounded-full bg-gradient-to-r from-[#ff5722] to-[#e64a19] hover:from-[#f4511e] hover:to-[#d84315] text-white text-xs font-bold shadow-lg shadow-[#ff5722]/30 active:scale-95 transition-all cursor-pointer whitespace-nowrap"
           >
-            Buy Now →
+            {course.isComingSoon ? 'Pre-Book →' : 'Enroll Now →'}
           </button>
         </div>
       </div>

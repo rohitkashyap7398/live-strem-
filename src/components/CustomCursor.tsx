@@ -11,6 +11,7 @@ export const CustomCursor: React.FC = () => {
   const ringPos = useRef({ x: -100, y: -100 });
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  const isVisibleRef = useRef(false);
   const animFrameId = useRef<number | null>(null);
 
   useEffect(() => {
@@ -23,15 +24,16 @@ export const CustomCursor: React.FC = () => {
       mousePos.current.x = e.clientX;
       mousePos.current.y = e.clientY;
 
-      if (!isVisible) {
+      if (!isVisibleRef.current) {
+        isVisibleRef.current = true;
         setIsVisible(true);
         ringPos.current.x = e.clientX;
         ringPos.current.y = e.clientY;
       }
 
       // Check if hovering interactive element
-      const target = e.target as HTMLElement | null;
-      if (target) {
+      const target = e.target;
+      if (target instanceof Element) {
         const interactive = target.closest(
           'button, a, input[type="button"], input[type="submit"], [role="button"], .cursor-pointer, [data-cursor-hover], .btn-magnetic'
         );
@@ -57,11 +59,13 @@ export const CustomCursor: React.FC = () => {
     };
 
     const handleMouseLeave = () => {
+      isVisibleRef.current = false;
       setIsVisible(false);
       setIsHovered(false);
     };
 
     const handleMouseEnter = () => {
+      isVisibleRef.current = true;
       setIsVisible(true);
     };
 
@@ -102,7 +106,7 @@ export const CustomCursor: React.FC = () => {
         cancelAnimationFrame(animFrameId.current);
       }
     };
-  }, [isVisible]);
+  }, []);
 
   if (!isVisible) return null;
 
