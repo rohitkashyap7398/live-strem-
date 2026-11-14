@@ -75,7 +75,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
       tags: ['Coming Soon', 'MERN Stack', 'AI Applications', 'Cloud Computing', 'System Design']
     },
     {
-      course: COURSES[3] || COURSES[1], // IGNITE 4.0 / Modern AI Agent Architecture
+      course: COURSES.find((c) => c.id === 'ai-agents') || COURSES[1], // Autonomous AI Agents
       cardType: 'terracotta' as const,
       badge: 'COMING SOON',
       brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
@@ -92,7 +92,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
       tags: ['Coming Soon', 'LangChain', 'Gemini API', 'Vector DB', 'Multi-Agent']
     },
     {
-      course: COURSES[3] || COURSES[0], // Java & DSA Domination
+      course: COURSES.find((c) => c.id === 'ignite-4') || COURSES[3] || COURSES[0], // Java & DSA Domination
       cardType: 'light' as const,
       badge: 'COMING SOON',
       brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
@@ -109,7 +109,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
       tags: ['Coming Soon', 'Java & DSA', 'Logic Building', 'Deep Learning']
     },
     {
-      course: COURSES[4] || COURSES[0], // Complete Developer Toolkit
+      course: COURSES.find((c) => c.id === 'dev-toolkit') || COURSES[4] || COURSES[0], // Complete Developer Toolkit
       cardType: 'dark' as const,
       badge: 'COMING SOON • AI • CODING • TOOLS',
       brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
@@ -231,7 +231,10 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                     
                     {/* VISUAL COLUMN (If imageSide === 'left') */}
                     {item.imageSide === 'left' && (
-                      <div className="lg:col-span-5 order-1">
+                      <div
+                        onClick={() => onSelectCourse(item.course)}
+                        className="lg:col-span-5 order-1 cursor-pointer"
+                      >
                         <VisualMockup
                           type={item.visualType}
                           tags={item.tags}
@@ -262,7 +265,9 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                       </div>
 
                       {/* Course Title */}
-                      <h3 className={`text-lg sm:text-2xl md:text-3xl font-extrabold font-display tracking-tight leading-snug ${
+                      <h3
+                        onClick={() => onSelectCourse(item.course)}
+                        className={`text-lg sm:text-2xl md:text-3xl font-extrabold font-display tracking-tight leading-snug cursor-pointer hover:underline ${
                         isLight ? 'text-[#111116]' : 'text-white'
                       }`}>
                         {item.title}
@@ -360,7 +365,10 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
 
                     {/* VISUAL COLUMN (If imageSide === 'right') */}
                     {item.imageSide === 'right' && (
-                      <div className="lg:col-span-5 order-1 lg:order-2">
+                      <div
+                        onClick={() => onSelectCourse(item.course)}
+                        className="lg:col-span-5 order-1 lg:order-2 cursor-pointer"
+                      >
                         <VisualMockup
                           type={item.visualType}
                           tags={item.tags}

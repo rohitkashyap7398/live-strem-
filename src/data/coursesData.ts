@@ -32,6 +32,7 @@ export interface Course {
   isFree?: boolean;
   isComingSoon?: boolean;
   comingSoonText?: string;
+  posterImg?: string;
   videoUrl?: string;
   instructorImg?: string;
   instructorName?: string;
@@ -75,6 +76,7 @@ export const COURSES: Course[] = [
     isPopular: true,
     isComingSoon: false,
     comingSoonText: "LIVE NOW • Admissions Open",
+    posterImg: "/assets/aistudio/IGNITE_1.0_Job-Ready_Tech_Career_Poster_13daf013.png",
     videoUrl: "/assets/aistudio/20261101-0901-20.9364903_f39b55c3.mp4",
     instructorImg: "/Rohit.png",
     instructorName: "Mr. Rohit Kashyap (Founder & CEO)",
@@ -335,6 +337,7 @@ export const COURSES: Course[] = [
     isLive: false,
     isComingSoon: true,
     comingSoonText: "Coming Soon • Pre-Book Open",
+    posterImg: "/assets/aistudio/Ignite_2.0_Developer_Program_Poster_0af3eb9a.png",
     videoUrl: "/assets/aistudio/20261101-0901-20.9364903_f39b55c3.mp4",
     instructorImg: "/Rohit.png",
     instructorName: "Mr. Rohit Kashyap (Founder & CEO)",
@@ -605,6 +608,7 @@ export const COURSES: Course[] = [
     isLive: true,
     isComingSoon: false,
     comingSoonText: "Admissions Open • Batch Starting Soon",
+    posterImg: "/assets/aistudio/IGNITE_3.0_Developer_Cohort_Poster_2_2e0454b4.png",
     videoUrl: "/assets/aistudio/20261101-0826-41.9641150_79ea86df.mp4",
     instructorImg: "/Rohit.png",
     instructorName: "Mr. Rohit Kashyap (Founder & CEO)",
@@ -664,8 +668,9 @@ export const COURSES: Course[] = [
     isPopular: false,
     isComingSoon: true,
     comingSoonText: "Pre-Registration Open • Batch 4.0",
+    posterImg: "/assets/aistudio/JAVALogic__Building_Deep_Learning_399f2731.png",
     videoUrl: "/assets/aistudio/20261101-0827-58.6184273_f9435e53.mp4",
-    instructorImg: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80",
+    instructorImg: "/assets/aistudio/faculty_aadhya.png",
     instructorName: "DSA & Competitive Programming Specialist",
     prerequisites: {
       level: "Zero to Advanced Problem Solver",
@@ -712,8 +717,9 @@ export const COURSES: Course[] = [
     isPopular: true,
     isComingSoon: true,
     comingSoonText: "Pre-Registration Open • Batch 5.0",
+    posterImg: "/assets/aistudio/AI-Powered_Learning_Platform_Conference_4d9a70e4.png",
     videoUrl: "/assets/aistudio/20261101-0826-41.9641150_79ea86df.mp4",
-    instructorImg: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&auto=format&fit=crop&q=80",
+    instructorImg: "/assets/aistudio/faculty_nirved_kumar.png",
     instructorName: "Lead Cloud Architect",
     prerequisites: {
       level: "Intermediate Developers",
@@ -759,8 +765,9 @@ export const COURSES: Course[] = [
     isPopular: false,
     isComingSoon: true,
     comingSoonText: "Pre-Registration Open • Limited Corporate Seats",
+    posterImg: "/assets/aistudio/Warmly_Branded_Executive_Team_Portrait_67a8e1d1.png",
     videoUrl: "/assets/aistudio/20261101-0827-58.6184273_f9435e53.mp4",
-    instructorImg: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80",
+    instructorImg: "/assets/aistudio/faculty_ishu_sharma.png",
     instructorName: "Corporate Program Director",
     prerequisites: {
       level: "Graduates & Final Year Engineers",
@@ -806,6 +813,7 @@ export const COURSES: Course[] = [
     isPopular: true,
     isComingSoon: true,
     comingSoonText: "Coming Soon • Pre-Booking Open",
+    posterImg: "/assets/aistudio/Focused_Crypto_Trading_Workspace_58db5cbb.png",
     videoUrl: "/assets/aistudio/20261101-0901-20.9364903_f39b55c3.mp4",
     instructorImg: "/Rohit.png",
     instructorName: "Mr. Rohit Kashyap & Quant Trading Desk",
@@ -912,6 +920,198 @@ export const COURSES: Course[] = [
           "Overcoming FOMO, Fear, Greed, Overtrading & Revenge Trading traps",
           "Building an automated Notion/Excel Trading Journal & Weekly Performance Audit"
         ]
+      }
+    ]
+  },
+  {
+    id: "ai-agents",
+    codeName: "AI AGENTS",
+    title: "Autonomous AI Agents & Full-Stack LLM Engineering",
+    subtitle: "Build production-grade multi-agent swarms, custom RAG pipelines, Gemini & LangChain tool calling, vector databases, and real-time multimodal AI applications.",
+    kicker: "🤖 AUTONOMOUS AI AGENTS • LANGCHAIN • VECTOR DB • FULL-STACK LLMS",
+    price: 4999,
+    originalPrice: 9999,
+    discountBadge: "50% OFF",
+    duration: "4 Months",
+    weeksBadge: "16 Weeks",
+    enrolledCount: "90+ Enrolled",
+    hours: "150+ Hours",
+    modulesCount: "6 Agent Modules",
+    questionsCount: "30+ Production Agents",
+    tags: ["LangChain", "Gemini API", "Vector DB", "Multi-Agent", "Full-Stack LLMs"],
+    catalogGraphic: "datascience",
+    isLive: false,
+    isPopular: true,
+    isComingSoon: true,
+    comingSoonText: "Coming Soon • Pre-Booking Open",
+    posterImg: "/assets/aistudio/Autonomous_AI_Agents_Tech_Talk_Poster_db3b38b0.png",
+    videoUrl: "/assets/aistudio/20261101-0826-41.9641150_79ea86df.mp4",
+    instructorImg: "/Rohit.png",
+    instructorName: "Mr. Rohit Kashyap & AI Systems Lab",
+    prerequisites: {
+      level: "Beginner to AI Systems Engineer",
+      duration: "16 Weeks (4 Months)",
+      schedule: "Tue-Sat (8:00 PM Live)",
+      language: "Hinglish",
+      classType: "Live AI Architecture & Agent Coding",
+      highlights: [
+        "Design autonomous multi-step AI agents with tool use & memory",
+        "Production RAG pipelines using Pinecone, pgvector & Gemini Embeddings",
+        "Structured JSON outputs, function calling & streaming full-stack UIs",
+        "Eval frameworks, latency reduction & cost optimization for live LLMs"
+      ]
+    },
+    comparisonPoints: {
+      positive: [
+        "Hands-on multi-agent systems deployed to real production URLs",
+        "End-to-end RAG with hybrid search, reranking & citation grounding",
+        "Real tool-calling workflows integrated with databases and APIs",
+        "Live code reviews and architecture feedback from AI engineers"
+      ],
+      negative: [
+        "Copy-paste wrapper tutorials with zero reliability or evals",
+        "Static prompts without memory, guardrails, or tool execution",
+        "No backend streaming, rate limiting, or cost telemetry"
+      ]
+    },
+    modules: [
+      {
+        id: 1,
+        name: "MODULE 1",
+        title: "LLM Foundations, Structured Outputs & Prompt Engineering",
+        desc: "Token mechanics, context windows, JSON schema outputs, system instructions, and deterministic response patterns.",
+        topics: ["Gemini & OpenAI SDK architecture", "Strict JSON schema generation", "Prompt versioning & fallback routing"]
+      },
+      {
+        id: 2,
+        name: "MODULE 2",
+        title: "Production RAG, Embeddings & Vector Databases",
+        desc: "Document chunking, hybrid keyword + semantic search, pgvector & Pinecone indexing, and hallucination mitigation.",
+        topics: ["Chunking strategies & metadata filtering", "Vector similarity & reranking pipelines", "Citation-grounded enterprise Q&A"]
+      },
+      {
+        id: 3,
+        name: "MODULE 3",
+        title: "Function Calling, MCP & Autonomous Tool-Use Agents",
+        desc: "Equip agents to query APIs, execute workflows, validate actions, and recover gracefully from tool failures.",
+        topics: ["Function schemas & safe sandboxing", "ReAct planning loops & step budgets", "Human-in-the-loop approval gates"]
+      },
+      {
+        id: 4,
+        name: "MODULE 4",
+        title: "Multi-Agent Orchestration & LangGraph Workflows",
+        desc: "Supervisor, router, and specialist agent swarms sharing structured state and persistent memory.",
+        topics: ["Stateful graph orchestration", "Short-term & long-term agent memory", "Parallel sub-agent execution"]
+      },
+      {
+        id: 5,
+        name: "MODULE 5",
+        title: "Multimodal Voice, Vision & Full-Stack Streaming UIs",
+        desc: "Server-Sent Events streaming, real-time audio/image understanding, and responsive React agent interfaces.",
+        topics: ["Token streaming & optimistic UI states", "Multimodal document & UI vision", "WebSocket real-time agent rooms"]
+      },
+      {
+        id: 6,
+        name: "MODULE 6",
+        title: "AI Evals, Guardrails, Observability & Deployment",
+        desc: "Automated quality benchmarks, prompt injection defense, rate limiting, and cloud deployment.",
+        topics: ["LLM-as-a-judge automated eval suites", "Guardrails & PII filtering", "Production tracing & latency optimization"]
+      }
+    ]
+  },
+  {
+    id: "dev-toolkit",
+    codeName: "DEV TOOLKIT",
+    title: "Complete Developer Toolkit: Programming Languages + Code Editors & AI Coding Workflow",
+    subtitle: "Master multi-language fluency (Python, C++, JS, TypeScript, Java, Go), power-user IDE mastery (VS Code, IntelliJ, Cursor, Windsurf), and modern AI-assisted engineering workflows.",
+    kicker: "⚡ LANGUAGES • CODE EDITORS • AI CODING TOOLS • WORKFLOW",
+    price: 4999,
+    originalPrice: 9999,
+    discountBadge: "50% OFF",
+    duration: "3 Months",
+    weeksBadge: "12 Weeks",
+    enrolledCount: "105+ Enrolled",
+    hours: "120+ Hours",
+    modulesCount: "6 Toolkit Modules",
+    questionsCount: "40+ Workflow Drills",
+    tags: ["Languages", "Code Editors", "AI Coding Tools", "Dev Workflow", "Git & CI"],
+    catalogGraphic: "devops",
+    isLive: false,
+    isPopular: true,
+    isComingSoon: true,
+    comingSoonText: "Coming Soon • Pre-Booking Open",
+    posterImg: "/assets/aistudio/TheCodeSpark_Developer_Toolkit_Poster_1d5ebe66.png",
+    videoUrl: "/assets/aistudio/20261101-0826-41.9641150_79ea86df.mp4",
+    instructorImg: "/Rohit.png",
+    instructorName: "Mr. Rohit Kashyap & Tooling Leads",
+    prerequisites: {
+      level: "Students & Working Developers",
+      duration: "12 Weeks (3 Months)",
+      schedule: "Mon-Fri (8:00 PM Live)",
+      language: "Hinglish",
+      classType: "Live IDE & AI Workflow Labs",
+      highlights: [
+        "Polyglot fluency across Python, JavaScript/TypeScript, Java, C++ & Go",
+        "Pro setup for VS Code, IntelliJ IDEA, WebStorm, Terminal & Docker",
+        "AI coding mastery: GitHub Copilot, Cursor IDE, Windsurf & Colab AI",
+        "Code → Build → Test → Deploy → Automate end-to-end developer speed"
+      ]
+    },
+    comparisonPoints: {
+      positive: [
+        "Real IDE shortcuts, debugging tools, profilers & Git mastery",
+        "Structured AI-assisted coding without losing core logic skills",
+        "Cross-language translation patterns for interviews & jobs",
+        "End-to-end automated testing, linting & CI/CD shipping workflow"
+      ],
+      negative: [
+        "Slow trial-and-error coding with basic text editor setups",
+        "Blind AI copy-pasting without understanding diffs or bugs",
+        "Confusion switching between Python, JS, Java & C++ projects"
+      ]
+    },
+    modules: [
+      {
+        id: 1,
+        name: "MODULE 1",
+        title: "Polyglot Core: Python, C++, JS, TypeScript, Java & Go",
+        desc: "Compare type systems, memory models, async paradigms, and package ecosystems across modern languages.",
+        topics: ["Syntax & idioms across 6 languages", "Package managers (npm, pip, maven, go mod)", "TypeScript strictness & Python typing"]
+      },
+      {
+        id: 2,
+        name: "MODULE 2",
+        title: "IDE & Editor Mastery: VS Code, IntelliJ, WebStorm & Neovim",
+        desc: "Multi-cursor editing, launch debuggers, breakpoints, profiler extensions, and workspace automation.",
+        topics: ["Keyboard-first navigation & refactoring", "Integrated debugger & inspect tools", "Custom snippets & devcontainers"]
+      },
+      {
+        id: 3,
+        name: "MODULE 3",
+        title: "AI Coding Assistants: Cursor, Windsurf, Copilot & Colab AI",
+        desc: "Context engineering, codebase indexing, safe diff review, and AI-accelerated test generation.",
+        topics: ["Multi-file AI refactoring workflows", "Generating unit & integration tests", "Catching subtle AI regressions early"]
+      },
+      {
+        id: 4,
+        name: "MODULE 4",
+        title: "Git, GitHub Workflows & Terminal Power Tools",
+        desc: "Interactive rebasing, cherry-picking, PR code reviews, zsh/bash scripting, and SSH management.",
+        topics: ["Clean commit history & conflict resolution", "PR templates & branch protection", "Terminal multiplexing & CLI productivity"]
+      },
+      {
+        id: 5,
+        name: "MODULE 5",
+        title: "Automated Build, Lint, Testing & Docker Environments",
+        desc: "Vite/ESBuild bundling, ESLint/Prettier rules, Vitest/Playwright, and reproducible Docker setups.",
+        topics: ["Zero-drift Docker dev environments", "Static analysis & pre-commit hooks", "End-to-end test automation"]
+      },
+      {
+        id: 6,
+        name: "MODULE 6",
+        title: "Ship & Scale: CI/CD Pipelines & Cloud Deployment",
+        desc: "GitHub Actions workflows, environment secrets, preview deploys, and live telemetry checks.",
+        topics: ["Automated build & deploy pipelines", "Staging vs production env hygiene", "Error tracking & release rollbacks"]
       }
     ]
   }

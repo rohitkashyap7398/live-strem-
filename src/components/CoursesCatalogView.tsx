@@ -85,7 +85,7 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
     },
     {
       id: 'autonomous-ai-agents',
-      targetCourse: COURSES[3] || COURSES[1],
+      targetCourse: COURSES.find((c) => c.id === 'ai-agents') || COURSES[1],
       bannerImg: '/assets/aistudio/Autonomous_AI_Agents_Tech_Talk_Poster_db3b38b0.png',
       isPortraitPoster: true,
       isLive: false,
@@ -102,7 +102,7 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
     },
     {
       id: 'java-dsa-domination',
-      targetCourse: COURSES[3] || COURSES[0],
+      targetCourse: COURSES.find((c) => c.id === 'ignite-4') || COURSES[3] || COURSES[0],
       bannerImg: '/assets/aistudio/JAVALogic__Building_Deep_Learning_399f2731.png',
       isPortraitPoster: true,
       isLive: false,
@@ -119,7 +119,7 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
     },
     {
       id: 'complete-developer-toolkit',
-      targetCourse: COURSES[4] || COURSES[0],
+      targetCourse: COURSES.find((c) => c.id === 'dev-toolkit') || COURSES[4] || COURSES[0],
       bannerImg: '/assets/aistudio/TheCodeSpark_Developer_Toolkit_Poster_1d5ebe66.png',
       isPortraitPoster: true,
       isLive: false,

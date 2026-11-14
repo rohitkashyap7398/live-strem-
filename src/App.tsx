@@ -188,11 +188,13 @@ export default function App() {
         />
       )}
 
-      {/* Universal Footer */}
-      <Footer
-        onNavigate={(p) => setCurrentPage(p as any)}
-        onRequestCall={() => setIsCallbackOpen(true)}
-      />
+      {/* Universal Footer (hidden on course-detail pages which use custom dark-green/light footers) */}
+      {currentPage !== 'course-detail' && (
+        <Footer
+          onNavigate={(p) => setCurrentPage(p as any)}
+          onRequestCall={() => setIsCallbackOpen(true)}
+        />
+      )}
 
       {/* Interactive Modals */}
       <RequestCallbackModal
