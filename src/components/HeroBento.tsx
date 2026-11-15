@@ -16,6 +16,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
   onGetInTouch,
   onExploreCourses
 }) => {
+  const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
@@ -42,6 +43,23 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
       }
     }
   }, [isPlaying, isMuted, selectedVideo]);
+
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && isPlaying) {
+          vid.play().catch(() => {});
+        } else {
+          vid.pause();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(vid);
+    return () => observer.disconnect();
+  }, [isPlaying]);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -84,19 +102,10 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
   };
 
   return (
-    <section className="relative pt-24 lg:pt-20 pb-14 overflow-hidden">
-      {/* Background radial ambient glow with gentle pulse animation */}
-      <motion.div
-        animate={{
-          scale: [1, 1.15, 1],
-          opacity: [0.12, 0.22, 0.12]
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: 'easeInOut'
-        }}
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[380px] bg-[#E10600] blur-[150px] pointer-events-none rounded-full"
+    <section ref={sectionRef} className="relative pt-24 lg:pt-20 pb-14 overflow-hidden">
+      {/* Static radial ambient glow (no continuous blur scaling repaints on mobile GPUs) */}
+      <div
+        className="hidden sm:block absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[380px] bg-[#E10600]/15 blur-[130px] pointer-events-none rounded-full"
       />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative">
@@ -116,10 +125,10 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
           />
 
           {/* Left Large Red Curved Crescent Arc (from reference image) */}
-          <div className="absolute top-1/2 -left-28 sm:-left-36 -translate-y-1/2 w-[340px] sm:w-[460px] h-[340px] sm:h-[460px] rounded-full border-[36px] sm:border-[48px] border-[#E10600]/25 dark:border-[#E10600]/40 blur-[40px] sm:blur-[60px] pointer-events-none" />
+          <div className="absolute top-1/2 -left-28 sm:-left-36 -translate-y-1/2 w-[300px] sm:w-[460px] h-[300px] sm:h-[460px] rounded-full border-[30px] sm:border-[48px] border-[#E10600]/25 dark:border-[#E10600]/40 blur-[28px] sm:blur-[60px] pointer-events-none" />
 
           {/* Right Soft Teal/Cyan Ambient Glow (from reference image) */}
-          <div className="absolute top-1/2 -right-28 sm:-right-36 -translate-y-1/2 w-[320px] sm:w-[420px] h-[320px] sm:h-[420px] rounded-full bg-teal-500/15 blur-[100px] sm:blur-[130px] pointer-events-none" />
+          <div className="hidden sm:block absolute top-1/2 -right-28 sm:-right-36 -translate-y-1/2 w-[320px] sm:w-[420px] h-[320px] sm:h-[420px] rounded-full bg-teal-500/15 blur-[110px] pointer-events-none" />
 
           <div className="relative z-10 max-w-4xl mx-auto space-y-5 sm:space-y-6">
             {/* 1. Avatars + 5 Stars Ratings Pill */}
@@ -268,7 +277,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="max-w-5xl mx-auto rounded-[28px] sm:rounded-3xl p-3 sm:p-4 bg-slate-100/95 dark:bg-[#1c1c1c]/95 border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-2xl dark:shadow-black/80 backdrop-blur-xl transition-colors"
+          className="max-w-5xl mx-auto rounded-[28px] sm:rounded-3xl p-3 sm:p-4 bg-slate-100/95 dark:bg-[#1c1c1c]/95 border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-2xl dark:shadow-black/80 sm:backdrop-blur-xl transition-colors"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 items-stretch">
             {/* LEFT COLUMN: 2 Cards Top + 1 Wide Card Bottom */}
@@ -286,6 +295,8 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
                   <img
                     src={peerImages[peerImageIndex]}
                     alt="TheCodeSpark Peer Learning Culture"
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end justify-between p-3.5">
@@ -385,6 +396,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
               <video
                 ref={videoRef}
                 src={selectedVideo}
+                preload="metadata"
                 className="absolute inset-0 w-full h-full object-cover brightness-95 group-hover:brightness-100 transition-all duration-700"
                 autoPlay
                 loop

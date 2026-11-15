@@ -89,16 +89,44 @@ const CAMPUS_CARDS: CampusCard[] = [
 ];
 
 export const ImpactGallery: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [activeCardId, setActiveCardId] = useState<string | null>('keynote-tour');
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [modalVideoUrl, setModalVideoUrl] = useState('/assets/aistudio/dfef7c106c7be779a3beaa99bfcc24bf_bcbd35b4.mp4');
 
   const [isPaused, setIsPaused] = useState(false);
+  const [isInView, setIsInView] = useState(false);
 
-  // Automatic smooth scroll across cards
+  // Track section visibility so offscreen timers & videos don't burn mobile CPU/GPU
   useEffect(() => {
-    if (isPaused) return;
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setIsInView(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+        const videos = el.querySelectorAll('video[data-preview-video="true"]');
+        videos.forEach((v) => {
+          const videoEl = v as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            videoEl.play().catch(() => {});
+          } else {
+            videoEl.pause();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Automatic smooth scroll across cards only when visible
+  useEffect(() => {
+    if (isPaused || !isInView) return;
 
     const interval = setInterval(() => {
       if (carouselRef.current) {
@@ -115,7 +143,7 @@ export const ImpactGallery: React.FC = () => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, isInView]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -125,9 +153,9 @@ export const ImpactGallery: React.FC = () => {
   };
 
   return (
-    <section id="impact-section" className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
+    <section ref={sectionRef} id="impact-section" className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
       {/* Subtle background ambient glows matching other sections */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[400px] bg-[#E10600]/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[400px] bg-[#E10600]/10 rounded-full blur-[130px] pointer-events-none" />
 
       {/* Main Container strictly matching max-w-5xl display size */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
@@ -208,11 +236,12 @@ export const ImpactGallery: React.FC = () => {
                     : 'border-white/10 shadow-xl shadow-black/60 hover:border-white/30'
                 } bg-[#111116]`}
               >
-                {/* Background Media: Video autoplay loop or High-res Image */}
+                {/* Background Media: Video loop or High-res Image */}
                 {card.type === 'video' && card.videoUrl ? (
                   <video
                     src={card.videoUrl}
-                    autoPlay
+                    data-preview-video="true"
+                    preload="metadata"
                     loop
                     muted
                     playsInline
@@ -225,6 +254,7 @@ export const ImpactGallery: React.FC = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     referrerPolicy="no-referrer"
                     loading="lazy"
+                    decoding="async"
                   />
                 )}
 

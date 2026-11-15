@@ -11,18 +11,9 @@ interface CtaBannerProps {
 export const CtaBanner: React.FC<CtaBannerProps> = ({ onExploreCourses }) => {
   return (
     <section className="py-24 bg-white dark:bg-[#2A2A2A] relative overflow-hidden border-t border-slate-200 dark:border-white/[0.08] transition-colors">
-      {/* Background radial glow with continuous breathing animation */}
-      <motion.div 
-        animate={{ 
-          scale: [1, 1.2, 1],
-          opacity: [0.1, 0.2, 0.1]
-        }}
-        transition={{ 
-          duration: 6, 
-          repeat: Infinity, 
-          ease: "easeInOut" 
-        }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#E10600] blur-[140px] pointer-events-none rounded-full" 
+      {/* Static ambient glow (no continuous blur scaling repaints) */}
+      <div
+        className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#E10600]/15 blur-[130px] pointer-events-none rounded-full" 
       />
 
       {/* Floating student thumbnail cards with continuous smooth float */}
@@ -35,6 +26,8 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onExploreCourses }) => {
           <img
             src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
             alt="Student"
+            loading="lazy"
+            decoding="async"
             className="w-full h-16 object-cover rounded-lg"
             referrerPolicy="no-referrer"
           />
@@ -51,6 +44,8 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onExploreCourses }) => {
           <img
             src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
             alt="Student"
+            loading="lazy"
+            decoding="async"
             className="w-full h-16 object-cover rounded-lg"
             referrerPolicy="no-referrer"
           />

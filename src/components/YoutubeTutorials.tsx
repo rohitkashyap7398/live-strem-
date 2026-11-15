@@ -97,14 +97,30 @@ const TUTORIAL_VIDEOS: TutorialVideo[] = [
 ];
 
 export const YoutubeTutorials: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [selectedVideo, setSelectedVideo] = useState<TutorialVideo | null>(null);
 
   const [isPaused, setIsPaused] = useState(false);
+  const [isInView, setIsInView] = useState(false);
 
-  // Automatic smooth scroll across tutorial video cards
   useEffect(() => {
-    if (isPaused) return;
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setIsInView(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.08 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Automatic smooth scroll across tutorial video cards when visible
+  useEffect(() => {
+    if (isPaused || !isInView) return;
 
     const interval = setInterval(() => {
       if (carouselRef.current) {
@@ -121,7 +137,7 @@ export const YoutubeTutorials: React.FC = () => {
     }, 3200);
 
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, isInView]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -131,9 +147,9 @@ export const YoutubeTutorials: React.FC = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
       {/* Background glow matching sibling sections */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[350px] bg-[#E10600]/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[350px] bg-[#E10600]/10 rounded-full blur-[130px] pointer-events-none" />
 
       {/* Main Container strictly matching max-w-5xl display size */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
@@ -214,6 +230,7 @@ export const YoutubeTutorials: React.FC = () => {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                   referrerPolicy="no-referrer"
                   loading="lazy"
+                  decoding="async"
                 />
 
                 {/* Dark Vignette Overlay */}

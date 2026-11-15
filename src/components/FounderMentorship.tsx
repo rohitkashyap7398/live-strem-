@@ -258,22 +258,38 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
   onRequestCallback,
   onExploreCourses
 }) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [activeTabId, setActiveTabId] = useState<string>('details');
   const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [isInView, setIsInView] = useState<boolean>(false);
   const [facultyOffset, setFacultyOffset] = useState<number>(0);
   const [isFacultyPaused, setIsFacultyPaused] = useState<boolean>(false);
   const chatScrollRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setIsInView(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.05 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   const currentTab = TABS_DATA.find((t) => t.id === activeTabId) || TABS_DATA[0];
 
-  // Auto-rotate the 2 stacked cards on right every 6 seconds, pauses on hover
+  // Auto-rotate the 2 stacked cards on right every 6 seconds when in view
   useEffect(() => {
-    if (isFacultyPaused) return;
+    if (isFacultyPaused || !isInView) return;
     const fTimer = setInterval(() => {
       setFacultyOffset((prev) => (prev + 1) % FACULTY_TRUTHS.length);
     }, 6000);
     return () => clearInterval(fTimer);
-  }, [isFacultyPaused]);
+  }, [isFacultyPaused, isInView]);
 
   const handleNextFaculty = () => {
     setFacultyOffset((prev) => (prev + 1) % FACULTY_TRUTHS.length);
@@ -286,9 +302,9 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
   const topFaculty = FACULTY_TRUTHS[facultyOffset % FACULTY_TRUTHS.length];
   const bottomFaculty = FACULTY_TRUTHS[(facultyOffset + 1) % FACULTY_TRUTHS.length];
 
-  // 1. Automatic Tab Cycling every 7 seconds (pauses on hover)
+  // 1. Automatic Tab Cycling every 7 seconds when in view
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || !isInView) return;
 
     const tabTimer = setInterval(() => {
       setActiveTabId((prev) => {
@@ -299,18 +315,18 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
     }, 7000);
 
     return () => clearInterval(tabTimer);
-  }, [isPaused]);
+  }, [isPaused, isInView]);
 
-  // 2. Automatic Continuous Smooth Scrolling inside the Chat Container
+  // 2. Automatic Continuous Smooth Scrolling inside the Chat Container when in view
   useEffect(() => {
     const container = chatScrollRef.current;
     if (!container) return;
 
     container.scrollTop = 0;
-    if (isPaused) return;
+    if (isPaused || !isInView) return;
 
     const scrollInterval = setInterval(() => {
-      if (!container || isPaused) return;
+      if (!container || isPaused || !isInView) return;
 
       const maxScroll = container.scrollHeight - container.clientHeight;
       if (maxScroll <= 0) return;
@@ -325,10 +341,10 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
     }, 1800);
 
     return () => clearInterval(scrollInterval);
-  }, [activeTabId, isPaused]);
+  }, [activeTabId, isPaused, isInView]);
 
   return (
-    <div className="relative">
+    <div ref={wrapperRef} className="relative">
       {/* 
         ========================================================================
         PART 1: INTERACTIVE CHAT WITH FOUNDER & CEO MR. ROHIT KASHYAP (VIDEO 1)
@@ -410,6 +426,8 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                     <img
                       src={rohitPhoto}
                       alt="Mr. Rohit Kashyap"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -424,6 +442,8 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                     <img
                       src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80"
                       alt="Stephen / Mentor"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -438,6 +458,8 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                     <img
                       src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80"
                       alt="Student Nathalie"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -563,7 +585,7 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
       */}
       <section className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
         {/* Subtle radial ambient backdrop */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[500px] bg-[#E10600]/10 rounded-full blur-[160px] pointer-events-none" />
+        <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[500px] bg-[#E10600]/10 rounded-full blur-[130px] pointer-events-none" />
 
         {/* Section Header */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center mb-10 sm:mb-14 space-y-3.5">
@@ -583,9 +605,9 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
 
         {/* BIG OUTER ENCLOSING CONTAINER BORDER (Exact outer rectangle from user image) */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
-          <div className="border border-slate-200 dark:border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 bg-slate-50 dark:bg-[#0b0b0f]/95 relative overflow-hidden backdrop-blur-md shadow-xl dark:shadow-2xl dark:shadow-black/80 transition-colors">
+          <div className="border border-slate-200 dark:border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 bg-slate-50 dark:bg-[#0b0b0f]/95 relative overflow-hidden sm:backdrop-blur-md shadow-xl dark:shadow-2xl dark:shadow-black/80 transition-colors">
             {/* Ambient orange glow in corner */}
-            <div className="absolute -top-24 -right-24 w-80 h-80 bg-[#ea580c]/15 rounded-full blur-[100px] pointer-events-none" />
+            <div className="hidden sm:block absolute -top-24 -right-24 w-80 h-80 bg-[#ea580c]/15 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
               
@@ -613,6 +635,8 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                         e.currentTarget.src = "/Rohit.png";
                       }}
                       alt="Mr. Rohit Kashyap - Founder & CEO"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover object-top filter brightness-105 group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent pointer-events-none" />
@@ -798,6 +822,7 @@ const HorizontalFacultyCard: React.FC<{ faculty: FacultyTruth }> = ({ faculty })
               className="w-full h-full object-cover object-top filter brightness-105 group-hover:scale-105 transition-transform duration-500"
               referrerPolicy="no-referrer"
               loading="lazy"
+              decoding="async"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none" />
 

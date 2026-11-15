@@ -61,6 +61,8 @@ export const CommunityPlacement: React.FC<CommunityPlacementProps> = ({
             <img
               src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80"
               alt="Placement Story"
+              loading="lazy"
+              decoding="async"
               className="absolute inset-0 w-full h-full object-cover brightness-75 group-hover:scale-105 transition-transform duration-500"
               referrerPolicy="no-referrer"
             />
@@ -102,6 +104,8 @@ export const CommunityPlacement: React.FC<CommunityPlacementProps> = ({
               <img
                 src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&auto=format&fit=crop&q=80"
                 alt="Students Celebrating"
+                loading="lazy"
+                decoding="async"
                 className="absolute inset-0 w-full h-full object-cover brightness-85 group-hover:scale-105 transition-transform duration-500"
                 referrerPolicy="no-referrer"
               />

@@ -97,20 +97,6 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
   const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(6); // July peak
   const [hoveredDemographic, setHoveredDemographic] = useState<string | null>(null);
 
-  // Equalizer bar heights for smooth voice waveform animation
-  const [bars, setBars] = useState<number[]>([
-    35, 60, 45, 80, 95, 70, 50, 85, 100, 65, 40, 75, 90, 55, 30, 70, 85, 60, 40, 80, 95, 65, 45, 85
-  ]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setBars(prev =>
-        prev.map(() => Math.floor(Math.random() * 70) + 30)
-      );
-    }, 450);
-    return () => clearInterval(interval);
-  }, []);
-
   const samplePrompts = [
     'Analyze DSA progress & mock interview ratings...',
     'Optimizing 2-pointer approach for Trapping Rain Water...',
@@ -433,14 +419,17 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                 </button>
               </div>
 
-              {/* Pulsing Audio Equalizer Waveform */}
+              {/* Pulsing Audio Equalizer Waveform (Pure CSS GPU-composited — zero JS re-renders) */}
               <div className="my-1 py-1 px-1.5 rounded-lg bg-black/40 border border-white/[0.05] flex items-center justify-center gap-[3px] h-9 overflow-hidden">
-                {bars.map((height, i) => (
-                  <motion.div
+                {[38, 65, 48, 84, 96, 72, 54, 88, 100, 68, 44, 78, 92, 58, 36, 72, 86, 62, 46, 82, 95, 68, 50, 84].map((height, i) => (
+                  <div
                     key={i}
-                    animate={{ height: `${height}%` }}
-                    transition={{ duration: 0.35, ease: 'easeInOut' }}
-                    className={`w-[2px] rounded-full transition-all ${
+                    style={{
+                      height: `${height}%`,
+                      animationDelay: `${(i % 6) * 0.14}s`,
+                      animationDuration: `${0.9 + (i % 4) * 0.22}s`
+                    }}
+                    className={`w-[2px] rounded-full animate-eq-bar ${
                       i % 3 === 0
                         ? 'bg-[#E10600] shadow-[0_0_6px_#E10600]'
                         : i % 2 === 0
@@ -597,13 +586,11 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                       >
                         {/* Peak Floating Tooltip */}
                         {isPeak && (
-                          <motion.div
-                            animate={{ y: [0, -2, 0] }}
-                            transition={{ duration: 2, repeat: Infinity }}
+                          <div
                             className="absolute -top-3.5 px-1.5 py-0.5 rounded bg-[#E10600] text-white text-[7px] font-black font-mono shadow-lg shadow-[#E10600]/40 whitespace-nowrap z-10"
                           >
                             {d.ctc}
-                          </motion.div>
+                          </div>
                         )}
 
                         {/* Bar Body */}
@@ -821,8 +808,8 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
       {viewMode === 'hands' && (
         <div className="relative max-w-5xl mx-auto px-2 sm:px-4">
           {/* Ambient red and cyan glow behind tablet */}
-          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-72 sm:w-96 h-72 sm:h-96 bg-[#E10600]/20 blur-[130px] pointer-events-none rounded-full" />
-          <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-72 sm:w-96 h-72 sm:h-96 bg-cyan-500/10 blur-[130px] pointer-events-none rounded-full" />
+          <div className="hidden sm:block absolute top-1/2 left-1/4 -translate-y-1/2 w-72 sm:w-96 h-72 sm:h-96 bg-[#E10600]/20 blur-[120px] pointer-events-none rounded-full" />
+          <div className="hidden sm:block absolute top-1/2 right-1/4 -translate-y-1/2 w-72 sm:w-96 h-72 sm:h-96 bg-cyan-500/10 blur-[120px] pointer-events-none rounded-full" />
 
           {/* Desktop/Tablet Aspect Container with realistic hands */}
           <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] max-h-[640px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-black border border-white/10 bg-[#09090d]">
@@ -830,6 +817,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
             <img
               src="/hands_wide_tablet.jpg"
               alt="Hands holding TheCodeSpark AI Tablet"
+              decoding="async"
               className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none brightness-95"
             />
 

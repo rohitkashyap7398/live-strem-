@@ -167,7 +167,7 @@ export const StudentReviews: React.FC = () => {
   return (
     <section className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] relative overflow-hidden text-slate-900 dark:text-white border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
       {/* Subtle radial ambient backdrop */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-[#E10600]/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-[#E10600]/10 rounded-full blur-[130px] pointer-events-none" />
 
       {/* Header Container */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center mb-10 sm:mb-14 space-y-3.5">
@@ -264,6 +264,7 @@ const ExactBubbleCard: React.FC<{ review: ReviewItem }> = ({ review }) => {
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
             loading="lazy"
+            decoding="async"
             onError={(e) => {
               e.currentTarget.style.display = 'none';
             }}

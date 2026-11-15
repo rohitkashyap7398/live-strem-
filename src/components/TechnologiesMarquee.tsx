@@ -368,7 +368,7 @@ export const TechnologiesMarquee: React.FC = () => {
   return (
     <section className="py-16 md:py-20 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-slate-200 dark:border-white/[0.08] transition-colors">
       {/* Top Subtle Amber/Ember Glow Bloom */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[220px] bg-[#E10600]/10 dark:bg-[#E10600]/15 blur-[120px] pointer-events-none rounded-full" />
+      <div className="hidden sm:block absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[220px] bg-[#E10600]/10 dark:bg-[#E10600]/15 blur-[120px] pointer-events-none rounded-full" />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10 space-y-8">
         

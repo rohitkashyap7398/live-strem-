@@ -1,6 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
-import { Clock, Award, Headphones, ArrowRight, Laptop, Sparkles, Layers, Cpu, Database, Terminal, Flame } from 'lucide-react';
+import { Clock, Award, Headphones, ArrowRight, Sparkles } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
 import { COURSES, Course } from '../data/coursesData';
 import { MagneticButton } from './MagneticButton';
@@ -247,37 +246,34 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
 
         {/* 
           STACKING / STICKY CARDS CONTAINER 
-          Directly matching desktop experience on both mobile & desktop:
-          Each card sticks beneath the header and stacks progressively over previous cards on scroll.
+          Clean vertical spacing on phones (< lg) so tall stacked cards never clip or glitch;
+          Progressive sticky card-deck stacking on desktop (lg+) where cards sit side-by-side.
         */}
-        <div className="relative space-y-8 sm:space-y-12 pb-12 sm:pb-16">
+        <div className="relative space-y-6 sm:space-y-8 lg:space-y-12 pb-10 sm:pb-16">
           {flagshipCards.map((item, idx) => {
             const isLight = item.cardType === 'light';
             const isOrange = item.cardType === 'orange';
             const isDark = item.cardType === 'dark';
             const isTerracotta = item.cardType === 'terracotta';
 
-            // Stepped sticky offset creates the visible card-deck tabs effect below the compact scrolled navbar
-            const stickyTop = `calc(clamp(56px, 7.5vh, 72px) + ${Math.min(idx, 10) * 10}px)`;
+            // Stepped sticky offset on desktop creates card-deck tabs below the scrolled navbar
+            const stickyTop = `calc(clamp(54px, 7vh, 66px) + ${Math.min(idx, 5) * 8}px)`;
 
             return (
               <div
                 key={item.badge + idx}
-                className="sticky transition-all will-change-transform"
-                style={{ top: stickyTop, zIndex: 11 + idx }}
+                className="lg:sticky lg:top-[var(--sticky-top)]"
+                style={{ '--sticky-top': stickyTop, zIndex: 11 + idx } as React.CSSProperties}
               >
-                <motion.div
-                  initial={false}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, ease: 'easeOut' }}
-                  className={`rounded-2xl p-4 sm:p-6 md:p-7 shadow-xl transition-all duration-300 border ${
+                <div
+                  className={`rounded-2xl p-4 sm:p-6 md:p-7 shadow-lg lg:shadow-xl transition-shadow duration-300 border ${
                     isLight
                       ? 'bg-white dark:bg-[#d8d8d8] text-[#111116] border-slate-200 dark:border-black/10 shadow-slate-200/70 dark:shadow-black/20 hover:shadow-black/30'
                       : isOrange
                       ? 'bg-gradient-to-r from-[#E10600] via-[#c70500] to-[#b30500] text-white border-white/20 shadow-[#E10600]/30'
                       : isDark
                       ? 'bg-[#2A2A2A] text-white border-white/10 shadow-black/60'
-                      : 'bg-gradient-to-br from-[#1c1c1c] via-[#242424] to-[#161616] text-white border-[#E10600]/40 shadow-2xl'
+                      : 'bg-gradient-to-br from-[#1c1c1c] via-[#242424] to-[#161616] text-white border-[#E10600]/40 shadow-xl lg:shadow-2xl'
                   }`}
                 >
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-10 items-center">
@@ -431,7 +427,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                       </div>
                     )}
                   </div>
-                </motion.div>
+                </div>
               </div>
             );
           })}
@@ -472,7 +468,7 @@ const VisualMockup: React.FC<{
 
       {/* Floating Badges Header */}
       <div className="relative z-10 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-black/70 backdrop-blur-md border border-white/15 text-[9px] sm:text-[10px] font-mono text-white">
+        <div className="flex items-center gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-black/85 border border-white/15 text-[9px] sm:text-[10px] font-mono text-white">
           <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#ff5722]" />
           <span>
             {type === 'instructor-web'
@@ -510,10 +506,12 @@ const VisualMockup: React.FC<{
       <div className="relative z-10 my-auto py-2.5 flex items-center justify-center">
         {type === 'instructor-web' && (
           <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#2b1000]">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#2b1000]">
               <img
                 src="/assets/aistudio/Ignite_1.0_Portrait_Poster_05139a11.png"
                 alt="IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-top"
               />
             </div>
@@ -522,10 +520,12 @@ const VisualMockup: React.FC<{
 
         {type === 'data-ai' && (
           <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-blue-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#051238]">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-blue-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#051238]">
               <img
                 src="/assets/aistudio/Ignite_2.0_Developer_Program_Poster_0af3eb9a.png"
                 alt="IGNITE 2.0 - Future-Ready Developer Program"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-top"
               />
             </div>
@@ -534,10 +534,12 @@ const VisualMockup: React.FC<{
 
         {type === 'laptop-code' && (
           <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-orange-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#0b0907]">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-orange-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#0b0907]">
               <img
                 src="/assets/aistudio/IGNITE_3.0_Developer_Cohort_Poster_2_2e0454b4.png"
                 alt="Next-Gen Developer Cohort: Web Technologies + MERN Stack + AI Applications + Problem Solving + Cloud Computing + System Design"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-top"
               />
             </div>
@@ -546,10 +548,12 @@ const VisualMockup: React.FC<{
 
         {type === 'ai-agents' && (
           <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#062b16]">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#062b16]">
               <img
                 src="/assets/aistudio/Autonomous_AI_Agents_Tech_Talk_Poster_db3b38b0.png"
                 alt="Autonomous AI Agents & Full-Stack LLM Engineering"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-top"
               />
             </div>
@@ -558,10 +562,12 @@ const VisualMockup: React.FC<{
 
         {type === 'java-dsa' && (
           <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-indigo-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#b8c4de]">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-indigo-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#b8c4de]">
               <img
                 src="/assets/aistudio/JAVALogic__Building_Deep_Learning_399f2731.png"
                 alt="Java & DSA Domination - Logic Building & Deep Learning"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-top"
               />
             </div>
@@ -570,10 +576,12 @@ const VisualMockup: React.FC<{
 
         {type === 'dev-toolkit' && (
           <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-amber-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#120b04]">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-amber-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#120b04]">
               <img
                 src="/assets/aistudio/TheCodeSpark_Developer_Toolkit_Poster_1d5ebe66.png"
                 alt="Complete Developer Toolkit - Languages, Code Editors & AI Coding Tools"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-top"
               />
             </div>
@@ -582,10 +590,12 @@ const VisualMockup: React.FC<{
 
         {type === 'trading-pro' && (
           <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#0a0b0e]">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#0a0b0e]">
               <img
                 src="/assets/aistudio/Focused_Crypto_Trading_Workspace_58db5cbb.png"
                 alt="Stock Market, Options & Algo Trading Mastery"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-top"
               />
             </div>
@@ -594,10 +604,12 @@ const VisualMockup: React.FC<{
 
         {type === 'summer-training' && (
           <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-amber-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#180c24]">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-amber-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#180c24]">
               <img
                 src="/assets/aistudio/TheCodeSpark_AI_Coding_Conference_d7477d11.png"
                 alt="Summer Training Program"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-top"
               />
             </div>
@@ -606,10 +618,12 @@ const VisualMockup: React.FC<{
 
         {type === 'winter-training' && (
           <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-cyan-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#071526]">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-cyan-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#071526]">
               <img
                 src="/assets/aistudio/TCS_Hackathon_Badge_Desk_Scene_04b4ab8b.png"
                 alt="Winter Training Program"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-top"
               />
             </div>
@@ -618,10 +632,12 @@ const VisualMockup: React.FC<{
 
         {type === 'apprenticeship' && (
           <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-orange-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#1a120b]">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-orange-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#1a120b]">
               <img
                 src="/assets/aistudio/Warmly_Branded_Executive_Team_Portrait_67a8e1d1.png"
                 alt="Apprenticeship Program"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-top"
               />
             </div>
@@ -630,10 +646,12 @@ const VisualMockup: React.FC<{
 
         {type === 'internship-training' && (
           <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#1c140e]">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#1c140e]">
               <img
                 src="/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png"
                 alt="Internship Training Program"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-top"
               />
             </div>
