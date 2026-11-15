@@ -126,6 +126,74 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
       tags: ['Coming Soon', 'Languages', 'Code Editors', 'AI Coding Tools', 'Dev Workflow']
     },
     {
+      course: COURSES.find((c) => c.id === 'summer-training') || COURSES[0], // Summer Training
+      cardType: 'light' as const,
+      badge: '☀️ LIVE NOW • 45 DAYS SUMMER TRAINING',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: '45-Day Summer Industrial Training – 5 Tech Tracks, GenAI & Live Hosted Projects',
+      desc: '45-Day B.Tech, Diploma, BCA & MCA industrial training (Lucknow Campus + Live Online) across MERN+AI, Python/Django, Java Spring Boot, Flutter & Data BI. Includes 2 Minor + 1 Major Live Project, Hardbound Report, 1-Yr Free Hosting & Dual QR Certificates.',
+      duration: '45 Days (120+ Hrs)',
+      certified: 'Dual QR Cert + Hardbound Report',
+      support: '1-Yr Free Hosting + NOC',
+      price: 'Rs.3999',
+      originalPrice: 'Rs.7999',
+      imageSide: 'left' as const,
+      visualType: 'summer-training' as const,
+      isComingSoon: false,
+      tags: ['45 Days Industrial', '5 Tech Tracks', '1-Yr Free Hosting', 'Hardbound Report + Cert']
+    },
+    {
+      course: COURSES.find((c) => c.id === 'winter-training') || COURSES[0], // Winter Training
+      cardType: 'dark' as const,
+      badge: '❄️ LIVE NOW • WINTER TRAINING',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: 'Winter Training Program – Hands-On Software Engineering, DSA & Hackathon Lab',
+      desc: 'Accelerated 4–6 weeks winter coding cohort focused on DSA algorithms, clean backend APIs, weekend hackathon prototyping, and full college project readiness.',
+      duration: '6 Weeks (100+ Hrs)',
+      certified: 'Yes Certified',
+      support: '24/7 Mentor Support',
+      price: 'Rs.3999',
+      originalPrice: 'Rs.7999',
+      imageSide: 'right' as const,
+      visualType: 'winter-training' as const,
+      isComingSoon: false,
+      tags: ['Winter Training', 'Python / Java / Web', 'DSA & Logic', 'Hackathon Lab']
+    },
+    {
+      course: COURSES.find((c) => c.id === 'ignite-6') || COURSES[0], // Apprenticeship
+      cardType: 'orange' as const,
+      badge: 'APPRENTICESHIP PROGRAM',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: 'Apprenticeship Program: Corporate Production Engineering, Agile Sprints & Stipend Track',
+      desc: '6-Month corporate engineering apprenticeship. Work directly on production client repos, Agile sprints, PR code reviews, and get verified work experience with stipend assistance.',
+      duration: '6 Months (300+ Hrs)',
+      certified: 'Work Experience Letter',
+      support: 'Corporate Leads',
+      price: 'Rs.5000',
+      originalPrice: 'Rs.10000',
+      imageSide: 'left' as const,
+      visualType: 'apprenticeship' as const,
+      isComingSoon: true,
+      tags: ['Apprenticeship', 'Paid Stipend Track', 'Live Client Projects', 'Placement Support']
+    },
+    {
+      course: COURSES.find((c) => c.id === 'internship-training') || COURSES[0], // Internship Training
+      cardType: 'light' as const,
+      badge: '💼 LIVE NOW • INTERNSHIP TRAINING',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: 'Internship Training Program – Real-World Production Deployment & 1-on-1 Industry Mentorship',
+      desc: 'Bridge college to industry with real-time Agile sprints, production feature commits, senior Git PR reviews, Official Offer Letter, Experience Certificate & Letter of Recommendation.',
+      duration: '3–6 Months (200+ Hrs)',
+      certified: 'Offer + Experience Letter',
+      support: '1-on-1 Industry Mentors',
+      price: 'Rs.4499',
+      originalPrice: 'Rs.9999',
+      imageSide: 'right' as const,
+      visualType: 'internship-training' as const,
+      isComingSoon: false,
+      tags: ['Internship Training', 'Live Codebase', 'Git & PR Reviews', 'Offer Letter']
+    },
+    {
       course: COURSES.find((c) => c.id === 'trading-mastery') || COURSES[COURSES.length - 1], // Stock Market, Crypto & Algo Trading Mastery
       cardType: 'terracotta' as const,
       badge: 'COMING SOON',
@@ -141,74 +209,6 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
       visualType: 'trading-pro' as const,
       isComingSoon: true,
       tags: ['Coming Soon', 'Price Action', 'Crypto & Spot', 'Options & F&O', 'Algo Trading']
-    },
-    {
-      course: COURSES.find((c) => c.id === 'summer-training') || COURSES[0], // Summer Training
-      cardType: 'light' as const,
-      badge: '☀️ LIVE NOW • 45 DAYS SUMMER TRAINING',
-      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
-      title: '45-Day Summer Industrial Training – 5 Tech Tracks, GenAI & Live Hosted Projects',
-      desc: '45-Day B.Tech, Diploma, BCA & MCA industrial training (Lucknow Campus + Live Online) across MERN+AI, Python/Django, Java Spring Boot, Flutter & Data BI. Includes 2 Minor + 1 Major Live Project, Hardbound Report, 1-Yr Free Hosting & Dual QR Certificates.',
-      duration: '45 Days (120+ Hrs)',
-      certified: 'Dual QR Cert + Hardbound Report',
-      support: '1-Yr Free Hosting + NOC',
-      price: 'Rs.3999',
-      originalPrice: 'Rs.7999',
-      imageSide: 'right' as const,
-      visualType: 'summer-training' as const,
-      isComingSoon: false,
-      tags: ['45 Days Industrial', '5 Tech Tracks', '1-Yr Free Hosting', 'Hardbound Report + Cert']
-    },
-    {
-      course: COURSES.find((c) => c.id === 'winter-training') || COURSES[0], // Winter Training
-      cardType: 'orange' as const,
-      badge: '❄️ LIVE NOW • WINTER TRAINING',
-      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
-      title: 'Winter Training Program – Hands-On Software Engineering, DSA & Hackathon Lab',
-      desc: 'Accelerated 4–6 weeks winter coding cohort focused on DSA algorithms, clean backend APIs, weekend hackathon prototyping, and full college project readiness.',
-      duration: '6 Weeks (100+ Hrs)',
-      certified: 'Yes Certified',
-      support: '24/7 Mentor Support',
-      price: 'Rs.3999',
-      originalPrice: 'Rs.7999',
-      imageSide: 'left' as const,
-      visualType: 'winter-training' as const,
-      isComingSoon: false,
-      tags: ['Winter Training', 'Python / Java / Web', 'DSA & Logic', 'Hackathon Lab']
-    },
-    {
-      course: COURSES.find((c) => c.id === 'ignite-6') || COURSES[0], // Apprenticeship
-      cardType: 'dark' as const,
-      badge: 'APPRENTICESHIP PROGRAM',
-      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
-      title: 'Apprenticeship Program: Corporate Production Engineering, Agile Sprints & Stipend Track',
-      desc: '6-Month corporate engineering apprenticeship. Work directly on production client repos, Agile sprints, PR code reviews, and get verified work experience with stipend assistance.',
-      duration: '6 Months (300+ Hrs)',
-      certified: 'Work Experience Letter',
-      support: 'Corporate Leads',
-      price: 'Rs.5000',
-      originalPrice: 'Rs.10000',
-      imageSide: 'right' as const,
-      visualType: 'apprenticeship' as const,
-      isComingSoon: true,
-      tags: ['Apprenticeship', 'Paid Stipend Track', 'Live Client Projects', 'Placement Support']
-    },
-    {
-      course: COURSES.find((c) => c.id === 'internship-training') || COURSES[0], // Internship Training
-      cardType: 'terracotta' as const,
-      badge: '💼 LIVE NOW • INTERNSHIP TRAINING',
-      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
-      title: 'Internship Training Program – Real-World Production Deployment & 1-on-1 Industry Mentorship',
-      desc: 'Bridge college to industry with real-time Agile sprints, production feature commits, senior Git PR reviews, Official Offer Letter, Experience Certificate & Letter of Recommendation.',
-      duration: '3–6 Months (200+ Hrs)',
-      certified: 'Offer + Experience Letter',
-      support: '1-on-1 Industry Mentors',
-      price: 'Rs.4499',
-      originalPrice: 'Rs.9999',
-      imageSide: 'left' as const,
-      visualType: 'internship-training' as const,
-      isComingSoon: false,
-      tags: ['Internship Training', 'Live Codebase', 'Git & PR Reviews', 'Offer Letter']
     }
   ];
 

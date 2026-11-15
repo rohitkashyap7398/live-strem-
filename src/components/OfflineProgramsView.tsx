@@ -1,12 +1,32 @@
-import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
-  Play,
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+  useSpring,
+  useMotionValue,
+  MotionConfig
+} from 'motion/react';
+import {
+  ArrowRight,
+  CheckCircle2,
+  ChevronDown,
+  Layers,
+  MapPin,
   Pause,
+  Phone,
+  Play,
+  Plus,
+  Minus,
+  Sparkles,
+  Terminal,
+  Users,
   Volume2,
   VolumeX,
-  CheckCircle2,
-  Sparkles
+  Briefcase,
+  Code2,
+  Cpu
 } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
 
@@ -15,19 +35,428 @@ interface OfflineProgramsViewProps {
   onRequestCallback: () => void;
 }
 
+const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+// Video-matching Mint Pill CTA with circular arrow badge
+const MintPillButton: React.FC<{
+  label: string;
+  onClick?: () => void;
+  type?: 'button' | 'submit';
+  variant?: 'mint' | 'dark' | 'outline';
+  className?: string;
+}> = ({ label, onClick, type = 'button', variant = 'mint', className = '' }) => {
+  const baseStyles =
+    variant === 'mint'
+      ? 'bg-[#2CF585] hover:bg-[#1EE074] text-[#0D1E14]'
+      : variant === 'dark'
+      ? 'bg-[#161B18] hover:bg-[#0D1410] text-white border border-white/15'
+      : 'bg-white hover:bg-[#F3F5F3] text-[#141916] border border-black/15';
+
+  return (
+    <motion.button
+      type={type}
+      whileHover={{ y: -2, scale: 1.02 }}
+      whileTap={{ scale: 0.97 }}
+      onClick={onClick}
+      className={`inline-flex items-center gap-3 pl-5 pr-2 py-2 rounded-full text-xs sm:text-sm font-bold tracking-tight transition-colors shadow-sm cursor-pointer whitespace-nowrap shrink-0 group ${baseStyles} ${className}`}
+    >
+      <span>{label}</span>
+      <span
+        className={`w-7 h-7 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:translate-x-0.5 ${
+          variant === 'mint'
+            ? 'bg-[#0D1E14]/10 text-[#0D1E14]'
+            : variant === 'dark'
+            ? 'bg-[#2CF585] text-[#0D1E14]'
+            : 'bg-[#141916]/10 text-[#141916]'
+        }`}
+      >
+        <ArrowRight className="w-3.5 h-3.5" />
+      </span>
+    </motion.button>
+  );
+};
+
+// Video-exact diagonal glowing emerald stardust & sparkling particle canvas (`00:00`, `00:18–00:21`)
+const EmeraldStardustBackdrop: React.FC<{
+  angle?: 'top-left' | 'diagonal-up';
+}> = ({ angle = 'top-left' }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animId = 0;
+    let width = 0;
+    let height = 0;
+
+    interface StarParticle {
+      t: number; // position along diagonal 0..1
+      spread: number; // perpendicular offset -1..1
+      size: number;
+      alpha: number;
+      phase: number;
+      speed: number;
+      mint: boolean;
+    }
+
+    const particles: StarParticle[] = Array.from({ length: 240 }, () => ({
+      t: Math.random(),
+      spread: (Math.random() - 0.5) * 2 * Math.pow(Math.random(), 0.75),
+      size: 0.6 + Math.random() * 1.4,
+      alpha: 0.18 + Math.random() * 0.72,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.00018 + Math.random() * 0.00035,
+      mint: Math.random() > 0.28
+    }));
+
+    const resize = () => {
+      const parent = canvas.parentElement;
+      if (!parent) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = parent.clientWidth;
+      height = parent.clientHeight;
+      canvas.width = Math.max(1, Math.floor(width * dpr));
+      canvas.height = Math.max(1, Math.floor(height * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    let tick = 0;
+    const render = () => {
+      tick += 0.02;
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.t += p.speed;
+        if (p.t > 1.05) p.t = -0.05;
+
+        let x = 0;
+        let y = 0;
+        if (angle === 'top-left') {
+          // Sweeps from top-left down-right through the headline (`00:00`)
+          const bx = p.t * width * 0.95;
+          const by = height * 0.12 + p.t * height * 0.62;
+          x = bx + p.spread * width * 0.24;
+          y = by + p.spread * height * 0.26;
+        } else {
+          // Sweeps diagonally from bottom-left to top-right (`00:18–00:21`)
+          const bx = p.t * width * 1.05;
+          const by = height * 0.92 - p.t * height * 0.78;
+          x = bx + p.spread * width * 0.22;
+          y = by + p.spread * height * 0.24;
+        }
+
+        const twinkle = 0.55 + 0.45 * Math.sin(tick + p.phase);
+        const a = p.alpha * twinkle;
+        ctx.fillStyle = p.mint
+          ? `rgba(74, 248, 152, ${a.toFixed(3)})`
+          : `rgba(228, 252, 239, ${(a * 0.75).toFixed(3)})`;
+        ctx.beginPath();
+        ctx.arc(x, y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      animId = requestAnimationFrame(render);
+    };
+
+    animId = requestAnimationFrame(render);
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', resize);
+    };
+  }, [angle]);
+
+  return (
+    <div aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 bg-[#191C1A]" />
+      {/* Sweeping glowing emerald diagonal nebula ribbon */}
+      <motion.div
+        animate={{ opacity: [0.82, 1, 0.82], scale: [1, 1.03, 1] }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute -inset-24"
+        style={{
+          background:
+            angle === 'top-left'
+              ? 'linear-gradient(148deg, transparent 14%, rgba(34, 211, 128, 0.22) 34%, rgba(44, 245, 133, 0.34) 48%, rgba(16, 185, 129, 0.14) 64%, transparent 82%)'
+              : 'linear-gradient(32deg, transparent 16%, rgba(16, 185, 129, 0.18) 36%, rgba(44, 245, 133, 0.34) 50%, rgba(20, 184, 118, 0.15) 66%, transparent 84%)',
+          filter: 'blur(36px)'
+        }}
+      />
+      {/* Crisp ambient micro-grain / sparkling diagonal stardust */}
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+      {/* Fine photographic speckle texture across the dark canvas */}
+      <div
+        className="absolute inset-0 opacity-[0.22] mix-blend-screen"
+        style={{
+          backgroundImage:
+            'radial-gradient(rgba(110, 245, 175, 0.45) 0.6px, transparent 0.6px), radial-gradient(rgba(255, 255, 255, 0.22) 0.5px, transparent 0.5px)',
+          backgroundSize: '18px 18px, 11px 11px',
+          backgroundPosition: '0 0, 5px 7px'
+        }}
+      />
+    </div>
+  );
+};
+
+// Video-exact sticky sheet wrapper with scroll-driven scale-down, lift & grey recede (`00:03–00:09`)
+interface DifferenceSheetData {
+  id: string;
+  title: string;
+  desc: string;
+  items: { icon: React.ReactNode; label: string }[];
+  img: string;
+  caption: string;
+  glyph: 'chevron' | 'linked' | 'bars';
+}
+
+const StickyDeckSheet: React.FC<{
+  sheet: DifferenceSheetData;
+  idx: number;
+  onApplyOffline: () => void;
+}> = ({ sheet, idx, onApplyOffline }) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: wrapperRef,
+    offset: ['start 14%', 'end 14%']
+  });
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 180,
+    damping: 30
+  });
+
+  // Shrink slightly and shift upward as next sheet stacks over it (`00:05`, `00:07`, `00:09`)
+  const cardScale = useTransform(smoothProgress, [0, 1], [1, 0.925]);
+  const cardY = useTransform(smoothProgress, [0, 1], [0, -14]);
+  const veilOpacity = useTransform(smoothProgress, [0, 1], [0, 0.16]);
+
+  return (
+    <div
+      ref={wrapperRef}
+      className="sticky"
+      style={{
+        top: `${76 + idx * 14}px`,
+        zIndex: 12 + idx
+      }}
+    >
+      <motion.div
+        style={{ scale: cardScale, y: cardY, transformOrigin: 'top center' }}
+        className="relative rounded-[28px] sm:rounded-[34px] bg-[#F3F4F3] border border-black/[0.08] shadow-[0_-12px_40px_rgba(0,0,0,0.08)] overflow-hidden will-change-transform"
+      >
+        {/* Darkening stack overlay when recessed behind next sheet */}
+        <motion.div
+          aria-hidden="true"
+          style={{ opacity: veilOpacity }}
+          className="absolute inset-0 bg-[#8F9692] pointer-events-none z-20"
+        />
+
+        <div className="relative z-10 p-6 sm:p-10 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          {/* Left Editorial Column (`00:03 – 00:08`) */}
+          <div className="lg:col-span-6 space-y-5">
+            <div className="space-y-3">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-[#059669]">
+                0{idx + 1} · Pillar
+              </span>
+              <h3 className="text-2xl sm:text-4xl font-bold text-[#141916] font-display tracking-tight leading-tight">
+                {sheet.title}
+              </h3>
+              <p className="text-xs sm:text-sm text-[#4B5550] leading-relaxed max-w-lg">
+                {sheet.desc}
+              </p>
+            </div>
+
+            <MintPillButton
+              label="Learn More"
+              variant="mint"
+              onClick={onApplyOffline}
+            />
+
+            {/* 3 Clean White Feature Rows matching `00:04 – 00:08` */}
+            <div className="space-y-2.5 pt-2">
+              {sheet.items.map((row) => (
+                <div
+                  key={row.label}
+                  className="p-3.5 sm:p-4 rounded-xl bg-white border border-black/[0.06] shadow-2xs flex items-center gap-3.5 hover:border-[#2CF585] transition-colors"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-[#F3F4F3] flex items-center justify-center shrink-0">
+                    {row.icon}
+                  </div>
+                  <span className="text-xs sm:text-sm font-medium text-[#141916]">
+                    {row.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Frosted Translucent 3D Mint Emblem + Photo Preview (`00:04 – 00:09`) */}
+          <div className="lg:col-span-6 flex flex-col items-center justify-center space-y-6">
+            <div className="relative w-full max-w-[340px] h-32 flex items-center justify-center">
+              {sheet.glyph === 'chevron' && (
+                <motion.svg
+                  viewBox="0 0 200 140"
+                  className="w-48 h-32 drop-shadow-[0_18px_36px_rgba(44,245,133,0.45)]"
+                  animate={{ x: [0, 8, 0] }}
+                  transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  <defs>
+                    <linearGradient id="mintGlassA" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#6BFFB0" stopOpacity="0.95" />
+                      <stop offset="100%" stopColor="#14C967" stopOpacity="0.88" />
+                    </linearGradient>
+                    <linearGradient id="mintGlassB" x1="0%" y1="100%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#C8FFE0" stopOpacity="0.95" />
+                      <stop offset="100%" stopColor="#2CF585" stopOpacity="0.85" />
+                    </linearGradient>
+                  </defs>
+                  <rect
+                    x="42"
+                    y="16"
+                    width="104"
+                    height="34"
+                    rx="17"
+                    transform="rotate(32 94 33)"
+                    fill="url(#mintGlassA)"
+                  />
+                  <rect
+                    x="42"
+                    y="88"
+                    width="104"
+                    height="34"
+                    rx="17"
+                    transform="rotate(-32 94 105)"
+                    fill="url(#mintGlassB)"
+                  />
+                </motion.svg>
+              )}
+
+              {sheet.glyph === 'linked' && (
+                <motion.svg
+                  viewBox="0 0 220 140"
+                  className="w-52 h-32 drop-shadow-[0_18px_36px_rgba(44,245,133,0.45)]"
+                  animate={{ y: [-4, 5, -4] }}
+                  transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  <defs>
+                    <linearGradient id="mintLoopA" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#A6FFD0" stopOpacity="0.95" />
+                      <stop offset="100%" stopColor="#15C464" stopOpacity="0.9" />
+                    </linearGradient>
+                    <linearGradient id="mintLoopB" x1="100%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#2CF585" stopOpacity="0.92" />
+                      <stop offset="100%" stopColor="#0D964B" stopOpacity="0.82" />
+                    </linearGradient>
+                  </defs>
+                  <rect
+                    x="30"
+                    y="40"
+                    width="96"
+                    height="36"
+                    rx="18"
+                    transform="rotate(-38 78 58)"
+                    fill="url(#mintLoopA)"
+                  />
+                  <rect
+                    x="84"
+                    y="58"
+                    width="102"
+                    height="36"
+                    rx="18"
+                    transform="rotate(-38 135 76)"
+                    fill="url(#mintLoopB)"
+                  />
+                  <circle cx="96" cy="52" r="16" fill="#D5FFE8" fillOpacity="0.85" />
+                </motion.svg>
+              )}
+
+              {sheet.glyph === 'bars' && (
+                <motion.div
+                  className="flex items-end gap-3 h-28"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.5 }}
+                >
+                  {[
+                    { h: 'h-12', bg: 'from-[#C4FFE0] to-[#6BFFB0]', delay: 0 },
+                    { h: 'h-16', bg: 'from-[#7EFFB9] to-[#2CF585]', delay: 0.08 },
+                    { h: 'h-22', bg: 'from-[#42FA94] to-[#12C462]', delay: 0.16 },
+                    { h: 'h-28', bg: 'from-[#2CF585] to-[#0A984B]', delay: 0.24 }
+                  ].map((b, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ scaleY: 0.35, opacity: 0.6 }}
+                      whileInView={{ scaleY: 1, opacity: 1 }}
+                      animate={{ y: [0, -4, 0] }}
+                      transition={{
+                        scaleY: { duration: 0.5, delay: b.delay, ease: EASE_OUT_EXPO },
+                        y: {
+                          duration: 3 + i * 0.3,
+                          repeat: Infinity,
+                          ease: 'easeInOut',
+                          delay: b.delay
+                        }
+                      }}
+                      style={{ transformOrigin: 'bottom center' }}
+                      className={`w-7 ${b.h} rounded-full bg-gradient-to-b ${b.bg} shadow-[0_12px_28px_rgba(44,245,133,0.4)]`}
+                    />
+                  ))}
+                </motion.div>
+              )}
+            </div>
+
+            {/* Clean Rounded Photo Showcase */}
+            <div className="w-full rounded-2xl overflow-hidden bg-[#141916] border border-black/10 relative aspect-[16/9] shadow-lg group">
+              <img
+                src={sheet.img}
+                alt={sheet.title}
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-4">
+                <span className="text-[11px] font-mono text-[#2CF585] font-semibold">
+                  {sheet.caption}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
   onApplyOffline,
   onRequestCallback
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const heroParallaxRef = useRef<HTMLDivElement>(null);
+  const marqueeScrollRef = useRef<HTMLDivElement>(null);
+  const methodologyRef = useRef<HTMLDivElement>(null);
+  const carouselTrackRef = useRef<HTMLDivElement>(null);
+
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
 
-  // Active step in "What Makes Us Different"
-  const [activeDiffStep, setActiveDiffStep] = useState(0);
+  // Interactive sections state
+  const [openMethodologyIdx, setOpenMethodologyIdx] = useState<number | null>(0);
+  const [openDoubtPillIdx, setOpenDoubtPillIdx] = useState<number | null>(0);
+  const [isHoveringTrack, setIsHoveringTrack] = useState(false);
 
-  // Active Career Journey focus row
-  const [activeJourneyIdx, setActiveJourneyIdx] = useState(0);
+  // Real drag-to-scroll state & cursor-following "Drag ↔" badge (`00:12 – 00:16`)
+  const isDraggingRef = useRef(false);
+  const dragStartXRef = useRef(0);
+  const dragScrollLeftRef = useRef(0);
+  const dragMovedRef = useRef(false);
+  const pointerX = useMotionValue(-100);
+  const pointerY = useMotionValue(-100);
+  const smoothCursorX = useSpring(pointerX, { stiffness: 320, damping: 28 });
+  const smoothCursorY = useSpring(pointerY, { stiffness: 320, damping: 28 });
 
   // Filter tab for "Classroom To Career Program"
   const [activeCourseCategory, setActiveCourseCategory] = useState<
@@ -44,6 +473,38 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
   const [city, setCity] = useState('');
   const [notes, setNotes] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // 1. Scroll-linked hero parallax & white curtain lift (`00:00 – 00:02`)
+  const { scrollYProgress: heroScrollRaw } = useScroll({
+    target: heroParallaxRef,
+    offset: ['start start', 'end start']
+  });
+  const heroScroll = useSpring(heroScrollRaw, { stiffness: 140, damping: 26 });
+  const heroImageScale = useTransform(heroScroll, [0, 1], [1, 1.09]);
+  const heroImageY = useTransform(heroScroll, [0, 1], [0, 36]);
+  const heroHeadlineY = useTransform(heroScroll, [0, 1], [0, -24]);
+  const curtainY = useTransform(heroScroll, [0, 0.8], [32, 0]);
+
+  // 2. Scroll-linked opposite sliding testimonial marquee (`00:10`)
+  const { scrollYProgress: marqueeProgressRaw } = useScroll({
+    target: marqueeScrollRef,
+    offset: ['start end', 'end start']
+  });
+  const marqueeProgress = useSpring(marqueeProgressRaw, {
+    stiffness: 110,
+    damping: 26
+  });
+  const marqueeRow1X = useTransform(marqueeProgress, [0, 1], [-55, 55]);
+  const marqueeRow2X = useTransform(marqueeProgress, [0, 1], [55, -55]);
+
+  // 3. Scroll-linked floating parallax inset photo between methodology & doubt pills (`00:19`, `00:27`)
+  const { scrollYProgress: methProgressRaw } = useScroll({
+    target: methodologyRef,
+    offset: ['start end', 'end start']
+  });
+  const methProgress = useSpring(methProgressRaw, { stiffness: 120, damping: 24 });
+  const floatingInsetY = useTransform(methProgress, [0, 1], [50, -50]);
+  const floatingInsetRotate = useTransform(methProgress, [0, 1], [-4, 4]);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -68,36 +529,75 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
     setIsSubmitted(true);
   };
 
+  const scrollTrack = (dir: 'left' | 'right') => {
+    if (!carouselTrackRef.current) return;
+    carouselTrackRef.current.scrollBy({
+      left: dir === 'left' ? -340 : 340,
+      behavior: 'smooth'
+    });
+  };
+
+  const handleTrackMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    pointerX.set(e.clientX - rect.left);
+    pointerY.set(e.clientY - rect.top);
+
+    if (isDraggingRef.current && carouselTrackRef.current) {
+      const dx = e.pageX - dragStartXRef.current;
+      if (Math.abs(dx) > 5) dragMovedRef.current = true;
+      carouselTrackRef.current.scrollLeft = dragScrollLeftRef.current - dx * 1.15;
+    }
+  };
+
+  const handleTrackMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!carouselTrackRef.current) return;
+    isDraggingRef.current = true;
+    dragMovedRef.current = false;
+    dragStartXRef.current = e.pageX;
+    dragScrollLeftRef.current = carouselTrackRef.current.scrollLeft;
+  };
+
+  const handleTrackMouseUpOrLeave = (leftTrack = false) => {
+    isDraggingRef.current = false;
+    if (leftTrack) setIsHoveringTrack(false);
+  };
+
   const polaroids = [
     {
+      tag: 'Campus Life',
+      badge: 'Culture',
       title: 'Leadership & Public Speaking',
-      img: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&auto=format&fit=crop&q=80',
-      rotate: -3
+      img: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&auto=format&fit=crop&q=80'
     },
     {
+      tag: 'Engineering',
+      badge: 'Competitions',
       title: 'Debug Battles & Competitions',
-      img: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&auto=format&fit=crop&q=80',
-      rotate: 2
+      img: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&auto=format&fit=crop&q=80'
     },
     {
+      tag: 'Community',
+      badge: 'Culture',
       title: 'Inertia & Community Culture',
-      img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=500&auto=format&fit=crop&q=80',
-      rotate: -2
+      img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&auto=format&fit=crop&q=80'
     },
     {
+      tag: 'Placements',
+      badge: 'Outcomes',
       title: 'Career & Placement Activities',
-      img: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=500&auto=format&fit=crop&q=80',
-      rotate: 3
+      img: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&auto=format&fit=crop&q=80'
     },
     {
+      tag: 'Workshops',
+      badge: 'Live Lab',
       title: 'Tech Masterclasses',
-      img: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&auto=format&fit=crop&q=80',
-      rotate: -2
+      img: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&auto=format&fit=crop&q=80'
     },
     {
+      tag: 'Deployment',
+      badge: 'Production',
       title: 'Real Project & Product Building',
-      img: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=500&auto=format&fit=crop&q=80',
-      rotate: 2
+      img: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&auto=format&fit=crop&q=80'
     }
   ];
 
@@ -225,1159 +725,1179 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
       num: '01',
       title: 'Beginner Foundation',
       desc: 'Start From Absolute Zero And Build A Strong Foundation In Programming And Problem-Solving. No Prior Experience Needed. Just Consistency And Curiosity. We Turn Confusion Into Clarity From Day One.',
-      img: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&auto=format&fit=crop&q=80',
-      isRed: true
+      img: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&auto=format&fit=crop&q=80'
     },
     {
       num: '02',
       title: 'Industry-Focused Training',
       desc: 'Structured, Hands-On Training Designed To Make You Industry-Ready. Learn By Building, Not Just Watching. Real Tasks, Real Challenges. Every Concept Is Backed With Practical Implementation.',
-      img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&auto=format&fit=crop&q=80',
-      isRed: false
+      img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&auto=format&fit=crop&q=80'
     },
     {
       num: '03',
       title: 'Learn From Industry Experts',
       desc: 'Learn Directly From Professionals Working At Top Tech Companies. Get Real-World Insights, Career Guidance, And Advanced Strategies.',
-      img: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&auto=format&fit=crop&q=80',
-      isRed: true
+      img: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&auto=format&fit=crop&q=80'
     },
     {
       num: '04',
       title: 'Build Real-World Products',
       desc: 'Build Real-World, Production-Level Projects, Not Basic Clones. Focus On Scalability, Performance, And Problem-Solving. Create A Portfolio That Stands Out In Interviews.',
-      img: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&auto=format&fit=crop&q=80',
-      isRed: false
+      img: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&auto=format&fit=crop&q=80'
     },
     {
       num: '05',
       title: 'Real Industrial Experience',
       desc: 'Work In An Environment That Simulates Real Tech Companies. Follow Professional Workflows, Tools, And Team Collaboration. Experience How Real Products Are Built And Deployed.',
-      img: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&auto=format&fit=crop&q=80',
-      isRed: true
+      img: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&auto=format&fit=crop&q=80'
+    }
+  ];
+
+  const differenceSheets: DifferenceSheetData[] = [
+    {
+      id: 'learn-by-building',
+      title: 'Learn By Building',
+      desc: 'No boring lectures, build 10+ real-world projects with hands-on learning from day one.',
+      items: [
+        {
+          icon: <Code2 className="w-4 h-4 text-[#141916]" />,
+          label: '10+ Real-World Production Projects'
+        },
+        {
+          icon: <Users className="w-4 h-4 text-[#141916]" />,
+          label: '25,000+ Enrolled Students Community'
+        },
+        {
+          icon: <Layers className="w-4 h-4 text-[#141916]" />,
+          label: '90 Days Structured Program • 100+ Placements'
+        }
+      ],
+      img: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=700&auto=format&fit=crop&q=80',
+      caption: '25,000+ Enrolled Students • 90 Days Structured Program • 100+ Placements',
+      glyph: 'chevron'
+    },
+    {
+      id: 'strong-community',
+      title: 'Strong Community Backing',
+      desc: 'Be part of 25,000+ active learners, peer coding, group learning & real growth culture.',
+      items: [
+        {
+          icon: <Sparkles className="w-4 h-4 text-[#141916]" />,
+          label: 'TheCodeSpark Technologies Private Limited Community Culture'
+        },
+        {
+          icon: <Terminal className="w-4 h-4 text-[#141916]" />,
+          label: 'Keep Learning After Hours With Peer Discussions'
+        },
+        {
+          icon: <Briefcase className="w-4 h-4 text-[#141916]" />,
+          label: 'Group Learning, Hackathons & Real Growth Culture'
+        }
+      ],
+      img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=700&auto=format&fit=crop&q=80',
+      caption: 'Keep Learning After Hours With Peer Discussions',
+      glyph: 'linked'
+    },
+    {
+      id: 'job-focused',
+      title: 'Job-Focused Learning',
+      desc: 'Everything you learn is aligned to real interviews, real skills, real hiring needs.',
+      items: [
+        {
+          icon: <Cpu className="w-4 h-4 text-[#141916]" />,
+          label: 'Interview-Aligned Problem Solving & Architecture'
+        },
+        {
+          icon: <CheckCircle2 className="w-4 h-4 text-[#141916]" />,
+          label: 'Kushagra Patidar • Placed at Amazon (₹47 LPA)'
+        },
+        {
+          icon: <MapPin className="w-4 h-4 text-[#141916]" />,
+          label: 'Indrapuri / Gomti Nagar Lucknow On-Campus Hiring Prep'
+        }
+      ],
+      img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&auto=format&fit=crop&q=80',
+      caption: 'Kushagra Patidar • Placed at Amazon • ₹47 LPA',
+      glyph: 'bars'
+    }
+  ];
+
+  const liveDoubtPills = [
+    {
+      title: 'Live Doubt Solving',
+      desc: 'Solve Problems Instantly During Sessions — no waiting days for replies while building your projects.'
+    },
+    {
+      title: 'Live Coding Challenge',
+      desc: 'Test Your Skills With Real-Time Challenges alongside peers and senior mentors on campus.'
+    },
+    {
+      title: 'Interactive Sessions',
+      desc: 'Engage, Ask, And Learn Actively with small-batch Lucknow studio supervision every day.'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#050507] text-slate-900 dark:text-[#f3f4f6] pb-28 relative overflow-x-clip transition-colors duration-300">
-      {/* ===================================================================== */}
-      {/* SECTION 1: HERO                                                       */}
-      {/* ===================================================================== */}
-      <section className="relative pt-14 sm:pt-20 pb-20 border-b border-slate-200 dark:border-white/[0.06] bg-slate-50/70 dark:bg-[#060609]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            {/* Left Content */}
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen bg-[#191C1A] text-white pb-28 relative overflow-x-clip font-sans selection:bg-[#2CF585] selection:text-[#0D1E14]">
+        {/* =================================================================== */}
+        {/* 1. HERO SPLIT FRAME + INLINE EXPANDING MINT STAT PILLS (`00:00-01`) */}
+        {/* =================================================================== */}
+        <section ref={heroParallaxRef} className="relative overflow-hidden">
+          <EmeraldStardustBackdrop angle="top-left" />
+
+          {/* Top Rounded Grayscale-Tinted Campus Photo Frame (`00:00`) */}
+          <div className="relative z-10 max-w-7xl mx-auto px-2 sm:px-4 pt-2 sm:pt-3">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55 }}
-              className="lg:col-span-7 space-y-6"
+              style={{ y: heroImageY }}
+              className="relative rounded-b-[28px] sm:rounded-b-[36px] rounded-t-[18px] overflow-hidden border border-white/10 shadow-2xl bg-[#101412]"
             >
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white dark:bg-white/[0.04] border border-[#ff5722]/30 shadow-lg shadow-[#ff5722]/10 backdrop-blur-md">
-                <img
-                  src={brandLogo}
-                  onError={(e) => {
-                    e.currentTarget.src = '/logo.png';
-                  }}
-                  alt="TheCodeSpark Logo"
-                  className="h-7 w-auto object-contain filter drop-shadow shrink-0"
-                />
-                <div className="text-left">
-                  <span className="text-xs sm:text-sm font-black text-slate-900 dark:text-white tracking-tight block font-display">
-                    TheCodeSpark Technologies{' '}
-                    <span className="text-[#ff5722]">Private Limited</span>
-                  </span>
-                  <span className="text-[10px] text-slate-500 dark:text-neutral-400 font-mono tracking-wider uppercase block">
-                    Lucknow On-Campus • In-Person Engineering
-                  </span>
+              <motion.img
+                style={{ scale: heroImageScale }}
+                src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1400&auto=format&fit=crop&q=85"
+                alt="In-Person On-Campus Labs • Indrapuri / Gomti Nagar Lucknow Campus"
+                className="w-full h-[290px] sm:h-[380px] lg:h-[420px] object-cover grayscale contrast-125 opacity-60"
+                referrerPolicy="no-referrer"
+              />
+              {/* Bottom-left diagonal emerald glow inside hero image matching `00:00` */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-[radial-gradient(ellipse_65%_55%_at_18%_75%,rgba(44,245,133,0.34),transparent_65%),linear-gradient(to_top,#0C130F_0%,rgba(12,19,15,0.45)_55%,rgba(12,19,15,0.25)_100%)]"
+              />
+
+              {/* Editorial Brand & Title inside Hero Image */}
+              <div className="absolute inset-0 p-6 sm:p-10 lg:p-14 flex flex-col justify-between">
+                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/45 border border-white/15 backdrop-blur-md self-start">
+                  <img
+                    src={brandLogo}
+                    onError={(e) => {
+                      e.currentTarget.src = '/logo.png';
+                    }}
+                    alt="TheCodeSpark Logo"
+                    className="h-6 w-auto object-contain shrink-0"
+                  />
+                  <div className="flex flex-wrap items-center gap-x-2 text-xs">
+                    <span className="font-bold text-white font-display">
+                      TheCodeSpark Technologies{' '}
+                      <span className="text-[#2CF585]">Private Limited</span>
+                    </span>
+                    <span className="hidden sm:inline text-white/40">•</span>
+                    <span className="text-[10px] font-mono text-[#2CF585] uppercase tracking-wider">
+                      Lucknow On-Campus • In-Person Engineering
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+                  <motion.h1
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.65, ease: EASE_OUT_EXPO }}
+                    className="text-3xl sm:text-5xl lg:text-6xl font-bold font-display text-white tracking-tight leading-[1.06] max-w-3xl"
+                  >
+                    Learn Coding from India&apos;s{' '}
+                    <span className="text-[#2CF585]">renowned professors</span>
+                  </motion.h1>
+
+                  <div className="text-left lg:text-right space-y-1 shrink-0">
+                    <div className="text-sm font-bold text-white font-display">
+                      In-Person On-Campus Labs
+                    </div>
+                    <div className="text-[11px] font-mono text-white/75">
+                      Indrapuri / Gomti Nagar Lucknow Campus
+                    </div>
+                  </div>
                 </div>
               </div>
+            </motion.div>
+          </div>
 
-              <h1 className="text-4xl sm:text-6xl font-black font-display text-slate-900 dark:text-white tracking-tight leading-tight">
-                Learn Coding from India&apos;s <br />
-                <span className="text-[#ff5722]">renowned professors</span>
-              </h1>
+          {/* Kinetic Inline Expanding Mint Pill Headline Block (`00:00 – 00:01`) */}
+          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-14 sm:pt-20 pb-24 sm:pb-28">
+            <motion.div
+              style={{ y: heroHeadlineY }}
+              className="space-y-8"
+            >
+              <div className="text-2xl sm:text-4xl lg:text-[44px] font-bold font-display text-white leading-[1.38] tracking-tight flex flex-wrap items-center gap-x-3 gap-y-3">
+                <span>Trusted by</span>
 
-              {/* 3 Stat Boxes in a row */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                <motion.div
-                  whileHover={{ y: -4, scale: 1.02 }}
-                  transition={{ type: 'spring', stiffness: 320, damping: 20 }}
-                  className="p-5 rounded-2xl bg-white dark:bg-[#111116] border border-slate-200 dark:border-white/[0.08] space-y-1 shadow-md dark:shadow-lg"
+                {/* Pill 1 expanding smoothly like `00:00 -> 00:01` */}
+                <motion.span
+                  initial={{ opacity: 0, scaleX: 0.35, width: 64 }}
+                  whileInView={{ opacity: 1, scaleX: 1, width: 'auto' }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ duration: 0.7, delay: 0.05, ease: EASE_OUT_EXPO }}
+                  whileHover={{ scale: 1.03 }}
+                  style={{ originX: 0 }}
+                  className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#2CF585] text-[#0D1E14] shadow-[0_10px_30px_rgba(44,245,133,0.32)] overflow-hidden"
                 >
-                  <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono tabular-nums block">
+                  <span className="text-lg sm:text-2xl font-black font-mono tabular-nums whitespace-nowrap">
                     1,000,000+
                   </span>
-                  <p className="text-[11px] text-slate-600 dark:text-neutral-400 leading-snug font-mono">
-                    Brilliant Students Taught in TheCodeSpark Technologies
-                    Private Limited
-                  </p>
-                </motion.div>
+                  <span className="text-[10px] sm:text-[11px] font-sans font-semibold leading-tight max-w-[140px]">
+                    Brilliant Students Taught in TheCodeSpark Technologies Private Limited
+                  </span>
+                </motion.span>
 
-                <motion.div
-                  whileHover={{ y: -4, scale: 1.02 }}
-                  transition={{ type: 'spring', stiffness: 320, damping: 20 }}
-                  className="p-5 rounded-2xl bg-white dark:bg-[#111116] border border-slate-200 dark:border-white/[0.08] space-y-1 shadow-md dark:shadow-lg"
+                <span>with</span>
+
+                {/* Pill 2 expanding smoothly */}
+                <motion.span
+                  initial={{ opacity: 0, scaleX: 0.35 }}
+                  whileInView={{ opacity: 1, scaleX: 1 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ duration: 0.7, delay: 0.14, ease: EASE_OUT_EXPO }}
+                  whileHover={{ scale: 1.03 }}
+                  style={{ originX: 0 }}
+                  className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#2CF585] text-[#0D1E14] shadow-[0_10px_30px_rgba(44,245,133,0.32)] overflow-hidden"
                 >
-                  <span className="text-2xl sm:text-3xl font-black text-[#ff5722] font-mono tabular-nums block">
+                  <span className="text-lg sm:text-2xl font-black font-mono tabular-nums whitespace-nowrap">
                     733K+
                   </span>
-                  <p className="text-[11px] text-slate-600 dark:text-neutral-400 leading-snug font-mono">
+                  <span className="text-[10px] sm:text-[11px] font-sans font-semibold leading-tight max-w-[130px]">
                     YouTube Subscribers On Our Channel
-                  </p>
-                </motion.div>
+                  </span>
+                </motion.span>
 
-                <motion.div
-                  whileHover={{ y: -4, scale: 1.02 }}
-                  transition={{ type: 'spring', stiffness: 320, damping: 20 }}
-                  className="p-5 rounded-2xl bg-white dark:bg-[#111116] border border-slate-200 dark:border-white/[0.08] space-y-1 shadow-md dark:shadow-lg"
+                {/* Accent inline sliding mint pill spacer matching `00:01` rhythm */}
+                <motion.span
+                  aria-hidden="true"
+                  initial={{ scaleX: 0.2, opacity: 0 }}
+                  whileInView={{ scaleX: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.2, ease: EASE_OUT_EXPO }}
+                  className="hidden sm:inline-block w-14 h-8 rounded-full bg-[#2CF585] shadow-[0_6px_20px_rgba(44,245,133,0.3)]"
+                />
+
+                <span>&amp; guided by</span>
+
+                {/* Pill 3 expanding smoothly */}
+                <motion.span
+                  initial={{ opacity: 0, scaleX: 0.35 }}
+                  whileInView={{ opacity: 1, scaleX: 1 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ duration: 0.7, delay: 0.26, ease: EASE_OUT_EXPO }}
+                  whileHover={{ scale: 1.03 }}
+                  style={{ originX: 0 }}
+                  className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#2CF585] text-[#0D1E14] shadow-[0_10px_30px_rgba(44,245,133,0.32)] overflow-hidden"
                 >
-                  <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono tabular-nums block">
+                  <span className="text-lg sm:text-2xl font-black font-mono tabular-nums whitespace-nowrap">
                     20+
                   </span>
-                  <p className="text-[11px] text-slate-600 dark:text-neutral-400 leading-snug font-mono">
+                  <span className="text-[10px] sm:text-[11px] font-sans font-semibold leading-tight max-w-[155px]">
                     Professional Instructors With Industry Level Experience
-                  </p>
-                </motion.div>
+                  </span>
+                </motion.span>
+
+                <motion.span
+                  aria-hidden="true"
+                  initial={{ scale: 0.4, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.55, delay: 0.32, ease: EASE_OUT_EXPO }}
+                  className="hidden sm:inline-block w-9 h-8 rounded-full bg-[#2CF585] shadow-[0_6px_20px_rgba(44,245,133,0.3)]"
+                />
               </div>
 
-              <div className="pt-2">
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.96 }}
+              <div className="flex flex-wrap items-center gap-4">
+                <MintPillButton
+                  label="Learn More"
+                  variant="mint"
                   onClick={() => {
                     document
                       .getElementById('classroom-to-career')
                       ?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="px-7 py-3 rounded-lg bg-gradient-to-r from-[#ff5722] to-[#e63e00] hover:from-[#f4511e] hover:to-[#d83800] text-white text-xs font-bold shadow-lg shadow-[#ff5722]/30 transition-all inline-flex items-center gap-2 cursor-pointer"
-                >
-                  <span>Learn More →</span>
-                </motion.button>
-              </div>
-            </motion.div>
-
-            {/* Right Photo */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.65 }}
-              className="lg:col-span-5"
-            >
-              <div className="rounded-3xl overflow-hidden border border-slate-200 dark:border-white/10 shadow-2xl relative aspect-[4/5] bg-neutral-900 group">
-                <img
-                  src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&auto=format&fit=crop&q=80"
-                  alt="Mentor Keynote"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-6">
-                  <div>
-                    <h3 className="text-lg font-bold text-white font-display">
-                      In-Person On-Campus Labs
-                    </h3>
-                    <p className="text-xs text-neutral-300 font-mono">
-                      Indrapuri / Gomti Nagar Lucknow Campus
-                    </p>
-                  </div>
-                </div>
+                <MintPillButton
+                  label="Visit Lucknow Campus"
+                  variant="dark"
+                  onClick={onApplyOffline}
+                />
               </div>
             </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ===================================================================== */}
-      {/* SECTION 2: "What Makes Us Different From Others"                      */}
-      {/* ===================================================================== */}
-      <section className="py-24 bg-white dark:bg-[#050507] border-b border-slate-200 dark:border-white/[0.06]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-16">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.5 }}
-            className="text-center max-w-3xl mx-auto space-y-2"
-          >
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white font-display">
+        {/* =================================================================== */}
+        {/* 2. SCROLL-DRIVEN CURTAIN + STICKY RECEDING SHEET DECK (`00:02–09`)  */}
+        {/* =================================================================== */}
+        <motion.section style={{ y: curtainY }} className="relative z-20 -mt-10 px-2 sm:px-4">
+          {/* Header Rounded Sheet (`00:02`) */}
+          <div className="max-w-7xl mx-auto rounded-t-[28px] sm:rounded-t-[36px] bg-white text-[#141916] px-6 sm:px-12 pt-14 sm:pt-20 pb-12 sm:pb-16 text-center shadow-[0_-22px_55px_rgba(0,0,0,0.32)]">
+            <motion.h2
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.55, ease: EASE_OUT_EXPO }}
+              className="text-3xl sm:text-5xl lg:text-6xl font-bold font-display tracking-tight leading-[1.08] max-w-3xl mx-auto"
+            >
               What Makes Us{' '}
-              <span className="text-[#ff5722] italic font-serif">Different</span>{' '}
+              <span className="text-[#059669] italic font-serif">Different</span>{' '}
               From Others
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400">
+            </motion.h2>
+            <p className="text-xs sm:text-base text-[#525E56] max-w-2xl mx-auto mt-4">
               Learn in a focused, distraction-free expert learning environment
               with expert mentors guiding you at every step.
             </p>
-          </motion.div>
+          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            {/* Left Connected Numbers (01 / 02 / 03) */}
-            <div className="lg:col-span-5 space-y-6 relative">
-              <div className="absolute left-9 top-10 bottom-10 w-0.5 bg-gradient-to-b from-[#ff5722] via-[#ff5722]/40 to-slate-200 dark:to-neutral-800" />
+          {/* Scroll-Scale Sticky Stacking Cards (`00:03 – 00:09`) */}
+          <div className="max-w-7xl mx-auto bg-white pb-8 space-y-6 px-2 sm:px-4">
+            {differenceSheets.map((sheet, idx) => (
+              <StickyDeckSheet
+                key={sheet.id}
+                sheet={sheet}
+                idx={idx}
+                onApplyOffline={onApplyOffline}
+              />
+            ))}
 
-              {/* 01: Learn By Building */}
-              <motion.div
-                whileHover={{ x: 4 }}
-                onClick={() => setActiveDiffStep(0)}
-                className={`flex items-start gap-5 cursor-pointer p-3.5 rounded-2xl transition-all ${
-                  activeDiffStep === 0
-                    ? 'bg-slate-100 dark:bg-white/[0.05] shadow-sm'
-                    : 'opacity-70 hover:opacity-100'
-                }`}
-              >
-                <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center font-black font-mono text-2xl shrink-0 z-10 transition-colors ${
-                    activeDiffStep === 0
-                      ? 'bg-[#ff5722] text-white shadow-lg shadow-[#ff5722]/30'
-                      : 'bg-slate-200 dark:bg-[#16161c] text-slate-600 dark:text-neutral-400'
-                  }`}
-                >
-                  01
-                </div>
-                <div className="space-y-1">
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">
-                    Learn By Building
-                  </h3>
-                  <p className="text-xs text-slate-600 dark:text-neutral-400 leading-relaxed">
-                    No boring lectures, build 10+ real-world projects with
-                    hands-on learning from day one.
-                  </p>
-                </div>
-              </motion.div>
+            {/* 4th Sticky Sheet: Code Studio To Career Program (`00:08–00:09`) */}
+            <div
+              id="classroom-to-career"
+              className="sticky rounded-[28px] sm:rounded-[34px] bg-white border border-black/10 shadow-[0_-16px_45px_rgba(0,0,0,0.12)] overflow-hidden"
+              style={{ top: '118px', zIndex: 16 }}
+            >
+              <div className="p-6 sm:p-10 lg:p-14 space-y-8">
+                <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+                  <div className="space-y-2 max-w-3xl">
+                    <h2 className="text-2xl sm:text-4xl font-bold text-[#141916] font-display tracking-tight">
+                      TheCodeSpark Technologies Private Limited{' '}
+                      <span className="text-[#059669]">Code Studio</span> To
+                      Career Program
+                    </h2>
+                    <p className="text-xs sm:text-sm text-[#525E56]">
+                      From our code studio to career success, build real skills
+                      that get you hired.
+                    </p>
+                  </div>
 
-              {/* 02: Strong Community Backing */}
-              <motion.div
-                whileHover={{ x: 4 }}
-                onClick={() => setActiveDiffStep(1)}
-                className={`flex items-start gap-5 cursor-pointer p-3.5 rounded-2xl transition-all ${
-                  activeDiffStep === 1
-                    ? 'bg-slate-100 dark:bg-white/[0.05] shadow-sm'
-                    : 'opacity-70 hover:opacity-100'
-                }`}
-              >
-                <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center font-black font-mono text-2xl shrink-0 z-10 transition-colors ${
-                    activeDiffStep === 1
-                      ? 'bg-[#ff5722] text-white shadow-lg shadow-[#ff5722]/30'
-                      : 'bg-slate-200 dark:bg-[#16161c] text-slate-600 dark:text-neutral-400'
-                  }`}
-                >
-                  02
+                  {/* Category Filter Pills w/ spring layout pill */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    {[
+                      { id: 'all', label: 'All' },
+                      { id: 'web', label: 'Web Development' },
+                      { id: 'python', label: 'Python with Data Science' },
+                      { id: 'java', label: 'Java & DSA' },
+                      {
+                        id: 'ignite',
+                        label: 'TheCodeSpark Technologies Private Limited IGNITE'
+                      }
+                    ].map((tab) => {
+                      const active = activeCourseCategory === tab.id;
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => setActiveCourseCategory(tab.id as any)}
+                          className={`relative px-4 py-2 rounded-full text-xs font-mono font-bold transition-colors cursor-pointer ${
+                            active
+                              ? 'text-[#0D1E14]'
+                              : 'text-[#4B5550] hover:text-[#141916] bg-[#F3F4F3] border border-black/[0.06]'
+                          }`}
+                        >
+                          {active && (
+                            <motion.span
+                              layoutId="campus-studio-pill"
+                              transition={{ type: 'spring', bounce: 0.2, duration: 0.45 }}
+                              className="absolute inset-0 bg-[#2CF585] rounded-full shadow-xs"
+                            />
+                          )}
+                          <span className="relative z-10">{tab.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-                <div className="space-y-1">
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">
-                    Strong Community Backing
-                  </h3>
-                  <p className="text-xs text-slate-600 dark:text-neutral-400 leading-relaxed">
-                    Be part of 25,000+ active learners, peer coding, group
-                    learning &amp; real growth culture.
-                  </p>
-                </div>
-              </motion.div>
 
-              {/* 03: Job-Focused Learning */}
-              <motion.div
-                whileHover={{ x: 4 }}
-                onClick={() => setActiveDiffStep(2)}
-                className={`flex items-start gap-5 cursor-pointer p-3.5 rounded-2xl transition-all ${
-                  activeDiffStep === 2
-                    ? 'bg-slate-100 dark:bg-white/[0.05] shadow-sm'
-                    : 'opacity-70 hover:opacity-100'
-                }`}
-              >
-                <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center font-black font-mono text-2xl shrink-0 z-10 transition-colors ${
-                    activeDiffStep === 2
-                      ? 'bg-[#ff5722] text-white shadow-lg shadow-[#ff5722]/30'
-                      : 'bg-slate-200 dark:bg-[#16161c] text-slate-600 dark:text-neutral-400'
-                  }`}
-                >
-                  03
-                </div>
-                <div className="space-y-1">
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">
-                    Job-Focused Learning
-                  </h3>
-                  <p className="text-xs text-slate-600 dark:text-neutral-400 leading-relaxed">
-                    Everything you learn is aligned to real interviews, real
-                    skills, real hiring needs.
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Right Interactive Showcase Box */}
-            <div className="lg:col-span-7">
-              <AnimatePresence mode="wait">
-                {activeDiffStep === 0 && (
-                  <motion.div
-                    key="step-0"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="rounded-3xl overflow-hidden border border-slate-200 dark:border-white/10 p-3 bg-slate-100 dark:bg-[#0d0d12] shadow-xl dark:shadow-2xl"
-                  >
-                    <div className="aspect-video rounded-2xl overflow-hidden relative">
-                      <img
-                        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&auto=format&fit=crop&q=80"
-                        alt="Learn By Building"
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex items-end p-5">
-                        <div className="flex items-center justify-between w-full text-xs font-mono text-white">
-                          <span className="font-bold text-white">
-                            25,000+ Enrolled Students
-                          </span>
-                          <span>•</span>
-                          <span>90 Days Structured Program</span>
-                          <span>•</span>
-                          <span className="text-emerald-400 font-bold">
-                            100+ Placements
-                          </span>
+                {/* 3 Studio Program Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  {filteredClassroomCourses.map((course) => (
+                    <motion.div
+                      key={course.id}
+                      layout
+                      whileHover={{ y: -5 }}
+                      transition={{ duration: 0.3 }}
+                      className="rounded-2xl p-4 sm:p-5 bg-[#F3F4F3] border border-black/[0.07] hover:border-[#2CF585] transition-all flex flex-col justify-between space-y-4 group"
+                    >
+                      <div className="space-y-3.5">
+                        <div className="aspect-[16/10] rounded-xl overflow-hidden bg-[#141916] relative">
+                          <img
+                            src={course.img}
+                            alt={course.title}
+                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                            referrerPolicy="no-referrer"
+                          />
+                          <div className="absolute top-2.5 left-2.5 bg-[#141916]/85 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-mono text-[#2CF585] font-bold">
+                            {course.badge}
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
 
-                {activeDiffStep === 1 && (
-                  <motion.div
-                    key="step-1"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="rounded-3xl overflow-hidden border border-slate-200 dark:border-white/10 p-3 bg-slate-100 dark:bg-[#0d0d12] shadow-xl dark:shadow-2xl"
-                  >
-                    <div className="aspect-video rounded-2xl overflow-hidden relative">
-                      <img
-                        src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&auto=format&fit=crop&q=80"
-                        alt="TheCodeSpark Community"
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent flex items-end p-5">
                         <div>
-                          <h4 className="text-base font-bold text-white font-display">
-                            TheCodeSpark Technologies Private Limited Community
-                            Culture
-                          </h4>
-                          <p className="text-xs text-neutral-300 font-mono">
-                            Keep Learning After Hours With Peer Discussions
+                          <h3 className="text-base sm:text-lg font-bold text-[#141916] font-display leading-snug">
+                            {course.title}
+                          </h3>
+                          <p className="text-xs text-[#525E56] mt-1.5 leading-relaxed">
+                            {course.desc}
                           </p>
                         </div>
                       </div>
-                    </div>
-                  </motion.div>
-                )}
 
-                {activeDiffStep === 2 && (
-                  <motion.div
-                    key="step-2"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="rounded-3xl overflow-hidden border border-slate-200 dark:border-white/10 p-3 bg-slate-100 dark:bg-[#0d0d12] shadow-xl dark:shadow-2xl"
-                  >
-                    <div className="aspect-video rounded-2xl overflow-hidden relative">
-                      <img
-                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=80"
-                        alt="Job Focused Learning"
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent flex items-end p-5">
-                        <div className="flex items-center justify-between w-full">
-                          <span className="text-xs font-mono text-emerald-400 font-bold">
-                            Kushagra Patidar • Placed at Amazon
-                          </span>
-                          <span className="text-xs font-mono text-white">
-                            ₹47 LPA
-                          </span>
-                        </div>
+                      <div className="pt-3 border-t border-black/[0.07] flex items-center justify-between gap-2">
+                        <MintPillButton
+                          label="Explore More"
+                          variant="mint"
+                          onClick={onApplyOffline}
+                          className="!text-xs !py-1.5 !pl-3.5 !pr-1.5"
+                        />
+                        <span className="text-[11px] font-mono text-[#525E56] truncate">
+                          {course.mentors}
+                        </span>
                       </div>
-                    </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ================================================================= */}
+          {/* 3. SCROLL-GLIDING OVERLAPPING MINT CAPSULE MARQUEE (`00:10`)      */}
+          {/* ================================================================= */}
+          <div
+            ref={marqueeScrollRef}
+            className="max-w-7xl mx-auto bg-white pt-10 pb-14 px-2 sm:px-4 overflow-hidden space-y-3.5"
+          >
+            {/* Row 1 gliding horizontally on scroll */}
+            <motion.div
+              style={{ x: marqueeRow1X }}
+              className="flex flex-wrap md:flex-nowrap gap-4 justify-center will-change-transform"
+            >
+              <div className="flex-1 min-w-[280px] rounded-full bg-[#2CF585] text-[#0D1E14] px-8 py-5 flex items-center justify-between gap-4 shadow-sm">
+                <p className="text-xs sm:text-sm font-semibold leading-snug">
+                  &ldquo;At TheCodeSpark Tech Campus, daily mentor reviews and
+                  live coding built my confidence for product interviews.&rdquo;
+                </p>
+                <span className="text-xs font-mono font-bold shrink-0">
+                  — Kushagra · Amazon
+                </span>
+              </div>
+
+              <div className="flex-1 min-w-[280px] rounded-full bg-[#2CF585] text-[#0D1E14] px-8 py-5 flex items-center justify-between gap-4 shadow-sm">
+                <p className="text-xs sm:text-sm font-semibold leading-snug">
+                  &ldquo;An environment where you debug live, collaborate daily,
+                  and build real production systems from scratch.&rdquo;
+                </p>
+                <span className="text-xs font-mono font-bold shrink-0">
+                  — Shivam · Razorpay
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Row 2 gliding in opposite direction on scroll matching `00:10` */}
+            <motion.div
+              style={{ x: marqueeRow2X }}
+              className="flex justify-center will-change-transform"
+            >
+              <div className="w-full max-w-2xl rounded-full bg-[#2CF585] text-[#0D1E14] px-8 py-5 flex items-center justify-between gap-4 shadow-sm">
+                <p className="text-xs sm:text-sm font-semibold leading-snug">
+                  &ldquo;Lucknow&apos;s best distraction-free studio culture for
+                  serious coding, DSA, and full-stack launches.&rdquo;
+                </p>
+                <span className="text-xs font-mono font-bold shrink-0">
+                  — Kritika · Accenture
+                </span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* ================================================================= */}
+          {/* 4. COMMUNITY CAROUSEL WITH CURSOR-FOLLOWING "Drag ↔" (`00:11-17`) */}
+          {/* ================================================================= */}
+          <div className="max-w-7xl mx-auto bg-white rounded-b-[28px] sm:rounded-b-[36px] px-6 sm:px-12 pb-16 sm:pb-20 pt-4 space-y-10 shadow-2xl">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
+              <div className="lg:col-span-7">
+                <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-[#141916] font-display tracking-tight leading-[1.1]">
+                  Be The Part Of{' '}
+                  <span className="italic font-serif text-[#059669]">
+                    TheCodeSpark Technologies Private Limited Community
+                  </span>
+                </h2>
+              </div>
+              <div className="lg:col-span-5 space-y-4 lg:pl-8">
+                <p className="text-xs sm:text-sm text-[#525E56] leading-relaxed">
+                  Campus life in Lucknow: Hackathons, public speaking, code
+                  battles &amp; late-night project defense.
+                </p>
+                <div className="flex items-center justify-between gap-3">
+                  <MintPillButton
+                    label="Explore Campus"
+                    variant="mint"
+                    onClick={onApplyOffline}
+                  />
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => scrollTrack('left')}
+                      aria-label="Scroll left"
+                      className="w-9 h-9 rounded-full border border-black/15 text-[#141916] hover:bg-[#F3F4F3] flex items-center justify-center cursor-pointer transition-colors"
+                    >
+                      ←
+                    </button>
+                    <button
+                      onClick={() => scrollTrack('right')}
+                      aria-label="Scroll right"
+                      className="w-9 h-9 rounded-full border border-black/15 text-[#141916] hover:bg-[#F3F4F3] flex items-center justify-center cursor-pointer transition-colors"
+                    >
+                      →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Real Mouse-Drag Carousel Strip with Live Spring Cursor Pill (`00:12 – 00:16`) */}
+            <div
+              className="relative select-none"
+              onMouseEnter={() => setIsHoveringTrack(true)}
+              onMouseLeave={() => handleTrackMouseUpOrLeave(true)}
+              onMouseMove={handleTrackMouseMove}
+              onMouseDown={handleTrackMouseDown}
+              onMouseUp={() => handleTrackMouseUpOrLeave(false)}
+            >
+              {/* Pointer-tracking dark frosted "Drag ↔" circular pill */}
+              <AnimatePresence>
+                {isHoveringTrack && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.6 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.6 }}
+                    transition={{ duration: 0.18 }}
+                    style={{
+                      x: smoothCursorX,
+                      y: smoothCursorY,
+                      translateX: '-50%',
+                      translateY: '-50%'
+                    }}
+                    className="hidden md:flex pointer-events-none absolute left-0 top-0 z-30 w-16 h-16 rounded-full bg-[#141916]/85 backdrop-blur-md text-white text-[11px] font-mono font-semibold items-center justify-center shadow-2xl border border-white/15"
+                  >
+                    Drag ↔
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ===================================================================== */}
-      {/* SECTION 3: "Be The Part Of TheCodeSpark Community" (`00:00 – 00:05`)  */}
-      {/* Fiery Orange Diagonal Beam Backdrop + Sliding Tilted Polaroid Parade  */}
-      {/* ===================================================================== */}
-      <section className="relative py-28 sm:py-36 overflow-hidden text-white bg-[#d93608]">
-        {/* Animated Fiery Diagonal Sheen Beams matching 00:00 - 00:05 */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-br from-[#be2302] via-[#ef4a13] to-[#ff6b2c]"
-        />
-        <motion.div
-          aria-hidden="true"
-          animate={{ x: ['-12%', '12%', '-12%'] }}
-          transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -inset-y-16 -inset-x-1/4 pointer-events-none opacity-45"
-          style={{
-            background:
-              'repeating-linear-gradient(125deg, rgba(255,255,255,0) 0px, rgba(255,255,255,0) 140px, rgba(255,190,140,0.28) 210px, rgba(255,255,255,0) 290px)'
-          }}
-        />
-
-        {/* Centered Headline Behind Sliding Polaroids (Exact 00:01 - 00:05 Composition) */}
-        <div className="relative min-h-[380px] sm:min-h-[430px] flex items-center justify-center">
-          <div className="relative z-10 max-w-4xl mx-auto px-4 text-center space-y-3 pointer-events-none select-none">
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold font-display leading-[1.15] drop-shadow-[0_4px_20px_rgba(0,0,0,0.22)]">
-              Be The Part Of <br />
-              <span className="italic font-serif font-semibold">
-                TheCodeSpark Technologies Private Limited Community
-              </span>
-            </h2>
-            <p className="text-xs sm:text-sm text-white/90 max-w-xl mx-auto">
-              Campus life in Lucknow: Hackathons, public speaking, code battles
-              &amp; late-night project defense.
-            </p>
-          </div>
-
-          {/* Continuous Sliding Horizontal Polaroid Filmstrip Gliding Over Title (Pauses on Hover) */}
-          <div className="group/marquee absolute inset-0 z-20 flex items-center overflow-hidden">
-            <div className="flex w-max items-center gap-6 sm:gap-10 py-8 animate-[communitySlide_28s_linear_infinite] group-hover/marquee:[animation-play-state:paused]">
-              {[...polaroids, ...polaroids].map((p, idx) => (
-                <motion.div
-                  key={idx}
-                  whileHover={{ scale: 1.08, rotate: 0, zIndex: 40 }}
-                  transition={{ type: 'spring', stiffness: 320, damping: 18 }}
-                  style={{ rotate: `${p.rotate}deg` }}
-                  className="w-[220px] sm:w-[270px] shrink-0 bg-white text-slate-900 p-3 pb-4 rounded-2xl shadow-[0_24px_50px_rgba(0,0,0,0.38)] cursor-pointer transition-shadow"
-                >
-                  <div className="aspect-[4/3.6] rounded-xl overflow-hidden bg-neutral-200">
+              <div
+                ref={carouselTrackRef}
+                className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 snap-x snap-mandatory no-scrollbar cursor-grab active:cursor-grabbing"
+              >
+                {polaroids.map((p) => (
+                  <motion.div
+                    key={p.title}
+                    whileHover={{ y: -6 }}
+                    transition={{ duration: 0.3 }}
+                    onClick={() => {
+                      if (!dragMovedRef.current) onApplyOffline();
+                    }}
+                    className="snap-start shrink-0 w-[260px] sm:w-[300px] aspect-[4/4.6] rounded-2xl overflow-hidden bg-[#141916] relative group cursor-pointer shadow-md"
+                  >
                     <img
                       src={p.img}
                       alt={p.title}
-                      className="w-full h-full object-cover"
+                      draggable={false}
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
                       referrerPolicy="no-referrer"
                     />
-                  </div>
-                  <div className="pt-3 text-center px-1">
-                    <p className="text-xs sm:text-sm font-bold font-display text-slate-900 line-clamp-1 leading-tight">
-                      {p.title}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/15"
+                    />
+
+                    {/* Top-Right `+` Indicator matching `00:12` */}
+                    <div className="absolute top-3.5 right-3.5 w-7 h-7 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white flex items-center justify-center group-hover:bg-[#2CF585] group-hover:text-[#0D1E14] transition-colors">
+                      <Plus className="w-3.5 h-3.5" />
+                    </div>
+
+                    <div className="absolute inset-x-0 bottom-0 p-5 space-y-2.5">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-mono text-white font-semibold">
+                          {p.tag}
+                        </span>
+                        <span className="px-2.5 py-0.5 rounded-full bg-white/15 backdrop-blur-md text-[10px] font-mono text-[#2CF585] font-semibold">
+                          {p.badge}
+                        </span>
+                      </div>
+                      <h3 className="text-base sm:text-lg font-bold text-white font-display leading-snug">
+                        {p.title}
+                      </h3>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </motion.section>
 
-      {/* Keyframe style tag strictly for horizontal sliding Polaroid conveyor */}
-      <style>{`
-        @keyframes communitySlide {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
+        {/* =================================================================== */}
+        {/* 5. DARK METHODOLOGY + FLOATING PARALLAX INSET (`00:18 – 00:21`)     */}
+        {/* =================================================================== */}
+        <section ref={methodologyRef} className="relative py-24 sm:py-28 overflow-hidden">
+          <EmeraldStardustBackdrop angle="diagonal-up" />
 
-      {/* ===================================================================== */}
-      {/* SECTION 4: "Code Studio To Career Program" (`00:06`)                  */}
-      {/* Left-Aligned Header, Pill Tabs & 3 Clean Dark Photo Cards             */}
-      {/* ===================================================================== */}
-      <section
-        id="classroom-to-career"
-        className="py-24 bg-white dark:bg-[#050507] border-b border-slate-200 dark:border-white/[0.06]"
-      >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
-          <div className="space-y-2 max-w-4xl">
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white font-display tracking-tight">
-              TheCodeSpark Technologies Private Limited{' '}
-              <span className="text-[#ff5722]">Code Studio</span> To Career
-              Program
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400">
-              From our code studio to career success, build real skills that get
-              you hired.
-            </p>
-          </div>
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 space-y-24">
+            {/* Split Row (`00:18`) */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+              <div className="lg:col-span-6 space-y-6">
+                <div className="space-y-3">
+                  <h2 className="text-3xl sm:text-5xl font-bold text-white font-display tracking-tight leading-[1.1]">
+                    Your{' '}
+                    <span className="text-[#2CF585] italic font-serif">Career</span>{' '}
+                    Journey At TheCodeSpark Technologies Private Limited
+                  </h2>
+                  <p className="text-xs sm:text-sm text-white/75 leading-relaxed max-w-xl">
+                    From Beginner To Job-Ready, We Guide Your Complete Journey
+                    With Skills, Projects, And Career Support.
+                  </p>
+                </div>
 
-          {/* Left-Aligned Filter Pills matching 00:06 */}
-          <div className="flex flex-wrap items-center gap-2.5">
-            {[
-              { id: 'all', label: 'All' },
-              { id: 'web', label: 'Web Development' },
-              { id: 'python', label: 'Python with Data Science' },
-              { id: 'java', label: 'Java & DSA' },
-              {
-                id: 'ignite',
-                label: 'TheCodeSpark Technologies Private Limited IGNITE'
-              }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveCourseCategory(tab.id as any)}
-                className={`relative px-5 py-2 rounded-full text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeCourseCategory === tab.id
-                    ? 'text-white'
-                    : 'text-slate-600 hover:text-slate-900 dark:text-neutral-300 dark:hover:text-white bg-slate-100 dark:bg-[#111116] border border-slate-200 dark:border-white/10'
-                }`}
-              >
-                {activeCourseCategory === tab.id && (
-                  <motion.div
-                    layoutId="activePill"
-                    className="absolute inset-0 bg-[#ff5722] rounded-full shadow-lg shadow-[#ff5722]/30"
-                    transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
-                  />
-                )}
-                <span className="relative z-10">{tab.label}</span>
-              </button>
-            ))}
-          </div>
+                <MintPillButton
+                  label="Start Your Journey"
+                  variant="mint"
+                  onClick={onApplyOffline}
+                />
 
-          {/* Course Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-            {filteredClassroomCourses.map((course) => (
-              <motion.div
-                key={course.id}
-                layout
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.15 }}
-                whileHover={{ y: -6 }}
-                transition={{ duration: 0.35 }}
-                className="rounded-2xl p-5 bg-slate-50 dark:bg-[#0e0e12] border border-slate-200 dark:border-white/[0.08] hover:border-[#ff5722]/45 transition-all flex flex-col justify-between space-y-5 shadow-lg dark:shadow-2xl group"
-              >
-                <div className="space-y-4">
-                  <div className="aspect-[16/10] rounded-xl overflow-hidden bg-slate-200 dark:bg-neutral-900 relative">
-                    <img
-                      src={course.img}
-                      alt={course.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      referrerPolicy="no-referrer"
+                {/* White Rounded Accordion Stack matching `00:18` */}
+                <div className="space-y-2.5 pt-2">
+                  {journeySteps.map((step, idx) => {
+                    const isOpen = openMethodologyIdx === idx;
+                    return (
+                      <div
+                        key={step.num}
+                        className="rounded-2xl bg-white text-[#141916] overflow-hidden shadow-md transition-all"
+                      >
+                        <button
+                          onClick={() =>
+                            setOpenMethodologyIdx(isOpen ? null : idx)
+                          }
+                          className="w-full px-5 py-4 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-[#F3F4F3] transition-colors"
+                        >
+                          <div className="flex items-center gap-3.5 min-w-0">
+                            <span className="w-8 h-8 rounded-lg bg-[#EAF9F0] text-[#059669] font-mono text-xs font-black flex items-center justify-center shrink-0">
+                              {step.num}
+                            </span>
+                            <span className="text-sm sm:text-base font-bold font-display truncate">
+                              {step.title}
+                            </span>
+                          </div>
+                          <ChevronDown
+                            className={`w-4 h-4 text-[#141916] shrink-0 transition-transform duration-300 ${
+                              isOpen ? 'rotate-180 text-[#059669]' : ''
+                            }`}
+                          />
+                        </button>
+
+                        <AnimatePresence initial={false}>
+                          {isOpen && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.25, ease: EASE_OUT_EXPO }}
+                              className="overflow-hidden border-t border-black/10 bg-[#FAFBFB]"
+                            >
+                              <div className="p-5 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                                <div className="sm:col-span-5 rounded-xl overflow-hidden aspect-video bg-[#141916]">
+                                  <img
+                                    src={step.img}
+                                    alt={step.title}
+                                    className="w-full h-full object-cover"
+                                    referrerPolicy="no-referrer"
+                                  />
+                                </div>
+                                <p className="sm:col-span-7 text-xs sm:text-sm text-[#4B5550] leading-relaxed">
+                                  {step.desc}
+                                </p>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Right Column: Studio Recording Video Card (`00:18 – 00:19`) */}
+              <div className="lg:col-span-6 space-y-6 lg:sticky lg:top-24">
+                <div className="rounded-[26px] overflow-hidden border border-white/15 bg-[#101412] shadow-2xl">
+                  <div className="aspect-video relative group bg-black">
+                    <video
+                      ref={videoRef}
+                      src="/assets/aistudio/20261101-1004-44.1480787_b68d94d4.mp4"
+                      className="w-full h-full object-cover"
+                      autoPlay
+                      loop
+                      muted={isMuted}
+                      playsInline
                     />
-                    <div className="absolute top-3 left-3 bg-black/75 backdrop-blur-md px-2.5 py-0.5 rounded text-[10px] font-mono text-[#ff5722] font-bold border border-white/10">
-                      {course.badge}
+
+                    <button
+                      onClick={togglePlay}
+                      aria-label={isPlaying ? 'Pause' : 'Play'}
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-[#2CF585] hover:bg-[#1EE074] text-[#0D1E14] flex items-center justify-center shadow-[0_0_32px_rgba(44,245,133,0.55)] opacity-95 group-hover:scale-110 transition-all cursor-pointer"
+                    >
+                      {isPlaying ? (
+                        <Pause className="w-5 h-5 fill-current" />
+                      ) : (
+                        <Play className="w-5 h-5 fill-current ml-0.5" />
+                      )}
+                    </button>
+
+                    <button
+                      onClick={toggleMute}
+                      aria-label={isMuted ? 'Unmute' : 'Mute'}
+                      className="absolute top-3.5 right-3.5 p-2 rounded-full bg-black/65 hover:bg-black/85 text-white backdrop-blur-md cursor-pointer"
+                    >
+                      {isMuted ? (
+                        <VolumeX className="w-4 h-4" />
+                      ) : (
+                        <Volume2 className="w-4 h-4" />
+                      )}
+                    </button>
+
+                    <div className="absolute bottom-3.5 left-3.5 bg-black/75 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-mono text-[#2CF585]">
+                      Live Expert Learning Session Recording • Lucknow Campus
                     </div>
                   </div>
 
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white font-display group-hover:text-[#ff5722] transition-colors">
-                      {course.title}
+                  <div className="p-6 space-y-2 border-t border-white/10">
+                    <h3 className="text-lg sm:text-xl font-bold text-white font-display">
+                      How Students Are Being Taught At{' '}
+                      <span className="text-[#2CF585]">
+                        TheCodeSpark Technologies Private Limited Code Studio
+                      </span>
                     </h3>
-                    <p className="text-xs text-slate-600 dark:text-neutral-400 mt-1.5 leading-relaxed">
-                      {course.desc}
+                    <p className="text-xs text-white/75 leading-relaxed">
+                      Learn In A Focused, Distraction-Free Code Studio
+                      Environment With Expert Mentors Guiding You At Every Step.
                     </p>
                   </div>
                 </div>
-
-                <div className="pt-3 border-t border-slate-200 dark:border-white/[0.06] flex items-center justify-between gap-2">
-                  <button
-                    onClick={onApplyOffline}
-                    className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#ff5722] to-[#e63e00] hover:from-[#f4511e] hover:to-[#d83800] text-white text-xs font-bold shadow-md shadow-[#ff5722]/25 cursor-pointer transition-all"
-                  >
-                    Explore More →
-                  </button>
-                  <span className="text-[11px] font-mono text-slate-500 dark:text-neutral-400">
-                    {course.mentors}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===================================================================== */}
-      {/* SECTION 5: "Solve Real time doubts" (`00:06 – 00:07`)                 */}
-      {/* Warm Illuminated Mentor Card with Glowing Orange CTA                  */}
-      {/* ===================================================================== */}
-      <section className="py-20 bg-slate-50 dark:bg-[#050507] border-b border-slate-200 dark:border-white/[0.06]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5 }}
-            className="rounded-3xl p-6 sm:p-10 bg-white dark:bg-gradient-to-r dark:from-[#120e0c] dark:via-[#0d0c10] dark:to-[#1d1106] border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
-          >
-            {/* Left Photo */}
-            <div className="lg:col-span-5 rounded-2xl overflow-hidden aspect-video bg-slate-200 dark:bg-neutral-900 border border-slate-200 dark:border-white/10">
-              <img
-                src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&auto=format&fit=crop&q=80"
-                alt="Mentor Coaching"
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-              />
+              </div>
             </div>
 
-            {/* Right content & 3 cards */}
-            <div className="lg:col-span-7 space-y-5">
-              <div className="space-y-1">
-                <span className="text-[10px] font-mono text-[#ff5722] uppercase tracking-wider font-bold">
+            {/* Video-matching Floating Parallax Square Inset (`00:19` & `00:27`) */}
+            <div className="hidden md:flex justify-start -my-8 pl-2">
+              <motion.div
+                style={{ y: floatingInsetY, rotate: floatingInsetRotate }}
+                className="w-44 h-44 rounded-3xl overflow-hidden border border-white/15 shadow-2xl bg-[#101412] will-change-transform"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&auto=format&fit=crop&q=80"
+                  alt="Lucknow Code Studio Peer Collaboration"
+                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                  referrerPolicy="no-referrer"
+                />
+              </motion.div>
+            </div>
+
+            {/* =============================================================== */}
+            {/* 6. TWIN ELECTRIC MINT PILLS ("Solve Real time doubts" `00:20-21`) */}
+            {/* =============================================================== */}
+            <div className="pt-8 border-t border-white/10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <div className="lg:col-span-6 space-y-4">
+                <span className="text-[11px] font-mono text-[#2CF585] uppercase tracking-widest font-bold block">
                   Learn Directly From The Experts
                 </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-display">
+                <h2 className="text-3xl sm:text-5xl font-bold text-white font-display tracking-tight leading-[1.08]">
                   Solve Real time doubts and Problems with Live challenges
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/[0.05] border border-slate-200 dark:border-white/[0.07] space-y-1">
-                  <h4 className="text-xs font-bold text-slate-900 dark:text-white font-display">
-                    Live Doubt Solving
-                  </h4>
-                  <p className="text-[11px] text-slate-600 dark:text-neutral-400">
-                    Solve Problems Instantly During Sessions
-                  </p>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/[0.05] border border-slate-200 dark:border-white/[0.07] space-y-1">
-                  <h4 className="text-xs font-bold text-slate-900 dark:text-white font-display">
-                    Live Coding Challenge
-                  </h4>
-                  <p className="text-[11px] text-slate-600 dark:text-neutral-400">
-                    Test Your Skills With Real-Time Challenges
-                  </p>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/[0.05] border border-slate-200 dark:border-white/[0.07] space-y-1">
-                  <h4 className="text-xs font-bold text-slate-900 dark:text-white font-display">
-                    Interactive Sessions
-                  </h4>
-                  <p className="text-[11px] text-slate-600 dark:text-neutral-400">
-                    Engage, Ask, And Learn Actively
-                  </p>
-                </div>
-              </div>
-
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.96 }}
-                onClick={onRequestCallback}
-                className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-[#ff5722] to-[#e63e00] hover:from-[#f4511e] hover:to-[#d83800] text-white text-xs font-bold shadow-lg shadow-[#ff5722]/25 cursor-pointer"
-              >
-                Learn More →
-              </motion.button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ===================================================================== */}
-      {/* SECTION 6: MacBook Video Split Horizon (`00:07 – 00:09`)              */}
-      {/* White Top Horizon seamlessly transitioning into Deep Black MacBook Base*/}
-      {/* ===================================================================== */}
-      <section className="relative pt-20 pb-20 bg-white text-slate-900 overflow-hidden">
-        {/* Bottom Half Pitch-Black Band matching 00:08 horizon split */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-[44%] bg-[#050507] pointer-events-none"
-        />
-
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-12">
-          <div className="space-y-2">
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 font-display tracking-tight">
-              How Students Are Being Taught At{' '}
-              <span className="text-[#ff5722] italic font-serif">
-                TheCodeSpark Technologies Private Limited Code Studio
-              </span>
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Learn In A Focused, Distraction-Free Code Studio Environment With
-              Expert Mentors Guiding You At Every Step.
-            </p>
-          </div>
-
-          {/* Authentic Aluminum MacBook Pro Mockup Spanning the White -> Black Horizon */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.55 }}
-            className="max-w-4xl mx-auto"
-          >
-            {/* MacBook Lid Bezel */}
-            <div className="mx-auto w-[92%] sm:w-[88%] rounded-t-[26px] p-2.5 sm:p-3.5 bg-[#121216] border border-neutral-700/80 shadow-2xl">
-              <div className="rounded-xl overflow-hidden aspect-video bg-black relative group">
-                <video
-                  ref={videoRef}
-                  src="/assets/aistudio/20261101-1004-44.1480787_b68d94d4.mp4"
-                  className="w-full h-full object-cover"
-                  autoPlay
-                  loop
-                  muted={isMuted}
-                  playsInline
-                />
-
-                {/* Centered Fiery Orange Play/Pause Circle Button matching 00:08 */}
-                <button
-                  onClick={togglePlay}
-                  aria-label={isPlaying ? 'Pause' : 'Play'}
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#ff5722] hover:bg-[#e63e00] text-white flex items-center justify-center shadow-[0_0_32px_rgba(255,87,34,0.6)] opacity-90 group-hover:scale-110 transition-all cursor-pointer"
-                >
-                  {isPlaying ? (
-                    <Pause className="w-5 h-5 sm:w-6 sm:h-6 fill-current" />
-                  ) : (
-                    <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-current ml-0.5" />
-                  )}
-                </button>
-
-                <div className="absolute top-3 right-3 flex items-center gap-2">
-                  <button
-                    onClick={toggleMute}
-                    aria-label={isMuted ? 'Unmute' : 'Mute'}
-                    className="p-2 rounded-full bg-black/65 hover:bg-black/85 text-white backdrop-blur-md cursor-pointer"
-                  >
-                    {isMuted ? (
-                      <VolumeX className="w-4 h-4" />
-                    ) : (
-                      <Volume2 className="w-4 h-4" />
-                    )}
-                  </button>
-                </div>
-
-                <div className="absolute bottom-3 left-3 bg-black/75 backdrop-blur-md px-3 py-1 rounded text-xs font-mono text-white">
-                  Live Expert Learning Session Recording • Lucknow Campus
-                </div>
-              </div>
-            </div>
-
-            {/* Metallic Aluminum MacBook Lower Lip with Centered Notch */}
-            <div className="relative h-4 sm:h-5 w-full rounded-b-2xl bg-gradient-to-b from-[#d4d4d8] via-[#a1a1aa] to-[#71717a] shadow-[0_18px_36px_rgba(0,0,0,0.6)] flex justify-center">
-              <div className="w-20 sm:w-28 h-1.5 sm:h-2 rounded-b-md bg-neutral-600/80" />
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ===================================================================== */}
-      {/* SECTION 7: "Learn From Industry Level Experts" (`00:09 – 00:12`)      */}
-      {/* 5 Tall Fiery-Orange Vertical Portrait Cards w/ Elevated Center Card    */}
-      {/* ===================================================================== */}
-      <section className="py-24 bg-slate-50 dark:bg-[#050507] border-b border-slate-200 dark:border-white/[0.06]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
-          <div className="text-center space-y-2">
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white font-display tracking-tight">
-              Learn From <span className="text-[#ff5722]">Industry Level</span>{' '}
-              Experts
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400">
-              Learn directly from industry experts working on real-world
-              products and technologies.
-            </p>
-          </div>
-
-          {/* 5 Portrait Cards with Elevated Center Focal Card matching 00:10 - 00:12 */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 items-center pt-2">
-            {visibleMentors.map((m, idx) => {
-              const isCenter = idx === 2;
-              return (
-                <motion.div
-                  key={`${mentorPage}-${m.name}`}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: idx * 0.05 }}
-                  whileHover={{ y: -10, scale: isCenter ? 1.07 : 1.03 }}
-                  className={`relative rounded-3xl overflow-hidden bg-gradient-to-b from-[#ff5e28] via-[#d93608] to-[#5e1402] border border-white/15 shadow-2xl cursor-pointer transition-all ${
-                    isCenter
-                      ? 'lg:scale-105 lg:z-20 aspect-[3/4.3] shadow-[0_24px_60px_rgba(255,87,34,0.35)]'
-                      : 'aspect-[3/4.1] opacity-95 hover:opacity-100'
-                  }`}
-                >
-                  {/* Top-Right Tiny Emblem Badge matching 00:10 */}
-                  <div className="absolute top-3.5 right-3.5 z-20 w-7 h-7 rounded-full bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center text-white">
-                    <Sparkles className="w-3.5 h-3.5" />
-                  </div>
-
-                  {/* Full-Bleed Portrait */}
-                  <img
-                    src={m.img}
-                    alt={m.name}
-                    className="w-full h-full object-cover object-top"
-                    referrerPolicy="no-referrer"
+                </h2>
+                <div className="pt-2">
+                  <MintPillButton
+                    label="Learn More"
+                    variant="mint"
+                    onClick={onRequestCallback}
                   />
+                </div>
+              </div>
 
-                  {/* Deep Bottom Scrim + Bold Tracked Typography matching 00:10 */}
-                  <div className="absolute inset-x-0 bottom-0 pt-16 pb-5 px-3 bg-gradient-to-t from-black via-black/70 to-transparent text-center z-10">
-                    <h4 className="text-sm sm:text-base font-extrabold text-white font-display uppercase tracking-tight leading-none">
-                      {m.name}
-                    </h4>
-                    <span className="text-[10px] font-mono text-neutral-300 block tracking-[0.28em] mt-1.5 font-semibold">
-                      {m.role}
-                    </span>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
+              {/* Stacked Electric Mint Pill Bars matching `00:20 – 00:21` */}
+              <div className="lg:col-span-6 space-y-3">
+                {liveDoubtPills.map((item, idx) => {
+                  const isExpanded = openDoubtPillIdx === idx;
+                  return (
+                    <motion.div
+                      key={item.title}
+                      initial={{ opacity: 0, x: 24 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.4 }}
+                      transition={{ duration: 0.5, delay: idx * 0.08, ease: EASE_OUT_EXPO }}
+                      whileHover={{ x: 5 }}
+                      className="rounded-[26px] bg-[#2CF585] text-[#0D1E14] shadow-[0_12px_32px_rgba(44,245,133,0.22)] overflow-hidden"
+                    >
+                      <button
+                        onClick={() =>
+                          setOpenDoubtPillIdx(isExpanded ? null : idx)
+                        }
+                        className="w-full px-6 py-4 flex items-center justify-between gap-4 text-left cursor-pointer"
+                      >
+                        <span className="text-sm sm:text-base font-bold font-display">
+                          {item.title}
+                        </span>
+                        <span className="w-7 h-7 rounded-full bg-[#0D1E14]/10 flex items-center justify-center shrink-0">
+                          {isExpanded ? (
+                            <Minus className="w-4 h-4" />
+                          ) : (
+                            <Plus className="w-4 h-4" />
+                          )}
+                        </span>
+                      </button>
 
-          {/* Numbered Circular Carousel Buttons `1` `2` matching 00:11 */}
-          <div className="flex items-center justify-center gap-3 pt-2">
-            <button
-              onClick={() => setMentorPage(0)}
-              className={`w-8 h-8 rounded-full font-mono text-xs font-bold transition-all cursor-pointer border ${
-                mentorPage === 0
-                  ? 'bg-[#ff5722] text-white border-[#ff5722] shadow-lg shadow-[#ff5722]/35'
-                  : 'bg-white dark:bg-transparent text-slate-700 dark:text-neutral-400 border-slate-300 dark:border-white/25 hover:border-[#ff5722]'
-              }`}
-              aria-label="Previous Page"
-            >
-              1
-            </button>
-            <button
-              onClick={() => setMentorPage(1)}
-              className={`w-8 h-8 rounded-full font-mono text-xs font-bold transition-all cursor-pointer border ${
-                mentorPage === 1
-                  ? 'bg-[#ff5722] text-white border-[#ff5722] shadow-lg shadow-[#ff5722]/35'
-                  : 'bg-white dark:bg-transparent text-slate-700 dark:text-neutral-400 border-slate-300 dark:border-white/25 hover:border-[#ff5722]'
-              }`}
-              aria-label="Next Page"
-            >
-              2
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ===================================================================== */}
-      {/* SECTION 8: "Get Yourself Placed In 8 Months!" (`00:13`)               */}
-      {/* Left CTA + Right 3x2 Placed Alumni Showcase with PLACED Backdrop      */}
-      {/* ===================================================================== */}
-      <section className="py-24 bg-white dark:bg-[#050507] border-b border-slate-200 dark:border-white/[0.06]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-5 space-y-4">
-              <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white font-display leading-tight">
-                Get Yourself <br />
-                <span className="text-[#ff5722]">Placed In 8 Months!</span>
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400 leading-relaxed">
-                Learn in a focused, distraction-free expert learning
-                environment with expert mentors guiding you at every step.
-              </p>
-              <div className="pt-2">
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.96 }}
-                  onClick={onApplyOffline}
-                  className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-[#ff5722] to-[#e63e00] hover:from-[#f4511e] hover:to-[#d83800] text-white text-xs font-bold transition-all shadow-lg shadow-[#ff5722]/25 cursor-pointer"
-                >
-                  Learn More →
-                </motion.button>
+                      <AnimatePresence initial={false}>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.22, ease: EASE_OUT_EXPO }}
+                            className="overflow-hidden border-t border-[#0D1E14]/15"
+                          >
+                            <p className="px-6 pb-4 pt-2.5 text-xs sm:text-sm font-medium text-[#0D1E14]/85">
+                              {item.desc}
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
-
-            {/* 3x2 Placed Alumni Grid matching 00:13 */}
-            <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {placedStudents.map((p, idx) => (
-                <motion.div
-                  key={idx}
-                  whileHover={{ y: -4 }}
-                  className="relative rounded-2xl overflow-hidden bg-slate-100 dark:bg-[#0e0e13] border border-slate-200 dark:border-white/[0.08] hover:border-[#ff5722]/40 transition-all group pt-4 px-3 pb-3.5 text-center shadow-md"
-                >
-                  {/* Large Background Watermark Text `PLACED` matching 00:13 */}
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none select-none absolute top-2 inset-x-0 text-center text-2xl font-black font-display tracking-widest text-slate-900/[0.05] dark:text-white/[0.05]"
-                  >
-                    PLACED
-                  </span>
-
-                  <div className="relative z-10 aspect-square rounded-xl overflow-hidden bg-slate-200 dark:bg-neutral-900 mx-auto w-20 h-20 mb-3 shadow-md">
-                    <img
-                      src={p.img}
-                      alt={p.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-
-                  <div className="relative z-10 space-y-0.5">
-                    <span className="text-sm font-black text-slate-900 dark:text-white font-display block tracking-tight">
-                      {p.logoText}
-                    </span>
-                    <span className="text-[11px] font-bold text-slate-700 dark:text-neutral-300 font-display block uppercase">
-                      {p.name}
-                    </span>
-                    <span className="text-[10px] font-mono tabular-nums text-emerald-600 dark:text-emerald-400 font-bold block">
-                      {p.lpa}
-                    </span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ===================================================================== */}
-      {/* SECTION 9: "Your Career Journey" (`00:14 – 00:16`)                    */}
-      {/* Clean White Editorial Rows w/ Oversized Numbers & Hairline Dividers   */}
-      {/* ===================================================================== */}
-      <section className="py-24 bg-white text-slate-900">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
-          <div className="text-center space-y-2">
-            <h2 className="text-3xl sm:text-5xl font-extrabold font-display tracking-tight">
-              Your <span className="italic font-serif text-[#ff5722]">Career</span>{' '}
-              Journey At TheCodeSpark Technologies Private Limited
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500">
-              From Beginner To Job-Ready, We Guide Your Complete Journey With
-              Skills, Projects, And Career Support.
-            </p>
-          </div>
+        {/* =================================================================== */}
+        {/* 7. INDUSTRY LEVEL EXPERTS + PLACED IN 8 MONTHS SHOWCASE             */}
+        {/* =================================================================== */}
+        <section className="relative z-20 px-2 sm:px-4">
+          <div className="max-w-7xl mx-auto rounded-[28px] sm:rounded-[36px] bg-white text-[#141916] px-6 sm:px-12 py-16 sm:py-20 space-y-20 shadow-2xl">
+            {/* Experts Block */}
+            <div className="space-y-10">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div className="space-y-2">
+                  <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight">
+                    Learn From{' '}
+                    <span className="text-[#059669]">Industry Level</span>{' '}
+                    Experts
+                  </h2>
+                  <p className="text-xs sm:text-sm text-[#525E56]">
+                    Learn directly from industry experts working on real-world
+                    products and technologies.
+                  </p>
+                </div>
 
-          <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
-            {journeySteps.map((step, idx) => {
-              const isHighlighted = activeJourneyIdx === idx;
-              return (
-                <motion.div
-                  key={step.num}
-                  onMouseEnter={() => setActiveJourneyIdx(idx)}
-                  onClick={() => setActiveJourneyIdx(idx)}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.25 }}
-                  transition={{ duration: 0.4 }}
-                  className="py-8 sm:py-10 grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center cursor-pointer group transition-colors"
-                >
-                  {/* Left: Oversized Display Step Number */}
-                  <div className="md:col-span-2">
-                    <span
-                      className={`text-4xl sm:text-6xl font-light font-mono tabular-nums transition-colors duration-300 ${
-                        step.isRed || isHighlighted
-                          ? 'text-[#ff5722]'
-                          : 'text-slate-300 group-hover:text-slate-500'
+                {/* Page 1 / 2 Circular Controls */}
+                <div className="flex items-center gap-2.5">
+                  {[0, 1].map((pg) => (
+                    <button
+                      key={pg}
+                      onClick={() => setMentorPage(pg)}
+                      className={`w-9 h-9 rounded-full font-mono text-xs font-bold transition-all cursor-pointer border ${
+                        mentorPage === pg
+                          ? 'bg-[#2CF585] text-[#0D1E14] border-[#2CF585] shadow-sm'
+                          : 'bg-[#F3F4F3] text-[#4B5550] border-black/10 hover:border-[#2CF585]'
                       }`}
                     >
-                      {step.num}
-                    </span>
-                  </div>
+                      {pg + 1}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-                  {/* Center: Horizontal Rounded Image */}
-                  <div className="md:col-span-4">
-                    <div className="w-full aspect-video rounded-xl overflow-hidden bg-slate-100 shadow-md group-hover:shadow-xl transition-all duration-300">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 items-center">
+                {visibleMentors.map((m, idx) => {
+                  const isCenter = idx === 2;
+                  return (
+                    <motion.div
+                      key={`${mentorPage}-${m.name}`}
+                      initial={{ opacity: 0, y: 14 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.35, delay: idx * 0.04 }}
+                      whileHover={{ y: -8 }}
+                      className={`relative rounded-2xl overflow-hidden bg-[#141916] border border-black/10 shadow-lg cursor-pointer group ${
+                        isCenter
+                          ? 'lg:scale-105 lg:z-20 aspect-[3/4.2] ring-2 ring-[#2CF585]'
+                          : 'aspect-[3/4]'
+                      }`}
+                    >
+                      <div className="absolute top-3 right-3 z-20 w-7 h-7 rounded-full bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center text-white group-hover:bg-[#2CF585] group-hover:text-[#0D1E14] transition-colors">
+                        <Plus className="w-3.5 h-3.5" />
+                      </div>
                       <img
-                        src={step.img}
-                        alt={step.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        src={m.img}
+                        alt={m.name}
+                        className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-500"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-x-0 bottom-0 pt-14 pb-4 px-3 bg-gradient-to-t from-black via-black/75 to-transparent text-center z-10">
+                        <h4 className="text-sm font-bold text-white font-display uppercase leading-none">
+                          {m.name}
+                        </h4>
+                        <span className="text-[10px] font-mono text-[#2CF585] block tracking-[0.22em] mt-1.5 font-semibold">
+                          {m.role}
+                        </span>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Placed In 8 Months Block */}
+            <div className="pt-12 border-t border-black/10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+              <div className="lg:col-span-5 space-y-4">
+                <h2 className="text-3xl sm:text-5xl font-bold font-display leading-tight">
+                  Get Yourself <br />
+                  <span className="text-[#059669]">Placed In 8 Months!</span>
+                </h2>
+                <p className="text-xs sm:text-sm text-[#525E56] leading-relaxed">
+                  Learn in a focused, distraction-free expert learning
+                  environment with expert mentors guiding you at every step.
+                </p>
+                <div className="pt-2">
+                  <MintPillButton
+                    label="Learn More"
+                    variant="mint"
+                    onClick={onApplyOffline}
+                  />
+                </div>
+              </div>
+
+              <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {placedStudents.map((p) => (
+                  <motion.div
+                    key={p.name}
+                    whileHover={{ y: -4 }}
+                    className="relative rounded-2xl overflow-hidden bg-[#F3F4F3] border border-black/[0.07] hover:border-[#2CF585] transition-all group pt-4 px-3 pb-4 text-center"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none select-none absolute top-2 inset-x-0 text-center text-2xl font-black font-display tracking-widest text-black/[0.04]"
+                    >
+                      PLACED
+                    </span>
+                    <div className="relative z-10 rounded-xl overflow-hidden bg-white mx-auto w-20 h-20 mb-3 shadow-sm">
+                      <img
+                        src={p.img}
+                        alt={p.name}
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                         referrerPolicy="no-referrer"
                       />
                     </div>
-                  </div>
+                    <div className="relative z-10 space-y-0.5">
+                      <span className="text-sm font-black text-[#141916] font-display block tracking-tight">
+                        {p.logoText}
+                      </span>
+                      <span className="text-[11px] font-bold text-[#4B5550] font-display block uppercase">
+                        {p.name}
+                      </span>
+                      <span className="text-[10px] font-mono tabular-nums text-[#059669] font-bold block">
+                        {p.lpa}
+                      </span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
-                  {/* Right: Title & Narrative Copy */}
-                  <div className="md:col-span-6 space-y-2">
-                    <h4 className="text-xl sm:text-2xl font-bold text-slate-900 font-display group-hover:text-[#ff5722] transition-colors">
-                      {step.title}
-                    </h4>
-                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-                      {step.desc}
+        {/* =================================================================== */}
+        {/* 8. CLOSING ACTION SHEET ("Apply For Placement Assistance" `00:22-24`)*/}
+        {/* =================================================================== */}
+        <section className="relative py-16 sm:py-24 overflow-hidden">
+          <EmeraldStardustBackdrop angle="top-left" />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-2 sm:px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.55, ease: EASE_OUT_EXPO }}
+              className="rounded-[28px] sm:rounded-[36px] bg-white text-[#141916] p-6 sm:p-10 lg:p-14 shadow-2xl"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                {/* Left Editorial Block (`00:22`) */}
+                <div className="lg:col-span-4 flex flex-col justify-between space-y-6">
+                  <div className="space-y-4">
+                    <span className="text-[11px] font-mono uppercase tracking-widest text-[#059669] font-bold block">
+                      Lucknow On-Campus Admissions
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl font-bold font-display tracking-tight leading-tight">
+                      Apply For Placement Assistance
+                    </h2>
+                    <p className="text-xs sm:text-sm text-[#525E56] leading-relaxed">
+                      Transform Your Learning Journey Into A Career Breakthrough
+                      With TheCodeSpark Technologies Private Limited. Register
+                      for the upcoming On-Campus cohort at our Lucknow campus.
                     </p>
                   </div>
-                </motion.div>
-              );
-            })}
+
+                  <div className="text-xs font-mono text-[#525E56] space-y-1">
+                    <div className="flex items-center gap-2 font-bold text-[#141916]">
+                      <Phone className="w-3.5 h-3.5 text-[#059669]" />
+                      <a href="tel:+917398839769" className="hover:underline">
+                        +91 7398839769
+                      </a>
+                      <span>/</span>
+                      <a href="tel:+919548248925" className="hover:underline">
+                        +91 9548248925
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Video Mosaic (`00:22`): Minimal Underlined Form + Electric Mint Square + Dark Event Bar */}
+                <div className="lg:col-span-8 space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch">
+                    <div className="md:col-span-7 rounded-2xl bg-[#F7F8F7] border border-black/[0.06] p-5 sm:p-6 flex flex-col justify-between">
+                      {isSubmitted ? (
+                        <div className="py-8 text-center space-y-3">
+                          <CheckCircle2 className="w-11 h-11 text-[#059669] mx-auto" />
+                          <h3 className="text-lg font-bold font-display text-[#141916]">
+                            Application Received!
+                          </h3>
+                          <p className="text-xs text-[#525E56]">
+                            Thank you, <strong>{name}</strong>. Our campus
+                            admissions team will call you at{' '}
+                            <span className="font-mono font-bold text-[#059669]">
+                              {phone}
+                            </span>{' '}
+                            to schedule your in-person campus visit and demo
+                            class.
+                          </p>
+                        </div>
+                      ) : (
+                        <form onSubmit={handleFormSubmit} className="space-y-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input
+                              type="text"
+                              required
+                              value={name}
+                              onChange={(e) => setName(e.target.value)}
+                              placeholder="Full Name *"
+                              className="w-full px-1 py-2.5 bg-transparent border-b border-black/15 text-xs text-[#141916] placeholder-[#9CA3AF] focus:outline-none focus:border-[#059669]"
+                            />
+                            <input
+                              type="tel"
+                              required
+                              value={phone}
+                              onChange={(e) => setPhone(e.target.value)}
+                              placeholder="Phone Number *"
+                              className="w-full px-1 py-2.5 bg-transparent border-b border-black/15 text-xs font-mono text-[#141916] placeholder-[#9CA3AF] focus:outline-none focus:border-[#059669]"
+                            />
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input
+                              type="email"
+                              required
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              placeholder="Email Address *"
+                              className="w-full px-1 py-2.5 bg-transparent border-b border-black/15 text-xs text-[#141916] placeholder-[#9CA3AF] focus:outline-none focus:border-[#059669]"
+                            />
+                            <input
+                              type="text"
+                              required
+                              value={city}
+                              onChange={(e) => setCity(e.target.value)}
+                              placeholder="City (e.g. Lucknow) *"
+                              className="w-full px-1 py-2.5 bg-transparent border-b border-black/15 text-xs text-[#141916] placeholder-[#9CA3AF] focus:outline-none focus:border-[#059669]"
+                            />
+                          </div>
+                          <textarea
+                            rows={2}
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            placeholder="Notes / Doubts (optional)..."
+                            className="w-full px-1 py-2 bg-transparent border-b border-black/15 text-xs text-[#141916] placeholder-[#9CA3AF] focus:outline-none focus:border-[#059669]"
+                          />
+                          <div className="flex items-center justify-end pt-2">
+                            <MintPillButton
+                              type="submit"
+                              label="Submit Application"
+                              variant="dark"
+                            />
+                          </div>
+                        </form>
+                      )}
+                    </div>
+
+                    {/* Electric Mint Interactive Tile (`00:22`) */}
+                    <motion.div
+                      whileHover={{ y: -3, scale: 1.01 }}
+                      onClick={onApplyOffline}
+                      className="md:col-span-5 rounded-2xl bg-[#2CF585] hover:bg-[#1EE074] text-[#0D1E14] p-6 flex flex-col justify-between cursor-pointer transition-colors shadow-sm min-h-[205px]"
+                    >
+                      <div className="space-y-2">
+                        <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-[#0D1E14]/70 block">
+                          In-Person Demo Class
+                        </span>
+                        <h3 className="text-lg sm:text-xl font-bold font-display leading-snug">
+                          Let&apos;s plan your Lucknow Campus visit &amp; free
+                          coding session
+                        </h3>
+                      </div>
+                      <div className="flex items-center justify-between pt-4">
+                        <span className="text-xs font-bold">Book Seat</span>
+                        <span className="w-8 h-8 rounded-full bg-[#0D1E14]/15 flex items-center justify-center">
+                          <Plus className="w-4 h-4" />
+                        </span>
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  {/* Dark Bottom Horizontal Announcement Bar (`00:22 – 00:23`) */}
+                  <div className="rounded-2xl bg-[#191C1A] text-white px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <span className="px-3 py-1 rounded-lg bg-[#2CF585] text-[#0D1E14] text-[10px] font-mono font-black shrink-0">
+                        LUCKNOW 2026
+                      </span>
+                      <span className="text-xs sm:text-sm font-medium text-white/90">
+                        Indrapuri / Gomti Nagar On-Campus Code Studio · Daily
+                        In-Person Mentor Support
+                      </span>
+                    </div>
+                    <button
+                      onClick={onRequestCallback}
+                      className="text-xs font-mono font-bold text-[#2CF585] hover:underline shrink-0 cursor-pointer text-left sm:text-right"
+                    >
+                      Request Callback →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ===================================================================== */}
-      {/* SECTION 10: "Transform Your Learning Journey" (`00:17`)               */}
-      {/* Full-Bleed Blurred Dark Campus Photo + Centered Fiery CTA             */}
-      {/* ===================================================================== */}
-      <section className="relative py-28 sm:py-36 bg-[#060609] text-white text-center overflow-hidden">
-        {/* Background Atmospheric Classroom Image with Dark Vignette & Blur */}
-        <img
-          src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1200&auto=format&fit=crop&q=80"
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover opacity-25 blur-sm scale-105 pointer-events-none"
-          referrerPolicy="no-referrer"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/65 to-[#050507] pointer-events-none"
-        />
+        {/* Floating Bottom Sticky Pill Dock (`00:24 – 00:27` style bar) */}
+        <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-40">
+          <div className="p-1.5 rounded-full bg-[#161B18]/95 border border-white/15 backdrop-blur-xl shadow-2xl flex items-center gap-1.5">
+            <button
+              onClick={onRequestCallback}
+              className="px-4 py-2 rounded-full text-xs font-semibold text-white/85 hover:text-white hover:bg-white/10 transition-all cursor-pointer whitespace-nowrap"
+            >
+              Request Callback
+            </button>
 
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white font-display leading-tight text-balance">
-            Transform Your{' '}
-            <span className="text-[#ff5722] italic font-serif">Learning</span>{' '}
-            Journey <br className="hidden sm:inline" />
-            Into A Career Breakthrough With TheCodeSpark Technologies Private
-            Limited
-          </h2>
-          <div className="pt-2">
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
+            <button
               onClick={onApplyOffline}
-              className="px-7 py-3 rounded-lg bg-[#ff5722] hover:bg-[#e63e00] text-white text-xs font-bold transition-all shadow-xl shadow-[#ff5722]/35 cursor-pointer"
+              className="px-5 py-2 rounded-full bg-[#2CF585] hover:bg-[#1EE074] text-[#0D1E14] text-xs font-bold shadow-md active:scale-95 transition-all cursor-pointer whitespace-nowrap"
             >
-              Learn More →
-            </motion.button>
+              Visit Lucknow Campus →
+            </button>
           </div>
-        </div>
-      </section>
-
-      {/* ===================================================================== */}
-      {/* SECTION 11: "Apply For Placement Assistance" (`00:18 – 00:19`)        */}
-      {/* ===================================================================== */}
-      <section className="py-24 bg-white dark:bg-[#050507] border-t border-slate-200 dark:border-white/[0.06]">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-          <div className="text-center space-y-2">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-display">
-              Apply For{' '}
-              <span className="text-[#ff5722]">Placement Assistance</span>
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400">
-              Register for the upcoming On-Campus cohort at our Lucknow campus.
-            </p>
-          </div>
-
-          {isSubmitted ? (
-            <div className="p-8 rounded-2xl bg-slate-50 dark:bg-[#101014] border border-emerald-500/40 text-center space-y-3 shadow-xl dark:shadow-2xl">
-              <CheckCircle2 className="w-12 h-12 text-emerald-600 dark:text-emerald-400 mx-auto" />
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display">
-                Application Received!
-              </h3>
-              <p className="text-xs text-slate-600 dark:text-neutral-300">
-                Thank you,{' '}
-                <strong className="text-slate-900 dark:text-white">
-                  {name}
-                </strong>
-                . Our campus admissions team will call you at{' '}
-                <span className="font-mono text-[#ff5722]">{phone}</span> to
-                schedule your in-person campus visit and demo class.
-              </p>
-            </div>
-          ) : (
-            <form
-              onSubmit={handleFormSubmit}
-              className="p-6 sm:p-8 rounded-2xl bg-slate-50 dark:bg-[#101014] border border-slate-200 dark:border-white/10 space-y-4 shadow-xl dark:shadow-2xl"
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-xs font-mono text-slate-700 dark:text-neutral-300 block mb-1.5">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Enter Full Name"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white dark:bg-[#18181f] border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ff5722]"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-mono text-slate-700 dark:text-neutral-300 block mb-1.5">
-                    Phone Number *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="Enter Phone Number"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white dark:bg-[#18181f] border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ff5722] font-mono"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-xs font-mono text-slate-700 dark:text-neutral-300 block mb-1.5">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter Email Address"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white dark:bg-[#18181f] border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ff5722]"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-mono text-slate-700 dark:text-neutral-300 block mb-1.5">
-                    City *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    placeholder="Enter City (e.g. Lucknow, Kanpur, Bhopal)"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white dark:bg-[#18181f] border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ff5722]"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-mono text-slate-700 dark:text-neutral-300 block mb-1.5">
-                  Notes / Doubts
-                </label>
-                <textarea
-                  rows={3}
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Have any questions or doubts? Share them here..."
-                  className="w-full px-4 py-2.5 rounded-lg bg-white dark:bg-[#18181f] border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ff5722]"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3.5 rounded-lg bg-gradient-to-r from-[#ff5722] to-[#e63e00] hover:from-[#f4511e] hover:to-[#d83800] text-white text-xs font-bold transition-all shadow-lg shadow-[#ff5722]/30 cursor-pointer"
-              >
-                Submit Application →
-              </button>
-
-              <div className="pt-2 text-center text-xs text-slate-500 dark:text-neutral-400 font-mono">
-                <span>Campus Helpline: </span>
-                <a
-                  href="tel:+917398839769"
-                  className="text-slate-900 dark:text-white hover:text-[#ff5722] font-bold"
-                >
-                  +91 7398839769
-                </a>
-                <span className="mx-1.5 text-slate-400 dark:text-neutral-600">
-                  /
-                </span>
-                <a
-                  href="tel:+919548248925"
-                  className="text-slate-900 dark:text-white hover:text-[#ff5722] font-bold"
-                >
-                  +91 9548248925
-                </a>
-              </div>
-            </form>
-          )}
-        </div>
-      </section>
-
-      {/* ===================================================================== */}
-      {/* Floating Bottom Sticky Bar                                            */}
-      {/* ===================================================================== */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
-        <div className="p-1.5 rounded-2xl bg-white/95 dark:bg-[#141419]/95 border border-slate-200 dark:border-white/15 backdrop-blur-xl shadow-2xl shadow-slate-900/15 dark:shadow-black/80 flex items-center gap-2">
-          <button
-            onClick={onRequestCallback}
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-slate-950 hover:bg-slate-100 dark:text-neutral-200 dark:hover:text-white dark:hover:bg-white/10 transition-all cursor-pointer whitespace-nowrap"
-          >
-            Request Callback
-          </button>
-
-          <button
-            onClick={onApplyOffline}
-            className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#ff5722] to-[#f4511e] hover:from-[#f4511e] hover:to-[#e64a19] text-white text-xs font-bold shadow-lg shadow-[#ff5722]/30 active:scale-95 transition-all cursor-pointer whitespace-nowrap"
-          >
-            Visit Lucknow Campus →
-          </button>
         </div>
       </div>
-    </div>
+    </MotionConfig>
   );
 };
