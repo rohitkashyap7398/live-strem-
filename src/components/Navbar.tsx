@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Phone, Menu, X, ArrowRight, MessageSquare, MessageCircle } from 'lucide-react';
+import { ArrowUpRight, Menu, X, ArrowRight, MessageCircle, Phone } from 'lucide-react';
 
 import brandLogo from '../assets/logo.png';
-import { MagneticButton } from './MagneticButton';
 import { RockerThemeToggle } from './RockerThemeToggle';
 
 interface NavbarProps {
@@ -23,10 +22,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Terminology updated as requested:
-  // Bootcamp -> Intensive Training
-  // Classroom -> Code Studio
-  // Offline Programs -> Tech Campus
   const navItems: { id: 'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline'; label: string }[] = [
     { id: 'home', label: 'Home' },
     { id: 'courses', label: 'Courses' },
@@ -59,45 +54,46 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-white/[0.08] bg-white/95 dark:bg-[#2A2A2A]/95 backdrop-blur-md transition-colors duration-300">
-        <div className="max-w-6xl mx-auto px-3 sm:px-6 h-18 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
-          {/* Zone 1: Brand (Logo + Vertical Divider + Company Name) */}
+      <header className="sticky top-2.5 sm:top-3 z-50 w-full px-2.5 sm:px-6 pointer-events-none">
+        {/* Floating Frosted Full-Pill Container matching reference silhouette */}
+        <div className="max-w-7xl mx-auto pointer-events-auto rounded-full px-3 sm:px-5 lg:px-6 h-[60px] sm:h-[66px] flex items-center justify-between gap-2 sm:gap-4 bg-[#d4d4d8]/85 dark:bg-[#19191f]/90 border border-black/15 dark:border-white/15 backdrop-blur-xl shadow-[0_10px_30px_-8px_rgba(15,23,42,0.16)] dark:shadow-[0_14px_38px_-8px_rgba(0,0,0,0.65)] transition-colors duration-300">
+          {/* Zone 1: Brand Mark (Logo + Wordmark with lime underscore accent) */}
           <motion.button
             onClick={() => onNavigate('home')}
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 sm:gap-3 text-left group shrink cursor-pointer select-none min-w-0"
+            className="flex items-center gap-2 sm:gap-2.5 text-left group shrink-0 cursor-pointer select-none pl-1"
           >
             <img
               src={brandLogo}
               onError={(e) => { e.currentTarget.src = '/logo.png'; }}
               alt="TheCodeSpark Logo"
-              className="h-7 sm:h-9 w-auto max-w-[85px] sm:max-w-[110px] object-contain filter drop-shadow group-hover:scale-105 transition-transform shrink-0"
+              className="h-7 sm:h-8 w-auto max-w-[82px] sm:max-w-[96px] object-contain filter drop-shadow group-hover:scale-105 transition-transform shrink-0"
             />
-            {/* Vertical Divider Line */}
-            <div className="h-5 sm:h-6 w-[1.5px] bg-slate-300 dark:bg-white/20 shrink-0" />
-            <div className="flex flex-col justify-center min-w-0">
-              <span className="text-xs sm:text-sm font-semibold tracking-tight text-slate-900 dark:text-white font-display leading-tight truncate">
-                TheCodeSpark
-              </span>
-              <span className="text-[10px] sm:text-xs font-normal text-slate-500 dark:text-neutral-300 leading-tight truncate max-w-[115px] xs:max-w-[160px] sm:max-w-none">
-                Technologies Private Limited
-              </span>
-            </div>
+            <span className="text-sm sm:text-base font-extrabold tracking-tight text-slate-950 dark:text-white font-display leading-none whitespace-nowrap">
+              TheCodeSpark
+              <span
+                aria-hidden="true"
+                className="inline-block w-2.5 h-[2.5px] bg-[#84cc16] dark:bg-[#C4FF00] ml-0.5 align-baseline rounded-full"
+              />
+            </span>
           </motion.button>
 
-          {/* Zone 2: Centered Capsule Bar */}
-          <nav className="hidden lg:flex items-center gap-5 px-5 py-2.5 rounded-2xl bg-slate-100/90 dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-lg text-sm font-medium transition-colors">
+          {/* Zone 2: Centered Navigation Links with Lime Active Pill */}
+          <nav
+            aria-label="Primary Navigation"
+            className="hidden lg:flex items-center gap-1 xl:gap-2"
+          >
             {navItems.map((item) => {
               const active = isCurrentActive(item.id);
               return (
                 <button
                   key={item.id}
                   onClick={() => onNavigate(item.id)}
-                  className={`transition-colors duration-200 cursor-pointer whitespace-nowrap shrink-0 ${
+                  className={`px-3.5 xl:px-4 py-2 rounded-full text-xs xl:text-sm transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0 ${
                     active
-                      ? 'text-slate-950 dark:text-white font-semibold'
-                      : 'text-slate-600 dark:text-neutral-300 hover:text-slate-950 dark:hover:text-white'
+                      ? 'bg-[#C4FF00] text-slate-950 font-semibold shadow-sm'
+                      : 'text-slate-900 dark:text-neutral-200 font-medium hover:bg-black/[0.06] dark:hover:bg-white/[0.08] hover:text-slate-950 dark:hover:text-white'
                   }`}
                 >
                   {item.label}
@@ -106,56 +102,46 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </nav>
 
-          {/* Zone 3: Direct WhatsApp, Request Call Pill Button, 3D Rocker Theme Switch & Sign In */}
+          {/* Zone 3: Outlined Utility Pill, DAY/NIGHT Rocker, Lime CTA Pill & Mobile Trigger */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-            {/* Direct WhatsApp Quick Connect */}
-            <div className="hidden sm:block">
-              <MagneticButton
-                onClick={() =>
-                  window.open(
-                    'https://wa.me/917398839769?text=Hello%20Rohit%20Sir%2C%20I%20want%20to%20know%20more%20about%20TheCodeSpark%20Technologies%20courses',
-                    '_blank'
-                  )
-                }
-                variant="whatsapp"
-                size="xs"
-                icon={<MessageCircle className="w-3.5 h-3.5 fill-white" />}
-                iconPosition="left"
-                text="WhatsApp"
-              />
-            </div>
-
-            {/* Request Call Pill Button with Magnetic physics & rolling text */}
-            <MagneticButton
-              onClick={onRequestCall}
-              variant="outline"
-              size="xs"
-              icon={<Phone className="w-3 h-3 text-[#E10600] group-hover:text-white transition-colors" />}
-              iconPosition="left"
-              text="Request Call"
-              className="!border-[#E10600] !bg-[#E10600]/10 dark:!bg-[#E10600]/15 !text-[#E10600] dark:!text-white hover:!bg-[#E10600] hover:!text-white"
-            />
-
-            {/* "Sign In" text button with rolling text */}
+            {/* Outlined Pill (WhatsApp Quick Connect) */}
             <button
-              onClick={onRequestCall}
-              className="group hidden xl:inline-flex items-center text-xs sm:text-sm text-slate-600 dark:text-neutral-300 hover:text-slate-950 dark:hover:text-white font-medium cursor-pointer transition-colors px-1 whitespace-nowrap shrink-0"
+              type="button"
+              onClick={() =>
+                window.open(
+                  'https://wa.me/917398839769?text=Hello%20Rohit%20Sir%2C%20I%20want%20to%20know%20more%20about%20TheCodeSpark%20Technologies%20courses',
+                  '_blank'
+                )
+              }
+              className="hidden xl:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-black/25 dark:border-white/20 bg-black/[0.02] dark:bg-white/[0.04] hover:bg-black/[0.07] dark:hover:bg-white/[0.1] text-slate-900 dark:text-neutral-100 text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap shrink-0"
+              aria-label="Chat on WhatsApp"
             >
-              <span className="btn-roll-container">
-                <span className="btn-roll-primary">Sign In</span>
-                <span className="btn-roll-secondary text-[#E10600]">Sign In</span>
-              </span>
+              <MessageCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <span>WhatsApp</span>
             </button>
 
-            {/* 3D Physical Rocker Dark / White Theme Switch (Exact Reference Design) */}
+            {/* Primary Acid-Lime Pill CTA (`Request Call ↗` matching reference `Start now ↗`) */}
+            <motion.button
+              type="button"
+              onClick={onRequestCall}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.96 }}
+              className="group inline-flex items-center gap-1.5 px-3.5 sm:px-5 py-2 rounded-full bg-[#C4FF00] hover:bg-[#b7f200] text-slate-950 border border-black/80 dark:border-[#C4FF00] text-xs sm:text-sm font-semibold shadow-sm transition-colors cursor-pointer whitespace-nowrap shrink-0"
+            >
+              <span>Request Call</span>
+              <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.2] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </motion.button>
+
+            {/* Physical 3D DAY / NIGHT Rocker Theme Switch */}
             <RockerThemeToggle isDark={isDarkMode} onToggle={onToggleTheme} />
 
             {/* Mobile / Tablet Menu Button */}
             <motion.button
+              type="button"
               onClick={() => setIsMobileMenuOpen(true)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-neutral-300 hover:text-slate-950 dark:hover:text-white flex items-center justify-center cursor-pointer transition-colors shrink-0"
+              className="lg:hidden w-9 h-9 rounded-full bg-black/[0.06] dark:bg-white/[0.08] border border-black/15 dark:border-white/15 text-slate-900 dark:text-neutral-100 flex items-center justify-center cursor-pointer transition-colors shrink-0"
               aria-label="Toggle Navigation Menu"
             >
               <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -163,8 +149,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Mobile Horizontal Quick Tabs */}
-        <div className="flex lg:hidden items-center gap-1.5 px-3 py-2 border-t border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-[#09090d] overflow-x-auto scrollbar-none transition-colors">
+        {/* Mobile Horizontal Quick Tabs Pill Strip */}
+        <div className="mt-2 flex lg:hidden items-center justify-start sm:justify-center gap-1.5 px-2.5 py-1.5 mx-auto max-w-full w-fit pointer-events-auto rounded-full bg-[#d4d4d8]/85 dark:bg-[#19191f]/90 border border-black/15 dark:border-white/15 backdrop-blur-lg overflow-x-auto scrollbar-none shadow-sm transition-colors">
           {navItems.map((item) => {
             const active = isCurrentActive(item.id);
             return (
@@ -173,8 +159,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => handleNavClick(item.id)}
                 className={`px-3 py-1 text-xs rounded-full whitespace-nowrap transition-all shrink-0 cursor-pointer ${
                   active
-                    ? 'text-white bg-[#ff5722] font-semibold shadow-md shadow-[#ff5722]/30'
-                    : 'text-slate-600 dark:text-neutral-400 bg-slate-200/70 dark:bg-white/5 hover:text-slate-950 dark:hover:text-white'
+                    ? 'bg-[#C4FF00] text-slate-950 font-semibold shadow-sm'
+                    : 'text-slate-800 dark:text-neutral-300 hover:bg-black/[0.06] dark:hover:bg-white/[0.08] font-medium'
                 }`}
               >
                 {item.label}
@@ -184,7 +170,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </header>
 
-      {/* 
+      {/*
         ========================================================================
         RESPONSIVE SIDE-DRAWER (Slide-in from right side on mobile click)
         ========================================================================
@@ -223,7 +209,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <span className="text-xs font-extrabold text-slate-900 dark:text-white leading-tight font-display">
                       TheCodeSpark
                     </span>
-                    <span className="text-[10px] font-semibold text-[#ff5722] leading-tight">
+                    <span className="text-[10px] font-semibold text-slate-600 dark:text-[#C4FF00] leading-tight">
                       Technologies Pvt Ltd
                     </span>
                   </div>
@@ -231,7 +217,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-neutral-300 hover:text-slate-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                  className="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-neutral-300 hover:text-slate-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
                   aria-label="Close Navigation Drawer"
                 >
                   <X className="w-5 h-5" />
@@ -243,7 +229,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <div className="space-y-5">
                   {/* Primary Nav List */}
                   <div className="space-y-1.5">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#ff5722] font-semibold block px-1">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 dark:text-neutral-400 font-semibold block px-1">
                       Menu Navigation
                     </span>
                     {navItems.map((item) => {
@@ -252,9 +238,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                         <button
                           key={item.id}
                           onClick={() => handleNavClick(item.id)}
-                          className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-semibold transition-all cursor-pointer ${
+                          className={`w-full flex items-center justify-between px-4 py-3 rounded-full text-sm font-semibold transition-all cursor-pointer ${
                             active
-                              ? 'bg-[#ff5722] text-white shadow-lg shadow-[#ff5722]/25 font-bold'
+                              ? 'bg-[#C4FF00] text-slate-950 shadow-sm font-bold'
                               : 'text-slate-700 dark:text-neutral-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-950 dark:hover:text-white'
                           }`}
                         >
@@ -265,14 +251,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                     })}
                   </div>
 
-                  {/* Call & Sign In Actions inside mobile drawer */}
+                  {/* Call & WhatsApp Actions inside mobile drawer */}
                   <div className="pt-2 space-y-2.5">
                     <button
                       onClick={() => {
                         setIsMobileMenuOpen(false);
                         onRequestCall();
                       }}
-                      className="w-full py-3 bg-[#ff5722] hover:bg-[#ea580c] text-white text-xs font-bold rounded-xl shadow-lg shadow-[#ff5722]/25 cursor-pointer flex items-center justify-center gap-2 transition-all"
+                      className="w-full py-3 bg-[#C4FF00] hover:bg-[#b5ee00] text-slate-950 border border-black/80 dark:border-[#C4FF00] text-xs font-bold rounded-full shadow-sm cursor-pointer flex items-center justify-center gap-2 transition-all"
                     >
                       <Phone className="w-4 h-4" />
                       <span>Request Free Counselor Call</span>
@@ -281,11 +267,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <button
                       onClick={() => {
                         setIsMobileMenuOpen(false);
-                        onRequestCall();
+                        window.open(
+                          'https://wa.me/917398839769?text=Hello%20Rohit%20Sir%2C%20I%20want%20to%20know%20more%20about%20TheCodeSpark%20Technologies%20courses',
+                          '_blank'
+                        );
                       }}
-                      className="w-full py-2.5 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-neutral-300 hover:text-slate-950 dark:hover:text-white text-xs font-semibold rounded-xl cursor-pointer transition-colors"
+                      className="w-full py-2.5 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-neutral-200 text-xs font-semibold rounded-full cursor-pointer flex items-center justify-center gap-2 transition-colors"
                     >
-                      Sign In to Student Portal
+                      <MessageCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <span>Chat on WhatsApp</span>
                     </button>
                   </div>
                 </div>

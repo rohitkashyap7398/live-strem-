@@ -170,10 +170,9 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 dark:text-white font-display tracking-tight leading-[1.08]"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-extrabold text-slate-900 dark:text-white font-display tracking-tight leading-[1.15] text-balance max-w-4xl mx-auto"
             >
-              The Next-Generation Tech School<br />
-              for Tomorrow’s Engineers
+              Bridging the Gap Between Technology Education and Industry Excellence Through Practical Coding, Advanced Learning, and Innovation.
             </motion.h1>
 
             {/* 3. Subtitle customized for TheCodeSpark */}
@@ -183,7 +182,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-sm sm:text-base md:text-lg text-slate-600 dark:text-neutral-400 max-w-2xl mx-auto font-sans leading-relaxed px-2"
             >
-              Master full-stack engineering, Gen-AI systems & DSA through hands-on production projects, expert 1-on-1 mentorship, and dedicated placement acceleration.
+              Develop in-demand technical skills, work on real-world projects, and prepare yourself for the evolving world of software development.
             </motion.p>
 
             {/* Start Journey Button with magnetic pull and rolling text */}

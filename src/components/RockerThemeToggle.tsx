@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface RockerThemeToggleProps {
   isDark: boolean;
@@ -7,192 +7,124 @@ interface RockerThemeToggleProps {
 }
 
 /**
- * Physical 3D Seesaw / Rocker Theme Switch
- * Reproduces the vertical split rocker (`OFF` / `ON`) with extruded purple bevel,
- * neon rim glow in Dark Mode, matte silver finish in White/Light Mode,
- * and adjacent vertical `ER` / `SÜ` LED dot track.
+ * Animated Pill Day / Night Theme Switch (Reference Video Exact Match)
+ * - Night Mode (ON): Obsidian dark pill track (#070709) with circular silver-white knob (#ECECEF)
+ *   on the RIGHT featuring three dark 4-pointed stars.
+ * - Day Mode (OFF): Crisp white pill track (#FFFFFF) with circular warm-orange knob (#F68B42)
+ *   on the LEFT featuring a white sun with 8 radial capsule rays.
  */
 export const RockerThemeToggle: React.FC<RockerThemeToggleProps> = ({
   isDark,
   onToggle
 }) => {
-  const dots = [0, 1, 2, 3, 4, 5, 6];
-
   return (
     <button
       type="button"
       role="switch"
       aria-checked={isDark}
-      aria-label={isDark ? 'Switch to White Light Mode' : 'Switch to Dark Mode'}
-      title={isDark ? 'Dark Mode (ON) — Click for White Mode' : 'White Mode (OFF) — Click for Dark Mode'}
+      aria-label={isDark ? 'Switch to Day Mode' : 'Switch to Night Mode'}
+      title={isDark ? 'Night Mode — Click for Day Mode' : 'Day Mode — Click for Night Mode'}
       onClick={onToggle}
-      className="group relative inline-flex items-center gap-1.5 px-1.5 py-1 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 cursor-pointer select-none shrink-0"
+      className={`group relative inline-flex items-center w-[72px] h-[38px] p-[4px] rounded-full cursor-pointer select-none shrink-0 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C4FF00] ${
+        isDark
+          ? 'bg-[#070709] border border-white/15 shadow-[inset_0_1px_3px_rgba(0,0,0,0.9),0_2px_10px_rgba(0,0,0,0.4)]'
+          : 'bg-[#FFFFFF] border border-black/15 shadow-[inset_0_1px_2px_rgba(15,23,42,0.06),0_3px_10px_rgba(15,23,42,0.12)]'
+      }`}
     >
-      {/* Ambient Halo Behind Switch */}
-      <span
-        aria-hidden="true"
-        className={`pointer-events-none absolute -inset-1 rounded-2xl blur-md transition-opacity duration-300 ${
-          isDark
-            ? 'opacity-70 bg-purple-600/35'
-            : 'opacity-45 bg-purple-500/20'
-        }`}
-      />
-
-      {/* 3D Perspective Housing */}
-      <div
-        className="relative flex items-center justify-center"
-        style={{ perspective: '260px' }}
+      {/* Sliding Circular Knob */}
+      <motion.span
+        initial={false}
+        animate={{
+          x: isDark ? 34 : 0,
+          backgroundColor: isDark ? '#ECECEF' : '#F68B42'
+        }}
+        whileTap={{ scale: 0.92 }}
+        transition={{
+          x: { type: 'spring', stiffness: 460, damping: 30, mass: 0.8 },
+          backgroundColor: { duration: 0.25 }
+        }}
+        className="relative flex items-center justify-center w-[28px] h-[28px] rounded-full shadow-sm"
+        style={{
+          willChange: 'transform, background-color'
+        }}
       >
-        {/* Recessed Outer Frame / Neon Socket */}
-        <div
-          className={`relative w-[34px] h-[48px] sm:w-[36px] sm:h-[52px] rounded-[11px] p-[2.5px] transition-all duration-300 ${
-            isDark
-              ? 'bg-[#09090d] shadow-[0_0_12px_rgba(168,85,247,0.75),0_0_2px_rgba(233,213,255,0.9),inset_0_0_6px_rgba(147,51,234,0.45)] ring-1 ring-purple-400/90'
-              : 'bg-[#d4d4dc] shadow-[0_6px_12px_-3px_rgba(126,34,206,0.45),0_2px_4px_rgba(0,0,0,0.12),inset_0_1px_2px_rgba(255,255,255,0.85)] ring-1 ring-purple-500/50'
-          }`}
-        >
-          {/* 3D Extruded Purple Lip Behind Tilted Edge */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-[2.5px] rounded-[9px] overflow-hidden pointer-events-none"
-          >
-            {/* Top Neon Under-Lip (Exposed when Dark Mode is ON & top tilts UP) */}
-            <div
-              className={`absolute inset-x-0 top-0 h-[10px] transition-opacity duration-300 ${
-                isDark ? 'opacity-100' : 'opacity-0'
-              }`}
-              style={{
-                background:
-                  'linear-gradient(180deg, #faf5ff 0%, #e9d5ff 28%, #a855f7 68%, #6b21a8 100%)',
-                boxShadow: '0 2px 10px rgba(216,180,254,0.9)'
-              }}
-            />
-
-            {/* Bottom Extruded Solid Purple Lip (Exposed when Light Mode is OFF & bottom tilts UP) */}
-            <div
-              className={`absolute inset-x-0 bottom-0 h-[11px] transition-opacity duration-300 ${
-                isDark ? 'opacity-0' : 'opacity-100'
-              }`}
-              style={{
-                background:
-                  'linear-gradient(180deg, #6b21a8 0%, #9333ea 55%, #a855f7 100%)',
-                boxShadow: '0 2px 8px rgba(147,51,234,0.6)'
-              }}
-            />
-          </div>
-
-          {/* Seesaw Pivoting Rocker Paddle */}
-          <motion.div
-            animate={{
-              rotateX: isDark ? 15 : -15,
-              y: isDark ? 1.5 : -1.5
-            }}
-            whileTap={{ scale: 0.96 }}
-            transition={{
-              type: 'spring',
-              stiffness: 440,
-              damping: 26,
-              mass: 0.7
-            }}
-            style={{
-              transformStyle: 'preserve-3d',
-              transformOrigin: 'center center'
-            }}
-            className={`relative w-full h-full rounded-[8.5px] flex flex-col items-center justify-between py-[5px] overflow-hidden transition-colors duration-300 ${
-              isDark
-                ? 'bg-gradient-to-b from-[#171720] via-[#13131b] to-[#1e1b29] border border-purple-400/70 shadow-[0_-3px_8px_rgba(192,132,252,0.55),inset_0_1px_1px_rgba(255,255,255,0.12)]'
-                : 'bg-gradient-to-b from-[#e4e4e9] via-[#f3f3f6] to-[#d9d9e0] border border-white/80 shadow-[0_4px_7px_rgba(126,34,206,0.45),inset_0_1px_1px_rgba(255,255,255,0.95)]'
-            }`}
-          >
-            {/* Subtle top/bottom inner directional highlight */}
-            <span
+        <AnimatePresence mode="wait" initial={false}>
+          {isDark ? (
+            /* Night State: Three 4-Pointed Stars inside White/Silver Circle */
+            <motion.svg
+              key="night-stars"
+              viewBox="0 0 32 32"
+              className="w-[18px] h-[18px] sm:w-[20px] sm:h-[20px] text-[#070709]"
+              fill="currentColor"
+              initial={{ opacity: 0, scale: 0.45, rotate: -45 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              exit={{ opacity: 0, scale: 0.45, rotate: 45 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
               aria-hidden="true"
-              className={`pointer-events-none absolute inset-x-0 top-0 h-1/2 transition-opacity duration-300 ${
-                isDark
-                  ? 'bg-gradient-to-b from-purple-300/15 to-transparent'
-                  : 'bg-gradient-to-b from-black/[0.06] to-transparent'
-              }`}
-            />
-
-            {/* Top Label: OFF (Bright/Active in White Light Mode) */}
-            <span
-              className={`relative z-10 text-[7px] sm:text-[7.5px] font-mono font-extrabold tracking-[0.08em] leading-none transition-all duration-300 ${
-                isDark
-                  ? 'text-neutral-500'
-                  : 'text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.45)]'
-              }`}
             >
-              OFF
-            </span>
-
-            {/* Center Horizontal Rocker Fold Crease */}
-            <div className="relative z-10 w-full px-1 flex items-center">
-              <div
-                className={`w-full h-[1.5px] rounded-full transition-colors duration-300 ${
-                  isDark
-                    ? 'bg-black/80 shadow-[0_1px_0_rgba(168,85,247,0.22)]'
-                    : 'bg-black/15 shadow-[0_1px_0_rgba(255,255,255,0.8)]'
-                }`}
-              />
-            </div>
-
-            {/* Bottom Label: ON (Bright White Glow in Dark Mode) */}
-            <span
-              className={`relative z-10 text-[7px] sm:text-[7.5px] font-mono font-extrabold tracking-[0.08em] leading-none transition-all duration-300 ${
-                isDark
-                  ? 'text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.9)]'
-                  : 'text-neutral-500'
-              }`}
+              {/* Primary Left-Center 4-Pointed Star */}
+              <path d="M12.2 7.5C12.7 11.7 14.3 13.3 18.5 13.8C14.3 14.3 12.7 15.9 12.2 20.1C11.7 15.9 10.1 14.3 5.9 13.8C10.1 13.3 11.7 11.7 12.2 7.5Z" />
+              {/* Top-Right Medium 4-Pointed Star */}
+              <path d="M21.8 6.8C22.1 9.1 23.1 10.1 25.4 10.4C23.1 10.7 22.1 11.7 21.8 14C21.5 11.7 20.5 10.7 18.2 10.4C20.5 10.1 21.5 9.1 21.8 6.8Z" />
+              {/* Bottom-Right Accent 4-Pointed Star */}
+              <path d="M20.2 17.6C20.45 19.4 21.25 20.2 23.05 20.45C21.25 20.7 20.45 21.5 20.2 23.3C19.95 21.5 19.15 20.7 17.35 20.45C19.15 20.2 19.95 19.4 20.2 17.6Z" />
+            </motion.svg>
+          ) : (
+            /* Day State: Crisp White Sun with 8 Capsule Rays inside Orange Circle */
+            <motion.svg
+              key="day-sun"
+              viewBox="0 0 32 32"
+              className="w-[19px] h-[19px] sm:w-[21px] sm:h-[21px] text-white"
+              fill="currentColor"
+              initial={{ opacity: 0, scale: 0.45, rotate: 45 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              exit={{ opacity: 0, scale: 0.45, rotate: -45 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              aria-hidden="true"
             >
-              ON
-            </span>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Right-Side Vertical LED Dot Indicator Track (`ER` • • • • • • • `SÜ`) */}
-      <div
-        aria-hidden="true"
-        className="flex flex-col items-center justify-between h-[44px] sm:h-[48px] py-0.5"
-      >
-        <span
-          className={`text-[6px] sm:text-[6.5px] font-mono font-bold tracking-wider leading-none transition-colors duration-300 ${
-            isDark
-              ? 'text-white drop-shadow-[0_0_4px_rgba(255,255,255,0.85)]'
-              : 'text-neutral-500'
-          }`}
-        >
-          ER
-        </span>
-
-        <div className="flex flex-col items-center justify-center gap-[2.5px] my-auto">
-          {dots.map((idx) => {
-            const isLitInLight = idx >= 5;
-            return (
-              <span
-                key={idx}
-                className={`w-[2.5px] h-[2.5px] rounded-full transition-all duration-300 ${
-                  isDark
-                    ? 'bg-white shadow-[0_0_4px_rgba(255,255,255,0.95)]'
-                    : isLitInLight
-                    ? 'bg-purple-600 shadow-[0_0_3px_rgba(147,51,234,0.65)]'
-                    : 'bg-neutral-400/45'
-                }`}
+              {/* Solid Sun Core */}
+              <circle cx="16" cy="16" r="5.2" />
+              {/* 8 Crisp Capsule Sun Rays */}
+              <rect x="14.9" y="5.2" width="2.2" height="3.6" rx="1.1" />
+              <rect x="14.9" y="23.2" width="2.2" height="3.6" rx="1.1" />
+              <rect x="5.2" y="14.9" width="3.6" height="2.2" rx="1.1" />
+              <rect x="23.2" y="14.9" width="3.6" height="2.2" rx="1.1" />
+              <rect
+                x="14.9"
+                y="5.2"
+                width="2.2"
+                height="3.6"
+                rx="1.1"
+                transform="rotate(45 16 16)"
               />
-            );
-          })}
-        </div>
-
-        <span
-          className={`text-[6px] sm:text-[6.5px] font-mono font-bold tracking-wider leading-none transition-colors duration-300 ${
-            isDark
-              ? 'text-white drop-shadow-[0_0_4px_rgba(255,255,255,0.85)]'
-              : 'text-purple-700'
-          }`}
-        >
-          SÜ
-        </span>
-      </div>
+              <rect
+                x="14.9"
+                y="5.2"
+                width="2.2"
+                height="3.6"
+                rx="1.1"
+                transform="rotate(135 16 16)"
+              />
+              <rect
+                x="14.9"
+                y="5.2"
+                width="2.2"
+                height="3.6"
+                rx="1.1"
+                transform="rotate(225 16 16)"
+              />
+              <rect
+                x="14.9"
+                y="5.2"
+                width="2.2"
+                height="3.6"
+                rx="1.1"
+                transform="rotate(315 16 16)"
+              />
+            </motion.svg>
+          )}
+        </AnimatePresence>
+      </motion.span>
     </button>
   );
 };
