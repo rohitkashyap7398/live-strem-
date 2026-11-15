@@ -246,8 +246,8 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
 
         {/* 
           STACKING / STICKY CARDS CONTAINER 
-          Clean vertical spacing on phones (< lg) so tall stacked cards never clip or glitch;
-          Progressive sticky card-deck stacking on desktop (lg+) where cards sit side-by-side.
+          Works identically on both mobile & desktop:
+          Each card is compact enough to fit inside the viewport and sticks cleanly as subsequent cards stack over it.
         */}
         <div className="relative space-y-6 sm:space-y-8 lg:space-y-12 pb-10 sm:pb-16">
           {flagshipCards.map((item, idx) => {
@@ -256,19 +256,19 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
             const isDark = item.cardType === 'dark';
             const isTerracotta = item.cardType === 'terracotta';
 
-            // Stepped sticky offset on desktop creates card-deck tabs below the scrolled navbar
-            const stickyTop = `calc(clamp(54px, 7vh, 66px) + ${Math.min(idx, 5) * 8}px)`;
+            // Stepped sticky offset creates visible card-deck tabs below the compact scrolled navbar on all screens
+            const stickyTop = `calc(clamp(48px, 6.5vh, 66px) + ${Math.min(idx, 5) * 6}px)`;
 
             return (
               <div
                 key={item.badge + idx}
-                className="lg:sticky lg:top-[var(--sticky-top)]"
-                style={{ '--sticky-top': stickyTop, zIndex: 11 + idx } as React.CSSProperties}
+                className="sticky"
+                style={{ top: stickyTop, zIndex: 11 + idx }}
               >
                 <div
-                  className={`rounded-2xl p-4 sm:p-6 md:p-7 shadow-lg lg:shadow-xl transition-shadow duration-300 border ${
+                  className={`rounded-2xl p-3.5 sm:p-5 lg:p-7 shadow-lg lg:shadow-xl border ${
                     isLight
-                      ? 'bg-white dark:bg-[#d8d8d8] text-[#111116] border-slate-200 dark:border-black/10 shadow-slate-200/70 dark:shadow-black/20 hover:shadow-black/30'
+                      ? 'bg-white dark:bg-[#d8d8d8] text-[#111116] border-slate-200 dark:border-black/10 shadow-slate-200/70 dark:shadow-black/25'
                       : isOrange
                       ? 'bg-gradient-to-r from-[#E10600] via-[#c70500] to-[#b30500] text-white border-white/20 shadow-[#E10600]/30'
                       : isDark
@@ -276,7 +276,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                       : 'bg-gradient-to-br from-[#1c1c1c] via-[#242424] to-[#161616] text-white border-[#E10600]/40 shadow-xl lg:shadow-2xl'
                   }`}
                 >
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-10 items-center">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-5 lg:gap-10 items-center">
                     
                     {/* VISUAL COLUMN (If imageSide === 'left') */}
                     {item.imageSide === 'left' && (
@@ -287,17 +287,15 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                         <VisualMockup
                           type={item.visualType}
                           tags={item.tags}
-                          isDarkCard={isDark || isTerracotta}
-                          isOrangeCard={isOrange}
                         />
                       </div>
                     )}
 
                     {/* DETAILS COLUMN */}
-                    <div className={`space-y-3.5 sm:space-y-5 ${item.imageSide === 'left' ? 'lg:col-span-7 order-2' : 'lg:col-span-7 order-2 lg:order-1'}`}>
+                    <div className={`space-y-2.5 sm:space-y-4 lg:space-y-5 ${item.imageSide === 'left' ? 'lg:col-span-7 order-2' : 'lg:col-span-7 order-2 lg:order-1'}`}>
                       {/* Pill Badge */}
-                      <div className="flex items-center gap-2">
-                        <span className={`px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-wider ${
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                        <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[9.5px] sm:text-[11px] font-mono font-bold uppercase tracking-wider ${
                           isLight
                             ? 'bg-[#d84414]/10 text-[#d84414] border border-[#d84414]/20'
                             : isOrange
@@ -306,7 +304,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                         }`}>
                           {item.badge}
                         </span>
-                        <span className={`text-[10px] sm:text-[11px] font-mono ${
+                        <span className={`hidden sm:inline text-[10px] sm:text-[11px] font-mono ${
                           isLight ? 'text-neutral-500' : isOrange ? 'text-white/80' : 'text-neutral-400'
                         }`}>
                           {'brandSubtitle' in item && item.brandSubtitle ? item.brandSubtitle : 'TheCodeSpark Technologies Private Limited'}
@@ -316,36 +314,36 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                       {/* Course Title */}
                       <h3
                         onClick={() => onSelectCourse(item.course)}
-                        className={`text-lg sm:text-2xl md:text-3xl font-extrabold font-display tracking-tight leading-snug cursor-pointer hover:underline ${
+                        className={`text-base sm:text-xl md:text-2xl lg:text-3xl font-extrabold font-display tracking-tight leading-snug cursor-pointer hover:underline line-clamp-2 lg:line-clamp-none ${
                         isLight ? 'text-[#111116]' : 'text-white'
                       }`}>
                         {item.title}
                       </h3>
 
                       {/* Description */}
-                      <p className={`text-xs sm:text-sm leading-relaxed max-w-2xl ${
+                      <p className={`text-[11.5px] sm:text-sm leading-relaxed max-w-2xl line-clamp-2 sm:line-clamp-3 lg:line-clamp-none ${
                         isLight ? 'text-neutral-700' : isOrange ? 'text-white/90' : 'text-neutral-400'
                       }`}>
                         {item.desc}
                       </p>
 
                       {/* Meta Stats Badges Row (Clock, Certified, Mentor Support) */}
-                      <div className="flex flex-wrap items-center gap-3 sm:gap-6 pt-1">
-                        <div className={`flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono font-medium ${
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 sm:gap-6 pt-0.5">
+                        <div className={`flex items-center gap-1 sm:gap-2 text-[10.5px] sm:text-xs font-mono font-medium ${
                           isLight ? 'text-neutral-700' : isOrange ? 'text-white' : 'text-neutral-300'
                         }`}>
                           <Clock className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isLight ? 'text-[#d84414]' : isOrange ? 'text-white' : 'text-[#ff5722]'}`} />
                           <span>{item.duration}</span>
                         </div>
 
-                        <div className={`flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono font-medium ${
+                        <div className={`flex items-center gap-1 sm:gap-2 text-[10.5px] sm:text-xs font-mono font-medium ${
                           isLight ? 'text-neutral-700' : isOrange ? 'text-white' : 'text-neutral-300'
                         }`}>
                           <Award className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isLight ? 'text-emerald-600' : isOrange ? 'text-white' : 'text-emerald-400'}`} />
                           <span>{item.certified}</span>
                         </div>
 
-                        <div className={`flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono font-medium ${
+                        <div className={`flex items-center gap-1 sm:gap-2 text-[10.5px] sm:text-xs font-mono font-medium ${
                           isLight ? 'text-neutral-700' : isOrange ? 'text-white' : 'text-neutral-300'
                         }`}>
                           <Headphones className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isLight ? 'text-[#d84414]' : isOrange ? 'text-white' : 'text-[#ff5722]'}`} />
@@ -354,19 +352,19 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                       </div>
 
                       {/* Price & CTA Action Row */}
-                      <div className="pt-2 flex flex-wrap items-center justify-between gap-3 sm:gap-4 border-t border-black/5 dark:border-white/10">
-                        <div className="flex items-baseline gap-1.5 sm:gap-2">
-                          <span className={`text-[11px] sm:text-xs font-mono uppercase ${
+                      <div className="pt-2 flex flex-wrap items-center justify-between gap-2.5 sm:gap-4 border-t border-black/5 dark:border-white/10">
+                        <div className="flex items-baseline gap-1 sm:gap-2">
+                          <span className={`text-[10px] sm:text-xs font-mono uppercase ${
                             isLight ? 'text-neutral-500' : isOrange ? 'text-white/80' : 'text-neutral-400'
                           }`}>
                             Price
                           </span>
-                          <span className={`text-lg sm:text-2xl font-black font-mono ${
+                          <span className={`text-base sm:text-2xl font-black font-mono ${
                             isLight ? 'text-[#111116]' : 'text-white'
                           }`}>
                             {item.price}
                           </span>
-                          <span className={`text-[11px] sm:text-xs line-through font-mono ${
+                          <span className={`text-[10.5px] sm:text-xs line-through font-mono ${
                             isLight ? 'text-neutral-400' : isOrange ? 'text-white/60' : 'text-neutral-500'
                           }`}>
                             {item.originalPrice}
@@ -378,7 +376,7 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-2 sm:gap-2.5">
+                        <div className="flex items-center gap-1.5 sm:gap-2.5">
                           <MagneticButton
                             onClick={() => onSelectCourse(item.course)}
                             variant={isLight ? 'secondary' : isOrange ? 'primary' : 'primary'}
@@ -421,8 +419,6 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
                         <VisualMockup
                           type={item.visualType}
                           tags={item.tags}
-                          isDarkCard={isDark || isTerracotta}
-                          isOrangeCard={isOrange}
                         />
                       </div>
                     )}
@@ -437,28 +433,114 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
   );
 };
 
-// High-fidelity visual mockup container replicating the cards from the screen recording
+type VisualMockupType =
+  | 'instructor-web'
+  | 'data-ai'
+  | 'laptop-code'
+  | 'ai-agents'
+  | 'java-dsa'
+  | 'dev-toolkit'
+  | 'trading-pro'
+  | 'summer-training'
+  | 'winter-training'
+  | 'apprenticeship'
+  | 'internship-training';
+
+const VISUAL_POSTERS: Record<
+  VisualMockupType,
+  { src: string; alt: string; label: string; ringClass: string; bgClass: string }
+> = {
+  'instructor-web': {
+    src: '/assets/aistudio/Ignite_1.0_Portrait_Poster_05139a11.png',
+    alt: 'IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career',
+    label: 'LIVE NOW • IGNITE 1.0',
+    ringClass: 'ring-emerald-400/50',
+    bgClass: 'bg-[#2b1000]'
+  },
+  'data-ai': {
+    src: '/assets/aistudio/Ignite_2.0_Developer_Program_Poster_0af3eb9a.png',
+    alt: 'IGNITE 2.0 - Future-Ready Developer Program',
+    label: 'COMING SOON • IGNITE 2.0',
+    ringClass: 'ring-blue-400/50',
+    bgClass: 'bg-[#051238]'
+  },
+  'laptop-code': {
+    src: '/assets/aistudio/IGNITE_3.0_Developer_Cohort_Poster_2_2e0454b4.png',
+    alt: 'Next-Gen Developer Cohort: Web Technologies + MERN Stack + AI Applications + Problem Solving + Cloud Computing + System Design',
+    label: 'COMING SOON • IGNITE 3.0',
+    ringClass: 'ring-orange-400/50',
+    bgClass: 'bg-[#0b0907]'
+  },
+  'ai-agents': {
+    src: '/assets/aistudio/Autonomous_AI_Agents_Tech_Talk_Poster_db3b38b0.png',
+    alt: 'Autonomous AI Agents & Full-Stack LLM Engineering',
+    label: 'COMING SOON • IGNITE 4.0',
+    ringClass: 'ring-emerald-400/50',
+    bgClass: 'bg-[#062b16]'
+  },
+  'java-dsa': {
+    src: '/assets/aistudio/JAVALogic__Building_Deep_Learning_399f2731.png',
+    alt: 'Java & DSA Domination - Logic Building & Deep Learning',
+    label: 'COMING SOON • JAVA & DSA',
+    ringClass: 'ring-indigo-400/50',
+    bgClass: 'bg-[#b8c4de]'
+  },
+  'dev-toolkit': {
+    src: '/assets/aistudio/TheCodeSpark_Developer_Toolkit_Poster_1d5ebe66.png',
+    alt: 'Complete Developer Toolkit - Languages, Code Editors & AI Coding Tools',
+    label: 'COMING SOON • DEV TOOLKIT',
+    ringClass: 'ring-amber-400/50',
+    bgClass: 'bg-[#120b04]'
+  },
+  'summer-training': {
+    src: '/assets/aistudio/TheCodeSpark_AI_Coding_Conference_d7477d11.png',
+    alt: 'Summer Training Program',
+    label: 'LIVE NOW • 45 DAYS SUMMER TRAINING',
+    ringClass: 'ring-amber-400/50',
+    bgClass: 'bg-[#180c24]'
+  },
+  'winter-training': {
+    src: '/assets/aistudio/TCS_Hackathon_Badge_Desk_Scene_04b4ab8b.png',
+    alt: 'Winter Training Program',
+    label: 'LIVE NOW • WINTER TRAINING',
+    ringClass: 'ring-cyan-400/50',
+    bgClass: 'bg-[#071526]'
+  },
+  apprenticeship: {
+    src: '/assets/aistudio/Warmly_Branded_Executive_Team_Portrait_67a8e1d1.png',
+    alt: 'Apprenticeship Program',
+    label: 'COHORT OPEN • APPRENTICESHIP',
+    ringClass: 'ring-orange-400/50',
+    bgClass: 'bg-[#1a120b]'
+  },
+  'internship-training': {
+    src: '/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png',
+    alt: 'Internship Training Program',
+    label: 'LIVE NOW • INTERNSHIP',
+    ringClass: 'ring-emerald-400/50',
+    bgClass: 'bg-[#1c140e]'
+  },
+  'trading-pro': {
+    src: '/assets/aistudio/Focused_Crypto_Trading_Workspace_58db5cbb.png',
+    alt: 'Stock Market, Options & Algo Trading Mastery',
+    label: 'COMING SOON • TRADING PRO',
+    ringClass: 'ring-emerald-400/50',
+    bgClass: 'bg-[#0a0b0e]'
+  }
+};
+
+// High-fidelity visual mockup container: compact horizontal card on phones (< lg) so sticky cards fit 100% on screen,
+// and full 4:5 poster showcase on desktop (lg+).
 const VisualMockup: React.FC<{
-  type:
-    | 'instructor-web'
-    | 'data-ai'
-    | 'laptop-code'
-    | 'ai-agents'
-    | 'java-dsa'
-    | 'dev-toolkit'
-    | 'trading-pro'
-    | 'summer-training'
-    | 'winter-training'
-    | 'apprenticeship'
-    | 'internship-training';
+  type: VisualMockupType;
   tags: string[];
-  isDarkCard?: boolean;
-  isOrangeCard?: boolean;
-}> = ({ type, tags, isDarkCard, isOrangeCard }) => {
+}> = ({ type, tags }) => {
+  const poster = VISUAL_POSTERS[type];
+
   return (
-    <div className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-[#0a0a0f] border border-white/10 p-3 sm:p-5 shadow-inner min-h-[160px] sm:min-h-[260px] md:min-h-[300px] flex flex-col justify-between group">
+    <div className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-[#0a0a0f] border border-white/10 p-2.5 sm:p-4 lg:p-5 shadow-inner lg:min-h-[300px] flex flex-row lg:flex-col items-center lg:items-stretch justify-between gap-3 lg:gap-0 group">
       {/* Subtle tech background grid pattern */}
-      <div 
+      <div
         className="absolute inset-0 opacity-15 pointer-events-none"
         style={{
           backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.2) 1px, transparent 0)',
@@ -466,201 +548,63 @@ const VisualMockup: React.FC<{
         }}
       />
 
-      {/* Floating Badges Header */}
-      <div className="relative z-10 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-black/85 border border-white/15 text-[9px] sm:text-[10px] font-mono text-white">
-          <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#ff5722]" />
-          <span>
-            {type === 'instructor-web'
-              ? 'LIVE NOW • IGNITE 1.0'
-              : type === 'data-ai'
-              ? 'COMING SOON • IGNITE 2.0'
-              : type === 'laptop-code'
-              ? 'COMING SOON • IGNITE 3.0'
-              : type === 'ai-agents'
-              ? 'COMING SOON • IGNITE 4.0'
-              : type === 'java-dsa'
-              ? 'COMING SOON • JAVA & DSA'
-              : type === 'dev-toolkit'
-              ? 'COMING SOON • DEV TOOLKIT'
-              : type === 'summer-training'
-              ? 'LIVE NOW • 45 DAYS SUMMER TRAINING'
-              : type === 'winter-training'
-              ? 'LIVE NOW • WINTER TRAINING'
-              : type === 'apprenticeship'
-              ? 'COHORT OPEN • APPRENTICESHIP'
-              : type === 'internship-training'
-              ? 'LIVE NOW • INTERNSHIP'
-              : 'COMING SOON • TRADING PRO'}
-          </span>
+      {/* Desktop Top Header Badges (hidden on mobile where they sit neatly beside the poster) */}
+      <div className="hidden lg:flex relative z-10 items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/85 border border-white/15 text-[10px] font-mono text-white">
+          <Sparkles className="w-3 h-3 text-[#ff5722]" />
+          <span>{poster.label}</span>
         </div>
 
         {tags[1] && (
-          <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-[#c83b0f] text-white text-[9px] sm:text-[10px] font-mono font-bold shadow-md">
+          <span className="px-2.5 py-1 rounded-md bg-[#c83b0f] text-white text-[10px] font-mono font-bold shadow-md">
             {tags[1]}
           </span>
         )}
       </div>
 
-      {/* Centerpiece Visual */}
-      <div className="relative z-10 my-auto py-2.5 flex items-center justify-center">
-        {type === 'instructor-web' && (
-          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#2b1000]">
-              <img
-                src="/assets/aistudio/Ignite_1.0_Portrait_Poster_05139a11.png"
-                alt="IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
+      {/* Centerpiece Poster (Compact thumbnail on mobile < lg, full 4:5 poster on lg+) */}
+      <div className="relative z-10 lg:my-auto lg:py-2.5 flex items-center justify-center shrink-0">
+        <div className="relative w-[84px] sm:w-[110px] lg:w-full lg:max-w-[340px] mx-auto">
+          <div className={`relative w-full aspect-[4/5] rounded-lg sm:rounded-xl lg:rounded-2xl overflow-hidden ring-2 ${poster.ringClass} shadow-lg lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 ${poster.bgClass}`}>
+            <img
+              src={poster.src}
+              alt={poster.alt}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover object-top"
+            />
           </div>
-        )}
-
-        {type === 'data-ai' && (
-          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-blue-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#051238]">
-              <img
-                src="/assets/aistudio/Ignite_2.0_Developer_Program_Poster_0af3eb9a.png"
-                alt="IGNITE 2.0 - Future-Ready Developer Program"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-          </div>
-        )}
-
-        {type === 'laptop-code' && (
-          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-orange-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#0b0907]">
-              <img
-                src="/assets/aistudio/IGNITE_3.0_Developer_Cohort_Poster_2_2e0454b4.png"
-                alt="Next-Gen Developer Cohort: Web Technologies + MERN Stack + AI Applications + Problem Solving + Cloud Computing + System Design"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-          </div>
-        )}
-
-        {type === 'ai-agents' && (
-          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#062b16]">
-              <img
-                src="/assets/aistudio/Autonomous_AI_Agents_Tech_Talk_Poster_db3b38b0.png"
-                alt="Autonomous AI Agents & Full-Stack LLM Engineering"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-          </div>
-        )}
-
-        {type === 'java-dsa' && (
-          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-indigo-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#b8c4de]">
-              <img
-                src="/assets/aistudio/JAVALogic__Building_Deep_Learning_399f2731.png"
-                alt="Java & DSA Domination - Logic Building & Deep Learning"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-          </div>
-        )}
-
-        {type === 'dev-toolkit' && (
-          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-amber-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#120b04]">
-              <img
-                src="/assets/aistudio/TheCodeSpark_Developer_Toolkit_Poster_1d5ebe66.png"
-                alt="Complete Developer Toolkit - Languages, Code Editors & AI Coding Tools"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-          </div>
-        )}
-
-        {type === 'trading-pro' && (
-          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#0a0b0e]">
-              <img
-                src="/assets/aistudio/Focused_Crypto_Trading_Workspace_58db5cbb.png"
-                alt="Stock Market, Options & Algo Trading Mastery"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-          </div>
-        )}
-
-        {type === 'summer-training' && (
-          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-amber-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#180c24]">
-              <img
-                src="/assets/aistudio/TheCodeSpark_AI_Coding_Conference_d7477d11.png"
-                alt="Summer Training Program"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-          </div>
-        )}
-
-        {type === 'winter-training' && (
-          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-cyan-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#071526]">
-              <img
-                src="/assets/aistudio/TCS_Hackathon_Badge_Desk_Scene_04b4ab8b.png"
-                alt="Winter Training Program"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-          </div>
-        )}
-
-        {type === 'apprenticeship' && (
-          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-orange-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#1a120b]">
-              <img
-                src="/assets/aistudio/Warmly_Branded_Executive_Team_Portrait_67a8e1d1.png"
-                alt="Apprenticeship Program"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-          </div>
-        )}
-
-        {type === 'internship-training' && (
-          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
-            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-xl lg:shadow-2xl lg:group-hover:scale-[1.02] transition-transform duration-500 bg-[#1c140e]">
-              <img
-                src="/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png"
-                alt="Internship Training Program"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-          </div>
-        )}
+        </div>
       </div>
 
-      {/* Floating Bottom Tech Tags */}
-      <div className="relative z-10 flex flex-wrap items-center gap-1.5 pt-2 border-t border-white/10">
+      {/* Mobile Right Info Column (< lg): Badges + Tags beside thumbnail so card height stays compact for smooth sticky stacking */}
+      <div className="flex lg:hidden flex-1 min-w-0 flex-col justify-between gap-2 relative z-10">
+        <div className="flex flex-wrap items-center gap-1.5">
+          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/85 border border-white/15 text-[9px] font-mono text-white max-w-full truncate">
+            <Sparkles className="w-2.5 h-2.5 text-[#ff5722] shrink-0" />
+            <span className="truncate">{poster.label}</span>
+          </div>
+          {tags[1] && (
+            <span className="px-2 py-0.5 rounded-md bg-[#c83b0f] text-white text-[9px] font-mono font-bold">
+              {tags[1]}
+            </span>
+          )}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-1">
+          {tags.slice(0, 4).map((tag, tIdx) => (
+            <span
+              key={tIdx}
+              className="text-[8.5px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-neutral-300"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop Bottom Tech Tags */}
+      <div className="hidden lg:flex relative z-10 flex-wrap items-center gap-1.5 pt-2 border-t border-white/10">
         {tags.map((tag, tIdx) => (
           <span
             key={tIdx}
