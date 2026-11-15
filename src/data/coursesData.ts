@@ -747,8 +747,8 @@ export const COURSES: Course[] = [
   },
   {
     id: "ignite-6",
-    codeName: "IGNITE 6.0",
-    title: "TheCodeSpark Technologies Private Limited IGNITE 6.0: Corporate Apprenticeship & Internship",
+    codeName: "APPRENTICESHIP",
+    title: "Apprenticeship Program: Corporate Production Engineering, Agile Sprints & Stipend Track",
     subtitle: "6-Month guaranteed real-industry corporate apprenticeship. Work on production-grade client projects, live codebases, Agile sprints, and receive verified experience certificates with stipend assistance.",
     kicker: "APPRENTICESHIP • TRAINING • REAL WORK EXPERIENCE • PLACEMENT",
     price: 5000,
@@ -760,11 +760,11 @@ export const COURSES: Course[] = [
     hours: "300+ Hours",
     modulesCount: "6 Live Sprints",
     questionsCount: "Real Client Deliverables",
-    tags: ["Corporate Apprenticeship", "Paid Stipend Track", "Live Client Projects", "Work Experience", "Placement Guarantee"],
+    tags: ["Apprenticeship", "Paid Stipend Track", "Live Client Projects", "Placement Support"],
     isLive: false,
     isPopular: false,
     isComingSoon: true,
-    comingSoonText: "Pre-Registration Open • Limited Corporate Seats",
+    comingSoonText: "Admissions Open • Limited Corporate Seats",
     posterImg: "/assets/aistudio/Warmly_Branded_Executive_Team_Portrait_67a8e1d1.png",
     videoUrl: "/assets/aistudio/20261101-0827-58.6184273_f9435e53.mp4",
     instructorImg: "/assets/aistudio/faculty_ishu_sharma.png",
@@ -1112,6 +1112,324 @@ export const COURSES: Course[] = [
         title: "Ship & Scale: CI/CD Pipelines & Cloud Deployment",
         desc: "GitHub Actions workflows, environment secrets, preview deploys, and live telemetry checks.",
         topics: ["Automated build & deploy pipelines", "Staging vs production env hygiene", "Error tracking & release rollbacks"]
+      }
+    ]
+  },
+  {
+    id: "summer-training",
+    codeName: "SUMMER TRAINING",
+    title: "45-Day Summer Industrial Training – 5 Tech Tracks, GenAI & Live Deployed Projects",
+    subtitle: "India's most practical 45-Day Summer Industrial Training for B.Tech, Diploma, BCA & MCA learners (Lucknow Campus + Live Online). Pick from MERN + GenAI, Python + AI/ML, Java Spring Boot, Flutter Apps, or Data Analytics — graduate with 2 Minor + 1 Major Live Hosted Project, Hardbound College Report, 1-Year Free Hosting & Dual QR Certificates.",
+    kicker: "☀️ 45 DAYS INDUSTRIAL SUMMER TRAINING • 5 TECH TRACKS • HARD-BOUND REPORT + DUAL CERT",
+    price: 3999,
+    originalPrice: 7999,
+    discountBadge: "50% OFF",
+    duration: "45 Days",
+    weeksBadge: "45 Days",
+    enrolledCount: "220+ Students",
+    hours: "120+ Hours",
+    modulesCount: "7 Modules • 5 Tracks",
+    questionsCount: "2 Minor + 1 Major Project",
+    tags: ["45 Days Industrial", "5 Tech Tracks", "Live Hosted Projects", "Hardbound Report + Cert"],
+    catalogGraphic: "fullstack",
+    isLive: true,
+    isPopular: true,
+    isComingSoon: false,
+    comingSoonText: "Admissions Open • 45-Day Summer Batch",
+    posterImg: "/assets/aistudio/TheCodeSpark_AI_Coding_Conference_d7477d11.png",
+    videoUrl: "/assets/aistudio/20261101-0826-41.9641150_79ea86df.mp4",
+    instructorImg: "/Rohit.png",
+    instructorName: "Mr. Rohit Kashyap & Campus Engineering Leads",
+    prerequisites: {
+      level: "B.Tech (CS/IT/AI/ECE) / Diploma / BCA / MCA / B.Sc IT",
+      duration: "45 Days Intensive",
+      schedule: "Morning, Mid-Day, Afternoon & Evening Batches (Mon–Sat)",
+      language: "Hinglish",
+      classType: "Offline (Lucknow Tech Campus) & Live Hybrid Online",
+      highlights: [
+        "Choose 1 Core Track: MERN + GenAI, Python/Django + AI, Java Spring Boot, Flutter, or Data/Power BI",
+        "Build 2 Minor + 1 Major Production Project with 1-Year Free Cloud Hosting URL",
+        "Includes Hardbound University Project Report, Synopsis, Viva PPT & NOC Letter",
+        "Dual QR-Verified Certificates (Industrial Training + Live Project) accepted by AKTU/BTEUP/LU"
+      ]
+    },
+    comparisonPoints: {
+      positive: [
+        "1:15 small-batch mentorship with daily hands-on coding & Founder code reviews",
+        "5 modern industry tracks upgraded with Generative AI & cloud deployment",
+        "2 Minor + 1 Major Live Hosted Project (1-Year Free Hosting included)",
+        "Hardbound College Project Report + Synopsis + Dual QR-Verified Certificates",
+        "1-Year LMS recording access, 24/7 Discord doubt desk & Paid Apprenticeship fast-track"
+      ],
+      negative: [
+        "Crowded 150-student lecture halls with zero personal attention",
+        "Outdated HTML/Bootstrap/jQuery slide templates with no AI or modern backend",
+        "Copied localhost zip projects with extra hidden fees for reports or certificates",
+        "No real Git workflow, live cloud deployment, or mock technical interviews"
+      ]
+    },
+    modules: [
+      {
+        id: 1,
+        name: "DAYS 01–06 • MODULE 1",
+        title: "Programming Core, Logic Building & Git/GitHub Engineering",
+        desc: "Kickstart Day 1 with clean programming syntax, problem-solving drills, VS Code mastery, and industry Git/GitHub branching workflows.",
+        topics: [
+          "VS Code, terminal mastery & developer machine setup",
+          "Programming logic, functions, arrays & OOP foundations",
+          "Git init, commits, branching & GitHub portfolio setup",
+          "Instant college Training / NOC Confirmation Letter issuance"
+        ]
+      },
+      {
+        id: 2,
+        name: "DAYS 07–14 • MODULE 2",
+        title: "Modern Frontend Engineering & Responsive UI Architecture",
+        desc: "Craft fast, accessible interfaces using Semantic HTML5, Tailwind CSS grids, modern JavaScript ES6+, and component-driven UI.",
+        topics: [
+          "Semantic HTML5, Flexbox, CSS Grid & Tailwind CSS",
+          "JavaScript ES6+, DOM manipulation, Fetch & Async/Await",
+          "React components, hooks & responsive mobile-first layouts",
+          "UI mini-build deployed live for your GitHub profile"
+        ]
+      },
+      {
+        id: 3,
+        name: "DAYS 15–22 • MODULE 3",
+        title: "Core Track Specialization (MERN / Python / Java / Flutter / BI)",
+        desc: "Deep-dive into your chosen 45-Day industry track — building clean backend services, mobile widgets, or enterprise SQL data pipelines.",
+        topics: [
+          "MERN (Node + Express) / Python Django / Java Spring Boot 3",
+          "Flutter cross-platform widgets OR Power BI DAX modeling",
+          "RESTful API validation, middleware & error handling",
+          "Minor Project #1 built & reviewed by senior mentors"
+        ]
+      },
+      {
+        id: 4,
+        name: "DAYS 23–28 • MODULE 4",
+        title: "Database Modeling, Authentication & Security Architecture",
+        desc: "Design scalable PostgreSQL, MySQL, or MongoDB schemas with JWT authentication, role-based access control, and password hashing.",
+        topics: [
+          "Relational (SQL joins/CTEs) & MongoDB schema design",
+          "JWT tokens, bcrypt hashing & role-based permissions",
+          "File uploads, CRUD dashboards & Postman API testing",
+          "Minor Project #2 completed with live database integration"
+        ]
+      },
+      {
+        id: 5,
+        name: "DAYS 29–34 • MODULE 5",
+        title: "Generative AI Integration & Modern Smart Workflows",
+        desc: "Upgrade your summer project beyond standard CRUD by integrating Gemini / LLM APIs, smart search, and automated AI features.",
+        topics: [
+          "Gemini / LLM API integration & structured JSON outputs",
+          "AI document summaries, smart chatbots & semantic search",
+          "Prompt safety, rate-limiting & environment secret management",
+          "API optimization & real-time loading/streaming UX"
+        ]
+      },
+      {
+        id: 6,
+        name: "DAYS 35–40 • MODULE 6",
+        title: "Major Live Project Engineering & 1-Year Free Cloud Hosting",
+        desc: "Architect, test, and launch your university-approved Major Live Project on production cloud hosting with a real shareable URL.",
+        topics: [
+          "System requirement analysis, ER/DFD diagrams & architecture",
+          "Production deployment on cloud with 1-Year Free Hosting",
+          "End-to-end QA testing, SSL setup & mobile responsiveness",
+          "Live demo video & recruiter-ready README documentation"
+        ]
+      },
+      {
+        id: 7,
+        name: "DAYS 41–45 • MODULE 7",
+        title: "Hardbound Project Report, College Viva Defense & Placements",
+        desc: "Wrap up your 45-day journey with university-compliant documentation, viva defense drills, ATS resume prep, and apprenticeship interviews.",
+        topics: [
+          "Hardbound College Project Report + Synopsis + Viva PPT",
+          "Dual QR-Verified Certificates (Training + Project Completion)",
+          "ATS Resume, LinkedIn optimization & GitHub pin audit",
+          "Mock Technical & HR Interviews + Apprenticeship Fast-Track"
+        ]
+      }
+    ]
+  },
+  {
+    id: "winter-training",
+    codeName: "WINTER TRAINING",
+    title: "Winter Training Program – Hands-On Software Engineering, DSA & Hackathon Lab",
+    subtitle: "Accelerated 4–6 weeks winter coding bootcamp focused on DSA problem solving, core backend engineering, hackathon prototyping, and university project readiness.",
+    kicker: "❄️ WINTER TRAINING • DSA + DEVELOPMENT • HACKATHON LAB",
+    price: 3999,
+    originalPrice: 7999,
+    discountBadge: "50% OFF",
+    duration: "6 Weeks",
+    weeksBadge: "6 Weeks",
+    enrolledCount: "160+ Students",
+    hours: "100+ Hours",
+    modulesCount: "5 Focused Modules",
+    questionsCount: "200+ Coding Drills",
+    tags: ["Winter Training", "Python / Java / Web", "DSA & Logic", "Certification"],
+    catalogGraphic: "devops",
+    isLive: true,
+    isPopular: false,
+    isComingSoon: false,
+    comingSoonText: "Admissions Open • Winter Cohort",
+    posterImg: "/assets/aistudio/TCS_Hackathon_Badge_Desk_Scene_04b4ab8b.png",
+    videoUrl: "/assets/aistudio/20261101-0827-58.6184273_f9435e53.mp4",
+    instructorImg: "/assets/aistudio/faculty_aadhya.png",
+    instructorName: "Core Engineering & DSA Mentors",
+    prerequisites: {
+      level: "Semester Break / College Students",
+      duration: "4–6 Weeks Accelerated",
+      schedule: "Mon-Sat (Live Lab Sessions)",
+      language: "Hinglish",
+      classType: "Live Practical Labs + Hackathon Sprints",
+      highlights: [
+        "Fast-track semester-break mastery of DSA + Full Stack or Python",
+        "Weekend hackathon challenges with live leaderboard & awards",
+        "Complete minor/major college project ready with documentation",
+        "Verified Winter Training Certificate from TheCodeSpark Technologies Private Limited"
+      ]
+    },
+    comparisonPoints: {
+      positive: [
+        "Daily live problem solving & hackathon sprint reviews",
+        "Clean production-grade codebase on your GitHub profile",
+        "Mentored debugging & technical interview mock drills",
+        "College-ready synopsis, SRS documentation & demo video"
+      ],
+      negative: [
+        "Passive video playlists with zero code reviews",
+        "Recycled templates that fail technical interviews",
+        "No peer competition or hackathon exposure"
+      ]
+    },
+    modules: [
+      {
+        id: 1,
+        name: "MODULE 1",
+        title: "Algorithmic Logic & Data Structures Sprint",
+        desc: "Arrays, strings, recursion, sorting, hashing, and complexity optimization for technical tests.",
+        topics: ["Two-pointers & sliding window", "Stacks, queues & hash maps", "Time & space optimization"]
+      },
+      {
+        id: 2,
+        name: "MODULE 2",
+        title: "Full Stack / Python Application Architecture",
+        desc: "Structuring clean modular services, API endpoints, and database persistence layers.",
+        topics: ["MVC & modular folders", "CRUD + Auth APIs", "Database schema modeling"]
+      },
+      {
+        id: 3,
+        name: "MODULE 3",
+        title: "Frontend Craft & State Flows",
+        desc: "Building clean, responsive interfaces connected to real backend services.",
+        topics: ["Interactive components", "Form validation & states", "Error handling & UX polish"]
+      },
+      {
+        id: 4,
+        name: "MODULE 4",
+        title: "Winter Hackathon & Code Review",
+        desc: "48-hour team build sprint followed by mentor architecture audit and refactoring.",
+        topics: ["Team Git collaboration", "Bug bash & edge cases", "Live product pitch"]
+      },
+      {
+        id: 5,
+        name: "MODULE 5",
+        title: "Deployment, Documentation & Certification",
+        desc: "Publishing to cloud, preparing technical docs, and final evaluation viva.",
+        topics: ["Live URL deployment", "Technical project report", "Certification evaluation"]
+      }
+    ]
+  },
+  {
+    id: "internship-training",
+    codeName: "INTERNSHIP TRAINING",
+    title: "Internship Training Program – Real-World Production Deployment & 1-on-1 Industry Mentorship",
+    subtitle: "Bridge college to corporate engineering with structured internship training: work on live production features, Git PR workflows, API testing, and receive verified internship certification.",
+    kicker: "💼 INTERNSHIP TRAINING • LIVE PRODUCTION • EXPERIENCE LETTER",
+    price: 4499,
+    originalPrice: 9999,
+    discountBadge: "55% OFF",
+    duration: "3–6 Months",
+    weeksBadge: "16 Weeks",
+    enrolledCount: "180+ Interns",
+    hours: "200+ Hours",
+    modulesCount: "5 Industry Sprints",
+    questionsCount: "Verified Experience Letter",
+    tags: ["Internship Training", "Live Codebase", "Git & PR Reviews", "Offer Letter"],
+    catalogGraphic: "mobile",
+    isLive: true,
+    isPopular: true,
+    isComingSoon: false,
+    comingSoonText: "Open Now • Internship Cohort",
+    posterImg: "/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png",
+    videoUrl: "/assets/aistudio/20261101-0901-20.9364903_f39b55c3.mp4",
+    instructorImg: "/assets/aistudio/faculty_ishu_sharma.png",
+    instructorName: "Industry Engineering Mentors",
+    prerequisites: {
+      level: "Pre-Final Year, Final Year & Freshers",
+      duration: "12–24 Weeks (Flexible Track)",
+      schedule: "Mon-Fri Sprint Check-ins & Live Standups",
+      language: "English / Hinglish",
+      classType: "Real-Time Internship Simulation & Live Repo",
+      highlights: [
+        "Official Internship Offer Letter & Completion Experience Certificate",
+        "Work in Agile sprints with PR reviews, issue tracking & CI checks",
+        "Contribute to real deployed web, AI & backend modules",
+        "Letter of Recommendation (LOR) & direct hiring partner referrals"
+      ]
+    },
+    comparisonPoints: {
+      positive: [
+        "Real Git PRs reviewed line-by-line by senior engineers",
+        "Verified Internship Offer Letter, Experience Certificate & LOR",
+        "Authentic Agile standups, bug triage & release workflows",
+        "Direct portfolio links & mock interviews for job offers"
+      ],
+      negative: [
+        "Fake unpaid PDF internships with zero engineering work",
+        "No mentor feedback, code review, or production deployment",
+        "No measurable GitHub contributions to show recruiters"
+      ]
+    },
+    modules: [
+      {
+        id: 1,
+        name: "SPRINT 1",
+        title: "Engineering Onboarding & Agile Workflow",
+        desc: "Setting up production repos, task boards, branching rules, and local dev environments.",
+        topics: ["Offer onboarding & Agile sprints", "Branch conventions & PR templates", "Environment & lint configuration"]
+      },
+      {
+        id: 2,
+        name: "SPRINT 2",
+        title: "Frontend Feature & Component Engineering",
+        desc: "Shipping accessible, responsive UI modules matching real product specifications.",
+        topics: ["Reusable component libraries", "API state & loading states", "Responsive cross-device QA"]
+      },
+      {
+        id: 3,
+        name: "SPRINT 3",
+        title: "Backend APIs, Auth & Database Integration",
+        desc: "Developing secure endpoints, validation schemas, and optimizing database queries.",
+        topics: ["REST API contracts & Zod", "Database indexing & relations", "Automated API verification"]
+      },
+      {
+        id: 4,
+        name: "SPRINT 4",
+        title: "Senior Code Reviews, Testing & Debugging",
+        desc: "Iterating on mentor PR comments, writing automated tests, and fixing edge-case bugs.",
+        topics: ["Addressing code review diffs", "Writing unit/integration checks", "Error tracking & logging"]
+      },
+      {
+        id: 5,
+        name: "SPRINT 5",
+        title: "Production Release, Evaluation & Placement Prep",
+        desc: "Shipping final features, receiving Experience Certificate & LOR, and mock interviews.",
+        topics: ["Production release sign-off", "Resume & GitHub audit", "Referral & placement interviews"]
       }
     ]
   }

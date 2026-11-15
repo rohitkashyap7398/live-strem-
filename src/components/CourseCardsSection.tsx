@@ -141,6 +141,74 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
       visualType: 'trading-pro' as const,
       isComingSoon: true,
       tags: ['Coming Soon', 'Price Action', 'Crypto & Spot', 'Options & F&O', 'Algo Trading']
+    },
+    {
+      course: COURSES.find((c) => c.id === 'summer-training') || COURSES[0], // Summer Training
+      cardType: 'light' as const,
+      badge: '☀️ LIVE NOW • 45 DAYS SUMMER TRAINING',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: '45-Day Summer Industrial Training – 5 Tech Tracks, GenAI & Live Hosted Projects',
+      desc: '45-Day B.Tech, Diploma, BCA & MCA industrial training (Lucknow Campus + Live Online) across MERN+AI, Python/Django, Java Spring Boot, Flutter & Data BI. Includes 2 Minor + 1 Major Live Project, Hardbound Report, 1-Yr Free Hosting & Dual QR Certificates.',
+      duration: '45 Days (120+ Hrs)',
+      certified: 'Dual QR Cert + Hardbound Report',
+      support: '1-Yr Free Hosting + NOC',
+      price: 'Rs.3999',
+      originalPrice: 'Rs.7999',
+      imageSide: 'right' as const,
+      visualType: 'summer-training' as const,
+      isComingSoon: false,
+      tags: ['45 Days Industrial', '5 Tech Tracks', '1-Yr Free Hosting', 'Hardbound Report + Cert']
+    },
+    {
+      course: COURSES.find((c) => c.id === 'winter-training') || COURSES[0], // Winter Training
+      cardType: 'orange' as const,
+      badge: '❄️ LIVE NOW • WINTER TRAINING',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: 'Winter Training Program – Hands-On Software Engineering, DSA & Hackathon Lab',
+      desc: 'Accelerated 4–6 weeks winter coding cohort focused on DSA algorithms, clean backend APIs, weekend hackathon prototyping, and full college project readiness.',
+      duration: '6 Weeks (100+ Hrs)',
+      certified: 'Yes Certified',
+      support: '24/7 Mentor Support',
+      price: 'Rs.3999',
+      originalPrice: 'Rs.7999',
+      imageSide: 'left' as const,
+      visualType: 'winter-training' as const,
+      isComingSoon: false,
+      tags: ['Winter Training', 'Python / Java / Web', 'DSA & Logic', 'Hackathon Lab']
+    },
+    {
+      course: COURSES.find((c) => c.id === 'ignite-6') || COURSES[0], // Apprenticeship
+      cardType: 'dark' as const,
+      badge: 'APPRENTICESHIP PROGRAM',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: 'Apprenticeship Program: Corporate Production Engineering, Agile Sprints & Stipend Track',
+      desc: '6-Month corporate engineering apprenticeship. Work directly on production client repos, Agile sprints, PR code reviews, and get verified work experience with stipend assistance.',
+      duration: '6 Months (300+ Hrs)',
+      certified: 'Work Experience Letter',
+      support: 'Corporate Leads',
+      price: 'Rs.5000',
+      originalPrice: 'Rs.10000',
+      imageSide: 'right' as const,
+      visualType: 'apprenticeship' as const,
+      isComingSoon: true,
+      tags: ['Apprenticeship', 'Paid Stipend Track', 'Live Client Projects', 'Placement Support']
+    },
+    {
+      course: COURSES.find((c) => c.id === 'internship-training') || COURSES[0], // Internship Training
+      cardType: 'terracotta' as const,
+      badge: '💼 LIVE NOW • INTERNSHIP TRAINING',
+      brandSubtitle: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
+      title: 'Internship Training Program – Real-World Production Deployment & 1-on-1 Industry Mentorship',
+      desc: 'Bridge college to industry with real-time Agile sprints, production feature commits, senior Git PR reviews, Official Offer Letter, Experience Certificate & Letter of Recommendation.',
+      duration: '3–6 Months (200+ Hrs)',
+      certified: 'Offer + Experience Letter',
+      support: '1-on-1 Industry Mentors',
+      price: 'Rs.4499',
+      originalPrice: 'Rs.9999',
+      imageSide: 'left' as const,
+      visualType: 'internship-training' as const,
+      isComingSoon: false,
+      tags: ['Internship Training', 'Live Codebase', 'Git & PR Reviews', 'Offer Letter']
     }
   ];
 
@@ -189,29 +257,14 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
             const isDark = item.cardType === 'dark';
             const isTerracotta = item.cardType === 'terracotta';
 
-            // Z-index increases so subsequent cards cleanly overlap previous cards on scroll while staying below Navbar (z-50)
-            const zIndexClass =
-              idx === 0
-                ? 'z-[11]'
-                : idx === 1
-                ? 'z-[12]'
-                : idx === 2
-                ? 'z-[13]'
-                : idx === 3
-                ? 'z-[14]'
-                : idx === 4
-                ? 'z-[15]'
-                : idx === 5
-                ? 'z-[16]'
-                : 'z-[17]';
             // Stepped sticky offset creates the visible card-deck tabs effect on both mobile and desktop
-            const stickyTop = `calc(clamp(70px, 8.5vh, 90px) + ${idx * 14}px)`;
+            const stickyTop = `calc(clamp(70px, 8.5vh, 90px) + ${Math.min(idx, 10) * 10}px)`;
 
             return (
               <div
                 key={item.badge + idx}
-                className={`sticky ${zIndexClass} transition-all will-change-transform`}
-                style={{ top: stickyTop }}
+                className="sticky transition-all will-change-transform"
+                style={{ top: stickyTop, zIndex: 11 + idx }}
               >
                 <motion.div
                   initial={false}
@@ -390,7 +443,18 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
 
 // High-fidelity visual mockup container replicating the cards from the screen recording
 const VisualMockup: React.FC<{
-  type: 'instructor-web' | 'data-ai' | 'laptop-code' | 'ai-agents' | 'java-dsa' | 'dev-toolkit' | 'trading-pro';
+  type:
+    | 'instructor-web'
+    | 'data-ai'
+    | 'laptop-code'
+    | 'ai-agents'
+    | 'java-dsa'
+    | 'dev-toolkit'
+    | 'trading-pro'
+    | 'summer-training'
+    | 'winter-training'
+    | 'apprenticeship'
+    | 'internship-training';
   tags: string[];
   isDarkCard?: boolean;
   isOrangeCard?: boolean;
@@ -423,6 +487,14 @@ const VisualMockup: React.FC<{
               ? 'COMING SOON • JAVA & DSA'
               : type === 'dev-toolkit'
               ? 'COMING SOON • DEV TOOLKIT'
+              : type === 'summer-training'
+              ? 'LIVE NOW • 45 DAYS SUMMER TRAINING'
+              : type === 'winter-training'
+              ? 'LIVE NOW • WINTER TRAINING'
+              : type === 'apprenticeship'
+              ? 'COHORT OPEN • APPRENTICESHIP'
+              : type === 'internship-training'
+              ? 'LIVE NOW • INTERNSHIP'
               : 'COMING SOON • TRADING PRO'}
           </span>
         </div>
@@ -514,6 +586,54 @@ const VisualMockup: React.FC<{
               <img
                 src="/assets/aistudio/Focused_Crypto_Trading_Workspace_58db5cbb.png"
                 alt="Stock Market, Options & Algo Trading Mastery"
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+          </div>
+        )}
+
+        {type === 'summer-training' && (
+          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-amber-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#180c24]">
+              <img
+                src="/assets/aistudio/TheCodeSpark_AI_Coding_Conference_d7477d11.png"
+                alt="Summer Training Program"
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+          </div>
+        )}
+
+        {type === 'winter-training' && (
+          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-cyan-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#071526]">
+              <img
+                src="/assets/aistudio/TCS_Hackathon_Badge_Desk_Scene_04b4ab8b.png"
+                alt="Winter Training Program"
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+          </div>
+        )}
+
+        {type === 'apprenticeship' && (
+          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-orange-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#1a120b]">
+              <img
+                src="/assets/aistudio/Warmly_Branded_Executive_Team_Portrait_67a8e1d1.png"
+                alt="Apprenticeship Program"
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+          </div>
+        )}
+
+        {type === 'internship-training' && (
+          <div className="relative w-full max-w-[300px] sm:max-w-[340px] mx-auto">
+            <div className="relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden ring-2 ring-emerald-400/50 shadow-2xl group-hover:scale-[1.02] transition-transform duration-500 bg-[#1c140e]">
+              <img
+                src="/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png"
+                alt="Internship Training Program"
                 className="w-full h-full object-cover object-top"
               />
             </div>

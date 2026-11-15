@@ -1,6 +1,7 @@
 import React from 'react';
 import { Course } from '../data/coursesData';
 import { IgniteOneDetailView } from './IgniteOneDetailView';
+import { SummerTrainingDetailView } from './SummerTrainingDetailView';
 
 interface CourseDetailPageProps {
   course: Course;
@@ -21,6 +22,20 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
   onNavigateCourses,
   onNavigateHome,
 }) => {
+  if (course.id === 'summer-training') {
+    return (
+      <SummerTrainingDetailView
+        course={course}
+        onSelectAnotherCourse={onSelectAnotherCourse}
+        onRequestCallback={onRequestCallback}
+        onBuyNow={onBuyNow}
+        onViewSyllabus={onViewSyllabus}
+        onNavigateCourses={onNavigateCourses}
+        onNavigateHome={onNavigateHome}
+      />
+    );
+  }
+
   return (
     <IgniteOneDetailView
       course={course}
