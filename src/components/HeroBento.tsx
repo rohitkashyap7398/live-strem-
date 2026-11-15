@@ -84,7 +84,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
   };
 
   return (
-    <section className="relative pt-6 sm:pt-8 pb-14 overflow-hidden">
+    <section className="relative pt-24 lg:pt-20 pb-14 overflow-hidden">
       {/* Background radial ambient glow with gentle pulse animation */}
       <motion.div
         animate={{

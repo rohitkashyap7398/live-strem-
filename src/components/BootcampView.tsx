@@ -363,7 +363,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
   const currentProject = realProjects[openProjectIdx ?? 0];
 
   return (
-    <div className="bg-[#F1EFE9] text-[#0E0E0E] min-h-screen selection:bg-[#EA2814] selection:text-white overflow-x-clip">
+    <div className="bg-[#F1EFE9] text-[#0E0E0E] min-h-screen pt-[90px] lg:pt-[68px] selection:bg-[#EA2814] selection:text-white overflow-x-clip">
       {/* =========================================================================
           EDITORIAL SECTION NAV STRIP
           ========================================================================= */}

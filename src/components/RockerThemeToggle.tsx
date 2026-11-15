@@ -25,25 +25,25 @@ export const RockerThemeToggle: React.FC<RockerThemeToggleProps> = ({
       aria-label={isDark ? 'Switch to Day Mode' : 'Switch to Night Mode'}
       title={isDark ? 'Night Mode — Click for Day Mode' : 'Day Mode — Click for Night Mode'}
       onClick={onToggle}
-      className={`group relative inline-flex items-center w-[72px] h-[38px] p-[4px] rounded-full cursor-pointer select-none shrink-0 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C4FF00] ${
+      className={`group relative inline-flex items-center w-[48px] h-[26px] sm:w-[56px] sm:h-[30px] p-[3px] rounded-full cursor-pointer select-none shrink-0 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C4FF00] ${
         isDark
-          ? 'bg-[#070709] border border-white/15 shadow-[inset_0_1px_3px_rgba(0,0,0,0.9),0_2px_10px_rgba(0,0,0,0.4)]'
-          : 'bg-[#FFFFFF] border border-black/15 shadow-[inset_0_1px_2px_rgba(15,23,42,0.06),0_3px_10px_rgba(15,23,42,0.12)]'
+          ? 'justify-end bg-[#070709] border border-white/15 shadow-[inset_0_1px_3px_rgba(0,0,0,0.9),0_2px_10px_rgba(0,0,0,0.4)]'
+          : 'justify-start bg-[#FFFFFF] border border-black/15 shadow-[inset_0_1px_2px_rgba(15,23,42,0.06),0_3px_10px_rgba(15,23,42,0.12)]'
       }`}
     >
       {/* Sliding Circular Knob */}
       <motion.span
+        layout
         initial={false}
         animate={{
-          x: isDark ? 34 : 0,
           backgroundColor: isDark ? '#ECECEF' : '#F68B42'
         }}
         whileTap={{ scale: 0.92 }}
         transition={{
-          x: { type: 'spring', stiffness: 460, damping: 30, mass: 0.8 },
+          layout: { type: 'spring', stiffness: 460, damping: 30, mass: 0.8 },
           backgroundColor: { duration: 0.25 }
         }}
-        className="relative flex items-center justify-center w-[28px] h-[28px] rounded-full shadow-sm"
+        className="relative flex items-center justify-center w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] rounded-full shadow-sm"
         style={{
           willChange: 'transform, background-color'
         }}
@@ -54,7 +54,7 @@ export const RockerThemeToggle: React.FC<RockerThemeToggleProps> = ({
             <motion.svg
               key="night-stars"
               viewBox="0 0 32 32"
-              className="w-[18px] h-[18px] sm:w-[20px] sm:h-[20px] text-[#070709]"
+              className="w-[14px] h-[14px] sm:w-[16px] sm:h-[16px] text-[#070709]"
               fill="currentColor"
               initial={{ opacity: 0, scale: 0.45, rotate: -45 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -74,7 +74,7 @@ export const RockerThemeToggle: React.FC<RockerThemeToggleProps> = ({
             <motion.svg
               key="day-sun"
               viewBox="0 0 32 32"
-              className="w-[19px] h-[19px] sm:w-[21px] sm:h-[21px] text-white"
+              className="w-[15px] h-[15px] sm:w-[17px] sm:h-[17px] text-white"
               fill="currentColor"
               initial={{ opacity: 0, scale: 0.45, rotate: 45 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}

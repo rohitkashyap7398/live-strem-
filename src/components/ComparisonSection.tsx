@@ -84,20 +84,20 @@ export const ComparisonSection: React.FC = () => {
             className="rounded-2xl p-5 sm:p-7 bg-emerald-50/75 dark:bg-[#0e1612] border-2 border-emerald-500/70 dark:border-emerald-500/80 shadow-lg dark:shadow-[0_0_50px_rgba(16,185,129,0.14)] space-y-6 relative flex flex-col justify-between transition-colors"
           >
             {/* Header matching screenshot */}
-            <div className="flex items-center gap-4 border-b border-emerald-500/20 pb-6">
-              <div className="w-28 h-14 rounded-2xl bg-white dark:bg-[#07110c] border border-emerald-500/40 p-2 flex items-center justify-center shrink-0 shadow-sm dark:shadow-md">
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-4 border-b border-emerald-500/20 pb-5 sm:pb-6">
+              <div className="w-20 h-12 sm:w-28 sm:h-14 rounded-2xl bg-white dark:bg-[#07110c] border border-emerald-500/40 p-2 flex items-center justify-center shrink-0 shadow-sm dark:shadow-md">
                 <img
                   src={brandLogo}
                   onError={(e) => { e.currentTarget.src = '/logo.png'; }}
                   alt="TheCodeSpark"
-                  className="h-9 w-auto object-contain filter drop-shadow"
+                  className="h-7 sm:h-9 w-auto object-contain filter drop-shadow"
                 />
               </div>
-              <div>
+              <div className="min-w-0">
                 <h3 className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white font-display leading-tight tracking-tight">
                   TheCodeSpark Technologies<br className="hidden sm:inline" /> Private Limited
                 </h3>
-                <span className="text-xs sm:text-sm font-mono text-emerald-700 dark:text-emerald-400 font-extrabold uppercase tracking-widest mt-1 inline-block">
+                <span className="text-[11px] sm:text-sm font-mono text-emerald-700 dark:text-emerald-400 font-extrabold uppercase tracking-wider sm:tracking-widest mt-1 inline-block">
                   INDUSTRY STANDARD STANDARDIZED
                 </span>
               </div>

@@ -362,9 +362,9 @@ export const IgniteOneDetailView: React.FC<IgniteOneDetailViewProps> = ({
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="bg-[#FFFFFF] text-[#0D1410] min-h-screen selection:bg-[#9BFF6E] selection:text-[#062B1A] font-sans overflow-x-clip">
+      <div className="bg-[#FFFFFF] text-[#0D1410] min-h-screen pt-[90px] lg:pt-[68px] selection:bg-[#9BFF6E] selection:text-[#062B1A] font-sans overflow-x-clip">
         {/* Top Breadcrumb & Cohort Switcher */}
-        <div className="bg-[#F8FAFC] border-b border-black/10 py-2.5 px-4 sticky top-18 z-30">
+        <div className="bg-[#F8FAFC] border-b border-black/10 py-2.5 px-4 sticky top-[46px] sm:top-[50px] z-30">
           <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
             <div className="flex items-center gap-2 text-xs text-[#4B5563] font-mono whitespace-nowrap">
               <button

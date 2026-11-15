@@ -782,10 +782,10 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
   return (
     <div className="w-full relative pb-4">
       {/* Top Controls: Kicker & View Switcher */}
-      <div className="flex items-center justify-between gap-3 max-w-5xl mx-auto px-3 sm:px-4 mb-3 sm:mb-4">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#E10600] animate-ping" />
-          <span className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-slate-700 dark:text-neutral-300 font-semibold">
+      <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 max-w-5xl mx-auto px-3 sm:px-4 mb-3 sm:mb-4">
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="w-2 h-2 rounded-full bg-[#E10600] animate-ping shrink-0" />
+          <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-slate-700 dark:text-neutral-300 font-semibold truncate">
             TheCodeSpark Technologies Private Limited OS • Live Intelligence
           </span>
         </div>
@@ -853,7 +853,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
         <div className="relative max-w-5xl mx-auto px-2 sm:px-4">
           <div className="rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black bg-[#0d0d12] p-1.5 sm:p-2">
             {/* Tablet Bezel Frame with ambient screen glow */}
-            <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/[0.08] relative aspect-[16/10] sm:aspect-[16/9] min-h-[300px] sm:min-h-[480px]">
+            <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/[0.08] relative aspect-[16/10] sm:aspect-[16/9] min-h-[200px] sm:min-h-[380px] lg:min-h-[480px]">
               <ScaledTabletScreen>
                 {dashboardContent}
               </ScaledTabletScreen>

@@ -9,6 +9,17 @@
     --font-mono: 'JetBrains Mono', monospace;
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   html, body {
     max-width: 100%;
     overflow-x: clip;
@@ -19,7 +30,12 @@
     background-color: #ffffff;
     color: #0f172a;
     overflow-x: clip;
+    -webkit-overflow-scrolling: touch;
     transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  button, a, [role="button"] {
+    touch-action: manipulation;
   }
 
   html.dark body {
@@ -137,7 +153,8 @@ html.dark .text-stroke-subtle {
   display: flex;
   width: max-content;
   will-change: transform;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
   animation: marquee 35s linear infinite;
 }
 
@@ -145,7 +162,8 @@ html.dark .text-stroke-subtle {
   display: flex;
   width: max-content;
   will-change: transform;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
   animation: marquee-reverse 38s linear infinite;
 }
 
@@ -155,10 +173,12 @@ html.dark .text-stroke-subtle {
 }
 
 /* Hide scrollbar utility */
-.no-scrollbar::-webkit-scrollbar {
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
   display: none;
 }
-.no-scrollbar {
+.no-scrollbar,
+.scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }

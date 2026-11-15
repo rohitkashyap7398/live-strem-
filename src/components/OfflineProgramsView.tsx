@@ -414,7 +414,7 @@ const StickyDeckSheet: React.FC<{
               <img
                 src={sheet.img}
                 alt={sheet.title}
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-500"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-4">
@@ -641,81 +641,79 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
 
   const allMentors = [
     {
-      name: 'ALI ANSARI',
-      role: 'THECODESPARK',
-      img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80'
+      alt: 'TheCodeSpark Industry Expert',
+      img: '/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png'
     },
     {
-      name: 'MUSKAN RAI',
-      role: 'THECODESPARK',
-      img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=80'
+      alt: 'TheCodeSpark Industry Expert',
+      img: '/assets/aistudio/Gemini_Generated_Image_co7fiqco7fiqco7f_fcc62587.png'
     },
     {
-      name: 'HARSH SHARMA',
-      role: 'THECODESPARK',
-      img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80'
+      alt: 'Rohit Kashyap - TheCodeSpark Founder',
+      img: '/assets/aistudio/ChatGPT_Image_Apr_16__2026__02_38_30_AM_9625e7e8.png'
     },
     {
-      name: 'SARTHAK SHARMA',
-      role: 'THECODESPARK',
-      img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=80'
+      alt: 'TheCodeSpark Industry Expert',
+      img: '/assets/aistudio/Gemini_Generated_Image_tt8i0xtt8i0xtt8i_8f6a348a.png'
     },
     {
-      name: 'ANKUR PRAJAPATI',
-      role: 'THECODESPARK',
-      img: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500&auto=format&fit=crop&q=80'
-    },
-    {
-      name: 'DEVENDRA DHOTE',
-      role: 'THECODESPARK',
-      img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&auto=format&fit=crop&q=80'
+      alt: 'TheCodeSpark Industry Expert Team',
+      img: '/assets/aistudio/Warmly_Branded_Executive_Team_Portrait_67a8e1d1.png'
     }
   ];
 
   const visibleMentors =
-    mentorPage === 0 ? allMentors.slice(0, 5) : allMentors.slice(1, 6);
+    mentorPage === 0
+      ? allMentors
+      : [
+          allMentors[3],
+          allMentors[4],
+          allMentors[2],
+          allMentors[0],
+          allMentors[1]
+        ];
 
   const placedStudents = [
     {
-      name: 'KUSHAGRA PATIDAR',
+      name: 'AARAV VERMA',
       comp: 'amazon',
       logoText: 'amazon',
-      lpa: '47 LPA',
-      img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80'
+      lpa: '30 LPA',
+      img: '/assets/aistudio/Confident_College_Portrait_in_Navy_Blazer1_e547f0b4.png'
     },
     {
-      name: 'SHIVAM MISHRA',
+      name: 'ROHAN TIWARI',
       comp: 'Razorpay',
       logoText: 'Razorpay',
-      lpa: '24 LPA',
+      lpa: '21 LPA',
       img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80'
     },
     {
-      name: 'KRITIKA B DAS',
+      name: 'MEERA SHARMA',
       comp: 'accenture',
       logoText: 'accenture',
-      lpa: '16 LPA',
+      lpa: '14 LPA',
       img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80'
     },
     {
-      name: 'RISHITA JAIN',
+      name: 'KAVYA NAIR',
       comp: 'cisco',
       logoText: 'CISCO',
-      lpa: '17+ LPA',
+      lpa: '19 LPA',
       img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80'
     },
     {
-      name: 'MANSI SAHU',
+      name: 'ANANYA GUPTA',
       comp: 'airtel',
       logoText: 'airtel',
-      lpa: '18+ LPA',
+      lpa: '16 LPA',
       img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=80'
     },
     {
-      name: 'SHRUTI SARAWAGI',
+      name: 'PRIYA SINGH',
       comp: 'synchrony',
       logoText: 'synchrony',
-      lpa: '12+ LPA',
+      lpa: '13 LPA',
       img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&auto=format&fit=crop&q=80'
     }
   ];
@@ -794,7 +792,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
           label: 'Group Learning, Hackathons & Real Growth Culture'
         }
       ],
-      img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=700&auto=format&fit=crop&q=80',
+      img: '/assets/aistudio/Corporate_Training_Auditorium_Session_76c6f74e.png',
       caption: 'Keep Learning After Hours With Peer Discussions',
       glyph: 'linked'
     },
@@ -809,15 +807,15 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
         },
         {
           icon: <CheckCircle2 className="w-4 h-4 text-[#141916]" />,
-          label: 'Kushagra Patidar • Placed at Amazon (₹47 LPA)'
+          label: 'Aarav Verma • Placed at Amazon (₹30 LPA)'
         },
         {
           icon: <MapPin className="w-4 h-4 text-[#141916]" />,
           label: 'Indrapuri / Gomti Nagar Lucknow On-Campus Hiring Prep'
         }
       ],
-      img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&auto=format&fit=crop&q=80',
-      caption: 'Kushagra Patidar • Placed at Amazon • ₹47 LPA',
+      img: '/assets/aistudio/Confident_College_Portrait_in_Navy_Blazer1_e547f0b4.png',
+      caption: 'Aarav Verma • Placed at Amazon • ₹30 LPA',
       glyph: 'bars'
     }
   ];
@@ -839,7 +837,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="min-h-screen bg-[#191C1A] text-white pb-28 relative overflow-x-clip font-sans selection:bg-[#2CF585] selection:text-[#0D1E14]">
+      <div className="min-h-screen pt-[90px] lg:pt-[68px] bg-[#191C1A] text-white pb-28 relative overflow-x-clip font-sans selection:bg-[#2CF585] selection:text-[#0D1E14]">
         {/* =================================================================== */}
         {/* 1. HERO SPLIT FRAME + INLINE EXPANDING MINT STAT PILLS (`00:00-01`) */}
         {/* =================================================================== */}
@@ -856,7 +854,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                 style={{ scale: heroImageScale }}
                 src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1400&auto=format&fit=crop&q=85"
                 alt="In-Person On-Campus Labs • Indrapuri / Gomti Nagar Lucknow Campus"
-                className="w-full h-[290px] sm:h-[380px] lg:h-[420px] object-cover grayscale contrast-125 opacity-60"
+                className="w-full h-[330px] sm:h-[380px] lg:h-[420px] object-cover grayscale contrast-125 opacity-60"
                 referrerPolicy="no-referrer"
               />
               {/* Bottom-left diagonal emerald glow inside hero image matching `00:00` */}
@@ -1171,25 +1169,25 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
             {/* Row 1 gliding horizontally on scroll */}
             <motion.div
               style={{ x: marqueeRow1X }}
-              className="flex flex-wrap md:flex-nowrap gap-4 justify-center will-change-transform"
+              className="flex flex-wrap md:flex-nowrap gap-3 sm:gap-4 justify-center will-change-transform"
             >
-              <div className="flex-1 min-w-[280px] rounded-full bg-[#2CF585] text-[#0D1E14] px-8 py-5 flex items-center justify-between gap-4 shadow-sm">
+              <div className="flex-1 min-w-0 sm:min-w-[280px] rounded-3xl sm:rounded-full bg-[#2CF585] text-[#0D1E14] px-5 sm:px-8 py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 shadow-sm">
                 <p className="text-xs sm:text-sm font-semibold leading-snug">
                   &ldquo;At TheCodeSpark Tech Campus, daily mentor reviews and
                   live coding built my confidence for product interviews.&rdquo;
                 </p>
                 <span className="text-xs font-mono font-bold shrink-0">
-                  — Kushagra · Amazon
+                  — Aarav · Amazon
                 </span>
               </div>
 
-              <div className="flex-1 min-w-[280px] rounded-full bg-[#2CF585] text-[#0D1E14] px-8 py-5 flex items-center justify-between gap-4 shadow-sm">
+              <div className="flex-1 min-w-0 sm:min-w-[280px] rounded-3xl sm:rounded-full bg-[#2CF585] text-[#0D1E14] px-5 sm:px-8 py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 shadow-sm">
                 <p className="text-xs sm:text-sm font-semibold leading-snug">
                   &ldquo;An environment where you debug live, collaborate daily,
                   and build real production systems from scratch.&rdquo;
                 </p>
                 <span className="text-xs font-mono font-bold shrink-0">
-                  — Shivam · Razorpay
+                  — Rohan · Razorpay
                 </span>
               </div>
             </motion.div>
@@ -1199,13 +1197,13 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
               style={{ x: marqueeRow2X }}
               className="flex justify-center will-change-transform"
             >
-              <div className="w-full max-w-2xl rounded-full bg-[#2CF585] text-[#0D1E14] px-8 py-5 flex items-center justify-between gap-4 shadow-sm">
+              <div className="w-full max-w-2xl rounded-3xl sm:rounded-full bg-[#2CF585] text-[#0D1E14] px-5 sm:px-8 py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 shadow-sm">
                 <p className="text-xs sm:text-sm font-semibold leading-snug">
                   &ldquo;Lucknow&apos;s best distraction-free studio culture for
                   serious coding, DSA, and full-stack launches.&rdquo;
                 </p>
                 <span className="text-xs font-mono font-bold shrink-0">
-                  — Kritika · Accenture
+                  — Meera · Accenture
                 </span>
               </div>
             </motion.div>
@@ -1617,7 +1615,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                   const isCenter = idx === 2;
                   return (
                     <motion.div
-                      key={`${mentorPage}-${m.name}`}
+                      key={`${mentorPage}-${idx}`}
                       initial={{ opacity: 0, y: 14 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.35, delay: idx * 0.04 }}
@@ -1633,18 +1631,10 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                       </div>
                       <img
                         src={m.img}
-                        alt={m.name}
+                        alt={m.alt}
                         className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-500"
                         referrerPolicy="no-referrer"
                       />
-                      <div className="absolute inset-x-0 bottom-0 pt-14 pb-4 px-3 bg-gradient-to-t from-black via-black/75 to-transparent text-center z-10">
-                        <h4 className="text-sm font-bold text-white font-display uppercase leading-none">
-                          {m.name}
-                        </h4>
-                        <span className="text-[10px] font-mono text-[#2CF585] block tracking-[0.22em] mt-1.5 font-semibold">
-                          {m.role}
-                        </span>
-                      </div>
                     </motion.div>
                   );
                 })}
@@ -1688,7 +1678,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                       <img
                         src={p.img}
                         alt={p.name}
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                        className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-500"
                         referrerPolicy="no-referrer"
                       />
                     </div>

@@ -216,7 +216,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#07070a] text-slate-900 dark:text-[#f3f4f6] transition-colors duration-300">
+    <div className="min-h-screen pt-[90px] lg:pt-[68px] bg-slate-50 dark:bg-[#07070a] text-slate-900 dark:text-[#f3f4f6] transition-colors duration-300">
       {/* View 1: Main Classroom Dashboard (Video 5: 00:00 - 00:06) */}
       {activeMode === 'dashboard' ? (
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">

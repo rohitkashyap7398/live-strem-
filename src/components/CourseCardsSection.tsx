@@ -257,8 +257,8 @@ export const CourseCardsSection: React.FC<CourseCardsSectionProps> = ({
             const isDark = item.cardType === 'dark';
             const isTerracotta = item.cardType === 'terracotta';
 
-            // Stepped sticky offset creates the visible card-deck tabs effect on both mobile and desktop
-            const stickyTop = `calc(clamp(70px, 8.5vh, 90px) + ${Math.min(idx, 10) * 10}px)`;
+            // Stepped sticky offset creates the visible card-deck tabs effect below the compact scrolled navbar
+            const stickyTop = `calc(clamp(56px, 7.5vh, 72px) + ${Math.min(idx, 10) * 10}px)`;
 
             return (
               <div

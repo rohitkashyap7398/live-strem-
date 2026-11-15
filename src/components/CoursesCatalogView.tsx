@@ -230,7 +230,7 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
   }));
 
   return (
-    <section className="py-12 sm:py-16 bg-white dark:bg-[#070709] min-h-screen text-slate-900 dark:text-[#f3f4f6] relative overflow-hidden transition-colors duration-300">
+    <section className="pt-24 lg:pt-20 pb-12 sm:pb-16 bg-white dark:bg-[#070709] min-h-screen text-slate-900 dark:text-[#f3f4f6] relative overflow-hidden transition-colors duration-300">
       
       {/* Background subtle radial glow behind heading */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[#5346ff]/10 dark:bg-[#5346ff]/12 blur-[150px] pointer-events-none rounded-full" />
