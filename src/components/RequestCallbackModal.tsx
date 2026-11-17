@@ -68,9 +68,71 @@ export const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({
     return `mailto:${OWNER_GMAIL}?subject=${subject}&body=${body}`;
   };
 
+  const submitViaStaticFormSubmit = async (fields: Record<string, string>) => {
+    try {
+      const relayPromise = fetch(
+        `https://formsubmit.co/ajax/${encodeURIComponent(OWNER_GMAIL)}`,
+        {
+          method: 'POST',
+          keepalive: true,
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(fields),
+        }
+      ).then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return 'ok' as const;
+      });
+
+      const outcome = await Promise.race([
+        relayPromise,
+        new Promise<'pending'>((resolve) => setTimeout(() => resolve('pending'), 5000)),
+      ]);
+
+      if (outcome === 'pending') {
+        void relayPromise.catch(() => undefined);
+      }
+    } catch {
+      // Fallback to native HTML form + hidden iframe if browser shields block AJAX requests
+      const iframeName = `tcs_cb_${Date.now()}`;
+      const iframe = document.createElement('iframe');
+      iframe.name = iframeName;
+      iframe.className = 'hidden';
+      document.body.appendChild(iframe);
+
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = `https://formsubmit.co/${encodeURIComponent(OWNER_GMAIL)}`;
+      form.target = iframeName;
+      form.className = 'hidden';
+
+      Object.entries(fields).forEach(([key, value]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
+
+      setTimeout(() => {
+        form.remove();
+        iframe.remove();
+      }, 15000);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim()) {
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+    const trimmedMessage = message.trim();
+
+    if (!trimmedName || !trimmedEmail) {
       setErrorMsg('Please enter your Name and Email address.');
       return;
     }
@@ -84,22 +146,52 @@ export const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({
     setErrorMsg(null);
 
     try {
-      const response = await fetch('/api/callback', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
-          phone,
-          enquiryFor,
-          message: message.trim(),
-        }),
-      });
+      let backendHandled = false;
 
-      const data = await response.json().catch(() => ({}));
+      try {
+        const response = await fetch('/api/callback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: trimmedName,
+            email: trimmedEmail,
+            phone,
+            enquiryFor,
+            message: trimmedMessage,
+          }),
+        });
 
-      if (!response.ok || !data?.ok) {
-        throw new Error(data?.error || 'Unable to send callback request right now.');
+        const contentType = response.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok || !data?.ok) {
+            throw new Error(data?.error || 'Unable to send callback request right now.');
+          }
+          backendHandled = true;
+        }
+      } catch (apiErr) {
+        if (
+          apiErr instanceof Error &&
+          (apiErr.message.includes('10-digit') || apiErr.message.includes('Name and Email'))
+        ) {
+          throw apiErr;
+        }
+      }
+
+      if (!backendHandled) {
+        const submittedAt = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+        await submitViaStaticFormSubmit({
+          name: trimmedName,
+          email: trimmedEmail,
+          phone: `+91 ${phone}`,
+          enquiry_for: enquiryFor,
+          message: trimmedMessage || 'Please call me back regarding course details.',
+          submitted_at_ist: `${submittedAt} IST`,
+          _subject: `New Callback Request: ${trimmedName} (+91 ${phone})`,
+          _replyto: trimmedEmail,
+          _template: 'table',
+          _captcha: 'false',
+        });
       }
 
       setIsSuccess(true);
