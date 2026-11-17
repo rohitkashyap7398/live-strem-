@@ -41,30 +41,45 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 }) => {
   // Mode: 'dashboard' | 'lecture'
   const [activeMode, setActiveMode] = useState<'dashboard' | 'lecture'>('dashboard');
-  const [selectedCourseId, setSelectedCourseId] = useState<'ignite-1' | 'dsa-java'>('ignite-1');
+  const [selectedCourseId, setSelectedCourseId] = useState<'ignite-1' | 'summer-training' | 'apprenticeship'>('ignite-1');
 
-  // Lecture player states
+  // Lecture player & studio workspace states
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
-  const [activeTabUnderVideo, setActiveTabUnderVideo] = useState<'notes' | 'chat' | 'resources'>('chat');
+  const [activeTabUnderVideo, setActiveTabUnderVideo] = useState<'chat' | 'notes' | 'resources'>('chat');
+  const [completedLessons, setCompletedLessons] = useState<string[]>([
+    'Welcome & Onboarding to TheCodeSpark Technologies Private Limited',
+    'Setting up IDE, Terminal & Git Keys',
+    '5-Track Architecture & Project Scoping',
+    'Corporate GitFlow, Jira Sprints & Code Ownership'
+  ]);
+  const [copiedCode, setCopiedCode] = useState(false);
+  const [resourceFeedback, setResourceFeedback] = useState<string | null>(null);
 
   // Search in dashboard
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('oldest');
 
+  // Right sidebar widgets state
+  const [notificationFilter, setNotificationFilter] = useState<'all' | 'unread'>('all');
+  const [readNotificationIds, setReadNotificationIds] = useState<number[]>([3]);
+  const [heatmapRange, setHeatmapRange] = useState<'30d' | '60d'>('60d');
+  const [selectedHeatmapDay, setSelectedHeatmapDay] = useState<number | null>(59);
+  const [showActivityInfo, setShowActivityInfo] = useState(false);
+
   // Live chat state
   const [chatMessages, setChatMessages] = useState<{ id: number; user: string; text: string; time: string; isMentor?: boolean }[]>([
-    { id: 1, user: "Kushagra P.", text: "Sir what is the optimal time complexity for this DP approach?", time: "2m ago" },
-    { id: 2, user: "Aditya (Mentor)", text: "We are using memoization with O(N*W) time and O(N*W) auxiliary space.", time: "1m ago", isMentor: true },
-    { id: 3, user: "Shruti S.", text: "Audio and video are crystal clear! Recording is smooth.", time: "Just now" }
+    { id: 1, user: "Kushagra P.", text: "Sir, should we validate API payloads on the server action boundary as well?", time: "2m ago" },
+    { id: 2, user: "Rohit Kashyap (Mentor)", text: "Yes—always validate inputs with Zod at the server boundary before touching PostgreSQL.", time: "1m ago", isMentor: true },
+    { id: 3, user: "Shruti S.", text: "Tried the lab setup on local Vite + Node, running cleanly now.", time: "Just now" }
   ]);
   const [inputChat, setInputChat] = useState('');
 
   // Modules list in lecture player
-  const [openModuleKey, setOpenModuleKey] = useState<string>('frontend');
-  const [activeLectureTitle, setActiveLectureTitle] = useState('Episode 14: React 19 Compiler, Actions & Server Components');
+  const [openModuleKey, setOpenModuleKey] = useState<string>('core');
+  const [activeLectureTitle, setActiveLectureTitle] = useState('React 19 Compiler, Server Actions & Type-Safe Forms');
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -100,7 +115,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     setInputChat('');
   };
 
-  // Heatmap squares generation (Video 5: 17 activities crushed)
+  // Heatmap squares generation (17 activities completed)
   const heatmapDays = Array.from({ length: 60 }).map((_, i) => {
     if (i % 7 === 0 || i % 5 === 0) return 3; // high
     if (i % 3 === 0) return 2; // medium
@@ -108,11 +123,48 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     return 0; // none
   });
 
+  const displayedHeatmapDays = heatmapRange === '30d' ? heatmapDays.slice(30) : heatmapDays;
+  const activeCountInView = displayedHeatmapDays.filter((lvl) => lvl > 0).length;
+
+  const studioNotifications = [
+    {
+      id: 1,
+      courseId: 'ignite-1' as const,
+      program: 'IGNITE 1.0',
+      title: 'Live Architecture Review at 7:00 PM',
+      detail: 'React 19 Server Actions & Prisma production schema walkthrough',
+      time: 'Today · 7:00 PM'
+    },
+    {
+      id: 2,
+      courseId: 'summer-training' as const,
+      program: 'Summer Training',
+      title: 'Project Deployment Checkpoints Open',
+      detail: 'Submit your live hosted GenAI project URL for mentor evaluation',
+      time: 'Yesterday'
+    },
+    {
+      id: 3,
+      courseId: 'apprenticeship' as const,
+      program: 'Apprenticeship',
+      title: 'Sprint 4 Code Review Feedback Ready',
+      detail: 'Mentor remarks added to your PR #18 microservices repository',
+      time: '2d ago'
+    }
+  ];
+
+  const unreadCount = studioNotifications.filter((n) => !readNotificationIds.includes(n.id)).length;
+  const visibleNotifications = notificationFilter === 'unread'
+    ? studioNotifications.filter((n) => !readNotificationIds.includes(n.id))
+    : studioNotifications;
+
   const enrolledCourses = [
     {
-      id: "ignite-1",
+      id: "ignite-1" as const,
       title: "IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career",
       date: "Bought on September 17, 2025",
+      enrolledTimestamp: 20250917,
+      badge: "FULL STACK + GENAI",
       progress: 3.47,
       modulesCompleted: 0,
       totalModules: 13,
@@ -123,96 +175,229 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       isLiveRecording: true
     },
     {
-      id: "dsa-java",
-      title: "Complete DSA with Java: Logic Building & FAANG Algorithms",
-      date: "Bought on May 11, 2025",
-      progress: 0,
-      modulesCompleted: 0,
-      totalModules: 10,
-      subModulesCompleted: 0,
-      totalSubModules: 240,
-      score: "0% / 0%",
-      image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=500&auto=format&fit=crop&q=80",
+      id: "summer-training" as const,
+      title: "45-Day Summer Industrial Training – 5 Tech Tracks, GenAI & Live Hosted Projects",
+      date: "Enrolled on May 15, 2026 • Active Batch",
+      enrolledTimestamp: 20260515,
+      badge: "45 DAYS SUMMER TRAINING",
+      progress: 42.8,
+      modulesCompleted: 3,
+      totalModules: 7,
+      subModulesCompleted: 18,
+      totalSubModules: 42,
+      score: "88.5% / 100%",
+      image: "/assets/aistudio/TheCodeSpark_AI_Coding_Conference_d7477d11.png",
+      isLiveRecording: true
+    },
+    {
+      id: "apprenticeship" as const,
+      title: "Apprenticeship Program: Corporate Production Engineering, Agile Sprints & Stipend Track",
+      date: "Enrolled on July 01, 2026 • Corporate Track",
+      enrolledTimestamp: 20260701,
+      badge: "6 MONTHS APPRENTICESHIP",
+      progress: 25.0,
+      modulesCompleted: 2,
+      totalModules: 6,
+      subModulesCompleted: 12,
+      totalSubModules: 48,
+      score: "92.0% / 100%",
+      image: "/assets/aistudio/Warmly_Branded_Executive_Team_Portrait_67a8e1d1.png",
       isLiveRecording: false
     }
   ];
 
-  const classroomModules = [
+  const filteredEnrolledCourses = enrolledCourses
+    .filter((course) =>
+      course.title.toLowerCase().includes(searchQuery.trim().toLowerCase()) ||
+      course.badge.toLowerCase().includes(searchQuery.trim().toLowerCase())
+    )
+    .sort((a, b) =>
+      sortOrder === 'newest'
+        ? b.enrolledTimestamp - a.enrolledTimestamp
+        : a.enrolledTimestamp - b.enrolledTimestamp
+    );
+
+  const selectedCourse =
+    enrolledCourses.find((course) => course.id === selectedCourseId) || enrolledCourses[0];
+
+  const courseCurriculums: Record<
+    'ignite-1' | 'summer-training' | 'apprenticeship',
     {
-      key: "intro",
-      title: "Before We Start",
-      completed: true,
-      lessons: [
-        { title: "Welcome & Onboarding to TheCodeSpark Technologies Private Limited", duration: "12m", done: true },
-        { title: "Setting up IDE, Terminal & Git Keys", duration: "25m", done: true }
+      videoPoster: string;
+      codeTitle: string;
+      codeSnippet: string;
+      starterFile: string;
+      slidesFile: string;
+      modules: {
+        key: string;
+        title: string;
+        lessons: { title: string; duration: string }[];
+      }[];
+    }
+  > = {
+    'ignite-1': {
+      videoPoster: '/assets/aistudio/Corporate_Training_Auditorium_Session_76c6f74e.png',
+      codeTitle: 'React 19 Server Action · Validation & Persistence',
+      codeSnippet: `async function submitDoubtAction(formData: FormData) {
+  'use server';
+  const query = String(formData.get('query') ?? '').trim();
+  if (!query) return { ok: false, error: 'Prompt required' };
+
+  await db.doubts.create({
+    data: { query, cohort: 'IGNITE-1', createdAt: new Date() }
+  });
+  return { ok: true };
+}`,
+      starterFile: 'IGNITE-1-Module-14-Starter.zip',
+      slidesFile: 'IGNITE-1-React-Server-Actions.pdf',
+      modules: [
+        {
+          key: 'intro',
+          title: 'Onboarding & Environment Setup',
+          lessons: [
+            { title: 'Welcome & Onboarding to TheCodeSpark Technologies Private Limited', duration: '12m' },
+            { title: 'Setting up IDE, Terminal & Git Keys', duration: '25m' }
+          ]
+        },
+        {
+          key: 'core',
+          title: 'Full-Stack React 19 & TypeScript',
+          lessons: [
+            { title: 'Browser Critical Rendering Path', duration: '52m' },
+            { title: 'React 19 Compiler, Server Actions & Type-Safe Forms', duration: '1h 15m' },
+            { title: 'Distributed State Patterns with Zustand', duration: '58m' }
+          ]
+        },
+        {
+          key: 'backend',
+          title: 'Node.js Microservices & PostgreSQL',
+          lessons: [
+            { title: 'REST API Design, Rate Limiting & JWT Auth', duration: '1h 05m' },
+            { title: 'PostgreSQL Indexing & Query Optimization', duration: '1h 20m' }
+          ]
+        },
+        {
+          key: 'genai',
+          title: 'GenAI Pipelines & Production Deployment',
+          lessons: [
+            { title: 'Streaming LLM Responses with Structured Outputs', duration: '1h 10m' },
+            { title: 'Dockerized Cloud Run CI/CD Pipeline', duration: '48m' }
+          ]
+        }
       ]
     },
-    {
-      key: "git",
-      title: "Git & GitHub Pro Workflows",
-      completed: false,
-      lessons: [
-        { title: "Version Control from First Principles", duration: "38m", done: true },
-        { title: "Branching, Pull Requests & Merge Conflicts", duration: "44m", done: false }
+    'summer-training': {
+      videoPoster: '/assets/aistudio/TheCodeSpark_AI_Coding_Conference_d7477d11.png',
+      codeTitle: 'GenAI Streaming Endpoint · Express + TypeScript',
+      codeSnippet: `app.post('/api/project-mentor', async (req, res) => {
+  const { track, prompt } = req.body;
+  if (!prompt?.trim()) return res.status(400).json({ error: 'Empty prompt' });
+
+  const guidance = await aiClient.generateReview({ track, prompt });
+  res.json({ track, guidance, reviewedAt: new Date().toISOString() });
+});`,
+      starterFile: 'Summer-Training-5Tracks-Kit.zip',
+      slidesFile: 'Summer-Training-GenAI-Deployment.pdf',
+      modules: [
+        {
+          key: 'intro',
+          title: 'Track Orientation & Project Blueprint',
+          lessons: [
+            { title: '5-Track Architecture & Project Scoping', duration: '18m' },
+            { title: 'GitHub Branching Strategy for Team Sprints', duration: '32m' }
+          ]
+        },
+        {
+          key: 'core',
+          title: 'Modern UI Engineering & API Integration',
+          lessons: [
+            { title: 'Responsive Component Architecture in Tailwind v4', duration: '46m' },
+            { title: 'Live REST API Integration & Error Handling', duration: '1h 04m' },
+            { title: 'Interactive Data Dashboards & Filtering', duration: '54m' }
+          ]
+        },
+        {
+          key: 'genai',
+          title: 'GenAI Feature Lab & Cloud Hosting',
+          lessons: [
+            { title: 'Prompt Workflows & Server-Side AI Proxy Routes', duration: '1h 12m' },
+            { title: 'Live Production Hosting & Domain SSL Setup', duration: '40m' }
+          ]
+        }
       ]
     },
-    {
-      key: "frontend",
-      title: "Front-End & Modern React 19",
-      completed: false,
-      lessons: [
-        { title: "Episode 13: Browser Critical Rendering Path", duration: "52m", done: true },
-        { title: "Episode 14: React 19 Compiler, Actions & Server Components", duration: "1h 15m", done: false, isCurrent: true },
-        { title: "Episode 15: State Orchestration with Zustand", duration: "58m", done: false }
-      ]
-    },
-    {
-      key: "projects",
-      title: "React Full-Stack Projects",
-      completed: false,
-      lessons: [
-        { title: "Project 1: FinTech Dashboard Setup", duration: "1h 30m", done: false },
-        { title: "Project 2: Real-Time Chat with WebSockets", duration: "2h 10m", done: false }
-      ]
-    },
-    {
-      key: "backend",
-      title: "Backend Microservices & Node.js",
-      completed: false,
-      lessons: [
-        { title: "Node.js Streams, Buffers & Architecture", duration: "1h 05m", done: false },
-        { title: "PostgreSQL Database Joins & Indexing", duration: "1h 20m", done: false }
-      ]
-    },
-    {
-      key: "hackathon",
-      title: "Hackathon 1 Announcement",
-      completed: true,
-      lessons: [
-        { title: "Hackathon Rules & Theme Briefing", duration: "18m", done: true }
-      ]
-    },
-    {
-      key: "animations",
-      title: "Creative Frontend Animations (Framer Motion)",
-      completed: false,
-      lessons: [
-        { title: "Physics-Based Springs & Gesture Handling", duration: "45m", done: false }
+    apprenticeship: {
+      videoPoster: '/assets/aistudio/Warmly_Branded_Executive_Team_Portrait_67a8e1d1.png',
+      codeTitle: 'Production PR Check · Typed Service Middleware',
+      codeSnippet: `export async function auditRequestLatency(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const startedAt = performance.now();
+  res.on('finish', () => {
+    const durationMs = Math.round(performance.now() - startedAt);
+    metrics.recordRoute(req.path, res.statusCode, durationMs);
+  });
+  next();
+}`,
+      starterFile: 'Apprenticeship-Sprint4-Service.zip',
+      slidesFile: 'Apprenticeship-Production-Runbook.pdf',
+      modules: [
+        {
+          key: 'intro',
+          title: 'Corporate Engineering Foundations',
+          lessons: [
+            { title: 'Corporate GitFlow, Jira Sprints & Code Ownership', duration: '28m' },
+            { title: 'PR Review Standards & Automated Testing', duration: '42m' }
+          ]
+        },
+        {
+          key: 'core',
+          title: 'Production Services & Observability',
+          lessons: [
+            { title: 'Zero-Downtime Database Migrations', duration: '55m' },
+            { title: 'Latency Profiling, Structured Logs & Alerts', duration: '1h 08m' }
+          ]
+        },
+        {
+          key: 'delivery',
+          title: 'Client Delivery & Stipend Evaluation',
+          lessons: [
+            { title: 'Staging Release Sign-Off & QA Checklist', duration: '44m' },
+            { title: 'Monthly Sprint Demo & Mentor Assessment', duration: '35m' }
+          ]
+        }
       ]
     }
-  ];
+  };
+
+  const activeCurriculum = courseCurriculums[selectedCourseId];
+  const flatLessons = activeCurriculum.modules.flatMap((mod) =>
+    mod.lessons.map((lesson) => ({ ...lesson, moduleKey: mod.key }))
+  );
+  const currentLessonIndex = Math.max(
+    0,
+    flatLessons.findIndex((item) => item.title === activeLectureTitle)
+  );
+  const handleSelectLessonIndex = (index: number) => {
+    const target = flatLessons[index];
+    if (!target) return;
+    setOpenModuleKey(target.moduleKey);
+    setActiveLectureTitle(target.title);
+  };
 
   const leaderboardRanks = [
-    { rank: 1, name: "Tajinder", points: "30.15k", tag: "1st" },
-    { rank: 2, name: "DEEPANSHU", points: "12.06k", tag: "2nd" },
-    { rank: 3, name: "Brij", points: "10.91k", tag: "3rd" },
-    { rank: 4, name: "Absharash Sarraf", points: "35.6k" },
-    { rank: 5, name: "Vikas", points: "30.72k" },
-    { rank: 6, name: "Mr. Davis", points: "30.70k" },
-    { rank: 7, name: "SAYAJI", points: "30.70k" },
-    { rank: 8, name: "Abhishek", points: "30.70k" },
-    { rank: 9, name: "RAHUL.A", points: "30.70k" },
-    { rank: 10, name: "Mohd Sheikh", points: "30.70k" }
+    { rank: 1, name: "Aarav Sharma", points: "34.80k" },
+    { rank: 2, name: "Priya Verma", points: "32.15k" },
+    { rank: 3, name: "Rohan Tiwari", points: "30.40k" },
+    { rank: 4, name: "Ananya Gupta", points: "29.65k" },
+    { rank: 5, name: "Kushagra Pandey", points: "28.90k" },
+    { rank: 6, name: "Shruti Singh", points: "28.20k" },
+    { rank: 7, name: "Vikram Patel", points: "27.55k" },
+    { rank: 8, name: "Neha Mishra", points: "26.80k" },
+    { rank: 9, name: "Siddharth Nair", points: "25.95k" },
+    { rank: 10, name: "Aditi Kulkarni", points: "24.60k" }
   ];
 
   return (
@@ -297,347 +482,627 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
               {/* Course Cards List */}
               <div className="space-y-4">
-                {enrolledCourses.map((c, idx) => (
-                  <motion.div
-                    key={c.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                    className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#0e0e14] border border-slate-200 dark:border-white/10 hover:border-[#ff5722]/40 transition-all shadow-md dark:shadow-xl space-y-4"
-                  >
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
-                      <div className="w-full sm:w-44 aspect-video rounded-xl overflow-hidden bg-slate-200 dark:bg-neutral-900 shrink-0 relative">
-                        <img
-                          src={c.image}
-                          alt={c.title}
-                          className="w-full h-full object-cover"
-                          referrerPolicy="no-referrer"
-                        />
-                        {c.isLiveRecording && (
-                          <div className="absolute top-2 left-2 flex items-center gap-1 px-2 py-0.5 rounded bg-red-600/90 text-white text-[9px] font-mono font-bold">
-                            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                            RECORDING
-                          </div>
-                        )}
-                      </div>
+                {filteredEnrolledCourses.length === 0 ? (
+                  <div className="p-8 rounded-2xl bg-white dark:bg-[#0e0e14] border border-slate-200 dark:border-white/10 text-center space-y-2">
+                    <p className="text-sm font-semibold text-slate-800 dark:text-white">
+                      No matching studio courses found
+                    </p>
+                    <p className="text-xs text-slate-500 dark:text-neutral-400">
+                      Try clearing your search filter to view IGNITE 1.0, Summer Training, and Apprenticeship.
+                    </p>
+                  </div>
+                ) : (
+                  filteredEnrolledCourses.map((c, idx) => (
+                    <motion.div
+                      key={c.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: idx * 0.08 }}
+                      whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                      className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#0e0e14] border border-slate-200 dark:border-white/10 hover:border-[#ff5722]/40 transition-all shadow-md dark:shadow-xl space-y-4"
+                    >
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+                        <div className="w-40 sm:w-36 mx-auto sm:mx-0 aspect-[4/5] rounded-xl overflow-hidden bg-slate-200 dark:bg-neutral-900 border border-slate-200 dark:border-white/10 shrink-0">
+                          <img
+                            src={c.image}
+                            alt={c.title}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-cover object-top"
+                            referrerPolicy="no-referrer"
+                          />
+                        </div>
 
-                      <div className="flex-1 space-y-2">
-                        <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white font-display">
-                          {c.title}
-                        </h3>
-                        <p className="text-xs text-slate-500 dark:text-neutral-400 font-mono">
-                          {c.date}
-                        </p>
-
-                        {/* Progress bar */}
-                        <div className="space-y-1 pt-1">
-                          <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-neutral-400">
-                            <span>Progress</span>
-                            <span className="text-[#ff5722] font-bold">{c.progress}%</span>
+                        <div className="flex-1 min-w-0 space-y-2">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <div className="inline-flex items-center px-2 py-0.5 rounded-md bg-[#ff5722]/10 border border-[#ff5722]/25 text-[#ff5722] text-[10px] font-mono font-bold tracking-wider uppercase">
+                              {c.badge}
+                            </div>
+                            {c.isLiveRecording && (
+                              <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-red-600/90 text-white text-[9px] font-mono font-bold">
+                                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                                RECORDING
+                              </div>
+                            )}
                           </div>
-                          <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-[#181822] overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: `${Math.max(c.progress, 2)}%` }}
-                              transition={{ duration: 1, ease: "easeOut" }}
-                              className="h-full bg-gradient-to-r from-[#ff5722] to-amber-500 rounded-full"
-                            />
+                          <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white font-display leading-snug">
+                            {c.title}
+                          </h3>
+                          <p className="text-xs text-slate-500 dark:text-neutral-400 font-mono">
+                            {c.date}
+                          </p>
+
+                          {/* Progress bar */}
+                          <div className="space-y-1 pt-1">
+                            <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-neutral-400">
+                              <span>Progress</span>
+                              <span className="text-[#ff5722] font-bold">{c.progress}%</span>
+                            </div>
+                            <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-[#181822] overflow-hidden">
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${Math.max(c.progress, 2)}%` }}
+                                transition={{ duration: 1, ease: "easeOut" }}
+                                className="h-full bg-gradient-to-r from-[#ff5722] to-amber-500 rounded-full"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Bottom action buttons */}
-                    <div className="pt-3 border-t border-slate-200 dark:border-white/5 flex flex-wrap items-center justify-between gap-3">
-                      <div className="text-xs font-mono text-slate-500 dark:text-neutral-400">
-                        {c.subModulesCompleted}/{c.totalSubModules} Lectures
+                      {/* Bottom action buttons */}
+                      <div className="pt-3 border-t border-slate-200 dark:border-white/5 flex flex-wrap items-center justify-between gap-3">
+                        <div className="text-xs font-mono text-slate-500 dark:text-neutral-400">
+                          {c.subModulesCompleted}/{c.totalSubModules} Lectures • {c.modulesCompleted}/{c.totalModules} Modules
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => {
+                              setSelectedCourseId(c.id);
+                              const firstMod = courseCurriculums[c.id].modules[1] || courseCurriculums[c.id].modules[0];
+                              setOpenModuleKey(firstMod.key);
+                              setActiveLectureTitle(firstMod.lessons[0]?.title || c.title);
+                              setResourceFeedback(null);
+                              setActiveMode('lecture');
+                            }}
+                            className="px-5 py-2.5 rounded-xl bg-[#ff5722] hover:bg-[#f4511e] text-white text-xs font-bold shadow-md shadow-[#ff5722]/20 flex items-center gap-1.5 transition-all cursor-pointer"
+                          >
+                            <Play className="w-3.5 h-3.5 fill-current" />
+                            <span>Resume Learning</span>
+                          </motion.button>
+
+                          <button
+                            onClick={onRequestSupport}
+                            className="px-4 py-2.5 rounded-xl bg-[#5865F2]/10 dark:bg-[#5865F2]/20 hover:bg-[#5865F2] text-[#4752c4] dark:text-[#7289da] hover:text-white border border-[#5865F2]/40 text-xs font-mono font-semibold transition-colors cursor-pointer"
+                          >
+                            Connect Discord &amp; Mentor
+                          </button>
+                        </div>
                       </div>
-
-                      <div className="flex items-center gap-3">
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => {
-                            setSelectedCourseId(c.id as any);
-                            setActiveMode('lecture');
-                          }}
-                          className="px-5 py-2.5 rounded-xl bg-[#ff5722] hover:bg-[#f4511e] text-white text-xs font-bold shadow-md shadow-[#ff5722]/20 flex items-center gap-1.5 transition-all cursor-pointer"
-                        >
-                          <Play className="w-3.5 h-3.5 fill-current" />
-                          <span>Resume Learning</span>
-                        </motion.button>
-
-                        <button
-                          onClick={() => alert("Connecting student ID to TheCodeSpark Discord community bot...")}
-                          className="px-4 py-2.5 rounded-xl bg-[#5865F2]/10 dark:bg-[#5865F2]/20 hover:bg-[#5865F2] text-[#4752c4] dark:text-[#7289da] hover:text-white border border-[#5865F2]/40 text-xs font-mono font-semibold transition-colors cursor-pointer"
-                        >
-                          Connect your Discord Account
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  ))
+                )}
               </div>
             </div>
 
-            {/* Right Column: Widgets (col 9-12) */}
+            {/* Right Column: Redesigned Widgets (col 9-12) */}
             <div className="lg:col-span-4 space-y-6">
-              {/* Widget 1: All Notifications */}
-              <div className="p-6 rounded-2xl bg-white dark:bg-[#0e0e14] border border-slate-200 dark:border-white/10 space-y-4 shadow-md dark:shadow-none">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-white font-display flex items-center gap-2">
-                    <Bell className="w-4 h-4 text-[#ff5722]" /> All Notifications
-                  </h3>
-                  <span className="text-[10px] font-mono text-slate-400 dark:text-neutral-500">Live Sync</span>
-                </div>
-                <div className="p-6 rounded-xl bg-slate-50 dark:bg-[#12121a] border border-slate-200 dark:border-white/5 text-center space-y-2">
-                  <div className="w-10 h-10 rounded-full bg-slate-200/70 dark:bg-white/5 flex items-center justify-center mx-auto text-slate-600 dark:text-neutral-400">
-                    🔔
+              {/* Widget 1: Studio Notifications & Updates */}
+              <div className="rounded-2xl bg-white dark:bg-[#0e0e14] border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none overflow-hidden">
+                <div className="p-5 pb-4 flex items-center justify-between gap-2 border-b border-slate-100 dark:border-white/5">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-[#ff5722]/10 text-[#ff5722] flex items-center justify-center shrink-0">
+                      <Bell className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-900 dark:text-white font-display leading-tight">
+                        All Notifications
+                      </h3>
+                      <p className="text-[11px] font-mono tabular-nums text-slate-500 dark:text-neutral-400">
+                        {unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}
+                      </p>
+                    </div>
                   </div>
-                  <h4 className="text-xs font-bold text-slate-900 dark:text-white">No notifications available</h4>
-                  <p className="text-[11px] text-slate-500 dark:text-neutral-400 leading-relaxed">
-                    You&apos;re all caught up! Check back later for assignment reviews and live lecture links.
-                  </p>
+
+                  <div className="flex items-center gap-1 p-0.5 rounded-lg bg-slate-100 dark:bg-white/5">
+                    <button
+                      onClick={() => setNotificationFilter('all')}
+                      className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors cursor-pointer whitespace-nowrap ${
+                        notificationFilter === 'all'
+                          ? 'bg-white dark:bg-[#1a1a24] text-slate-900 dark:text-white shadow-xs'
+                          : 'text-slate-600 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      All
+                    </button>
+                    <button
+                      onClick={() => setNotificationFilter('unread')}
+                      className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors cursor-pointer whitespace-nowrap ${
+                        notificationFilter === 'unread'
+                          ? 'bg-white dark:bg-[#1a1a24] text-slate-900 dark:text-white shadow-xs'
+                          : 'text-slate-600 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      Unread
+                    </button>
+                  </div>
                 </div>
+
+                {visibleNotifications.length === 0 ? (
+                  <div className="px-5 py-8 text-center space-y-3">
+                    <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-neutral-400 flex items-center justify-center mx-auto">
+                      <CheckCircle2 className="w-4 h-4" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs font-semibold text-slate-900 dark:text-white">
+                        No unread notifications
+                      </p>
+                      <p className="text-[11px] text-slate-500 dark:text-neutral-400">
+                        You have reviewed all session links and sprint updates.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setNotificationFilter('all')}
+                      className="text-xs font-semibold text-[#ff5722] hover:underline cursor-pointer"
+                    >
+                      View all updates
+                    </button>
+                  </div>
+                ) : (
+                  <div className="divide-y divide-slate-100 dark:divide-white/5">
+                    {visibleNotifications.map((item) => {
+                      const isUnread = !readNotificationIds.includes(item.id);
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => {
+                            if (isUnread) {
+                              setReadNotificationIds((prev) => [...prev, item.id]);
+                            }
+                            setSelectedCourseId(item.courseId);
+                            const firstMod = courseCurriculums[item.courseId].modules[1] || courseCurriculums[item.courseId].modules[0];
+                            setOpenModuleKey(firstMod.key);
+                            setActiveLectureTitle(firstMod.lessons[0]?.title || item.title);
+                            setResourceFeedback(null);
+                            setActiveMode('lecture');
+                          }}
+                          className="w-full text-left px-5 py-3.5 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors flex items-start gap-3 cursor-pointer group"
+                        >
+                          <span
+                            aria-hidden="true"
+                            className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${
+                              isUnread ? 'bg-[#ff5722]' : 'bg-slate-300 dark:bg-neutral-700'
+                            }`}
+                          />
+                          <div className="min-w-0 flex-1 space-y-1">
+                            <div className="flex items-center justify-between gap-2 text-[11px] font-mono tabular-nums text-slate-500 dark:text-neutral-400">
+                              <span className="truncate font-semibold text-slate-700 dark:text-neutral-300">
+                                {item.program}
+                              </span>
+                              <span className="shrink-0">{item.time}</span>
+                            </div>
+                            <p className="text-xs font-semibold text-slate-900 dark:text-white group-hover:text-[#ff5722] transition-colors leading-snug">
+                              {item.title}
+                            </p>
+                            <p className="text-[11px] text-slate-500 dark:text-neutral-400 leading-relaxed line-clamp-2">
+                              {item.detail}
+                            </p>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {unreadCount > 0 && (
+                  <div className="px-5 py-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
+                    <span className="text-[11px] text-slate-500 dark:text-neutral-400">
+                      Click any update to open studio
+                    </span>
+                    <button
+                      onClick={() => setReadNotificationIds(studioNotifications.map((n) => n.id))}
+                      className="text-[11px] font-semibold text-[#ff5722] hover:underline cursor-pointer whitespace-nowrap"
+                    >
+                      Mark all read
+                    </button>
+                  </div>
+                )}
               </div>
 
-              {/* Widget 2: Progress Heatmap (Crushed 17 activities so far!) */}
-              <div className="p-6 rounded-2xl bg-white dark:bg-[#0e0e14] border border-slate-200 dark:border-white/10 space-y-4 shadow-md dark:shadow-none">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-white font-display flex items-center gap-2">
-                    <Flame className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> Progress Heatmap
-                  </h3>
-                </div>
-
-                <div className="text-xs font-mono">
-                  <span className="text-slate-900 dark:text-white font-bold">Crushed 17 activities so far!</span>
-                </div>
-
-                {/* Grid */}
-                <div className="grid grid-cols-10 gap-1.5 p-3 rounded-xl bg-slate-100 dark:bg-[#12121a] border border-slate-200 dark:border-white/5">
-                  {heatmapDays.map((level, idx) => (
-                    <motion.div
-                      key={idx}
-                      whileHover={{ scale: 1.35 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                      className={`aspect-square rounded-sm cursor-pointer transition-colors ${
-                        level === 3
-                          ? 'bg-emerald-500 shadow-sm shadow-emerald-500/50'
-                          : level === 2
-                          ? 'bg-emerald-500/75 dark:bg-emerald-600/80'
-                          : level === 1
-                          ? 'bg-emerald-400/50 dark:bg-emerald-800/60'
-                          : 'bg-slate-200 dark:bg-white/5 hover:bg-slate-300 dark:hover:bg-white/20'
-                      }`}
-                      title={`Day ${idx + 1}: ${level > 0 ? `${level * 2} coding activities` : 'No activity'}`}
-                    />
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 dark:text-neutral-400 pt-1">
-                  <span>Less</span>
-                  <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 rounded-xs bg-slate-200 dark:bg-white/5" />
-                    <div className="w-2 h-2 rounded-xs bg-emerald-400/50 dark:bg-emerald-800/60" />
-                    <div className="w-2 h-2 rounded-xs bg-emerald-500/75 dark:bg-emerald-600/80" />
-                    <div className="w-2 h-2 rounded-xs bg-emerald-500" />
+              {/* Widget 2: Progress Heatmap & Coding Streak */}
+              <div className="rounded-2xl bg-white dark:bg-[#0e0e14] border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none overflow-hidden">
+                <div className="p-5 pb-4 flex items-center justify-between gap-2 border-b border-slate-100 dark:border-white/5">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                      <Flame className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-900 dark:text-white font-display leading-tight">
+                        Progress Heatmap
+                      </h3>
+                      <p className="text-[11px] font-mono tabular-nums text-slate-500 dark:text-neutral-400">
+                        17 activities completed
+                      </p>
+                    </div>
                   </div>
-                  <span>More</span>
+
+                  <div className="flex items-center gap-1 p-0.5 rounded-lg bg-slate-100 dark:bg-white/5">
+                    {(['30d', '60d'] as const).map((range) => (
+                      <button
+                        key={range}
+                        onClick={() => {
+                          setHeatmapRange(range);
+                          setSelectedHeatmapDay(range === '30d' ? 29 : 59);
+                        }}
+                        className={`px-2.5 py-1 rounded-md text-[11px] font-mono uppercase transition-colors cursor-pointer whitespace-nowrap ${
+                          heatmapRange === range
+                            ? 'bg-white dark:bg-[#1a1a24] text-slate-900 dark:text-white font-semibold shadow-xs'
+                            : 'text-slate-600 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white'
+                        }`}
+                      >
+                        {range}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="text-[10px] font-mono text-slate-500 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white cursor-pointer transition-colors text-right">
-                  Learn how we count activities →
+                {/* Tabular Key Metrics Strip */}
+                <div className="grid grid-cols-3 divide-x divide-slate-100 dark:divide-white/5 border-b border-slate-100 dark:border-white/5">
+                  <div className="px-4 py-3">
+                    <div className="text-[10px] font-mono text-slate-500 dark:text-neutral-400">Active Days</div>
+                    <div className="text-sm font-bold font-mono tabular-nums text-slate-900 dark:text-white mt-0.5">
+                      {activeCountInView}
+                    </div>
+                  </div>
+                  <div className="px-4 py-3">
+                    <div className="text-[10px] font-mono text-slate-500 dark:text-neutral-400">Streak</div>
+                    <div className="text-sm font-bold font-mono tabular-nums text-emerald-600 dark:text-emerald-400 mt-0.5">
+                      6 days
+                    </div>
+                  </div>
+                  <div className="px-4 py-3">
+                    <div className="text-[10px] font-mono text-slate-500 dark:text-neutral-400">On-Time</div>
+                    <div className="text-sm font-bold font-mono tabular-nums text-slate-900 dark:text-white mt-0.5">
+                      94%
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-5 space-y-4">
+                  {/* Heatmap Matrix */}
+                  <div className="grid grid-cols-10 gap-1.5">
+                    {displayedHeatmapDays.map((level, idx) => {
+                      const isSelected = selectedHeatmapDay === idx;
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => setSelectedHeatmapDay(idx)}
+                          className={`aspect-square rounded-[4px] cursor-pointer transition-transform hover:scale-110 focus:outline-none ${
+                            isSelected ? 'ring-2 ring-slate-900 dark:ring-white ring-offset-1 ring-offset-white dark:ring-offset-[#0e0e14]' : ''
+                          } ${
+                            level === 3
+                              ? 'bg-emerald-500'
+                              : level === 2
+                              ? 'bg-emerald-500/70 dark:bg-emerald-600/80'
+                              : level === 1
+                              ? 'bg-emerald-300 dark:bg-emerald-900/70'
+                              : 'bg-slate-100 dark:bg-white/[0.06] hover:bg-slate-200 dark:hover:bg-white/15'
+                          }`}
+                          title={`Day ${idx + 1}: ${level > 0 ? `${level * 2} coding activities` : 'Rest day'}`}
+                          aria-label={`Day ${idx + 1}: ${level > 0 ? `${level * 2} activities` : 'No activity'}`}
+                        />
+                      );
+                    })}
+                  </div>
+
+                  {/* Selected Day Readout */}
+                  <div className="flex items-center justify-between gap-2 text-[11px] font-mono tabular-nums text-slate-600 dark:text-neutral-300 pt-1">
+                    {selectedHeatmapDay !== null && displayedHeatmapDays[selectedHeatmapDay] !== undefined ? (
+                      <span>
+                        Day {selectedHeatmapDay + 1} ·{' '}
+                        {displayedHeatmapDays[selectedHeatmapDay] > 0
+                          ? `${displayedHeatmapDays[selectedHeatmapDay] * 2} coding tasks completed`
+                          : 'No scheduled tasks'}
+                      </span>
+                    ) : (
+                      <span>Select a square to inspect day</span>
+                    )}
+                    <div className="flex items-center gap-1 shrink-0 text-[10px] text-slate-400 dark:text-neutral-500">
+                      <span>Less</span>
+                      <span className="w-2 h-2 rounded-[2px] bg-slate-100 dark:bg-white/[0.06]" />
+                      <span className="w-2 h-2 rounded-[2px] bg-emerald-300 dark:bg-emerald-900/70" />
+                      <span className="w-2 h-2 rounded-[2px] bg-emerald-500/70 dark:bg-emerald-600/80" />
+                      <span className="w-2 h-2 rounded-[2px] bg-emerald-500" />
+                      <span>More</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-slate-100 dark:border-white/5 space-y-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowActivityInfo((prev) => !prev)}
+                      className="w-full flex items-center justify-between text-[11px] font-medium text-slate-500 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+                    >
+                      <span>How activities are counted</span>
+                      <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showActivityInfo ? 'rotate-180' : ''}`} />
+                    </button>
+                    {showActivityInfo && (
+                      <p className="text-[11px] text-slate-500 dark:text-neutral-400 leading-relaxed">
+                        Each attended live lecture, pushed GitHub lab commit, or completed module quiz counts as 1 activity toward your daily coding streak.
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       ) : (
-        /* View 2: Live Stream & Recorded Lecture Studio (Video 5: 00:07 - 00:10) */
-        <div className="min-h-screen flex flex-col">
+        /* View 2: Completely Redesigned Code Studio Lecture Workspace */
+        <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#07070a]">
           {/* Top Classroom Studio Bar */}
-          <header className="px-4 py-3 bg-white dark:bg-[#0d0d12] border-b border-slate-200 dark:border-white/10 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
+          <header className="px-4 sm:px-6 py-3.5 bg-white dark:bg-[#0d0d12] border-b border-slate-200 dark:border-white/10 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3 min-w-0">
               <button
                 onClick={() => setActiveMode('dashboard')}
-                className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-600 hover:text-slate-900 dark:text-neutral-300 dark:hover:text-white transition-colors cursor-pointer"
-                title="Back to Expert Learning"
+                className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-700 hover:text-slate-900 dark:text-neutral-200 dark:hover:text-white transition-colors flex items-center gap-1.5 text-xs font-medium cursor-pointer shrink-0"
+                title="Back to Enrolled Courses"
               >
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Courses</span>
               </button>
-              <div>
-                <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white font-display line-clamp-1">
-                  TheCodeSpark Technologies Private Limited IGNITE 1.0 – Your Gateway to a Job-Ready Tech Career
+
+              <div className="min-w-0">
+                <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white font-display truncate">
+                  {selectedCourse.title}
                 </h2>
-                <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500 dark:text-neutral-400">
-                  <span className="text-[#ff5722] font-semibold">3.47% Complete</span>
-                  <span>•</span>
-                  <span>Modules: 0/13</span>
-                  <span>•</span>
-                  <span>Sub-Modules: 99/357</span>
-                  <span>•</span>
-                  <span>Score: 1.07% / 31.42%</span>
+                <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono tabular-nums text-slate-500 dark:text-neutral-400">
+                  <span className="text-[#ff5722] font-semibold">{selectedCourse.progress}% Complete</span>
+                  <span aria-hidden="true">·</span>
+                  <span>{selectedCourse.modulesCompleted}/{selectedCourse.totalModules} Modules</span>
+                  <span aria-hidden="true">·</span>
+                  <span>{selectedCourse.subModulesCompleted}/{selectedCourse.totalSubModules} Lectures</span>
+                  <span aria-hidden="true">·</span>
+                  <span>Score {selectedCourse.score}</span>
                 </div>
               </div>
             </div>
 
-            {/* Live Recording Indicator */}
-            <div className="flex items-center gap-2">
-              <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 dark:bg-red-600/20 border border-red-200 dark:border-red-500/40 text-red-600 dark:text-red-300 text-[11px] font-mono font-bold">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                LIVE CLASS RECORDING
-              </span>
+            {/* Prev / Next Lesson Navigation */}
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => handleSelectLessonIndex(currentLessonIndex - 1)}
+                disabled={currentLessonIndex <= 0}
+                className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-xs font-medium text-slate-700 dark:text-neutral-200 hover:bg-slate-100 dark:hover:bg-white/10 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer whitespace-nowrap"
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => handleSelectLessonIndex(currentLessonIndex + 1)}
+                disabled={currentLessonIndex >= flatLessons.length - 1}
+                className="px-3.5 py-1.5 rounded-lg bg-[#ff5722] hover:bg-[#f4511e] text-white text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer whitespace-nowrap"
+              >
+                Next Lesson
+              </button>
             </div>
           </header>
 
-          {/* 3-Column Studio Layout */}
-          <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
-            {/* Left Column: Modules Navigation (col 1-3) */}
-            <div className="lg:col-span-3 border-r border-slate-200 dark:border-white/5 bg-white dark:bg-[#09090d] p-4 overflow-y-auto max-h-[calc(100vh-60px)] space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-white/5">
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-700 dark:text-neutral-300">
-                  Course Content
+          {/* 3-Column Studio Workspace */}
+          <div className="flex-1 grid grid-cols-1 lg:grid-cols-12">
+            {/* Left Column: Track-Specific Curriculum (col 1-3) */}
+            <aside className="lg:col-span-3 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-white/10 bg-white dark:bg-[#09090d] p-4 lg:max-h-[calc(100vh-70px)] lg:overflow-y-auto space-y-3">
+              <div className="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-white/5">
+                <span className="text-xs font-semibold text-slate-900 dark:text-white">
+                  Curriculum
                 </span>
-                <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">13 Modules</span>
+                <span className="text-[11px] font-mono tabular-nums text-slate-500 dark:text-neutral-400">
+                  {activeCurriculum.modules.length} Sections
+                </span>
               </div>
 
               <div className="space-y-2">
-                {classroomModules.map((m) => {
+                {activeCurriculum.modules.map((m) => {
                   const isOpen = openModuleKey === m.key;
+                  const allDone = m.lessons.every((l) => completedLessons.includes(l.title));
                   return (
-                    <div key={m.key} className="rounded-xl border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-[#0f0e15] overflow-hidden">
+                    <div
+                      key={m.key}
+                      className="rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50/70 dark:bg-[#0f0e15] overflow-hidden"
+                    >
                       <button
                         onClick={() => setOpenModuleKey(isOpen ? '' : m.key)}
-                        className="w-full p-3 text-left flex items-center justify-between gap-2 hover:bg-slate-100/80 dark:hover:bg-white/[0.02] cursor-pointer"
+                        className="w-full p-3 text-left flex items-center justify-between gap-2 hover:bg-slate-100/80 dark:hover:bg-white/[0.03] cursor-pointer"
                       >
-                        <div className="flex items-center gap-2">
-                          {m.completed ? (
+                        <div className="flex items-center gap-2 min-w-0">
+                          {allDone ? (
                             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                           ) : (
-                            <div className="w-3.5 h-3.5 rounded-full border border-slate-400 dark:border-neutral-600 shrink-0" />
+                            <span className="w-3.5 h-3.5 rounded-full border border-slate-400 dark:border-neutral-600 shrink-0" />
                           )}
-                          <span className="text-xs font-semibold text-slate-900 dark:text-white truncate">{m.title}</span>
+                          <span className="text-xs font-semibold text-slate-900 dark:text-white truncate">
+                            {m.title}
+                          </span>
                         </div>
-                        <ChevronDown className={`w-3.5 h-3.5 text-slate-500 dark:text-neutral-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDown
+                          className={`w-3.5 h-3.5 text-slate-500 dark:text-neutral-500 shrink-0 transition-transform ${
+                            isOpen ? 'rotate-180' : ''
+                          }`}
+                        />
                       </button>
 
                       {isOpen && (
-                        <div className="px-3 pb-3 pt-1 space-y-1.5 border-t border-slate-200 dark:border-white/5 bg-white dark:bg-[#0b0a10]">
-                          {m.lessons.map((lesson, lIdx) => (
-                            <div
-                              key={lIdx}
-                              onClick={() => setActiveLectureTitle(lesson.title)}
-                              className={`p-2 rounded-lg text-xs cursor-pointer flex items-center justify-between gap-2 transition-colors ${
-                                activeLectureTitle === lesson.title
-                                  ? 'bg-[#ff5722]/15 text-[#ff5722] font-semibold border border-[#ff5722]/30'
-                                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-neutral-400 dark:hover:text-white dark:hover:bg-white/5'
-                              }`}
-                            >
-                              <div className="flex items-center gap-2 truncate">
-                                <Play className="w-3 h-3 shrink-0" />
-                                <span className="truncate">{lesson.title}</span>
-                              </div>
-                              <span className="text-[10px] font-mono shrink-0">{lesson.duration}</span>
-                            </div>
-                          ))}
+                        <div className="px-2 pb-2 pt-1 space-y-1 border-t border-slate-200 dark:border-white/5 bg-white dark:bg-[#0b0a10]">
+                          {m.lessons.map((lesson, lIdx) => {
+                            const isCurrent = activeLectureTitle === lesson.title;
+                            const isDone = completedLessons.includes(lesson.title);
+                            return (
+                              <button
+                                key={lIdx}
+                                type="button"
+                                onClick={() => setActiveLectureTitle(lesson.title)}
+                                className={`w-full text-left p-2 rounded-lg text-xs cursor-pointer flex items-center justify-between gap-2 transition-colors ${
+                                  isCurrent
+                                    ? 'bg-[#ff5722]/10 text-[#ff5722] font-semibold'
+                                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-neutral-400 dark:hover:text-white dark:hover:bg-white/5'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2 min-w-0">
+                                  {isDone ? (
+                                    <CheckCircle2 className="w-3 h-3 text-emerald-500 shrink-0" />
+                                  ) : (
+                                    <Play className="w-3 h-3 shrink-0" />
+                                  )}
+                                  <span className="truncate">{lesson.title}</span>
+                                </div>
+                                <span className="text-[10px] font-mono tabular-nums shrink-0 opacity-75">
+                                  {lesson.duration}
+                                </span>
+                              </button>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
                   );
                 })}
               </div>
-            </div>
+            </aside>
 
-            {/* Center Column: Live Stream & Video Player Studio (col 4-9) */}
-            <div className="lg:col-span-6 bg-slate-50 dark:bg-[#060609] p-4 flex flex-col justify-between overflow-y-auto max-h-[calc(100vh-60px)] space-y-4">
-              {/* Video Player */}
-              <div className="rounded-2xl overflow-hidden bg-black border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-2xl relative aspect-video flex flex-col justify-end">
-                <video
-                  ref={videoRef}
-                  src="/assets/aistudio/20261101-0935-42.7658177_c4f6adda.mp4"
-                  className="w-full h-full object-cover"
-                  autoPlay
-                  loop
-                  muted={isMuted}
-                  playsInline
-                />
+            {/* Center Column: Classroom Stage & Interactive Workspace (col 4-9) */}
+            <div className="lg:col-span-6 p-4 sm:p-5 space-y-5 lg:max-h-[calc(100vh-70px)] lg:overflow-y-auto">
+              {/* Split Theatre Stage: Widescreen Session Backdrop + Authentic Classroom Cam */}
+              <div className="rounded-2xl overflow-hidden bg-[#0b0c10] border border-slate-200 dark:border-white/10 shadow-lg grid grid-cols-1 md:grid-cols-12">
+                {/* Left 8 cols: Widescreen Session Frame & Playback Controls */}
+                <div className="md:col-span-8 relative min-h-[240px] sm:min-h-[300px] flex flex-col justify-end">
+                  <img
+                    src={activeCurriculum.videoPoster}
+                    alt={selectedCourse.title}
+                    className="absolute inset-0 w-full h-full object-cover object-top"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/20" />
 
-                {/* Overlaid Player Controls */}
-                <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={togglePlay}
-                      className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-md cursor-pointer"
-                    >
-                      {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
-                    </button>
-                    <button
-                      onClick={toggleMute}
-                      className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-md cursor-pointer"
-                    >
-                      {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                    </button>
-                    <span className="text-xs font-mono text-white/90">24:18 / 1:15:00</span>
+                  <div className="relative z-10 p-5 space-y-4">
+                    <div className="space-y-1">
+                      <span className="text-[11px] font-mono tabular-nums text-[#ff5722] font-semibold">
+                        Lesson {currentLessonIndex + 1} of {flatLessons.length} · Rohit Kashyap
+                      </span>
+                      <h4 className="text-base sm:text-lg font-bold text-white font-display leading-snug line-clamp-2">
+                        {activeLectureTitle}
+                      </h4>
+                    </div>
+
+                    {/* Controls Bar */}
+                    <div className="flex items-center justify-between gap-3 pt-2 border-t border-white/15">
+                      <div className="flex items-center gap-2.5">
+                        <button
+                          onClick={togglePlay}
+                          className="p-2 rounded-full bg-[#ff5722] hover:bg-[#f4511e] text-white cursor-pointer transition-colors"
+                          aria-label={isPlaying ? 'Pause session' : 'Play session'}
+                        >
+                          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
+                        </button>
+                        <button
+                          onClick={toggleMute}
+                          className="p-2 rounded-full bg-white/15 hover:bg-white/25 text-white backdrop-blur-md cursor-pointer transition-colors"
+                          aria-label={isMuted ? 'Unmute audio' : 'Mute audio'}
+                        >
+                          {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                        </button>
+                        <span className="text-xs font-mono tabular-nums text-white/85">
+                          {isPlaying ? 'Playing Lab Feed' : 'Paused'}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-xs font-mono tabular-nums">
+                        <button
+                          onClick={() => handleSpeedChange(playbackSpeed === 1 ? 1.5 : playbackSpeed === 1.5 ? 2 : 1)}
+                          className="px-2.5 py-1 rounded-md bg-black/60 border border-white/15 text-white hover:bg-white/10 cursor-pointer"
+                        >
+                          {playbackSpeed}x
+                        </button>
+                        <span className="px-2.5 py-1 rounded-md bg-black/60 border border-white/15 text-emerald-400">
+                          1080p HD
+                        </span>
+                      </div>
+                    </div>
                   </div>
+                </div>
 
-                  <div className="flex items-center gap-2 text-xs font-mono">
-                    <button
-                      onClick={() => handleSpeedChange(playbackSpeed === 1 ? 1.5 : playbackSpeed === 1.5 ? 2 : 1)}
-                      className="px-2.5 py-1 rounded bg-black/60 border border-white/15 text-white hover:bg-white/10 cursor-pointer"
-                    >
-                      {playbackSpeed}x
-                    </button>
-                    <span className="px-2.5 py-1 rounded bg-black/60 border border-white/15 text-emerald-400">
-                      1080p HD
-                    </span>
+                {/* Right 4 cols: Vertical Classroom Lab Feed */}
+                <div className="md:col-span-4 relative min-h-[260px] md:min-h-[300px] bg-black border-t md:border-t-0 md:border-l border-white/10">
+                  <video
+                    ref={videoRef}
+                    src="/assets/aistudio/tcs_actual_classroom_lab.mp4"
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    loop
+                    muted={isMuted}
+                    playsInline
+                  />
+                  <div className="absolute inset-x-0 top-0 p-3 bg-gradient-to-b from-black/75 to-transparent flex items-center justify-between text-[10px] font-mono text-white/90">
+                    <span>Lucknow Studio Lab</span>
+                    <span className="text-emerald-400">HD Feed</span>
                   </div>
                 </div>
               </div>
 
-              {/* Lecture Title & Navigation Bar */}
-              <div className="space-y-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono text-[#ff5722] font-semibold">
-                    NOW PLAYING • EXPERT LEARNING RECORDING
+              {/* Active Lesson Header + Stateful Completion Action */}
+              <div className="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-slate-200 dark:border-white/10">
+                <div className="space-y-1 min-w-0 flex-1">
+                  <p className="text-[11px] font-mono text-[#ff5722] font-semibold">
+                    TheCodeSpark Code Studio · {selectedCourse.badge}
+                  </p>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white font-display leading-snug">
+                    {activeLectureTitle}
+                  </h3>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setCompletedLessons((prev) =>
+                      prev.includes(activeLectureTitle)
+                        ? prev.filter((item) => item !== activeLectureTitle)
+                        : [...prev, activeLectureTitle]
+                    );
+                  }}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0 ${
+                    completedLessons.includes(activeLectureTitle)
+                      ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30'
+                      : 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:opacity-90'
+                  }`}
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>
+                    {completedLessons.includes(activeLectureTitle) ? 'Completed' : 'Mark Complete'}
                   </span>
-                  <button
-                    onClick={() => alert("Marked this lecture as completed! +50 House Points earned.")}
-                    className="text-xs font-mono text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 flex items-center gap-1 cursor-pointer"
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Mark Complete
-                  </button>
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white font-display">
-                  {activeLectureTitle}
-                </h3>
+                </button>
               </div>
 
-              {/* Interactive Tabs under Video */}
-              <div className="space-y-3 pt-2">
-                <div className="flex items-center gap-2 border-b border-slate-200 dark:border-white/5 pb-2 relative">
+              {/* Clean Segmented Tabs under Stage */}
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-white/5 w-fit">
                   {[
-                    { id: 'chat', label: `💬 Live Doubts & Chat (${chatMessages.length})` },
-                    { id: 'notes', label: '📝 Lecture Notes & Code' },
-                    { id: 'resources', label: '📂 GitHub Repo & Resources' }
+                    { id: 'chat', label: `Live Doubts (${chatMessages.length})` },
+                    { id: 'notes', label: 'Session Notes' },
+                    { id: 'resources', label: 'Starter Files & Slides' }
                   ].map((tab) => {
                     const active = activeTabUnderVideo === tab.id;
                     return (
                       <button
                         key={tab.id}
-                        onClick={() => setActiveTabUnderVideo(tab.id as any)}
-                        className={`relative px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors cursor-pointer ${
-                          active ? 'text-white' : 'text-slate-600 hover:text-slate-900 dark:text-neutral-400 dark:hover:text-white'
+                        onClick={() => setActiveTabUnderVideo(tab.id as 'chat' | 'notes' | 'resources')}
+                        className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
+                          active
+                            ? 'bg-white dark:bg-[#1a1a24] text-slate-900 dark:text-white font-semibold shadow-xs'
+                            : 'text-slate-600 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white'
                         }`}
                       >
-                        {active && (
-                          <motion.div
-                            layoutId="classroomUnderVideoTabPill"
-                            className="absolute inset-0 bg-[#ff5722] rounded-lg shadow-sm"
-                            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                          />
-                        )}
-                        <span className="relative z-10">{tab.label}</span>
+                        {tab.label}
                       </button>
                     );
                   })}
@@ -645,145 +1110,170 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
                 {/* Tab 1: Live Doubts / Chat */}
                 {activeTabUnderVideo === 'chat' && (
-                  <div className="p-4 rounded-xl bg-white dark:bg-[#0e0e15] border border-slate-200 dark:border-white/5 space-y-3">
-                    <div className="max-h-48 overflow-y-auto space-y-2.5 pr-2">
+                  <div className="p-4 rounded-2xl bg-white dark:bg-[#0e0e15] border border-slate-200 dark:border-white/10 space-y-3">
+                    <div className="max-h-52 overflow-y-auto divide-y divide-slate-100 dark:divide-white/5">
                       {chatMessages.map((msg) => (
-                        <motion.div 
-                          key={msg.id} 
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="text-xs space-y-0.5"
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className={`font-mono font-bold ${msg.isMentor ? 'text-[#ff5722]' : 'text-slate-800 dark:text-neutral-300'}`}>
-                              {msg.user} {msg.isMentor && '⭐'}
+                        <div key={msg.id} className="py-2.5 first:pt-0 last:pb-0 text-xs space-y-1">
+                          <div className="flex items-center justify-between gap-2">
+                            <span
+                              className={`font-semibold ${
+                                msg.isMentor ? 'text-[#ff5722]' : 'text-slate-800 dark:text-neutral-200'
+                              }`}
+                            >
+                              {msg.user}
                             </span>
-                            <span className="text-[10px] text-slate-400 dark:text-neutral-500 font-mono">{msg.time}</span>
+                            <span className="text-[11px] text-slate-400 dark:text-neutral-500 font-mono tabular-nums">
+                              {msg.time}
+                            </span>
                           </div>
-                          <p className="text-slate-600 dark:text-neutral-300 pl-2 border-l border-slate-200 dark:border-white/10">{msg.text}</p>
-                        </motion.div>
+                          <p className="text-slate-600 dark:text-neutral-300 leading-relaxed">{msg.text}</p>
+                        </div>
                       ))}
                     </div>
 
-                    <form onSubmit={handleSendChat} className="flex gap-2 pt-2 border-t border-slate-200 dark:border-white/5">
+                    <form onSubmit={handleSendChat} className="flex gap-2 pt-3 border-t border-slate-100 dark:border-white/5">
                       <input
                         type="text"
-                        placeholder="Ask a doubt from the mentor..."
+                        placeholder="Ask a doubt from batch mentors..."
                         value={inputChat}
                         onChange={(e) => setInputChat(e.target.value)}
                         className="flex-1 px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#14141f] border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ff5722]"
                       />
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                      <button
                         type="submit"
-                        className="px-4 py-2 rounded-xl bg-[#ff5722] hover:bg-[#f4511e] text-white text-xs font-bold cursor-pointer"
+                        className="px-4 py-2 rounded-xl bg-[#ff5722] hover:bg-[#f4511e] text-white text-xs font-semibold cursor-pointer flex items-center gap-1.5"
                       >
                         <Send className="w-3.5 h-3.5" />
-                      </motion.button>
+                        <span>Send</span>
+                      </button>
                     </form>
                   </div>
                 )}
 
-                {/* Tab 2: Lecture Notes */}
+                {/* Tab 2: Session Notes & Code */}
                 {activeTabUnderVideo === 'notes' && (
-                  <div className="p-4 rounded-xl bg-white dark:bg-[#0e0e15] border border-slate-200 dark:border-white/5 space-y-3 text-xs text-slate-700 dark:text-neutral-300 font-mono">
-                    <div className="flex items-center justify-between text-slate-500 dark:text-neutral-400">
-                      <span>KEY CODE SNIPPET (React 19 Server Actions)</span>
-                      <button onClick={() => alert("Copied to clipboard!")} className="hover:text-slate-900 dark:hover:text-white">Copy Code</button>
+                  <div className="p-4 rounded-2xl bg-white dark:bg-[#0e0e15] border border-slate-200 dark:border-white/10 space-y-3 text-xs">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-mono text-slate-500 dark:text-neutral-400">
+                        {activeCurriculum.codeTitle}
+                      </span>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard?.writeText(activeCurriculum.codeSnippet).catch(() => {});
+                          setCopiedCode(true);
+                          setTimeout(() => setCopiedCode(false), 1800);
+                        }}
+                        className="text-xs font-semibold text-[#ff5722] hover:underline cursor-pointer"
+                      >
+                        {copiedCode ? 'Copied to clipboard' : 'Copy Code'}
+                      </button>
                     </div>
-                    <pre className="p-3 rounded-lg bg-slate-900 dark:bg-black/60 border border-slate-800 dark:border-white/5 overflow-x-auto text-emerald-400 text-[11px]">
-{`async function submitDoubtAction(formData: FormData) {
-  'use server';
-  const doubt = formData.get('query');
-  await db.doubts.create({ data: { doubt, timestamp: new Date() } });
-  revalidatePath('/classroom');
-}`}
+                    <pre className="p-3.5 rounded-xl bg-slate-900 dark:bg-black/70 border border-slate-800 dark:border-white/10 overflow-x-auto text-emerald-400 text-[11px] font-mono leading-relaxed">
+                      {activeCurriculum.codeSnippet}
                     </pre>
                   </div>
                 )}
 
-                {/* Tab 3: Resources */}
+                {/* Tab 3: Starter Files & Slides */}
                 {activeTabUnderVideo === 'resources' && (
-                  <div className="p-4 rounded-xl bg-white dark:bg-[#0e0e15] border border-slate-200 dark:border-white/5 space-y-2 text-xs">
-                    <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5">
-                      <div className="flex items-center gap-2">
-                        <FileCode className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                        <span className="font-mono text-slate-900 dark:text-white">Starter-Code-Episode-14.zip</span>
+                  <div className="p-4 rounded-2xl bg-white dark:bg-[#0e0e15] border border-slate-200 dark:border-white/10 divide-y divide-slate-100 dark:divide-white/5 text-xs">
+                    <div className="pb-3 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <FileCode className="w-4 h-4 text-[#ff5722] shrink-0" />
+                        <span className="font-mono text-slate-900 dark:text-white truncate">
+                          {activeCurriculum.starterFile}
+                        </span>
                       </div>
-                      <button onClick={() => alert("Downloading starter code bundle...")} className="text-xs text-[#ff5722] hover:underline font-mono">
+                      <button
+                        onClick={() => setResourceFeedback(`Prepared ${activeCurriculum.starterFile} for download.`)}
+                        className="text-xs text-[#ff5722] hover:underline font-semibold cursor-pointer shrink-0"
+                      >
                         Download (4.2 MB)
                       </button>
                     </div>
-                    <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5">
-                      <div className="flex items-center gap-2">
-                        <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                        <span className="font-mono text-slate-900 dark:text-white">React-19-DeepDive-Slides.pdf</span>
+
+                    <div className="pt-3 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <BookOpen className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        <span className="font-mono text-slate-900 dark:text-white truncate">
+                          {activeCurriculum.slidesFile}
+                        </span>
                       </div>
-                      <button onClick={() => alert("Opening presentation slides...")} className="text-xs text-[#ff5722] hover:underline font-mono">
+                      <button
+                        onClick={() => setResourceFeedback(`Opened ${activeCurriculum.slidesFile} summary deck.`)}
+                        className="text-xs text-[#ff5722] hover:underline font-semibold cursor-pointer shrink-0"
+                      >
                         View Slides
                       </button>
                     </div>
+
+                    {resourceFeedback && (
+                      <div className="pt-3 text-[11px] font-mono text-emerald-600 dark:text-emerald-400">
+                        {resourceFeedback}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
             </div>
 
-            {/* Right Column: Leaderboard Widget (col 10-12) (Video 5: 00:07 - 00:10) */}
-            <div className="lg:col-span-3 border-l border-slate-200 dark:border-white/5 bg-white dark:bg-[#09090d] p-4 overflow-y-auto max-h-[calc(100vh-60px)] space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-white/5">
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-1.5">
-                  <Trophy className="w-4 h-4 text-amber-500 dark:text-amber-400" /> Leaderboard
+            {/* Right Column: Batch Leaderboard & Standing (col 10-12) */}
+            <aside className="lg:col-span-3 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-white/10 bg-white dark:bg-[#09090d] p-4 lg:max-h-[calc(100vh-70px)] lg:overflow-y-auto space-y-4">
+              <div className="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-white/5">
+                <span className="text-xs font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <Trophy className="w-4 h-4 text-amber-500" />
+                  <span>Cohort Leaderboard</span>
                 </span>
-                <span className="text-[10px] font-mono text-[#ff5722]">Cohort Rank</span>
+                <span className="text-[11px] font-mono text-slate-500 dark:text-neutral-400">
+                  Top 10
+                </span>
               </div>
 
-              {/* Podium (Top 3) */}
-              <div className="grid grid-cols-3 gap-2 text-center pt-2">
-                {/* 2nd Place */}
-                <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-[#12121a] border border-cyan-500/30 flex flex-col items-center justify-between">
-                  <span className="text-[10px] font-mono font-bold text-cyan-600 dark:text-cyan-400">2nd</span>
-                  <span className="text-xs font-bold text-slate-900 dark:text-white truncate max-w-full">{leaderboardRanks[1].name}</span>
-                  <span className="text-[10px] font-mono text-slate-500 dark:text-neutral-400">{leaderboardRanks[1].points}</span>
-                </div>
-
-                {/* 1st Place */}
-                <div className="p-3 rounded-xl bg-gradient-to-t from-amber-500/20 to-amber-50 dark:to-[#12121a] border border-amber-500/50 flex flex-col items-center justify-between shadow-lg shadow-amber-500/10">
-                  <span className="text-xs font-mono font-black text-amber-600 dark:text-amber-400">1st 👑</span>
-                  <span className="text-xs font-extrabold text-slate-900 dark:text-white truncate max-w-full">{leaderboardRanks[0].name}</span>
-                  <span className="text-[10px] font-mono text-amber-700 dark:text-amber-300 font-bold">{leaderboardRanks[0].points}</span>
-                </div>
-
-                {/* 3rd Place */}
-                <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-[#12121a] border border-rose-500/30 flex flex-col items-center justify-between">
-                  <span className="text-[10px] font-mono font-bold text-rose-600 dark:text-rose-400">3rd</span>
-                  <span className="text-xs font-bold text-slate-900 dark:text-white truncate max-w-full">{leaderboardRanks[2].name}</span>
-                  <span className="text-[10px] font-mono text-slate-500 dark:text-neutral-400">{leaderboardRanks[2].points}</span>
-                </div>
-              </div>
-
-              {/* Ranks 4 to 10 List */}
-              <div className="space-y-1.5 pt-2 border-t border-slate-200 dark:border-white/5">
-                {leaderboardRanks.slice(3).map((student) => (
+              {/* Clean Sorted Leaderboard Table */}
+              <div className="divide-y divide-slate-100 dark:divide-white/5">
+                {leaderboardRanks.map((student) => (
                   <div
                     key={student.rank}
-                    className="p-2 rounded-lg bg-slate-50 dark:bg-[#0e0e15] border border-slate-200 dark:border-white/5 flex items-center justify-between text-xs"
+                    className="py-2.5 flex items-center justify-between gap-2 text-xs"
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="w-5 text-[10px] font-mono text-slate-400 dark:text-neutral-500 font-bold">{student.rank}</span>
-                      <span className="font-medium text-slate-700 dark:text-neutral-200">{student.name}</span>
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <span
+                        className={`w-6 text-[11px] font-mono tabular-nums font-bold shrink-0 ${
+                          student.rank === 1
+                            ? 'text-amber-500'
+                            : student.rank === 2
+                            ? 'text-slate-400'
+                            : student.rank === 3
+                            ? 'text-orange-500'
+                            : 'text-slate-400 dark:text-neutral-500'
+                        }`}
+                      >
+                        #{student.rank}
+                      </span>
+                      <span className="font-medium text-slate-800 dark:text-neutral-200 truncate">
+                        {student.name}
+                      </span>
                     </div>
-                    <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">{student.points}</span>
+                    <span className="text-[11px] font-mono tabular-nums text-emerald-600 dark:text-emerald-400 font-semibold shrink-0">
+                      {student.points}
+                    </span>
                   </div>
                 ))}
               </div>
 
-              {/* Cohort percentile */}
-              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center text-xs font-mono text-emerald-700 dark:text-emerald-400">
-                You are ahead of <strong>52.87%</strong> of students in this batch! 🔥
+              <div className="pt-3 border-t border-slate-100 dark:border-white/5 space-y-2">
+                <div className="flex items-center justify-between text-[11px] font-mono tabular-nums text-slate-500 dark:text-neutral-400">
+                  <span>Batch Standing</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Top 48%</span>
+                </div>
+                <div className="w-full h-1.5 rounded-full bg-slate-100 dark:bg-white/10 overflow-hidden">
+                  <div className="h-full w-[52%] bg-emerald-500 rounded-full" />
+                </div>
+                <p className="text-[11px] text-slate-500 dark:text-neutral-400">
+                  Complete modules and daily labs to climb into the top 10.
+                </p>
               </div>
-            </div>
+            </aside>
           </div>
         </div>
       )}

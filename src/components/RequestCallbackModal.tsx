@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { X, Phone, User, Mail, BookOpen, CheckCircle, Sparkles, MessageCircle } from 'lucide-react';
-import brandLogo from '../assets/logo.png';
+import React, { useEffect, useState } from 'react';
+import { X, Send, CheckCircle2, AlertCircle, Mail } from 'lucide-react';
 import { COURSES } from '../data/coursesData';
 
 interface RequestCallbackModalProps {
@@ -9,212 +8,315 @@ interface RequestCallbackModalProps {
   defaultCourseId?: string;
 }
 
+const OWNER_GMAIL = 'thecodespark3464@gmail.com';
+
+const ENQUIRY_OPTIONS = [
+  'Online Course (Website)',
+  'Offline Course',
+  '45-Day Summer Industrial Training',
+  'Apprenticeship Program',
+  'IGNITE 1.0 – Full Stack + GenAI',
+];
+
 export const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({
   isOpen,
   onClose,
-  defaultCourseId
+  defaultCourseId,
 }) => {
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [selectedCourse, setSelectedCourse] = useState(defaultCourseId || 'data-science-analytics-genai');
+  const [phone, setPhone] = useState('');
+  const [enquiryFor, setEnquiryFor] = useState('Online Course (Website)');
+  const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!defaultCourseId) return;
+    const matched = COURSES.find((c) => c.id === defaultCourseId);
+    if (matched?.title.toLowerCase().includes('summer')) {
+      setEnquiryFor('45-Day Summer Industrial Training');
+    } else if (matched?.title.toLowerCase().includes('ignite')) {
+      setEnquiryFor('IGNITE 1.0 – Full Stack + GenAI');
+    }
+  }, [defaultCourseId]);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name || !phone) return;
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
-    }, 700);
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 10);
+    setPhone(digitsOnly);
+    if (errorMsg && digitsOnly.length === 10) {
+      setErrorMsg(null);
+    }
   };
 
-  const handleReset = () => {
+  const buildMailtoHref = () => {
+    const subject = encodeURIComponent(`New Callback Request: ${name} (${enquiryFor})`);
+    const body = encodeURIComponent(
+      [
+        `Name: ${name}`,
+        `Email: ${email}`,
+        `Phone no.: +91 ${phone}`,
+        `Enquiry For: ${enquiryFor}`,
+        '',
+        'Message:',
+        message || 'Please call me back regarding course details.',
+      ].join('\n')
+    );
+    return `mailto:${OWNER_GMAIL}?subject=${subject}&body=${body}`;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !email.trim()) {
+      setErrorMsg('Please enter your Name and Email address.');
+      return;
+    }
+
+    if (!/^\d{10}$/.test(phone)) {
+      setErrorMsg('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setErrorMsg(null);
+
+    try {
+      const response = await fetch('/api/callback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          phone,
+          enquiryFor,
+          message: message.trim(),
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || !data?.ok) {
+        throw new Error(data?.error || 'Unable to send callback request right now.');
+      }
+
+      setIsSuccess(true);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Unable to send callback request right now.';
+      setErrorMsg(msg);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleResetAndClose = () => {
     setIsSuccess(false);
+    setErrorMsg(null);
     setName('');
-    setPhone('');
     setEmail('');
+    setPhone('');
+    setMessage('');
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 dark:bg-black/85 backdrop-blur-md">
-      <div 
-        className="relative w-full max-w-lg bg-white dark:bg-[#0e0e12] border border-slate-200 dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden card-inner-glow max-h-[92vh] flex flex-col"
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-[440px] bg-white dark:bg-[#0c0c10] border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden max-h-[92vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-[#121217] shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="h-10 px-2.5 py-1 rounded-xl bg-white dark:bg-white/5 border border-[#E10600]/30 flex items-center justify-center shrink-0 shadow-sm dark:shadow-md">
-              <img
-                src={brandLogo}
-                onError={(e) => { e.currentTarget.src = '/logo.png'; }}
-                alt="TheCodeSpark Technologies Private Limited"
-                className="h-7 w-auto object-contain filter drop-shadow"
-              />
-            </div>
-            <div>
-              <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white font-display">Talk with Rohit Sir &amp; Team</h3>
-              <p className="text-[11px] font-semibold text-[#ea580c] font-mono">TheCodeSpark Technologies Private Limited</p>
-            </div>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-1.5 text-slate-500 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-200/70 dark:hover:bg-white/5 transition-colors cursor-pointer"
-            aria-label="Close modal"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+        {/* Close button */}
+        <button
+          type="button"
+          data-magnetic="true"
+          onClick={onClose}
+          className="absolute top-4 right-4 p-1.5 text-slate-500 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer z-10"
+          aria-label="Close modal"
+        >
+          <X className="w-4 h-4" />
+        </button>
 
-        <div className="overflow-y-auto p-5 sm:p-6 space-y-5">
-          {/* DIRECT 1-CLICK OPTIONS: WHATSAPP & DIRECT CALL */}
-          <div className="space-y-2.5">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-neutral-400 font-bold">
-                Instant Direct Connect:
-              </span>
-              <span className="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                Online Now
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {/* Option 1: WhatsApp */}
-              <a
-                href="https://wa.me/917398839769?text=Hello%20Rohit%20Sir%2C%20I%20want%20to%20know%20more%20about%20TheCodeSpark%20Technologies%20courses"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2.5 px-4 py-3 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white text-xs sm:text-sm font-bold shadow-lg shadow-[#25D366]/20 transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <MessageCircle className="w-4 h-4 fill-white" />
-                <span>Chat on WhatsApp</span>
-              </a>
-
-              {/* Option 2: Direct Call */}
-              <a
-                href="tel:+917398839769"
-                className="flex items-center justify-center gap-2.5 px-4 py-3 rounded-xl bg-[#ea580c] hover:bg-[#d94412] text-white text-xs sm:text-sm font-bold shadow-lg shadow-[#ea580c]/25 transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <Phone className="w-4 h-4" />
-                <span>Call Directly Now</span>
-              </a>
-            </div>
-
-            <div className="text-center text-[10.5px] font-mono text-slate-500 dark:text-neutral-400 pt-1">
-              <span>CEO Helpline: </span>
-              <a href="tel:+917398839769" className="text-slate-900 dark:text-white hover:text-[#ea580c] font-bold">+91 7398839769</a>
-              <span className="mx-1 text-slate-400 dark:text-neutral-600">/</span>
-              <a href="tel:+919548248925" className="text-slate-900 dark:text-white hover:text-[#ea580c] font-bold">+91 9548248925</a>
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="relative flex items-center justify-center">
-            <div className="border-t border-slate-200 dark:border-white/10 w-full" />
-            <span className="bg-white dark:bg-[#0e0e12] px-3 text-[10.5px] font-mono text-slate-500 dark:text-neutral-500 uppercase tracking-widest shrink-0">
-              Or Request A Scheduled Callback
-            </span>
+        <div className="overflow-y-auto px-6 py-7 sm:px-7">
+          {/* Header matching uploaded design */}
+          <div className="text-center space-y-1.5 mb-6">
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-white font-display tracking-tight">
+              Request a Callback
+            </h3>
+            <p className="text-xs sm:text-[13px] text-slate-500 dark:text-neutral-400">
+              Fill the form below to request a callback from our team.
+            </p>
           </div>
 
           {isSuccess ? (
-            <div className="py-6 text-center space-y-3 bg-slate-50 dark:bg-white/[0.02] rounded-2xl border border-slate-200 dark:border-white/5 p-4">
-              <div className="w-12 h-12 mx-auto rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-                <CheckCircle className="w-6 h-6" />
+            <div className="py-6 text-center space-y-5">
+              <div className="w-14 h-14 mx-auto rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                <CheckCircle2 className="w-7 h-7" />
               </div>
-              <h4 className="text-base font-bold text-slate-900 dark:text-white font-display">Callback Scheduled!</h4>
-              <p className="text-xs text-slate-600 dark:text-neutral-300 max-w-sm mx-auto">
-                Thank you, <span className="font-semibold text-slate-900 dark:text-white">{name}</span>. Rohit Sir and our technical mentorship team will call you at <span className="font-mono text-[#ea580c]">{phone}</span> shortly.
-              </p>
-              <div className="pt-2">
+              <div className="space-y-2">
+                <h4 className="text-xl font-bold text-slate-900 dark:text-white font-display">
+                  Thank You!
+                </h4>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 leading-relaxed max-w-xs mx-auto">
+                  Thank you, <span className="font-semibold text-slate-900 dark:text-white">{name}</span>. Your callback request has been received. Our team will contact you shortly.
+                </p>
+              </div>
+
+              <div className="pt-1">
                 <button
-                  onClick={handleReset}
-                  className="py-2 px-5 bg-slate-900 hover:bg-slate-800 dark:bg-white/10 dark:hover:bg-white/20 text-white text-xs font-semibold rounded-xl transition-all cursor-pointer"
+                  type="button"
+                  data-magnetic="true"
+                  onClick={handleResetAndClose}
+                  className="px-8 py-2.5 rounded-lg bg-[#e05a2b] hover:bg-[#d14d1f] text-white text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
                 >
                   Done
                 </button>
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-3.5">
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-700 dark:text-neutral-300 flex items-center gap-1.5">
-                  <User className="w-3.5 h-3.5 text-[#ea580c]" /> Full Name <span className="text-[#ea580c]">*</span>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Name */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-medium text-slate-700 dark:text-neutral-300">
+                  Name
                 </label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Rahul Sharma"
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#16161c] border border-slate-200 dark:border-white/10 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ea580c] transition-colors"
+                  placeholder="Enter your Name here"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#141419] border border-slate-200 dark:border-white/10 rounded-lg text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#e05a2b] transition-colors"
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-700 dark:text-neutral-300 flex items-center gap-1.5">
-                  <Phone className="w-3.5 h-3.5 text-[#ea580c]" /> Phone Number <span className="text-[#ea580c]">*</span>
-                </label>
-                <input
-                  type="tel"
-                  required
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+91 7398839769"
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#16161c] border border-slate-200 dark:border-white/10 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ea580c] transition-colors font-mono"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-700 dark:text-neutral-300 flex items-center gap-1.5">
-                  <Mail className="w-3.5 h-3.5 text-[#ea580c]" /> Email Address (Optional)
+              {/* Email */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-medium text-slate-700 dark:text-neutral-300">
+                  Email
                 </label>
                 <input
                   type="email"
+                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#16161c] border border-slate-200 dark:border-white/10 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ea580c] transition-colors"
+                  placeholder="Enter your Email here"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#141419] border border-slate-200 dark:border-white/10 rounded-lg text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#e05a2b] transition-colors"
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-700 dark:text-neutral-300 flex items-center gap-1.5">
-                  <BookOpen className="w-3.5 h-3.5 text-[#ea580c]" /> Interested Program
+              {/* Phone no. strictly 10 digits with +91 */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-medium text-slate-700 dark:text-neutral-300">
+                    Phone no.
+                  </label>
+                  <span
+                    className={`text-[10px] font-mono tabular-nums ${
+                      phone.length === 10
+                        ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
+                        : 'text-slate-400 dark:text-neutral-500'
+                    }`}
+                  >
+                    {phone.length}/10 digits
+                  </span>
+                </div>
+                <div className="flex items-center bg-slate-50 dark:bg-[#141419] border border-slate-200 dark:border-white/10 rounded-lg overflow-hidden focus-within:border-[#e05a2b] transition-colors">
+                  <div className="flex items-center gap-1.5 pl-3 pr-2.5 py-2.5 border-r border-slate-200 dark:border-white/10 shrink-0 select-none">
+                    <span className="inline-flex flex-col w-4 h-3 rounded-[2px] overflow-hidden border border-black/10 shrink-0" aria-hidden="true">
+                      <span className="h-1 bg-[#FF9933]" />
+                      <span className="h-1 bg-white" />
+                      <span className="h-1 bg-[#138808]" />
+                    </span>
+                    <span className="text-xs font-mono font-semibold text-slate-700 dark:text-neutral-200">
+                      +91
+                    </span>
+                  </div>
+                  <input
+                    type="tel"
+                    inputMode="numeric"
+                    pattern="[0-9]{10}"
+                    maxLength={10}
+                    required
+                    value={phone}
+                    onChange={handlePhoneChange}
+                    placeholder="Enter 10-digit mobile number"
+                    className="w-full px-3 py-2.5 bg-transparent text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none font-mono"
+                  />
+                </div>
+              </div>
+
+              {/* Enquiry For */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-medium text-slate-700 dark:text-neutral-300">
+                  Enquiry For
                 </label>
                 <select
-                  value={selectedCourse}
-                  onChange={(e) => setSelectedCourse(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#16161c] border border-slate-200 dark:border-white/10 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:border-[#ea580c] transition-colors"
+                  value={enquiryFor}
+                  onChange={(e) => setEnquiryFor(e.target.value)}
+                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#141419] border border-slate-200 dark:border-white/10 rounded-lg text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:border-[#e05a2b] transition-colors cursor-pointer"
                 >
-                  {COURSES.map((c) => (
-                    <option key={c.id} value={c.id} className="bg-white dark:bg-[#121217] text-slate-900 dark:text-white">
-                      {c.title} {c.price > 0 ? `(₹${c.price.toLocaleString()})` : '(FREE)'}
+                  {ENQUIRY_OPTIONS.map((option) => (
+                    <option
+                      key={option}
+                      value={option}
+                      className="bg-white dark:bg-[#141419] text-slate-900 dark:text-white"
+                    >
+                      {option}
                     </option>
                   ))}
                 </select>
               </div>
 
-              <div className="p-3 bg-slate-100 dark:bg-[#181820] rounded-xl border border-slate-200 dark:border-white/5 flex items-start gap-2.5 text-[11px] text-slate-600 dark:text-neutral-400">
-                <Sparkles className="w-4 h-4 text-[#ea580c] shrink-0 mt-0.5" />
-                <span>Free 1-on-1 career counselling with Mr. Rohit Kashyap &amp; mentorship team.</span>
+              {/* How can we help you? */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-medium text-slate-700 dark:text-neutral-300">
+                  How can we help you?
+                </label>
+                <textarea
+                  rows={3}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="E.g. I want details about the offline course, fees, and schedule..."
+                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#141419] border border-slate-200 dark:border-white/10 rounded-lg text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#e05a2b] transition-colors resize-none"
+                />
               </div>
 
+              {errorMsg && (
+                <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-xs text-red-600 dark:text-red-400 space-y-2">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>{errorMsg}</span>
+                  </div>
+                  <a
+                    href={buildMailtoHref()}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#e05a2b] hover:underline"
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>Send directly via Gmail app</span>
+                  </a>
+                </div>
+              )}
+
+              {/* Submit Button */}
               <div className="pt-1">
                 <button
                   type="submit"
+                  data-magnetic="true"
                   disabled={isSubmitting}
-                  className="w-full py-2.5 px-4 bg-[#ea580c] hover:bg-[#d94412] disabled:opacity-50 text-white text-xs sm:text-sm font-semibold rounded-xl transition-all shadow-lg shadow-[#ea580c]/20 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3 px-4 bg-[#e05a2b] hover:bg-[#d14d1f] disabled:opacity-60 text-white text-xs sm:text-sm font-semibold rounded-lg transition-all shadow-lg shadow-[#e05a2b]/25 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (
-                    <span>Submit &amp; Schedule Callback →</span>
+                    <>
+                      <Send className="w-3.5 h-3.5" />
+                      <span>Book My Callback</span>
+                    </>
                   )}
                 </button>
               </div>
@@ -225,4 +327,3 @@ export const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({
     </div>
   );
 };
-
