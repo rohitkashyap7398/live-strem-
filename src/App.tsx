@@ -23,6 +23,7 @@ import { RequestCallbackModal } from './components/RequestCallbackModal';
 import { EnrollModal } from './components/EnrollModal';
 import { SyllabusModal } from './components/SyllabusModal';
 import { CustomCursor } from './components/CustomCursor';
+import { StartupLoader } from './components/StartupLoader';
 import { useGlobalButtonEffects } from './hooks/useGlobalButtonEffects';
 import { useViewportVideoManager } from './hooks/useViewportVideoManager';
 import { COURSES, Course } from './data/coursesData';
@@ -104,6 +105,7 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion="user">
+      <StartupLoader />
       <div className="min-h-screen bg-[#FFFFFF] dark:bg-[#2A2A2A] text-[#0F172A] dark:text-[#f3f4f6] selection:bg-[#E10600] selection:text-white transition-colors duration-300">
       {/* Universal Top Navigation */}
       <Navbar
