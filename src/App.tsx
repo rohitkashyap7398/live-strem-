@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MotionConfig } from 'motion/react';
 import { Navbar } from './components/Navbar';
 import { HeroBento } from './components/HeroBento';
@@ -7,6 +7,10 @@ import { ImpactGallery } from './components/ImpactGallery';
 import { FounderMentorship } from './components/FounderMentorship';
 import { CourseCardsSection } from './components/CourseCardsSection';
 import { TechnologiesMarquee } from './components/TechnologiesMarquee';
+import { CoursesCatalogView } from './components/CoursesCatalogView';
+import { BootcampView } from './components/BootcampView';
+import { ClassroomView } from './components/ClassroomView';
+import { OfflineProgramsView } from './components/OfflineProgramsView';
 import { StudentReviews } from './components/StudentReviews';
 import { YoutubeTutorials } from './components/YoutubeTutorials';
 import { CommunityPlacement } from './components/CommunityPlacement';
@@ -14,6 +18,7 @@ import { ComparisonSection } from './components/ComparisonSection';
 import { FaqSection } from './components/FaqSection';
 import { CtaBanner } from './components/CtaBanner';
 import { Footer } from './components/Footer';
+import { CourseDetailPage } from './components/CourseDetailPage';
 import { RequestCallbackModal } from './components/RequestCallbackModal';
 import { EnrollModal } from './components/EnrollModal';
 import { SyllabusModal } from './components/SyllabusModal';
@@ -21,28 +26,6 @@ import { CustomCursor } from './components/CustomCursor';
 import { useGlobalButtonEffects } from './hooks/useGlobalButtonEffects';
 import { useViewportVideoManager } from './hooks/useViewportVideoManager';
 import { COURSES, Course } from './data/coursesData';
-
-const CoursesCatalogView = lazy(() =>
-  import('./components/CoursesCatalogView').then((m) => ({ default: m.CoursesCatalogView }))
-);
-const BootcampView = lazy(() =>
-  import('./components/BootcampView').then((m) => ({ default: m.BootcampView }))
-);
-const ClassroomView = lazy(() =>
-  import('./components/ClassroomView').then((m) => ({ default: m.ClassroomView }))
-);
-const OfflineProgramsView = lazy(() =>
-  import('./components/OfflineProgramsView').then((m) => ({ default: m.OfflineProgramsView }))
-);
-const CourseDetailPage = lazy(() =>
-  import('./components/CourseDetailPage').then((m) => ({ default: m.CourseDetailPage }))
-);
-
-const ViewFallback = () => (
-  <div className="min-h-[65vh] flex items-center justify-center">
-    <div className="w-8 h-8 rounded-full border-2 border-[#E10600]/30 border-t-[#E10600] animate-spin" />
-  </div>
-);
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'course-detail'>('home');
@@ -187,58 +170,56 @@ export default function App() {
         </main>
       )}
 
-      <Suspense fallback={<ViewFallback />}>
-        {currentPage === 'courses' && (
-          <main>
-            <CoursesCatalogView
-              onSelectCourse={handleSelectCourse}
-              onPreBook={handleOpenEnroll}
-              onViewSyllabus={handleOpenSyllabus}
-              onRequestCallback={() => setIsCallbackOpen(true)}
-            />
-          </main>
-        )}
-
-        {currentPage === 'bootcamp' && (
-          <main>
-            <BootcampView
-              onApplyNow={() => handleOpenEnroll(COURSES[0])}
-              onRequestCallback={() => setIsCallbackOpen(true)}
-              onViewSyllabus={() => handleOpenSyllabus(COURSES[0])}
-            />
-          </main>
-        )}
-
-        {currentPage === 'classroom' && (
-          <main>
-            <ClassroomView
-              onNavigateHome={() => setCurrentPage('home')}
-              onRequestSupport={() => setIsCallbackOpen(true)}
-            />
-          </main>
-        )}
-
-        {currentPage === 'offline' && (
-          <main>
-            <OfflineProgramsView
-              onApplyOffline={() => handleOpenEnroll(COURSES[0])}
-              onRequestCallback={() => setIsCallbackOpen(true)}
-            />
-          </main>
-        )}
-
-        {currentPage === 'course-detail' && (
-          <CourseDetailPage
-            course={selectedCourse}
-            onSelectAnotherCourse={(c) => setSelectedCourse(c)}
-            onRequestCallback={() => setIsCallbackOpen(true)}
-            onBuyNow={handleOpenEnroll}
+      {currentPage === 'courses' && (
+        <main>
+          <CoursesCatalogView
+            onSelectCourse={handleSelectCourse}
+            onPreBook={handleOpenEnroll}
             onViewSyllabus={handleOpenSyllabus}
-            onNavigateCourses={() => setCurrentPage('courses')}
-            onNavigateHome={() => setCurrentPage('home')}
+            onRequestCallback={() => setIsCallbackOpen(true)}
           />
-        )}
-      </Suspense>
+        </main>
+      )}
+
+      {currentPage === 'bootcamp' && (
+        <main>
+          <BootcampView
+            onApplyNow={() => handleOpenEnroll(COURSES[0])}
+            onRequestCallback={() => setIsCallbackOpen(true)}
+            onViewSyllabus={() => handleOpenSyllabus(COURSES[0])}
+          />
+        </main>
+      )}
+
+      {currentPage === 'classroom' && (
+        <main>
+          <ClassroomView
+            onNavigateHome={() => setCurrentPage('home')}
+            onRequestSupport={() => setIsCallbackOpen(true)}
+          />
+        </main>
+      )}
+
+      {currentPage === 'offline' && (
+        <main>
+          <OfflineProgramsView
+            onApplyOffline={() => handleOpenEnroll(COURSES[0])}
+            onRequestCallback={() => setIsCallbackOpen(true)}
+          />
+        </main>
+      )}
+
+      {currentPage === 'course-detail' && (
+        <CourseDetailPage
+          course={selectedCourse}
+          onSelectAnotherCourse={(c) => setSelectedCourse(c)}
+          onRequestCallback={() => setIsCallbackOpen(true)}
+          onBuyNow={handleOpenEnroll}
+          onViewSyllabus={handleOpenSyllabus}
+          onNavigateCourses={() => setCurrentPage('courses')}
+          onNavigateHome={() => setCurrentPage('home')}
+        />
+      )}
 
       {/* Universal Footer (hidden on course-detail pages which use custom dark-green/light footers) */}
       {currentPage !== 'course-detail' && (
