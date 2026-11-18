@@ -119,10 +119,10 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
         <div className="relative pt-4 sm:pt-8 pb-10 sm:pb-14 text-center overflow-hidden">
           {/* Subtle Square Grid Pattern Overlay matching reference */}
           <div
-            className="absolute inset-0 pointer-events-none opacity-25 dark:opacity-20"
+            className="absolute inset-0 pointer-events-none opacity-35 dark:opacity-30"
             style={{
               backgroundImage:
-                'linear-gradient(to right, rgba(128,128,128,0.14) 1px, transparent 1px), linear-gradient(to bottom, rgba(128,128,128,0.14) 1px, transparent 1px)',
+                'linear-gradient(to right, rgba(148,163,184,0.16) 1px, transparent 1px), linear-gradient(to bottom, rgba(148,163,184,0.16) 1px, transparent 1px)',
               backgroundSize: '44px 44px'
             }}
           />
@@ -132,7 +132,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
             className="hidden sm:block absolute top-1/2 -left-28 sm:-left-36 -translate-y-1/2 w-[480px] h-[480px] rounded-full pointer-events-none"
             style={{
               background:
-                'radial-gradient(closest-side, transparent 58%, rgba(225, 6, 0, 0.22) 78%, transparent 100%)'
+                'radial-gradient(closest-side, transparent 58%, rgba(225, 6, 0, 0.18) 78%, transparent 100%)'
             }}
           />
 
@@ -140,7 +140,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
           <div
             className="hidden sm:block absolute top-1/2 -right-28 sm:-right-36 -translate-y-1/2 w-[440px] h-[440px] pointer-events-none"
             style={{
-              background: 'radial-gradient(closest-side, rgba(20, 184, 166, 0.15), transparent)'
+              background: 'radial-gradient(closest-side, rgba(20, 184, 166, 0.14), transparent)'
             }}
           />
 

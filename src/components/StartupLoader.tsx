@@ -48,9 +48,9 @@ export const StartupLoader: React.FC = () => {
           key="startup-loader"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } }}
-          aria-label="Loading TheCodeSpark Coding School"
+          aria-label="Loading TheCodeSpark Technologies Private Limited"
           role="status"
-          className="fixed inset-0 z-[9999] bg-[#060608] flex flex-col items-center justify-center select-none pointer-events-auto"
+          className="fixed inset-0 z-[9999] bg-[#060608]/80 backdrop-blur-[6px] flex flex-col items-center justify-center select-none pointer-events-auto"
         >
           {/* Subtle warm ember center glow matching the reference loader */}
           <div
@@ -68,25 +68,25 @@ export const StartupLoader: React.FC = () => {
             transition={{ duration: 0.35, ease: 'easeOut' }}
             className="relative z-10 flex flex-col items-center gap-5 px-6"
           >
-            {/* Brand Logo + Vertical Divider + Two-Line Brand Title */}
+            {/* Brand Logo + Vertical Divider + Two-Line Full Company Name */}
             <div className="flex items-center gap-3.5 sm:gap-4">
               <img
                 src={brandLogo}
                 onError={(e) => {
                   e.currentTarget.src = '/logo.png';
                 }}
-                alt="TheCodeSpark Logo"
-                className="h-10 sm:h-12 w-auto object-contain drop-shadow-[0_0_16px_rgba(225,6,0,0.35)]"
+                alt="TheCodeSpark Technologies Private Limited Logo"
+                className="h-10 sm:h-12 w-auto object-contain drop-shadow-[0_0_16px_rgba(225,6,0,0.35)] shrink-0"
               />
 
               <span className="w-px h-9 sm:h-11 bg-white/25 shrink-0" aria-hidden="true" />
 
               <div className="text-left leading-tight">
                 <span className="block text-sm sm:text-base font-semibold tracking-tight text-white/95 font-display">
-                  TheCodeSpark
+                  TheCodeSpark Technologies
                 </span>
                 <span className="block text-sm sm:text-base font-medium tracking-tight text-white/75 font-display">
-                  Coding School
+                  Private Limited
                 </span>
               </div>
             </div>
