@@ -1,6 +1,9 @@
 import { jsPDF } from 'jspdf';
 import type { Course } from '../data/coursesData';
 
+const PRIMARY_LOGO_URL = '/assets/aistudio/tcs_logo_cropped-removebg-preview_8334b4c5.png';
+const FALLBACK_LOGO_URL = '/logo.png';
+
 /**
  * Normalize text for jsPDF built-in Helvetica font (strips unsupported emojis while preserving clean punctuation).
  */
@@ -21,31 +24,41 @@ interface LoadedLogos {
   aspectRatio: number;
 }
 
-async function loadBrandedLogos(): Promise<LoadedLogos> {
+let cachedLogosPromise: Promise<LoadedLogos> | null = null;
+
+async function fetchLogoAsDataUrl(url: string): Promise<string | null> {
   try {
-    const res = await fetch('/logo.png');
-    if (!res.ok) {
-      return { headerLogoDataUrl: null, watermarkLogoDataUrl: null, aspectRatio: 1 };
-    }
+    const res = await fetch(url);
+    if (!res.ok) return null;
     const blob = await res.blob();
-    const rawDataUrl = await new Promise<string | null>((resolve) => {
+    return await new Promise<string | null>((resolve) => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(typeof reader.result === 'string' ? reader.result : null);
       reader.onerror = () => resolve(null);
       reader.readAsDataURL(blob);
     });
+  } catch {
+    return null;
+  }
+}
+
+export function preloadBrandedLogos(): Promise<LoadedLogos> {
+  if (cachedLogosPromise) return cachedLogosPromise;
+
+  cachedLogosPromise = (async () => {
+    const rawDataUrl =
+      (await fetchLogoAsDataUrl(PRIMARY_LOGO_URL)) ||
+      (await fetchLogoAsDataUrl(FALLBACK_LOGO_URL));
 
     if (!rawDataUrl) {
       return { headerLogoDataUrl: null, watermarkLogoDataUrl: null, aspectRatio: 1 };
     }
 
-    // Create a subtly faded watermark PNG via an offscreen canvas so it renders cleanly
-    // behind text across every PDF viewer without obscuring dark-mode typography.
     return await new Promise<LoadedLogos>((resolve) => {
       const img = new Image();
       img.onload = () => {
-        const w = img.naturalWidth || 400;
-        const h = img.naturalHeight || 400;
+        const w = img.naturalWidth || 500;
+        const h = img.naturalHeight || 220;
         const aspectRatio = w / h;
 
         try {
@@ -58,7 +71,7 @@ async function loadBrandedLogos(): Promise<LoadedLogos> {
             return;
           }
           ctx.clearRect(0, 0, w, h);
-          ctx.globalAlpha = 0.09;
+          ctx.globalAlpha = 0.12;
           ctx.drawImage(img, 0, 0, w, h);
           const watermarkDataUrl = canvas.toDataURL('image/png');
           resolve({
@@ -75,12 +88,47 @@ async function loadBrandedLogos(): Promise<LoadedLogos> {
       };
       img.src = rawDataUrl;
     });
-  } catch {
-    return { headerLogoDataUrl: null, watermarkLogoDataUrl: null, aspectRatio: 1 };
-  }
+  })();
+
+  return cachedLogosPromise;
 }
 
-export async function generateSyllabusPdf(course: Course): Promise<string> {
+export interface GeneratedPdfResult {
+  fileName: string;
+  blobUrl: string;
+}
+
+function triggerMobileFriendlyDownload(blob: Blob, fileName: string): string {
+  const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+  const blobUrl = URL.createObjectURL(pdfBlob);
+
+  const link = document.createElement('a');
+  link.href = blobUrl;
+  link.download = fileName;
+  link.rel = 'noopener noreferrer';
+  link.style.display = 'none';
+  document.body.appendChild(link);
+
+  // Use native click for Android Chrome, desktop browsers, and iOS Safari 13+
+  link.click();
+
+  // Keep link briefly & keep blobUrl alive for 2 minutes so mobile download managers finish reading
+  window.setTimeout(() => {
+    if (link.parentNode) {
+      link.parentNode.removeChild(link);
+    }
+  }, 1500);
+
+  window.setTimeout(() => {
+    URL.revokeObjectURL(blobUrl);
+  }, 120000);
+
+  return blobUrl;
+}
+
+export async function generateSyllabusPdf(course: Course): Promise<GeneratedPdfResult> {
+  const { headerLogoDataUrl, watermarkLogoDataUrl, aspectRatio } = await preloadBrandedLogos();
+
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'pt',
@@ -92,8 +140,6 @@ export async function generateSyllabusPdf(course: Course): Promise<string> {
   const marginX = 44;
   const contentWidth = pageWidth - marginX * 2;
   const bottomLimit = pageHeight - 54;
-
-  const { headerLogoDataUrl, watermarkLogoDataUrl, aspectRatio } = await loadBrandedLogos();
 
   /**
    * Paints the dark page background + centered company logo & full company name watermark
@@ -112,18 +158,21 @@ export async function generateSyllabusPdf(course: Course): Promise<string> {
     const centerX = pageWidth / 2;
     const centerY = pageHeight / 2;
 
+    let labelOffsetY = 92;
     if (watermarkLogoDataUrl) {
       try {
-        const wmWidth = 230;
-        const wmHeight = wmWidth / (aspectRatio || 1);
+        const safeAspect = aspectRatio > 0.2 ? aspectRatio : 1;
+        const wmWidth = safeAspect > 1.4 ? 290 : 220;
+        const wmHeight = wmWidth / safeAspect;
         doc.addImage(
           watermarkLogoDataUrl,
           'PNG',
           centerX - wmWidth / 2,
-          centerY - wmHeight / 2 - 22,
+          centerY - wmHeight / 2 - 20,
           wmWidth,
           wmHeight
         );
+        labelOffsetY = wmHeight / 2 + 6;
       } catch {
         // Ignore image draw failures
       }
@@ -131,14 +180,14 @@ export async function generateSyllabusPdf(course: Course): Promise<string> {
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(13);
-    doc.setTextColor(32, 34, 46);
-    doc.text('THECODESPARK TECHNOLOGIES PRIVATE LIMITED', centerX, centerY + 122, {
+    doc.setTextColor(36, 39, 52);
+    doc.text('THECODESPARK TECHNOLOGIES PRIVATE LIMITED', centerX, centerY + labelOffsetY, {
       align: 'center',
     });
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9.5);
-    doc.setTextColor(28, 30, 41);
-    doc.text('OFFICIAL CURRICULUM BROCHURE', centerX, centerY + 138, {
+    doc.setTextColor(30, 32, 44);
+    doc.text('OFFICIAL CURRICULUM BROCHURE', centerX, centerY + labelOffsetY + 16, {
       align: 'center',
     });
   };
@@ -224,40 +273,67 @@ export async function generateSyllabusPdf(course: Course): Promise<string> {
   };
 
   // =========================================================================
-  // DARK COVER HEADER BLOCK
+  // DARK COVER HEADER BLOCK WITH CRISP LOGO BADGE
   // =========================================================================
   doc.setFillColor(20, 22, 31);
   doc.setDrawColor(46, 50, 68);
   doc.setLineWidth(1);
-  doc.roundedRect(marginX, cursorY, contentWidth, 114, 8, 8, 'FD');
+  doc.roundedRect(marginX, cursorY, contentWidth, 118, 8, 8, 'FD');
 
   doc.setFillColor(225, 6, 0);
-  doc.rect(marginX, cursorY, 6, 114, 'F');
+  doc.rect(marginX, cursorY, 6, 118, 'F');
 
+  let headerTextX = marginX + 20;
   if (headerLogoDataUrl) {
     try {
-      const logoH = 44;
-      const logoW = Math.min(54, logoH * (aspectRatio || 1));
-      doc.addImage(headerLogoDataUrl, 'PNG', marginX + 18, cursorY + 22, logoW, logoH);
+      const boxX = marginX + 18;
+      const boxY = cursorY + 21;
+      const boxW = 76;
+      const boxH = 76;
+
+      // Subtle framed badge for crisp logo contrast
+      doc.setFillColor(14, 16, 24);
+      doc.setDrawColor(56, 62, 84);
+      doc.setLineWidth(0.8);
+      doc.roundedRect(boxX, boxY, boxW, boxH, 8, 8, 'FD');
+
+      const safeAspect = aspectRatio > 0.2 ? aspectRatio : 1;
+      const maxLogoW = boxW - 14;
+      const maxLogoH = boxH - 14;
+      let drawW = maxLogoW;
+      let drawH = drawW / safeAspect;
+      if (drawH > maxLogoH) {
+        drawH = maxLogoH;
+        drawW = drawH * safeAspect;
+      }
+
+      doc.addImage(
+        headerLogoDataUrl,
+        'PNG',
+        boxX + (boxW - drawW) / 2,
+        boxY + (boxH - drawH) / 2,
+        drawW,
+        drawH
+      );
+      headerTextX = boxX + boxW + 16;
     } catch {
-      // Safe fallback if logo image fails to decode
+      headerTextX = marginX + 20;
     }
   }
 
-  const headerTextX = headerLogoDataUrl ? marginX + 82 : marginX + 20;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9.5);
   doc.setTextColor(255, 107, 61);
-  doc.text('THECODESPARK TECHNOLOGIES PRIVATE LIMITED', headerTextX, cursorY + 26);
+  doc.text('THECODESPARK TECHNOLOGIES PRIVATE LIMITED', headerTextX, cursorY + 28);
 
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(15.5);
+  doc.setFontSize(15);
   doc.setTextColor(255, 255, 255);
   const titleLines = doc.splitTextToSize(
     cleanPdfText(course.title),
     contentWidth - (headerTextX - marginX) - 16
   ) as string[];
-  doc.text(titleLines.slice(0, 2), headerTextX, cursorY + 48);
+  doc.text(titleLines.slice(0, 2), headerTextX, cursorY + 50);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8.8);
@@ -267,10 +343,10 @@ export async function generateSyllabusPdf(course: Course): Promise<string> {
       `${course.codeName} Official Syllabus  |  Founder & CEO: ${course.instructorName || 'Mr. Rohit Kashyap'}`
     ),
     headerTextX,
-    cursorY + 95
+    cursorY + 98
   );
 
-  cursorY += 130;
+  cursorY += 134;
 
   // Dark Quick Metadata Strip
   const metaItems = [
@@ -485,6 +561,7 @@ export async function generateSyllabusPdf(course: Course): Promise<string> {
     .replace(/^-+|-+$/g, '');
   const fileName = `${safeSlug || 'TheCodeSpark'}-Official-Syllabus.pdf`;
 
-  doc.save(fileName);
-  return fileName;
+  const rawBlob = doc.output('blob');
+  const blobUrl = triggerMobileFriendlyDownload(rawBlob, fileName);
+  return { fileName, blobUrl };
 }

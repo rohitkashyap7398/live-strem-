@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, Download, FileText, CheckCircle2, Sparkles, ChevronDown, 
   Search, Layers, Cpu, Code2, Bot, Gauge, Zap, GitBranch, 
@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
 import { Course } from '../data/coursesData';
-import { generateSyllabusPdf } from '../utils/generateSyllabusPdf';
+import { generateSyllabusPdf, preloadBrandedLogos, GeneratedPdfResult } from '../utils/generateSyllabusPdf';
 
 interface SyllabusModalProps {
   isOpen: boolean;
@@ -23,6 +23,7 @@ export const SyllabusModal: React.FC<SyllabusModalProps> = ({
 }) => {
   const [downloaded, setDownloaded] = useState(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const [readyPdf, setReadyPdf] = useState<GeneratedPdfResult | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTrack, setActiveTrack] = useState<'episodes' | 'products' | 'dsa' | 'capstones'>(initialTrack);
   const [activeProductIndex, setActiveProductIndex] = useState<number>(0);
@@ -31,6 +32,15 @@ export const SyllabusModal: React.FC<SyllabusModalProps> = ({
   const [expandedEpisodeIds, setExpandedEpisodeIds] = useState<number[]>([0, 1, 2]);
   const [expandedProductModuleIds, setExpandedProductModuleIds] = useState<number[]>([1, 2, 3, 4]);
   const [expandedDsaModuleIds, setExpandedDsaModuleIds] = useState<number[]>([1, 2, 3]);
+
+  useEffect(() => {
+    if (isOpen) {
+      void preloadBrandedLogos();
+    } else {
+      setReadyPdf(null);
+      setDownloaded(false);
+    }
+  }, [isOpen, course.id]);
 
   if (!isOpen) return null;
 
@@ -42,11 +52,12 @@ export const SyllabusModal: React.FC<SyllabusModalProps> = ({
     if (isGeneratingPdf) return;
     setIsGeneratingPdf(true);
     try {
-      await generateSyllabusPdf(course);
+      const result = await generateSyllabusPdf(course);
+      setReadyPdf(result);
       setDownloaded(true);
       window.setTimeout(() => {
         setDownloaded(false);
-      }, 3000);
+      }, 4500);
     } catch (err) {
       console.error('Failed to generate syllabus PDF:', err);
     } finally {
@@ -202,15 +213,18 @@ export const SyllabusModal: React.FC<SyllabusModalProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
               type="button"
               onClick={handleDownload}
               disabled={isGeneratingPdf}
-              className="hidden sm:flex px-4 py-2 bg-[#ff5722] hover:bg-[#f4511e] disabled:opacity-70 text-white text-xs font-semibold rounded-xl transition-all shadow-md items-center gap-1.5 cursor-pointer"
+              className="flex px-3 sm:px-4 py-2 bg-[#ff5722] hover:bg-[#f4511e] disabled:opacity-70 text-white text-[11px] sm:text-xs font-semibold rounded-xl transition-all shadow-md items-center gap-1.5 cursor-pointer"
             >
-              <Download className="w-3.5 h-3.5" />
-              <span>
+              <Download className="w-3.5 h-3.5 shrink-0" />
+              <span className="sm:hidden">
+                {isGeneratingPdf ? '...' : downloaded ? 'Saved' : 'PDF'}
+              </span>
+              <span className="hidden sm:inline">
                 {isGeneratingPdf
                   ? 'Generating PDF...'
                   : downloaded
@@ -219,6 +233,7 @@ export const SyllabusModal: React.FC<SyllabusModalProps> = ({
               </span>
             </button>
             <button
+              type="button"
               onClick={onClose}
               className="p-2 text-slate-500 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white rounded-xl hover:bg-slate-200/70 dark:hover:bg-white/10 transition-colors cursor-pointer"
               aria-label="Close syllabus preview"
@@ -840,14 +855,22 @@ export const SyllabusModal: React.FC<SyllabusModalProps> = ({
             )}
           </div>
         )}
-        <div className="relative z-10 px-5 sm:px-7 py-4 border-t border-slate-200 dark:border-white/10 bg-slate-50/95 dark:bg-[#121218]/90 backdrop-blur-md flex flex-wrap items-center justify-between gap-3 shrink-0">
-          <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-neutral-400 font-mono">
+        <div className="relative z-10 px-5 sm:px-7 py-3.5 sm:py-4 border-t border-slate-200 dark:border-white/10 bg-slate-50/95 dark:bg-[#121218]/90 backdrop-blur-md flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-slate-500 dark:text-neutral-400 font-mono">
             <div className="flex items-center gap-1.5">
               <FileText className="w-4 h-4 text-[#ff5722]" />
-              <span>Full Curriculum & Products Verified</span>
+              <span>TheCodeSpark Technologies Private Limited</span>
             </div>
-            <span>•</span>
-            <span>TheCodeSpark Technologies Private Limited</span>
+            {readyPdf && (
+              <a
+                href={readyPdf.blobUrl}
+                download={readyPdf.fileName}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 font-semibold hover:bg-emerald-500/25 transition-colors"
+              >
+                <Download className="w-3 h-3" />
+                <span>Tap to Save {readyPdf.fileName}</span>
+              </a>
+            )}
           </div>
 
           <div className="flex items-center gap-2">
