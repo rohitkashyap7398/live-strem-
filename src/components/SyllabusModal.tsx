@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
 import { Course } from '../data/coursesData';
+import { generateSyllabusPdf } from '../utils/generateSyllabusPdf';
 
 interface SyllabusModalProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ export const SyllabusModal: React.FC<SyllabusModalProps> = ({
   initialTrack = 'episodes'
 }) => {
   const [downloaded, setDownloaded] = useState(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTrack, setActiveTrack] = useState<'episodes' | 'products' | 'dsa' | 'capstones'>(initialTrack);
   const [activeProductIndex, setActiveProductIndex] = useState<number>(0);
@@ -36,11 +38,20 @@ export const SyllabusModal: React.FC<SyllabusModalProps> = ({
   const hasDsaJava = Boolean(course.dsaJavaCohort);
   const hasCapstones = Boolean(course.capstonesBreakdown && course.capstonesBreakdown.length > 0);
 
-  const handleDownload = () => {
-    setDownloaded(true);
-    setTimeout(() => {
-      setDownloaded(false);
-    }, 3000);
+  const handleDownload = async () => {
+    if (isGeneratingPdf) return;
+    setIsGeneratingPdf(true);
+    try {
+      await generateSyllabusPdf(course);
+      setDownloaded(true);
+      window.setTimeout(() => {
+        setDownloaded(false);
+      }, 3000);
+    } catch (err) {
+      console.error('Failed to generate syllabus PDF:', err);
+    } finally {
+      setIsGeneratingPdf(false);
+    }
   };
 
   const toggleEpisode = (id: number) => {
@@ -193,11 +204,19 @@ export const SyllabusModal: React.FC<SyllabusModalProps> = ({
 
           <div className="flex items-center gap-2 shrink-0">
             <button
+              type="button"
               onClick={handleDownload}
-              className="hidden sm:flex px-3.5 py-2 bg-[#ff5722] hover:bg-[#f4511e] text-white text-xs font-semibold rounded-xl transition-all shadow-md items-center gap-1.5 cursor-pointer"
+              disabled={isGeneratingPdf}
+              className="hidden sm:flex px-4 py-2 bg-[#ff5722] hover:bg-[#f4511e] disabled:opacity-70 text-white text-xs font-semibold rounded-xl transition-all shadow-md items-center gap-1.5 cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>{downloaded ? 'Brochure Downloaded!' : 'Download Syllabus'}</span>
+              <span>
+                {isGeneratingPdf
+                  ? 'Generating PDF...'
+                  : downloaded
+                  ? 'PDF Downloaded!'
+                  : 'Download Syllabus PDF'}
+              </span>
             </button>
             <button
               onClick={onClose}
@@ -833,13 +852,22 @@ export const SyllabusModal: React.FC<SyllabusModalProps> = ({
 
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={handleDownload}
-              className="sm:hidden px-3 py-1.5 bg-[#ff5722] hover:bg-[#f4511e] text-white text-xs font-semibold rounded-xl transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+              disabled={isGeneratingPdf}
+              className="px-3.5 py-2 bg-[#ff5722] hover:bg-[#f4511e] disabled:opacity-70 text-white text-xs font-semibold rounded-xl transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>{downloaded ? 'Downloaded' : 'PDF'}</span>
+              <span>
+                {isGeneratingPdf
+                  ? 'Generating...'
+                  : downloaded
+                  ? 'PDF Downloaded!'
+                  : 'Download PDF'}
+              </span>
             </button>
             <button
+              type="button"
               onClick={onClose}
               className="px-4 py-2 bg-slate-200/70 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-900 dark:text-white text-xs font-semibold rounded-xl border border-slate-300 dark:border-white/10 transition-colors cursor-pointer"
             >
