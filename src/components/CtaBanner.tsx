@@ -11,9 +11,10 @@ interface CtaBannerProps {
 export const CtaBanner: React.FC<CtaBannerProps> = ({ onExploreCourses }) => {
   return (
     <section className="py-24 bg-white dark:bg-[#2A2A2A] relative overflow-hidden border-t border-slate-200 dark:border-white/[0.08] transition-colors">
-      {/* Static ambient glow (no continuous blur scaling repaints) */}
+      {/* GPU-free ambient glow (zero blur pass repaints) */}
       <div
-        className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#E10600]/15 blur-[130px] pointer-events-none rounded-full" 
+        className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[640px] h-[340px] pointer-events-none"
+        style={{ background: 'radial-gradient(closest-side, rgba(225, 6, 0, 0.14), transparent)' }}
       />
 
       {/* Floating student thumbnail cards with continuous smooth float */}

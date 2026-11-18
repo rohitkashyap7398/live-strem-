@@ -807,9 +807,15 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
       {/* RENDER MODE 1: PHOTOREALISTIC HANDS HOLDING TABLET (Exact Framer match, 100% contained) */}
       {viewMode === 'hands' && (
         <div className="relative max-w-5xl mx-auto px-2 sm:px-4">
-          {/* Ambient red and cyan glow behind tablet */}
-          <div className="hidden sm:block absolute top-1/2 left-1/4 -translate-y-1/2 w-72 sm:w-96 h-72 sm:h-96 bg-[#E10600]/20 blur-[120px] pointer-events-none rounded-full" />
-          <div className="hidden sm:block absolute top-1/2 right-1/4 -translate-y-1/2 w-72 sm:w-96 h-72 sm:h-96 bg-cyan-500/10 blur-[120px] pointer-events-none rounded-full" />
+          {/* GPU-free ambient red and cyan glow behind tablet */}
+          <div
+            className="hidden sm:block absolute top-1/2 left-1/4 -translate-y-1/2 w-80 sm:w-[420px] h-80 sm:h-[420px] pointer-events-none"
+            style={{ background: 'radial-gradient(closest-side, rgba(225, 6, 0, 0.16), transparent)' }}
+          />
+          <div
+            className="hidden sm:block absolute top-1/2 right-1/4 -translate-y-1/2 w-80 sm:w-[420px] h-80 sm:h-[420px] pointer-events-none"
+            style={{ background: 'radial-gradient(closest-side, rgba(6, 182, 212, 0.1), transparent)' }}
+          />
 
           {/* Desktop/Tablet Aspect Container with realistic hands */}
           <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] max-h-[640px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-black border border-white/10 bg-[#09090d]">

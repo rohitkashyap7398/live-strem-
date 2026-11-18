@@ -49,9 +49,15 @@ export const ComparisonSection: React.FC = () => {
 
   return (
     <section id="comparison-section" className="py-20 bg-white dark:bg-[#2A2A2A] border-t border-slate-200 dark:border-white/[0.08] relative overflow-hidden transition-colors">
-      {/* Background glow effects */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-emerald-500/5 blur-[120px] pointer-events-none rounded-full" />
-      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-red-500/5 blur-[120px] pointer-events-none rounded-full" />
+      {/* GPU-free background glow effects */}
+      <div
+        className="hidden sm:block absolute top-1/2 left-1/4 -translate-y-1/2 w-[420px] h-[420px] pointer-events-none"
+        style={{ background: 'radial-gradient(closest-side, rgba(16, 185, 129, 0.08), transparent)' }}
+      />
+      <div
+        className="hidden sm:block absolute top-1/2 right-1/4 -translate-y-1/2 w-[420px] h-[420px] pointer-events-none"
+        style={{ background: 'radial-gradient(closest-side, rgba(239, 68, 68, 0.08), transparent)' }}
+      />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}

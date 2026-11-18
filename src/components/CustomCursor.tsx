@@ -12,13 +12,54 @@ export const CustomCursor: React.FC = () => {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const isVisibleRef = useRef(false);
+  const isHoveredRef = useRef(false);
   const animFrameId = useRef<number | null>(null);
 
   useEffect(() => {
     // Only enable on desktop devices with fine pointer (mouse)
     if (typeof window === 'undefined') return;
     const isTouch = window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
-    if (isTouch) return;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isTouch || prefersReducedMotion) return;
+
+    const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
+
+    const render = () => {
+      const dx = mousePos.current.x - ringPos.current.x;
+      const dy = mousePos.current.y - ringPos.current.y;
+
+      if (Math.abs(dx) < 0.15 && Math.abs(dy) < 0.15) {
+        ringPos.current.x = mousePos.current.x;
+        ringPos.current.y = mousePos.current.y;
+        if (ringRef.current) {
+          ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate(-50%, -50%)`;
+        }
+        if (dotRef.current) {
+          dotRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) translate(-50%, -50%)`;
+        }
+        // Sleep loop until next mouse move
+        animFrameId.current = null;
+        return;
+      }
+
+      ringPos.current.x = lerp(ringPos.current.x, mousePos.current.x, 0.22);
+      ringPos.current.y = lerp(ringPos.current.y, mousePos.current.y, 0.22);
+
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ringPos.current.x.toFixed(1)}px, ${ringPos.current.y.toFixed(1)}px, 0) translate(-50%, -50%)`;
+      }
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) translate(-50%, -50%)`;
+      }
+
+      animFrameId.current = requestAnimationFrame(render);
+    };
+
+    const scheduleRender = () => {
+      if (animFrameId.current === null) {
+        animFrameId.current = requestAnimationFrame(render);
+      }
+    };
 
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current.x = e.clientX;
@@ -31,13 +72,23 @@ export const CustomCursor: React.FC = () => {
         ringPos.current.y = e.clientY;
       }
 
-      // Check if hovering interactive element
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
+      }
+      scheduleRender();
+
+      // Only trigger React state update when hover state flips
       const target = e.target;
       if (target instanceof Element) {
-        const interactive = target.closest(
-          'button, a, input[type="button"], input[type="submit"], [role="button"], .cursor-pointer, [data-cursor-hover], .btn-magnetic'
+        const nextHovered = Boolean(
+          target.closest(
+            'button, a, input[type="button"], input[type="submit"], [role="button"], .cursor-pointer, [data-cursor-hover], .btn-magnetic'
+          )
         );
-        setIsHovered(!!interactive);
+        if (nextHovered !== isHoveredRef.current) {
+          isHoveredRef.current = nextHovered;
+          setIsHovered(nextHovered);
+        }
       }
     };
 
@@ -48,10 +99,10 @@ export const CustomCursor: React.FC = () => {
         x: e.clientX,
         y: e.clientY,
       };
-      setRipples((prev) => [...prev.slice(-3), newRipple]);
+      setRipples((prev) => [...prev.slice(-2), newRipple]);
       setTimeout(() => {
         setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
-      }, 700);
+      }, 650);
     };
 
     const handleMouseUp = () => {
@@ -61,7 +112,14 @@ export const CustomCursor: React.FC = () => {
     const handleMouseLeave = () => {
       isVisibleRef.current = false;
       setIsVisible(false);
-      setIsHovered(false);
+      if (isHoveredRef.current) {
+        isHoveredRef.current = false;
+        setIsHovered(false);
+      }
+      if (animFrameId.current !== null) {
+        cancelAnimationFrame(animFrameId.current);
+        animFrameId.current = null;
+      }
     };
 
     const handleMouseEnter = () => {
@@ -70,31 +128,10 @@ export const CustomCursor: React.FC = () => {
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousedown', handleMouseDown, { passive: true });
+    window.addEventListener('mouseup', handleMouseUp, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
-
-    // High performance animation loop with spring / lerp smoothing
-    const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
-
-    const render = () => {
-      // Smoothly interpolate ring position towards mouse position (0.16 smoothing factor)
-      ringPos.current.x = lerp(ringPos.current.x, mousePos.current.x, 0.18);
-      ringPos.current.y = lerp(ringPos.current.y, mousePos.current.y, 0.18);
-
-      // Directly update transform for zero-jank 60-120fps motion
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate(-50%, -50%)`;
-      }
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) translate(-50%, -50%)`;
-      }
-
-      animFrameId.current = requestAnimationFrame(render);
-    };
-
-    animFrameId.current = requestAnimationFrame(render);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
@@ -102,7 +139,7 @@ export const CustomCursor: React.FC = () => {
       window.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
-      if (animFrameId.current) {
+      if (animFrameId.current !== null) {
         cancelAnimationFrame(animFrameId.current);
       }
     };
@@ -130,7 +167,7 @@ export const CustomCursor: React.FC = () => {
         ref={ringRef}
         className={`fixed top-0 left-0 rounded-full pointer-events-none will-change-transform transition-[width,height,border-color,background-color,box-shadow,opacity] duration-300 ease-out flex items-center justify-center ${
           isHovered
-            ? 'w-14 h-14 border-[1.5px] border-[#E10600] bg-[#E10600]/10 shadow-[0_0_24px_rgba(225,6,0,0.35)] backdrop-blur-[1px]'
+            ? 'w-14 h-14 border-[1.5px] border-[#E10600] bg-[#E10600]/10 shadow-[0_0_24px_rgba(225,6,0,0.35)]'
             : isClicked
             ? 'w-7 h-7 border-[1.5px] border-white/70 bg-white/10 shadow-[0_0_12px_rgba(255,255,255,0.4)]'
             : 'w-9 h-9 border-[1.5px] border-white/40 bg-white/[0.02] shadow-[0_0_10px_rgba(255,255,255,0.15)]'

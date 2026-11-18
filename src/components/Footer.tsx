@@ -1,5 +1,5 @@
 import React from 'react';
-import { Youtube, Linkedin, Twitter, Github, Heart, MessageSquare, Code2, MapPin, Phone, Mail } from 'lucide-react';
+import { Youtube, Instagram, Heart, MessageSquare, MapPin, Phone, Mail } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
 
 interface FooterProps {
@@ -47,7 +47,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onRequestCall }) => 
             {/* Social Icons */}
             <div className="flex items-center gap-3 pt-2">
               <a
-                href="https://youtube.com"
+                href="https://www.youtube.com/@TheCodeSpark_73"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 rounded-lg bg-slate-200/80 dark:bg-white/5 hover:bg-red-500/20 hover:text-red-500 dark:hover:text-red-400 text-slate-600 dark:text-neutral-400 flex items-center justify-center transition-colors"
@@ -56,31 +56,38 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onRequestCall }) => 
                 <Youtube className="w-4 h-4" />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.instagram.com/thecodespark_73/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg bg-slate-200/80 dark:bg-white/5 hover:bg-pink-500/20 hover:text-pink-600 dark:hover:text-pink-400 text-slate-600 dark:text-neutral-400 flex items-center justify-center transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a
+                href="https://x.com/TheCodeSpark"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg bg-slate-200/80 dark:bg-white/5 hover:bg-slate-300 dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white text-slate-600 dark:text-neutral-400 flex items-center justify-center transition-colors"
+                aria-label="X (Twitter)"
+              >
+                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current" aria-hidden="true">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+              <a
+                href="https://share.google/TbgL8Krqa2xKXgCCB"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 rounded-lg bg-slate-200/80 dark:bg-white/5 hover:bg-blue-500/20 hover:text-blue-600 dark:hover:text-blue-400 text-slate-600 dark:text-neutral-400 flex items-center justify-center transition-colors"
-                aria-label="LinkedIn"
+                aria-label="Google Profile"
               >
-                <Linkedin className="w-4 h-4" />
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 rounded-lg bg-slate-200/80 dark:bg-white/5 hover:bg-slate-300 dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white text-slate-600 dark:text-neutral-400 flex items-center justify-center transition-colors"
-                aria-label="Twitter / X"
-              >
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 rounded-lg bg-slate-200/80 dark:bg-white/5 hover:bg-slate-300 dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white text-slate-600 dark:text-neutral-400 flex items-center justify-center transition-colors"
-                aria-label="GitHub"
-              >
-                <Github className="w-4 h-4" />
+                <svg viewBox="0 0 24 24" className="w-4 h-4" aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81z"
+                  />
+                </svg>
               </a>
               <button
                 onClick={onRequestCall}

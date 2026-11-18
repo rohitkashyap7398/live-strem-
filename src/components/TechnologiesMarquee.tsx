@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, Code2, Cpu } from 'lucide-react';
 
@@ -365,10 +365,30 @@ export const TechnologiesMarquee: React.FC = () => {
     }
   ];
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setIsInView(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting && !document.hidden),
+      { threshold: 0.02 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="py-16 md:py-20 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-slate-200 dark:border-white/[0.08] transition-colors">
-      {/* Top Subtle Amber/Ember Glow Bloom */}
-      <div className="hidden sm:block absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[220px] bg-[#E10600]/10 dark:bg-[#E10600]/15 blur-[120px] pointer-events-none rounded-full" />
+    <section ref={sectionRef} className="py-16 md:py-20 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-slate-200 dark:border-white/[0.08] transition-colors">
+      {/* GPU-free top ambient glow */}
+      <div
+        className="hidden sm:block absolute top-0 left-1/2 -translate-x-1/2 w-[560px] h-[260px] pointer-events-none"
+        style={{ background: 'radial-gradient(closest-side, rgba(225, 6, 0, 0.12), transparent)' }}
+      />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10 space-y-8">
         
@@ -397,11 +417,14 @@ export const TechnologiesMarquee: React.FC = () => {
 
           {/* Row 1 (Moving Left) */}
           <div className="overflow-hidden">
-            <div className="animate-marquee flex items-center gap-3.5 py-1">
+            <div
+              className="animate-marquee flex items-center gap-3.5 py-1"
+              style={{ animationPlayState: isInView ? 'running' : 'paused' }}
+            >
               {[...row1Techs, ...row1Techs, ...row1Techs].map((tech, idx) => (
                 <div
                   key={`r1-${tech.name}-${idx}`}
-                  className="w-28 sm:w-32 h-28 sm:h-30 rounded-2xl bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/10 hover:border-[#E10600]/50 hover:bg-white dark:hover:bg-[#252525] transition-all p-3 sm:p-3.5 flex flex-col items-center justify-center text-center gap-2.5 shrink-0 group shadow-sm dark:shadow-md hover:shadow-xl hover:shadow-[#E10600]/10 cursor-default select-none"
+                  className="w-28 sm:w-32 h-28 sm:h-30 rounded-2xl bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/10 hover:border-[#E10600]/50 hover:bg-white dark:hover:bg-[#252525] transition-[border-color,background-color,box-shadow] duration-200 p-3 sm:p-3.5 flex flex-col items-center justify-center text-center gap-2.5 shrink-0 group shadow-sm dark:shadow-md hover:shadow-xl hover:shadow-[#E10600]/10 cursor-default select-none"
                 >
                   <div className="group-hover:scale-110 transition-transform duration-300 filter drop-shadow">
                     {tech.icon}
@@ -421,11 +444,14 @@ export const TechnologiesMarquee: React.FC = () => {
 
           {/* Row 2 (Moving Right / Reverse) */}
           <div className="overflow-hidden">
-            <div className="animate-marquee-reverse flex items-center gap-3.5 py-1">
+            <div
+              className="animate-marquee-reverse flex items-center gap-3.5 py-1"
+              style={{ animationPlayState: isInView ? 'running' : 'paused' }}
+            >
               {[...row2Techs, ...row2Techs, ...row2Techs].map((tech, idx) => (
                 <div
                   key={`r2-${tech.name}-${idx}`}
-                  className="w-28 sm:w-32 h-28 sm:h-30 rounded-2xl bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/10 hover:border-[#E10600]/50 hover:bg-white dark:hover:bg-[#252525] transition-all p-3 sm:p-3.5 flex flex-col items-center justify-center text-center gap-2.5 shrink-0 group shadow-sm dark:shadow-md hover:shadow-xl hover:shadow-[#E10600]/10 cursor-default select-none"
+                  className="w-28 sm:w-32 h-28 sm:h-30 rounded-2xl bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-white/10 hover:border-[#E10600]/50 hover:bg-white dark:hover:bg-[#252525] transition-[border-color,background-color,box-shadow] duration-200 p-3 sm:p-3.5 flex flex-col items-center justify-center text-center gap-2.5 shrink-0 group shadow-sm dark:shadow-md hover:shadow-xl hover:shadow-[#E10600]/10 cursor-default select-none"
                 >
                   <div className="group-hover:scale-110 transition-transform duration-300 filter drop-shadow">
                     {tech.icon}

@@ -16,6 +16,7 @@ export const EnrollModal: React.FC<EnrollModalProps> = ({
 }) => {
   const [studentName, setStudentName] = useState('');
   const [phone, setPhone] = useState('');
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [email, setEmail] = useState('');
   const [couponCode, setCouponCode] = useState('');
   const [couponError, setCouponError] = useState<string | null>(null);
@@ -40,9 +41,22 @@ export const EnrollModal: React.FC<EnrollModalProps> = ({
     }
   };
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 10);
+    setPhone(digitsOnly);
+    if (phoneError && digitsOnly.length === 10) {
+      setPhoneError(null);
+    }
+  };
+
   const handleEnroll = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!studentName || !phone || !email) return;
+    if (!studentName.trim() || !email.trim()) return;
+    if (!/^\d{10}$/.test(phone)) {
+      setPhoneError('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+    setPhoneError(null);
     setIsProcessing(true);
     setTimeout(() => {
       setIsProcessing(false);
@@ -95,23 +109,26 @@ export const EnrollModal: React.FC<EnrollModalProps> = ({
         </div>
 
         {isSuccess ? (
-          <div className="p-8 text-center space-y-4">
+          <div className="p-8 text-center space-y-5">
             <div className="w-16 h-16 mx-auto rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
               <CheckCircle className="w-8 h-8" />
             </div>
-            <h4 className="text-xl font-bold text-slate-900 dark:text-white font-display">Enrollment Confirmed!</h4>
-            <p className="text-sm text-slate-600 dark:text-neutral-300 max-w-sm mx-auto">
-              Welcome to the cohort, <span className="font-semibold text-slate-900 dark:text-white">{studentName}</span>! Your batch onboarding link and Discord community invite have been sent to <span className="font-mono text-[#ff5722]">{email}</span>.
-            </p>
-            <div className="p-3 bg-slate-100 dark:bg-[#16161c] rounded-xl border border-slate-200 dark:border-white/5 text-xs text-slate-600 dark:text-neutral-400 font-mono">
-              Enrolled Batch: {batch === 'upcoming-immediate' ? 'Immediate Batch (Starting Monday)' : 'Weekend Special Batch'}
+            <div className="space-y-2">
+              <h4 className="text-xl font-bold text-slate-900 dark:text-white font-display">
+                Thank You!
+              </h4>
+              <p className="text-sm text-slate-600 dark:text-neutral-300 max-w-xs mx-auto leading-relaxed">
+                Thank you, <span className="font-semibold text-slate-900 dark:text-white">{studentName}</span>. Your submission has been received. Our team will contact you shortly.
+              </p>
             </div>
-            <div className="pt-2">
+            <div className="pt-1">
               <button
+                type="button"
+                data-magnetic="true"
                 onClick={handleFinish}
-                className="w-full py-2.5 px-4 bg-[#ff5722] hover:bg-[#f4511e] text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-[#ff5722]/20"
+                className="px-8 py-2.5 bg-[#ff5722] hover:bg-[#f4511e] text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-[#ff5722]/20 cursor-pointer"
               >
-                Go to Dashboard
+                Done
               </button>
             </div>
           </div>
@@ -190,15 +207,39 @@ export const EnrollModal: React.FC<EnrollModalProps> = ({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-medium text-slate-700 dark:text-neutral-300 block mb-1">WhatsApp / Phone *</label>
-                  <input
-                    type="tel"
-                    required
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+91 9876543210"
-                    className="w-full px-3.5 py-2 bg-slate-50 dark:bg-[#16161c] border border-slate-200 dark:border-white/10 rounded-xl text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-[#ff5722] font-mono"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs font-medium text-slate-700 dark:text-neutral-300">WhatsApp / Phone *</label>
+                    <span
+                      className={`text-[10px] font-mono tabular-nums ${
+                        phone.length === 10
+                          ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
+                          : 'text-slate-400 dark:text-neutral-500'
+                      }`}
+                    >
+                      {phone.length}/10 digits
+                    </span>
+                  </div>
+                  <div className="flex items-center bg-slate-50 dark:bg-[#16161c] border border-slate-200 dark:border-white/10 rounded-xl overflow-hidden focus-within:border-[#ff5722]">
+                    <span className="px-2.5 py-2 text-xs font-mono font-semibold text-slate-600 dark:text-neutral-300 border-r border-slate-200 dark:border-white/10 select-none">
+                      +91
+                    </span>
+                    <input
+                      type="tel"
+                      inputMode="numeric"
+                      pattern="[0-9]{10}"
+                      maxLength={10}
+                      required
+                      value={phone}
+                      onChange={handlePhoneChange}
+                      placeholder="10-digit number"
+                      className="w-full px-3 py-2 bg-transparent text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none font-mono"
+                    />
+                  </div>
+                  {phoneError && (
+                    <p className="text-[11px] text-red-600 dark:text-red-400 mt-1 font-mono">
+                      {phoneError}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label className="text-xs font-medium text-slate-700 dark:text-neutral-300 block mb-1">Email Address *</label>
@@ -256,6 +297,7 @@ export const EnrollModal: React.FC<EnrollModalProps> = ({
             <div className="pt-2">
               <button
                 type="submit"
+                data-magnetic="true"
                 disabled={isProcessing}
                 className="w-full py-3 px-4 bg-[#ff5722] hover:bg-[#f4511e] disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-[#ff5722]/25 flex items-center justify-center gap-2 cursor-pointer"
               >

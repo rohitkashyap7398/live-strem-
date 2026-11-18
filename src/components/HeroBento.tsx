@@ -103,9 +103,12 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
 
   return (
     <section ref={sectionRef} className="relative pt-24 lg:pt-20 pb-14 overflow-hidden">
-      {/* Static radial ambient glow (no continuous blur scaling repaints on mobile GPUs) */}
+      {/* GPU-free radial ambient glow (zero blur pass repaints) */}
       <div
-        className="hidden sm:block absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[380px] bg-[#E10600]/15 blur-[130px] pointer-events-none rounded-full"
+        className="hidden sm:block absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[780px] h-[420px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(closest-side, rgba(225, 6, 0, 0.14), transparent)'
+        }}
       />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative">
@@ -124,11 +127,22 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
             }}
           />
 
-          {/* Left Large Red Curved Crescent Arc (from reference image) */}
-          <div className="absolute top-1/2 -left-28 sm:-left-36 -translate-y-1/2 w-[300px] sm:w-[460px] h-[300px] sm:h-[460px] rounded-full border-[30px] sm:border-[48px] border-[#E10600]/25 dark:border-[#E10600]/40 blur-[28px] sm:blur-[60px] pointer-events-none" />
+          {/* Left Large Red Curved Crescent Arc (GPU-free soft gradient ring) */}
+          <div
+            className="hidden sm:block absolute top-1/2 -left-28 sm:-left-36 -translate-y-1/2 w-[480px] h-[480px] rounded-full pointer-events-none"
+            style={{
+              background:
+                'radial-gradient(closest-side, transparent 58%, rgba(225, 6, 0, 0.22) 78%, transparent 100%)'
+            }}
+          />
 
-          {/* Right Soft Teal/Cyan Ambient Glow (from reference image) */}
-          <div className="hidden sm:block absolute top-1/2 -right-28 sm:-right-36 -translate-y-1/2 w-[320px] sm:w-[420px] h-[320px] sm:h-[420px] rounded-full bg-teal-500/15 blur-[110px] pointer-events-none" />
+          {/* Right Soft Teal/Cyan Ambient Glow */}
+          <div
+            className="hidden sm:block absolute top-1/2 -right-28 sm:-right-36 -translate-y-1/2 w-[440px] h-[440px] pointer-events-none"
+            style={{
+              background: 'radial-gradient(closest-side, rgba(20, 184, 166, 0.15), transparent)'
+            }}
+          />
 
           <div className="relative z-10 max-w-4xl mx-auto space-y-5 sm:space-y-6">
             {/* 1. Avatars + 5 Stars Ratings Pill */}
@@ -397,7 +411,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
                 ref={videoRef}
                 src={selectedVideo}
                 preload="metadata"
-                className="absolute inset-0 w-full h-full object-cover brightness-95 group-hover:brightness-100 transition-all duration-700"
+                className="absolute inset-0 w-full h-full object-cover brightness-95 group-hover:brightness-100 transition-[filter] duration-700"
                 autoPlay
                 loop
                 muted={isMuted}

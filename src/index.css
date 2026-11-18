@@ -10,14 +10,8 @@
   }
 
   html {
-    scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
+    overscroll-behavior-y: contain;
   }
 
   html, body {
@@ -90,7 +84,7 @@ html.dark .glass-panel {
 .glass-card {
   background: #f8fafc;
   border: 1px solid rgba(15, 23, 42, 0.09);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html.dark .glass-card {
@@ -310,6 +304,7 @@ html.dark .text-stroke-subtle {
 
 .btn-roll-primary {
   display: inline-block;
+  will-change: transform;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -318,6 +313,7 @@ html.dark .text-stroke-subtle {
   top: 100%;
   left: 0;
   display: inline-block;
+  will-change: transform;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -329,5 +325,17 @@ button:hover .btn-roll-primary,
 button:hover .btn-roll-secondary,
 .group:hover .btn-roll-secondary {
   transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-reverse,
+  .animate-marquee-vertical,
+  .animate-marquee-vertical-reverse,
+  .animate-marquee-vertical-slow,
+  .animate-marquee-faculty,
+  .animate-eq-bar {
+    animation: none !important;
+  }
 }
 

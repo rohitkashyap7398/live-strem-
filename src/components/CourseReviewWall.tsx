@@ -199,10 +199,11 @@ export const CourseReviewWall: React.FC<{ course: Course }> = ({ course }) => {
 
   return (
     <section className="py-16 sm:py-20 bg-[#070709] text-white relative overflow-hidden border-y border-white/10">
-      {/* Subtle top glow */}
+      {/* GPU-free top ambient glow */}
       <div
         aria-hidden="true"
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[520px] h-[220px] bg-[#9BFF6E]/[0.05] rounded-full blur-[120px] pointer-events-none"
+        className="hidden sm:block absolute top-0 left-1/2 -translate-x-1/2 w-[560px] h-[250px] pointer-events-none"
+        style={{ background: 'radial-gradient(closest-side, rgba(155, 255, 110, 0.08), transparent)' }}
       />
 
       {/* Section Header */}

@@ -80,17 +80,22 @@ const MintPillButton: React.FC<{
 const EmeraldStardustBackdrop: React.FC<{
   angle?: 'top-left' | 'diagonal-up';
 }> = ({ angle = 'top-left' }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const container = containerRef.current;
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!container || !canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let animId = 0;
+    let animId: number | null = null;
     let width = 0;
     let height = 0;
+    let isVisible = true;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const particleCount = window.innerWidth < 768 ? 60 : 110;
 
     interface StarParticle {
       t: number; // position along diagonal 0..1
@@ -102,7 +107,7 @@ const EmeraldStardustBackdrop: React.FC<{
       mint: boolean;
     }
 
-    const particles: StarParticle[] = Array.from({ length: 240 }, () => ({
+    const particles: StarParticle[] = Array.from({ length: particleCount }, () => ({
       t: Math.random(),
       spread: (Math.random() - 0.5) * 2 * Math.pow(Math.random(), 0.75),
       size: 0.6 + Math.random() * 1.4,
@@ -115,7 +120,7 @@ const EmeraldStardustBackdrop: React.FC<{
     const resize = () => {
       const parent = canvas.parentElement;
       if (!parent) return;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       width = parent.clientWidth;
       height = parent.clientHeight;
       canvas.width = Math.max(1, Math.floor(width * dpr));
@@ -124,10 +129,10 @@ const EmeraldStardustBackdrop: React.FC<{
     };
 
     resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resize, { passive: true });
 
     let tick = 0;
-    const render = () => {
+    const drawFrame = () => {
       tick += 0.02;
       ctx.clearRect(0, 0, width, height);
 
@@ -139,13 +144,11 @@ const EmeraldStardustBackdrop: React.FC<{
         let x = 0;
         let y = 0;
         if (angle === 'top-left') {
-          // Sweeps from top-left down-right through the headline (`00:00`)
           const bx = p.t * width * 0.95;
           const by = height * 0.12 + p.t * height * 0.62;
           x = bx + p.spread * width * 0.24;
           y = by + p.spread * height * 0.26;
         } else {
-          // Sweeps diagonally from bottom-left to top-right (`00:18–00:21`)
           const bx = p.t * width * 1.05;
           const by = height * 0.92 - p.t * height * 0.78;
           x = bx + p.spread * width * 0.22;
@@ -161,38 +164,81 @@ const EmeraldStardustBackdrop: React.FC<{
         ctx.arc(x, y, p.size, 0, Math.PI * 2);
         ctx.fill();
       }
+    };
 
+    const render = () => {
+      if (!isVisible || document.hidden) {
+        animId = null;
+        return;
+      }
+      drawFrame();
       animId = requestAnimationFrame(render);
     };
 
-    animId = requestAnimationFrame(render);
+    const startLoop = () => {
+      if (prefersReducedMotion) {
+        drawFrame();
+        return;
+      }
+      if (animId === null && isVisible && !document.hidden) {
+        animId = requestAnimationFrame(render);
+      }
+    };
+
+    const stopLoop = () => {
+      if (animId !== null) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
+    };
+
+    const observer =
+      typeof IntersectionObserver !== 'undefined'
+        ? new IntersectionObserver(
+            ([entry]) => {
+              isVisible = entry.isIntersecting;
+              if (isVisible) startLoop();
+              else stopLoop();
+            },
+            { threshold: 0.01 }
+          )
+        : null;
+
+    observer?.observe(container);
+
+    const handleVisibility = () => {
+      if (document.hidden) stopLoop();
+      else startLoop();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    startLoop();
     return () => {
-      cancelAnimationFrame(animId);
+      stopLoop();
+      observer?.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibility);
       window.removeEventListener('resize', resize);
     };
   }, [angle]);
 
   return (
-    <div aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden">
+    <div ref={containerRef} aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden">
       <div className="absolute inset-0 bg-[#191C1A]" />
-      {/* Sweeping glowing emerald diagonal nebula ribbon */}
-      <motion.div
-        animate={{ opacity: [0.82, 1, 0.82], scale: [1, 1.03, 1] }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -inset-24"
+      {/* GPU-free glowing emerald diagonal nebula ribbon (soft multi-stop gradient, zero filter:blur repaints) */}
+      <div
+        className="absolute inset-0"
         style={{
           background:
             angle === 'top-left'
-              ? 'linear-gradient(148deg, transparent 14%, rgba(34, 211, 128, 0.22) 34%, rgba(44, 245, 133, 0.34) 48%, rgba(16, 185, 129, 0.14) 64%, transparent 82%)'
-              : 'linear-gradient(32deg, transparent 16%, rgba(16, 185, 129, 0.18) 36%, rgba(44, 245, 133, 0.34) 50%, rgba(20, 184, 118, 0.15) 66%, transparent 84%)',
-          filter: 'blur(36px)'
+              ? 'linear-gradient(148deg, transparent 10%, rgba(34, 211, 128, 0.08) 26%, rgba(44, 245, 133, 0.22) 48%, rgba(16, 185, 129, 0.09) 68%, transparent 86%)'
+              : 'linear-gradient(32deg, transparent 12%, rgba(16, 185, 129, 0.07) 28%, rgba(44, 245, 133, 0.22) 50%, rgba(20, 184, 118, 0.09) 70%, transparent 88%)'
         }}
       />
       {/* Crisp ambient micro-grain / sparkling diagonal stardust */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
       {/* Fine photographic speckle texture across the dark canvas */}
       <div
-        className="absolute inset-0 opacity-[0.22] mix-blend-screen"
+        className="absolute inset-0 opacity-[0.22]"
         style={{
           backgroundImage:
             'radial-gradient(rgba(110, 245, 175, 0.45) 0.6px, transparent 0.6px), radial-gradient(rgba(255, 255, 255, 0.22) 0.5px, transparent 0.5px)',
@@ -379,7 +425,7 @@ const StickyDeckSheet: React.FC<{
                   className="flex items-end gap-3 h-28"
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: false, amount: 0.5 }}
+                  viewport={{ once: true, amount: 0.3 }}
                 >
                   {[
                     { h: 'h-12', bg: 'from-[#C4FFE0] to-[#6BFFB0]', delay: 0 },
@@ -525,7 +571,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone) return;
+    if (!name.trim() || !/^\d{10}$/.test(phone)) return;
     setIsSubmitted(true);
   };
 
@@ -686,7 +732,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
       comp: 'Razorpay',
       logoText: 'Razorpay',
       lpa: '21 LPA',
-      img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80'
+      img: '/assets/aistudio/College_Portrait_with_Coffee_Poster2_b9ab1503.png'
     },
     {
       name: 'MEERA SHARMA',
@@ -700,14 +746,14 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
       comp: 'cisco',
       logoText: 'CISCO',
       lpa: '19 LPA',
-      img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80'
+      img: '/assets/aistudio/Confident_College_Uniform_Portrait_56f41936.png'
     },
     {
       name: 'ANANYA GUPTA',
       comp: 'airtel',
       logoText: 'airtel',
       lpa: '16 LPA',
-      img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=80'
+      img: '/assets/aistudio/Smiling_College_Uniform_Portrait_2_e71e2625.png'
     },
     {
       name: 'PRIYA SINGH',
@@ -1429,7 +1475,8 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                   <div className="aspect-video relative group bg-black">
                     <video
                       ref={videoRef}
-                      src="/assets/aistudio/20261101-1004-44.1480787_b68d94d4.mp4"
+                      src="/assets/aistudio/20261118-0856-37.3384671_7d83c049.mp4"
+                      preload="metadata"
                       className="w-full h-full object-cover"
                       autoPlay
                       loop
@@ -1778,10 +1825,13 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                             />
                             <input
                               type="tel"
+                              inputMode="numeric"
+                              pattern="[0-9]{10}"
+                              maxLength={10}
                               required
                               value={phone}
-                              onChange={(e) => setPhone(e.target.value)}
-                              placeholder="Phone Number *"
+                              onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                              placeholder="10-Digit Mobile Number *"
                               className="w-full px-1 py-2.5 bg-transparent border-b border-black/15 text-xs font-mono text-[#141916] placeholder-[#9CA3AF] focus:outline-none focus:border-[#059669]"
                             />
                           </div>

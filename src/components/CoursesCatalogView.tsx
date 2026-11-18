@@ -232,8 +232,11 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
   return (
     <section className="pt-24 lg:pt-20 pb-12 sm:pb-16 bg-white dark:bg-[#070709] min-h-screen text-slate-900 dark:text-[#f3f4f6] relative overflow-hidden transition-colors duration-300">
       
-      {/* Background subtle radial glow behind heading */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[#5346ff]/10 dark:bg-[#5346ff]/12 blur-[150px] pointer-events-none rounded-full" />
+      {/* GPU-free subtle radial glow behind heading */}
+      <div
+        className="hidden sm:block absolute top-6 left-1/2 -translate-x-1/2 w-[820px] h-[320px] pointer-events-none"
+        style={{ background: 'radial-gradient(closest-side, rgba(83, 70, 255, 0.12), transparent)' }}
+      />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
         
@@ -259,7 +262,7 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35 }}
-                className="rounded-2xl bg-slate-50 dark:bg-[#101016] border border-slate-200 dark:border-white/10 hover:border-indigo-400/50 dark:hover:border-white/25 p-4 transition-all duration-300 flex flex-col justify-between group shadow-lg dark:shadow-2xl hover:shadow-[0_20px_50px_-15px_rgba(91,75,255,0.18)] dark:hover:shadow-[0_20px_50px_-15px_rgba(91,75,255,0.22)] relative overflow-hidden"
+                className="rounded-2xl bg-slate-50 dark:bg-[#101016] border border-slate-200 dark:border-white/10 hover:border-indigo-400/50 dark:hover:border-white/25 p-4 transition-[border-color,box-shadow] duration-300 flex flex-col justify-between group shadow-lg dark:shadow-2xl hover:shadow-[0_20px_50px_-15px_rgba(91,75,255,0.18)] dark:hover:shadow-[0_20px_50px_-15px_rgba(91,75,255,0.22)] relative overflow-hidden"
               >
                 <div>
                   {/* Top Graphic Art Banner (No 3 dots — exact match to reference video) */}

@@ -27,7 +27,7 @@ export const SectionSeamDropSvg: React.FC<{ variant?: 'left' | 'center' | 'right
           strokeLinecap="round"
           initial={{ pathLength: 0 }}
           whileInView={{ pathLength: 1 }}
-          viewport={{ once: false, amount: 0.4 }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.65, ease: 'easeOut' }}
         />
         <motion.circle
@@ -88,7 +88,7 @@ export const HeroKineticThread: React.FC = () => {
           strokeLinecap="round"
           initial={{ pathLength: 0 }}
           whileInView={{ pathLength: 1 }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
         />
         {/* Node dots */}
@@ -313,7 +313,7 @@ export const SemicircleBranchSvg: React.FC<{
  */
 export const AnimatedRupeeCounter: React.FC<{ target: number }> = ({ target }) => {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: false, amount: 0.4 });
+  const isInView = useInView(ref, { once: true, amount: 0.4 });
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
@@ -633,12 +633,13 @@ export const StickyStackedMissesSection: React.FC<{
       <motion.div
         initial={{ opacity: 0, y: 28, scale: 0.97 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: false, amount: 0.25 }}
+        viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.55 }}
         className="mt-8 rounded-3xl overflow-hidden border border-white/15 bg-black relative aspect-[16/8.5]"
       >
         <video
           src="/assets/aistudio/student_coding_classroom.mp4"
+          preload="metadata"
           autoPlay
           loop
           muted

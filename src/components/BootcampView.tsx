@@ -52,6 +52,149 @@ const HIRING_LOGOS = [
   { name: 'Walmart', sub: '*' },
 ];
 
+const renderCompanyMark = (companyName: string, sizeClass = 'w-5 h-5') => {
+  const key = companyName.trim().toLowerCase();
+  switch (key) {
+    case 'tcs':
+      return (
+        <svg viewBox="0 0 32 32" className={`${sizeClass} shrink-0`} aria-hidden="true">
+          <rect width="32" height="32" rx="7" fill="#0F4C81" />
+          <path
+            d="M7 11.5h18M16 11.5v11.5M10 17.5c1.5-2.5 4.2-3 6-3s4.5.5 6 3"
+            fill="none"
+            stroke="#FFFFFF"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    case 'microsoft':
+      return (
+        <svg viewBox="0 0 24 24" className={`${sizeClass} shrink-0`} aria-hidden="true">
+          <rect x="2" y="2" width="9" height="9" fill="#F25022" />
+          <rect x="13" y="2" width="9" height="9" fill="#7FBA00" />
+          <rect x="2" y="13" width="9" height="9" fill="#00A4EF" />
+          <rect x="13" y="13" width="9" height="9" fill="#FFB900" />
+        </svg>
+      );
+    case 'accenture':
+      return (
+        <svg viewBox="0 0 24 24" className={`${sizeClass} shrink-0`} aria-hidden="true">
+          <path
+            d="M6 5l12 7-12 7"
+            fill="none"
+            stroke="#A100FF"
+            strokeWidth="3.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+    case 'razorpay':
+      return (
+        <svg viewBox="0 0 28 28" className={`${sizeClass} shrink-0`} aria-hidden="true">
+          <rect width="28" height="28" rx="6" fill="#072654" />
+          <path d="M16.5 5L11 15.5h5.2L11.5 23l9-11.5h-5.2L16.5 5z" fill="#3395FF" />
+        </svg>
+      );
+    case 'amazon':
+      return (
+        <svg viewBox="0 0 32 32" className={`${sizeClass} shrink-0`} aria-hidden="true">
+          <rect width="32" height="32" rx="7" fill="#111827" />
+          <path
+            d="M11 17.2c0-3 2.3-4.9 5.2-4.9 2.2 0 3.5.9 3.9 2.2v2.2c0 1.3.4 1.9.9 2.4l-1.8 1.3c-.4-.4-.7-.9-.8-1.4-.9.8-1.9 1.3-3.4 1.3-2.2 0-4-1.3-4-3.1zm7.1-.8v-.7c-.5-.7-1.2-1.1-2.1-1.1-1.3 0-2.2.8-2.2 2.2 0 1.1.8 1.9 1.9 1.9 1.2 0 2.4-.9 2.4-2.3z"
+            fill="#FFFFFF"
+          />
+          <path
+            d="M8 22.8c4.6 3 10.9 3.2 15.8.3"
+            fill="none"
+            stroke="#FF9900"
+            strokeWidth="2.1"
+            strokeLinecap="round"
+          />
+          <path
+            d="M22.2 21.8l2.5.4-.8 2.4"
+            fill="none"
+            stroke="#FF9900"
+            strokeWidth="1.9"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+    case 'google':
+      return (
+        <svg viewBox="0 0 24 24" className={`${sizeClass} shrink-0`} aria-hidden="true">
+          <path
+            fill="#4285F4"
+            d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4c-.2 1.2-.9 2.3-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"
+          />
+          <path
+            fill="#34A853"
+            d="M12 22c2.7 0 5-.9 6.6-2.5l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.2H3.1v2.6C4.7 19.8 8.1 22 12 22z"
+          />
+          <path
+            fill="#FBBC05"
+            d="M6.4 13.8c-.2-.6-.3-1.2-.3-1.8s.1-1.2.3-1.8V7.6H3.1C2.4 9 2 10.4 2 12s.4 3 1.1 4.4l3.3-2.6z"
+          />
+          <path
+            fill="#EA4335"
+            d="M12 6c1.5 0 2.8.5 3.9 1.5l2.9-2.9C17 2.9 14.7 2 12 2 8.1 2 4.7 4.2 3.1 7.6l3.3 2.6C7.2 7.8 9.4 6 12 6z"
+          />
+        </svg>
+      );
+    case 'flipkart':
+      return (
+        <svg viewBox="0 0 28 28" className={`${sizeClass} shrink-0`} aria-hidden="true">
+          <rect width="28" height="28" rx="6" fill="#2874F0" />
+          <path d="M9 8h10l-1 14H10L9 8z" fill="#FFE500" />
+          <path
+            d="M15.8 11.5h-2.1v2.2h1.9v1.7h-1.9V20h-2v-8.5h4.1v0z"
+            fill="#2874F0"
+          />
+        </svg>
+      );
+    case 'walmart':
+      return (
+        <svg viewBox="0 0 28 28" className={`${sizeClass} shrink-0`} aria-hidden="true">
+          <line x1="14" y1="3" x2="14" y2="8.5" stroke="#FFC220" strokeWidth="2.8" strokeLinecap="round" />
+          <line x1="14" y1="19.5" x2="14" y2="25" stroke="#FFC220" strokeWidth="2.8" strokeLinecap="round" />
+          <line x1="4.5" y1="8.5" x2="9.3" y2="11.2" stroke="#FFC220" strokeWidth="2.8" strokeLinecap="round" />
+          <line x1="18.7" y1="16.8" x2="23.5" y2="19.5" stroke="#FFC220" strokeWidth="2.8" strokeLinecap="round" />
+          <line x1="23.5" y1="8.5" x2="18.7" y2="11.2" stroke="#FFC220" strokeWidth="2.8" strokeLinecap="round" />
+          <line x1="9.3" y1="16.8" x2="4.5" y2="19.5" stroke="#FFC220" strokeWidth="2.8" strokeLinecap="round" />
+        </svg>
+      );
+    case 'cisco':
+      return (
+        <svg viewBox="0 0 32 24" className="w-6 h-4 shrink-0" aria-hidden="true">
+          <line x1="4" y1="14" x2="4" y2="10" stroke="#049FD9" strokeWidth="2.4" strokeLinecap="round" />
+          <line x1="8" y1="15" x2="8" y2="7" stroke="#049FD9" strokeWidth="2.4" strokeLinecap="round" />
+          <line x1="12" y1="16" x2="12" y2="10" stroke="#049FD9" strokeWidth="2.4" strokeLinecap="round" />
+          <line x1="16" y1="15" x2="16" y2="5" stroke="#049FD9" strokeWidth="2.4" strokeLinecap="round" />
+          <line x1="20" y1="16" x2="20" y2="10" stroke="#049FD9" strokeWidth="2.4" strokeLinecap="round" />
+          <line x1="24" y1="15" x2="24" y2="7" stroke="#049FD9" strokeWidth="2.4" strokeLinecap="round" />
+          <line x1="28" y1="14" x2="28" y2="10" stroke="#049FD9" strokeWidth="2.4" strokeLinecap="round" />
+        </svg>
+      );
+    case 'airtel':
+      return (
+        <svg viewBox="0 0 28 28" className={`${sizeClass} shrink-0`} aria-hidden="true">
+          <rect width="28" height="28" rx="6" fill="#E40000" />
+          <path
+            d="M8.5 18.5c0-5 4-9.5 9-9.5 2 0 3.5 1.2 3.5 3.1 0 3.6-5.2 6.8-8.2 6.8-1.4 0-2.3-.7-2.3-1.8 0-1.6 1.7-3.4 4.2-3.9"
+            fill="none"
+            stroke="#FFFFFF"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    default:
+      return null;
+  }
+};
+
 export const BootcampView: React.FC<BootcampViewProps> = ({
   onApplyNow,
   onRequestCallback,
@@ -112,7 +255,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
       icon: <TrendingUp className="w-4 h-4 text-[#EA2814]" />,
     },
     {
-      value: '47 Lakh',
+      value: '30 Lakh',
       label: 'Highest Package',
       icon: <Award className="w-4 h-4 text-[#EA2814]" />,
     },
@@ -130,28 +273,28 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
 
   const placedAlumniCards = [
     {
-      packageLpa: '47+ LPA',
+      packageLpa: '30 LPA',
       company: 'AMAZON',
-      name: 'Rohan Gupta',
-      photo: '/assets/aistudio/faculty_nirved_kumar.png',
+      name: 'Aarav Verma',
+      photo: '/assets/aistudio/Confident_College_Portrait_in_Navy_Blazer1_e547f0b4.png',
     },
     {
-      packageLpa: '18+ LPA',
-      company: 'AIRTEL',
-      name: 'Pooja Sharma',
-      photo: '/assets/aistudio/faculty_aadhya.png',
+      packageLpa: '21 LPA',
+      company: 'RAZORPAY',
+      name: 'Rohan Tiwari',
+      photo: '/assets/aistudio/College_Portrait_with_Coffee_Poster2_b9ab1503.png',
     },
     {
-      packageLpa: '17+ LPA',
+      packageLpa: '19 LPA',
       company: 'CISCO',
-      name: 'Ananya Verma',
-      photo: '/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png',
+      name: 'Kavya Nair',
+      photo: '/assets/aistudio/Confident_College_Uniform_Portrait_56f41936.png',
     },
     {
-      packageLpa: '12+ LPA',
-      company: 'SYNCHRONY',
-      name: 'Akshat Sahu',
-      photo: '/assets/aistudio/faculty_ishu_sharma.png',
+      packageLpa: '16 LPA',
+      company: 'AIRTEL',
+      name: 'Ananya Gupta',
+      photo: '/assets/aistudio/Smiling_College_Uniform_Portrait_2_e71e2625.png',
     },
   ];
 
@@ -488,8 +631,9 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
               {[...HIRING_LOGOS, ...HIRING_LOGOS, ...HIRING_LOGOS].map((logo, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-1.5 text-[#0E0E0E]/75 hover:text-[#EA2814] transition-colors select-none shrink-0"
+                  className="flex items-center gap-2 text-[#0E0E0E]/85 hover:text-[#EA2814] transition-colors select-none shrink-0 whitespace-nowrap"
                 >
+                  {renderCompanyMark(logo.name, 'w-5 h-5 sm:w-6 sm:h-6')}
                   {logo.name === 'TCS' ? (
                     <div className="flex items-center gap-2 leading-none">
                       <span className="font-black text-lg tracking-tight">tcs</span>
@@ -617,8 +761,8 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
           <div className="relative py-4">
             {/* Giant Display Wordmark */}
             <div className="text-[12vw] sm:text-[96px] lg:text-[124px] font-black font-display tracking-[-0.05em] leading-[0.85] text-[#0E0E0E] uppercase select-none">
-              KUSHAGRA
-              <span className="block text-[#0E0E0E]/20">₹47 LAKHS</span>
+              AARAV
+              <span className="block text-[#0E0E0E]/20">₹30 LAKHS</span>
             </div>
 
             {/* Overlapping Schematic Video + Offer Ledger Cards connected by red SVG line */}
@@ -636,7 +780,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                   strokeWidth="1.8"
                   initial={{ pathLength: 0 }}
                   whileInView={{ pathLength: 1 }}
-                  viewport={{ once: false, amount: 0.3 }}
+                  viewport={{ once: true, amount: 0.2 }}
                   transition={{ duration: 0.9 }}
                 />
                 <circle cx="180" cy="60" r="4" fill="#EA2814" />
@@ -647,7 +791,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
               <motion.div
                 initial={{ opacity: 0, rotate: -2, y: 24 }}
                 whileInView={{ opacity: 1, rotate: 0, y: 0 }}
-                viewport={{ once: false, amount: 0.25 }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.55, ease: 'easeOut' }}
                 className="lg:col-span-6 bg-white border-2 border-[#0E0E0E] p-3 shadow-[8px_8px_0px_#0E0E0E] relative z-10"
               >
@@ -655,6 +799,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                   <video
                     ref={videoRef}
                     src="/assets/aistudio/tcs_actual_classroom_lab.mp4"
+                    preload="metadata"
                     autoPlay
                     loop
                     muted={isMuted}
@@ -697,7 +842,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
               <motion.div
                 initial={{ opacity: 0, rotate: 2, y: 24 }}
                 whileInView={{ opacity: 1, rotate: 0, y: 0 }}
-                viewport={{ once: false, amount: 0.25 }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.55, delay: 0.08, ease: 'easeOut' }}
                 className="lg:col-span-6 bg-[#FAF8F3] border-2 border-[#0E0E0E] p-6 sm:p-8 shadow-[8px_8px_0px_#EA2814] space-y-5 relative z-10"
               >
@@ -712,7 +857,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
 
                 <div>
                   <h3 className="text-2xl sm:text-4xl font-black font-display uppercase tracking-tight text-[#0E0E0E]">
-                    KUSHAGRA PATIDAR
+                    AARAV VERMA
                   </h3>
                   <p className="font-mono text-xs text-[#0E0E0E]/70 mt-1">
                     TheCodeSpark Placement Success Story
@@ -723,13 +868,16 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                   <div>
                     <div className="text-[10px] uppercase text-[#0E0E0E]/60">ANNUAL PACKAGE</div>
                     <div className="text-2xl sm:text-3xl font-black font-display text-[#0E0E0E]">
-                      ₹47 LAKHS
+                      ₹30 LAKHS
                     </div>
                   </div>
                   <div>
                     <div className="text-[10px] uppercase text-[#0E0E0E]/60">SECURED AT</div>
-                    <div className="text-xl sm:text-2xl font-black font-display text-[#EA2814]">
-                      amazon
+                    <div className="flex items-center gap-2 mt-0.5">
+                      {renderCompanyMark('amazon', 'w-5 h-5')}
+                      <span className="text-xl sm:text-2xl font-black font-display text-[#EA2814]">
+                        amazon
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -773,8 +921,9 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
-                  <div className="text-center pt-1 font-mono text-xs font-bold tracking-[0.2em] text-[#0E0E0E]">
-                    {item.company}
+                  <div className="flex items-center justify-center gap-2 pt-1 font-mono text-xs font-bold tracking-[0.2em] text-[#0E0E0E]">
+                    {renderCompanyMark(item.company, 'w-4 h-4')}
+                    <span>{item.company}</span>
                   </div>
                 </motion.div>
               ))}
@@ -784,9 +933,9 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-2">
                   {[
-                    { init: 'KP', bg: 'bg-[#0E0E0E]' },
-                    { init: 'RG', bg: 'bg-[#EA2814]' },
-                    { init: 'PS', bg: 'bg-[#333333]' },
+                    { init: 'AV', bg: 'bg-[#0E0E0E]' },
+                    { init: 'RT', bg: 'bg-[#EA2814]' },
+                    { init: 'KN', bg: 'bg-[#333333]' },
                   ].map((avatar, i) => (
                     <div
                       key={i}
@@ -1014,7 +1163,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                   strokeWidth="1.6"
                   initial={{ pathLength: 0 }}
                   whileInView={{ pathLength: 1 }}
-                  viewport={{ once: false, amount: 0.25 }}
+                  viewport={{ once: true, amount: 0.2 }}
                   transition={{ duration: 1.1 }}
                 />
               </svg>
@@ -1323,7 +1472,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: false, amount: 0.4 }}
+                viewport={{ once: true, amount: 0.25 }}
                 transition={{ type: 'spring', stiffness: 160, damping: 16 }}
                 className="px-4 py-2 border border-dashed border-[#EA2814] bg-white font-mono text-[11px] font-bold text-[#0E0E0E] shrink-0"
               >
@@ -1380,12 +1529,12 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                 </div>
                 <div className="aspect-[16/10] overflow-hidden border border-[#0E0E0E]/20 relative">
                   <img
-                    src="/assets/aistudio/faculty_nirved_kumar.png"
+                    src="/assets/aistudio/Confident_College_Uniform_Portrait_1_a8c6ba04.png"
                     onError={(e) => {
                       e.currentTarget.src = rohitPhoto;
                     }}
-                    alt="Off-Campus Cracked Offer"
-                    className="w-full h-full object-cover object-top"
+                    alt="Shivi Agarwal - Off-Campus Cracked Offer"
+                    className="w-full h-full object-cover object-[center_32%]"
                   />
                   <span className="absolute bottom-3 left-3 px-2.5 py-1 bg-[#EA2814] text-white text-[10px] font-mono font-bold">
                     GOT PLACED IN RECESSION
@@ -1393,13 +1542,13 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                 </div>
                 <div className="space-y-1.5">
                   <div className="text-[11px] font-mono text-[#EA2814] font-bold">
-                    CRACKED SDE ROLE
+                    SHIVI AGARWAL · CRACKED SDE ROLE
                   </div>
                   <h4 className="text-lg font-black text-[#0E0E0E] font-display uppercase">
-                    How He Cracked 18+ LPA in Slowdown
+                    How Shivi Agarwal Cracked 18+ LPA in Slowdown
                   </h4>
                   <p className="text-xs text-[#0E0E0E]/75 leading-relaxed">
-                    He cracked a top package at a high-growth tech startup during the market slowdown. Mastered backend architecture, microservices, and system design from scratch through daily accountability.
+                    Shivi Agarwal cracked a top package at a high-growth tech startup during the market slowdown. She mastered backend architecture, microservices, and system design from scratch through daily accountability.
                   </p>
                 </div>
               </div>

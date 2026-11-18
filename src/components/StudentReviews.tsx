@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export interface ReviewItem {
   id: string;
@@ -164,10 +164,30 @@ const COLUMN_3_REVIEWS: ReviewItem[] = [
 ];
 
 export const StudentReviews: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setIsInView(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting && !document.hidden),
+      { threshold: 0.02 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] relative overflow-hidden text-slate-900 dark:text-white border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
-      {/* Subtle radial ambient backdrop */}
-      <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-[#E10600]/10 rounded-full blur-[130px] pointer-events-none" />
+    <section ref={sectionRef} className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] relative overflow-hidden text-slate-900 dark:text-white border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
+      {/* GPU-free radial ambient backdrop */}
+      <div
+        className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[780px] h-[480px] pointer-events-none"
+        style={{ background: 'radial-gradient(closest-side, rgba(225, 6, 0, 0.1), transparent)' }}
+      />
 
       {/* Header Container */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center mb-10 sm:mb-14 space-y-3.5">
@@ -202,7 +222,10 @@ export const StudentReviews: React.FC = () => {
             
             {/* COLUMN 1: Continuous scroll UP */}
             <div className="overflow-hidden h-full flex flex-col pointer-events-none select-none">
-              <div className="animate-marquee-vertical flex flex-col gap-6 sm:gap-7">
+              <div
+                className="animate-marquee-vertical flex flex-col gap-6 sm:gap-7"
+                style={{ animationPlayState: isInView ? 'running' : 'paused' }}
+              >
                 {[...COLUMN_1_REVIEWS, ...COLUMN_1_REVIEWS].map((rev, idx) => (
                   <ExactBubbleCard key={`col1-${rev.id}-${idx}`} review={rev} />
                 ))}
@@ -211,7 +234,10 @@ export const StudentReviews: React.FC = () => {
 
             {/* COLUMN 2: Continuous scroll DOWN (Reverse direction) */}
             <div className="hidden md:flex overflow-hidden h-full flex-col pointer-events-none select-none">
-              <div className="animate-marquee-vertical-reverse flex flex-col gap-6 sm:gap-7">
+              <div
+                className="animate-marquee-vertical-reverse flex flex-col gap-6 sm:gap-7"
+                style={{ animationPlayState: isInView ? 'running' : 'paused' }}
+              >
                 {[...COLUMN_2_REVIEWS, ...COLUMN_2_REVIEWS].map((rev, idx) => (
                   <ExactBubbleCard key={`col2-${rev.id}-${idx}`} review={rev} />
                 ))}
@@ -220,7 +246,10 @@ export const StudentReviews: React.FC = () => {
 
             {/* COLUMN 3: Continuous scroll UP */}
             <div className="hidden lg:flex overflow-hidden h-full flex-col pointer-events-none select-none">
-              <div className="animate-marquee-vertical-slow flex flex-col gap-6 sm:gap-7">
+              <div
+                className="animate-marquee-vertical-slow flex flex-col gap-6 sm:gap-7"
+                style={{ animationPlayState: isInView ? 'running' : 'paused' }}
+              >
                 {[...COLUMN_3_REVIEWS, ...COLUMN_3_REVIEWS].map((rev, idx) => (
                   <ExactBubbleCard key={`col3-${rev.id}-${idx}`} review={rev} />
                 ))}

@@ -170,15 +170,13 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Zone 3: WhatsApp Logo Pill, Lime CTA, Theme Toggle & Mobile Trigger */}
           <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-            {/* WhatsApp Quick Connect with Official WhatsApp Logo */}
+            {/* WhatsApp Quick Connect — Icon Only */}
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className={`inline-flex items-center justify-center gap-1.5 rounded-full border border-black/15 dark:border-white/20 bg-white/25 dark:bg-white/[0.06] hover:bg-white/50 dark:hover:bg-white/[0.14] text-slate-900 dark:text-neutral-100 font-semibold transition-all duration-300 cursor-pointer whitespace-nowrap shrink-0 ${
-                isScrolled
-                  ? 'p-1 sm:px-2 sm:py-1 text-[11px]'
-                  : 'p-1 sm:px-2.5 sm:py-1 text-xs'
+              className={`inline-flex items-center justify-center rounded-full border border-black/15 dark:border-white/20 bg-white/25 dark:bg-white/[0.06] hover:bg-white/50 dark:hover:bg-white/[0.14] transition-all duration-300 cursor-pointer shrink-0 ${
+                isScrolled ? 'w-7 h-7' : 'w-7 h-7 sm:w-8 sm:h-8'
               }`}
               aria-label="Chat on WhatsApp"
               title="Chat on WhatsApp"
@@ -188,7 +186,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   isScrolled ? 'w-4 h-4' : 'w-4 h-4 sm:w-[18px] sm:h-[18px]'
                 }`}
               />
-              <span className="hidden xl:inline">WhatsApp</span>
             </a>
 
             {/* Primary Acid-Lime Pill CTA */}
@@ -213,46 +210,21 @@ export const Navbar: React.FC<NavbarProps> = ({
               <RockerThemeToggle isDark={isDarkMode} onToggle={onToggleTheme} />
             </div>
 
-            {/* Mobile / Tablet Menu Button */}
+            {/* Mobile / Tablet Menu Button (opens side drawer) */}
             <motion.button
               type="button"
+              data-magnetic="true"
               onClick={() => setIsMobileMenuOpen(true)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className={`lg:hidden rounded-full bg-black/[0.06] dark:bg-white/[0.1] border border-black/15 dark:border-white/20 text-slate-900 dark:text-neutral-100 flex items-center justify-center cursor-pointer transition-all duration-300 shrink-0 ${
-                isScrolled ? 'w-7 h-7' : 'w-7 h-7 sm:w-8 sm:h-8'
+                isScrolled ? 'w-7 h-7' : 'w-8 h-8'
               }`}
-              aria-label="Toggle Navigation Menu"
+              aria-label="Open Navigation Menu"
             >
-              <Menu className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <Menu className="w-4 h-4" />
             </motion.button>
           </div>
-        </div>
-
-        {/* Mobile / Tablet Horizontal Quick Tabs Strip — smoothly tucks away on scroll */}
-        <div
-          className={`flex lg:hidden items-center justify-start sm:justify-center gap-1 px-2 mx-auto max-w-full w-fit rounded-full border overflow-x-auto no-scrollbar transition-all duration-300 ease-out ${glassSurfaceClass} ${
-            isScrolled
-              ? 'mt-0 max-h-0 py-0 opacity-0 -translate-y-2 pointer-events-none border-transparent'
-              : 'mt-1.5 max-h-12 py-1 opacity-100 translate-y-0 pointer-events-auto'
-          }`}
-        >
-          {navItems.map((item) => {
-            const active = isCurrentActive(item.id);
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`px-2.5 py-0.5 text-[11px] rounded-full whitespace-nowrap transition-all shrink-0 cursor-pointer ${
-                  active
-                    ? 'bg-[#C4FF00] text-slate-950 font-semibold shadow-sm'
-                    : 'text-slate-900 dark:text-neutral-200 hover:bg-black/[0.06] dark:hover:bg-white/[0.1] font-medium'
-                }`}
-              >
-                {item.label}
-              </button>
-            );
-          })}
         </div>
       </header>
 

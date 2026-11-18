@@ -269,15 +269,22 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
   useEffect(() => {
     const el = wrapperRef.current;
     if (!el || typeof IntersectionObserver === 'undefined') {
-      setIsInView(true);
+      setIsInView(!document.hidden);
       return;
     }
     const observer = new IntersectionObserver(
-      ([entry]) => setIsInView(entry.isIntersecting),
+      ([entry]) => setIsInView(entry.isIntersecting && !document.hidden),
       { threshold: 0.05 }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    const onVisibility = () => {
+      if (document.hidden) setIsInView(false);
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
   }, []);
 
   const currentTab = TABS_DATA.find((t) => t.id === activeTabId) || TABS_DATA[0];
@@ -383,6 +390,8 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
           <div 
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={() => setIsPaused(true)}
+            onTouchEnd={() => setIsPaused(false)}
             className="rounded-2xl sm:rounded-3xl bg-white dark:bg-[#d5d5d5] border border-black/10 p-4 sm:p-7 lg:p-8 shadow-xl shadow-black/5 relative group overflow-hidden"
           >
             {/* Auto-scroll indicator badge */}
@@ -584,8 +593,11 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
         ========================================================================
       */}
       <section className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
-        {/* Subtle radial ambient backdrop */}
-        <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[500px] bg-[#E10600]/10 rounded-full blur-[130px] pointer-events-none" />
+        {/* GPU-free radial ambient backdrop */}
+        <div
+          className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[860px] h-[520px] pointer-events-none"
+          style={{ background: 'radial-gradient(closest-side, rgba(225, 6, 0, 0.1), transparent)' }}
+        />
 
         {/* Section Header */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center mb-10 sm:mb-14 space-y-3.5">
@@ -605,9 +617,12 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
 
         {/* BIG OUTER ENCLOSING CONTAINER BORDER (Exact outer rectangle from user image) */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
-          <div className="border border-slate-200 dark:border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 bg-slate-50 dark:bg-[#0b0b0f]/95 relative overflow-hidden sm:backdrop-blur-md shadow-xl dark:shadow-2xl dark:shadow-black/80 transition-colors">
+          <div className="border border-slate-200 dark:border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 bg-slate-50 dark:bg-[#0b0b0f]/95 relative overflow-hidden shadow-xl dark:shadow-2xl dark:shadow-black/80 transition-colors">
             {/* Ambient orange glow in corner */}
-            <div className="hidden sm:block absolute -top-24 -right-24 w-80 h-80 bg-[#ea580c]/15 rounded-full blur-[100px] pointer-events-none" />
+            <div
+              className="hidden sm:block absolute -top-24 -right-24 w-80 h-80 pointer-events-none"
+              style={{ background: 'radial-gradient(closest-side, rgba(234, 88, 12, 0.14), transparent)' }}
+            />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
               

@@ -160,7 +160,7 @@ export const YOUTUBE_VIDEOS: YoutubeVideo[] = [
     duration: "24:18",
     category: "Career Roadmap",
     thumbnail: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80",
-    url: "https://youtube.com"
+    url: "https://www.youtube.com/@TheCodeSpark_73"
   },
   {
     id: "yt-2",
@@ -170,7 +170,7 @@ export const YOUTUBE_VIDEOS: YoutubeVideo[] = [
     duration: "1:42:00",
     category: "Project Tutorial",
     thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&auto=format&fit=crop&q=80",
-    url: "https://youtube.com"
+    url: "https://www.youtube.com/@TheCodeSpark_73"
   },
   {
     id: "yt-3",
@@ -180,7 +180,7 @@ export const YOUTUBE_VIDEOS: YoutubeVideo[] = [
     duration: "45:10",
     category: "Roadmap",
     thumbnail: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&auto=format&fit=crop&q=80",
-    url: "https://youtube.com"
+    url: "https://www.youtube.com/@TheCodeSpark_73"
   },
   {
     id: "yt-4",
@@ -190,7 +190,7 @@ export const YOUTUBE_VIDEOS: YoutubeVideo[] = [
     duration: "52:40",
     category: "Gen AI",
     thumbnail: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80",
-    url: "https://youtube.com"
+    url: "https://www.youtube.com/@TheCodeSpark_73"
   }
 ];
 

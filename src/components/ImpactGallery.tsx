@@ -102,26 +102,41 @@ export const ImpactGallery: React.FC = () => {
   useEffect(() => {
     const el = sectionRef.current;
     if (!el || typeof IntersectionObserver === 'undefined') {
-      setIsInView(true);
+      setIsInView(!document.hidden);
       return;
     }
+    const updateMedia = (visible: boolean) => {
+      const videos = el.querySelectorAll('video[data-preview-video="true"]');
+      videos.forEach((v) => {
+        const videoEl = v as HTMLVideoElement;
+        if (visible && !document.hidden) {
+          videoEl.play().catch(() => {});
+        } else {
+          videoEl.pause();
+        }
+      });
+    };
+
+    let currentlyVisible = false;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsInView(entry.isIntersecting);
-        const videos = el.querySelectorAll('video[data-preview-video="true"]');
-        videos.forEach((v) => {
-          const videoEl = v as HTMLVideoElement;
-          if (entry.isIntersecting) {
-            videoEl.play().catch(() => {});
-          } else {
-            videoEl.pause();
-          }
-        });
+        currentlyVisible = entry.isIntersecting;
+        setIsInView(currentlyVisible && !document.hidden);
+        updateMedia(currentlyVisible);
       },
       { threshold: 0.1 }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+
+    const onVisibility = () => {
+      setIsInView(currentlyVisible && !document.hidden);
+      updateMedia(currentlyVisible);
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
   }, []);
 
   // Automatic smooth scroll across cards only when visible
@@ -154,8 +169,11 @@ export const ImpactGallery: React.FC = () => {
 
   return (
     <section ref={sectionRef} id="impact-section" className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
-      {/* Subtle background ambient glows matching other sections */}
-      <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[400px] bg-[#E10600]/10 rounded-full blur-[130px] pointer-events-none" />
+      {/* GPU-free subtle ambient glow matching other sections */}
+      <div
+        className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[780px] h-[420px] pointer-events-none"
+        style={{ background: 'radial-gradient(closest-side, rgba(225, 6, 0, 0.1), transparent)' }}
+      />
 
       {/* Main Container strictly matching max-w-5xl display size */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">

@@ -107,15 +107,22 @@ export const YoutubeTutorials: React.FC = () => {
   useEffect(() => {
     const el = sectionRef.current;
     if (!el || typeof IntersectionObserver === 'undefined') {
-      setIsInView(true);
+      setIsInView(!document.hidden);
       return;
     }
     const observer = new IntersectionObserver(
-      ([entry]) => setIsInView(entry.isIntersecting),
+      ([entry]) => setIsInView(entry.isIntersecting && !document.hidden),
       { threshold: 0.08 }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    const onVisibility = () => {
+      if (document.hidden) setIsInView(false);
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
   }, []);
 
   // Automatic smooth scroll across tutorial video cards when visible
@@ -148,8 +155,11 @@ export const YoutubeTutorials: React.FC = () => {
 
   return (
     <section ref={sectionRef} className="py-16 md:py-24 bg-white dark:bg-[#2A2A2A] text-slate-900 dark:text-white relative overflow-hidden border-t border-b border-slate-200 dark:border-white/[0.08] transition-colors">
-      {/* Background glow matching sibling sections */}
-      <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[350px] bg-[#E10600]/10 rounded-full blur-[130px] pointer-events-none" />
+      {/* GPU-free ambient glow matching sibling sections */}
+      <div
+        className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[780px] h-[380px] pointer-events-none"
+        style={{ background: 'radial-gradient(closest-side, rgba(225, 6, 0, 0.1), transparent)' }}
+      />
 
       {/* Main Container strictly matching max-w-5xl display size */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
@@ -175,7 +185,7 @@ export const YoutubeTutorials: React.FC = () => {
           {/* Carousel Arrow Controls & Channel Link */}
           <div className="flex items-center gap-2.5 shrink-0">
             <a
-              href="https://youtube.com/@thecodespark"
+              href="https://www.youtube.com/@TheCodeSpark_73"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-red-600/10 dark:bg-red-600/15 hover:bg-red-600/20 dark:hover:bg-red-600/25 border border-red-500/40 text-slate-900 dark:text-white text-xs font-semibold transition-all cursor-pointer shadow-md dark:shadow-lg shadow-red-600/10 group"

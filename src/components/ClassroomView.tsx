@@ -1038,6 +1038,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   <video
                     ref={videoRef}
                     src="/assets/aistudio/tcs_actual_classroom_lab.mp4"
+                    preload="metadata"
                     className="w-full h-full object-cover"
                     autoPlay
                     loop
