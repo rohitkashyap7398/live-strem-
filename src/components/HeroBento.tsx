@@ -102,7 +102,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
   };
 
   return (
-    <section ref={sectionRef} className="relative pt-24 lg:pt-20 pb-14 overflow-hidden">
+    <section ref={sectionRef} className="relative pt-24 lg:pt-20 pb-14 overflow-x-clip">
       {/* GPU-free radial ambient glow (zero blur pass repaints) */}
       <div
         className="hidden sm:block absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[780px] h-[420px] pointer-events-none"
