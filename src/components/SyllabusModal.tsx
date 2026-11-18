@@ -148,7 +148,7 @@ export const SyllabusModal: React.FC<SyllabusModalProps> = ({
             <img
               src={brandLogo}
               onError={(e) => { e.currentTarget.src = '/logo.png'; }}
-              alt="TheCodeSpark Technologies Logo Watermark"
+              alt="TheCodeSpark Technologies Private Limited Logo Watermark"
               className="w-[480px] max-w-[85vw] h-auto object-contain"
             />
             <span className="font-display font-black text-3xl tracking-[0.25em] text-slate-900 dark:text-white mt-4 uppercase text-center">

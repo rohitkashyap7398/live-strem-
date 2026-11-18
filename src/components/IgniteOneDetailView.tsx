@@ -225,7 +225,7 @@ export const IgniteOneDetailView: React.FC<IgniteOneDetailViewProps> = ({
         'Placement & Certification',
       desc:
         step5Mod?.desc ||
-        '1-on-1 mentor reviews, interview readiness, and verified credential from TheCodeSpark.',
+        '1-on-1 mentor reviews, interview readiness, and verified credential from TheCodeSpark Technologies Private Limited.',
     },
   ];
 
@@ -296,7 +296,7 @@ export const IgniteOneDetailView: React.FC<IgniteOneDetailViewProps> = ({
     {
       initials: 'MS',
       name: 'Mohd Siraj',
-      role: 'Software Developer · TheCodeSpark Alumni',
+      role: 'Software Developer · TheCodeSpark Technologies Private Limited Alumni',
       quote: `Joining ${course.codeName} replaced months of scattered searching with a clear daily routine. Having live classes plus instant Discord doubt support meant I never stayed stuck for more than ten minutes.`,
     },
     {
@@ -1414,7 +1414,7 @@ export const IgniteOneDetailView: React.FC<IgniteOneDetailViewProps> = ({
                   One cohort for the whole journey
                 </h3>
                 <p className="text-sm text-[#4B5563] leading-relaxed">
-                  Designed by TheCodeSpark engineering leads, {course.codeName} connects fundamentals, applied builds, and interview readiness in one structured system.
+                  Designed by TheCodeSpark Technologies Private Limited engineering leads, {course.codeName} connects fundamentals, applied builds, and interview readiness in one structured system.
                 </p>
               </div>
 
@@ -1741,9 +1741,9 @@ export const IgniteOneDetailView: React.FC<IgniteOneDetailViewProps> = ({
                 transition={{ duration: 0.5, ease: EASE_OUT_EXPO }}
                 className="bg-[#062B1A] text-white p-6 sm:p-8 space-y-5 relative shadow-2xl"
               >
-                <div className="flex items-center justify-between pb-3 border-b border-white/15">
-                  <span className="text-base font-black text-[#9BFF6E] font-display">
-                    {course.codeName} (TheCodeSpark)
+                <div className="flex items-center justify-between gap-2 pb-3 border-b border-white/15">
+                  <span className="text-sm sm:text-base font-black text-[#9BFF6E] font-display leading-snug">
+                    {course.codeName} (TheCodeSpark Technologies Private Limited)
                   </span>
                   <span className="text-[10px] font-mono text-[#9BFF6E] font-bold">
                     {course.isLive ? 'LIVE COHORT' : 'FLAGSHIP'}
@@ -2228,11 +2228,11 @@ export const IgniteOneDetailView: React.FC<IgniteOneDetailViewProps> = ({
                         onError={(e) => {
                           e.currentTarget.src = brandLogo;
                         }}
-                        alt="TheCodeSpark Logo"
+                        alt="TheCodeSpark Technologies Private Limited Logo"
                         className="h-7 w-auto object-contain"
                       />
                       <span className="text-xs font-bold tracking-tight">
-                        TheCodeSpark Technologies Pvt. Ltd.
+                        TheCodeSpark Technologies Private Limited
                       </span>
                     </div>
                     <span className="text-[10px] font-mono text-[#9BFF6E] font-bold">
@@ -2258,7 +2258,7 @@ export const IgniteOneDetailView: React.FC<IgniteOneDetailViewProps> = ({
                     <div>
                       <div className="font-bold">Rohit Kashyap</div>
                       <div className="text-[10px] text-white/70 font-mono">
-                        Founder &amp; CEO, TheCodeSpark
+                        Founder &amp; CEO, TheCodeSpark Technologies Private Limited
                       </div>
                     </div>
                     <div className="text-right font-mono">
@@ -2697,10 +2697,12 @@ export const IgniteOneDetailView: React.FC<IgniteOneDetailViewProps> = ({
                     onError={(e) => {
                       e.currentTarget.src = brandLogo;
                     }}
-                    alt="TheCodeSpark Logo"
+                    alt="TheCodeSpark Technologies Private Limited Logo"
                     className="h-6 w-auto object-contain"
                   />
-                  <span className="font-bold text-white text-sm">TheCodeSpark</span>
+                  <span className="font-bold text-white text-xs sm:text-sm">
+                    TheCodeSpark Technologies Private Limited
+                  </span>
                 </div>
               </div>
             </motion.div>

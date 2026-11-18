@@ -525,7 +525,7 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                     </div>
 
                     <span className="text-[10px] font-mono text-neutral-400">
-                      TheCodeSpark Live
+                      TheCodeSpark Technologies Private Limited Live
                     </span>
                   </div>
 

@@ -687,23 +687,23 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
 
   const allMentors = [
     {
-      alt: 'TheCodeSpark Industry Expert',
+      alt: 'TheCodeSpark Technologies Private Limited Industry Expert',
       img: '/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png'
     },
     {
-      alt: 'TheCodeSpark Industry Expert',
+      alt: 'TheCodeSpark Technologies Private Limited Industry Expert',
       img: '/assets/aistudio/Gemini_Generated_Image_co7fiqco7fiqco7f_fcc62587.png'
     },
     {
-      alt: 'Rohit Kashyap - TheCodeSpark Founder',
+      alt: 'Rohit Kashyap - TheCodeSpark Technologies Private Limited Founder',
       img: '/assets/aistudio/ChatGPT_Image_Apr_16__2026__02_38_30_AM_9625e7e8.png'
     },
     {
-      alt: 'TheCodeSpark Industry Expert',
+      alt: 'TheCodeSpark Technologies Private Limited Industry Expert',
       img: '/assets/aistudio/Gemini_Generated_Image_tt8i0xtt8i0xtt8i_8f6a348a.png'
     },
     {
-      alt: 'TheCodeSpark Industry Expert Team',
+      alt: 'TheCodeSpark Technologies Private Limited Industry Expert Team',
       img: '/assets/aistudio/Warmly_Branded_Executive_Team_Portrait_67a8e1d1.png'
     }
   ];
@@ -917,7 +917,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                     onError={(e) => {
                       e.currentTarget.src = '/logo.png';
                     }}
-                    alt="TheCodeSpark Logo"
+                    alt="TheCodeSpark Technologies Private Limited Logo"
                     className="h-6 w-auto object-contain shrink-0"
                   />
                   <div className="flex flex-wrap items-center gap-x-2 text-xs">
@@ -1219,7 +1219,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
             >
               <div className="flex-1 min-w-0 sm:min-w-[280px] rounded-3xl sm:rounded-full bg-[#2CF585] text-[#0D1E14] px-5 sm:px-8 py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 shadow-sm">
                 <p className="text-xs sm:text-sm font-semibold leading-snug">
-                  &ldquo;At TheCodeSpark Tech Campus, daily mentor reviews and
+                  &ldquo;At TheCodeSpark Technologies Private Limited Tech Campus, daily mentor reviews and
                   live coding built my confidence for product interviews.&rdquo;
                 </p>
                 <span className="text-xs font-mono font-bold shrink-0">
@@ -1762,13 +1762,13 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
               className="rounded-[28px] sm:rounded-[36px] bg-white text-[#141916] p-6 sm:p-10 lg:p-14 shadow-2xl"
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                {/* Left Editorial Block (`00:22`) */}
-                <div className="lg:col-span-4 flex flex-col justify-between space-y-6">
-                  <div className="space-y-4">
+                {/* Left Editorial Block + Unique Form Photo */}
+                <div className="lg:col-span-4 flex flex-col justify-between space-y-5">
+                  <div className="space-y-3">
                     <span className="text-[11px] font-mono uppercase tracking-widest text-[#059669] font-bold block">
                       Lucknow On-Campus Admissions
                     </span>
-                    <h2 className="text-3xl sm:text-4xl font-bold font-display tracking-tight leading-tight">
+                    <h2 className="text-2xl sm:text-3xl font-bold font-display tracking-tight leading-tight">
                       Apply For Placement Assistance
                     </h2>
                     <p className="text-xs sm:text-sm text-[#525E56] leading-relaxed">
@@ -1776,6 +1776,16 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                       With TheCodeSpark Technologies Private Limited. Register
                       for the upcoming On-Campus cohort at our Lucknow campus.
                     </p>
+                  </div>
+
+                  <div className="rounded-2xl overflow-hidden border border-black/10 bg-[#F7F8F7] aspect-[4/3] shadow-sm">
+                    <img
+                      src="/assets/aistudio/Confident_College_Portrait_in_Navy_Blazer1_e547f0b4.png"
+                      alt="Placement Assistance Advisor at TheCodeSpark Technologies Private Limited"
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover object-top"
+                    />
                   </div>
 
                   <div className="text-xs font-mono text-[#525E56] space-y-1">

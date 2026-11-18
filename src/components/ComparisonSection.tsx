@@ -71,8 +71,8 @@ export const ComparisonSection: React.FC = () => {
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#E10600]/15 border border-[#E10600]/30 text-[#E10600] text-xs font-mono font-semibold uppercase tracking-widest">
             <Sparkles className="w-3 h-3" /> COMPARISON
           </div>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white font-display tracking-tight leading-tight">
-            TheCodeSpark Advantage
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white font-display tracking-tight leading-tight">
+            TheCodeSpark Technologies Private Limited Advantage
           </h2>
           <p className="text-sm text-slate-600 dark:text-neutral-400">
             See the honest differences that make our students consistently outperform traditional college and training academies.
@@ -95,7 +95,7 @@ export const ComparisonSection: React.FC = () => {
                 <img
                   src={brandLogo}
                   onError={(e) => { e.currentTarget.src = '/logo.png'; }}
-                  alt="TheCodeSpark"
+                  alt="TheCodeSpark Technologies Private Limited"
                   className="h-7 sm:h-9 w-auto object-contain filter drop-shadow"
                 />
               </div>

@@ -614,13 +614,13 @@ export const StickyStackedMissesSection: React.FC<{
             onError={(e) => {
               e.currentTarget.src = fallbackPhoto;
             }}
-            alt="TheCodeSpark Builder Community"
+            alt="TheCodeSpark Technologies Private Limited Builder Community"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" />
           <div className="absolute bottom-4 left-4 right-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
             <div className="text-sm sm:text-base font-bold text-white font-display">
-              TheCodeSpark Builder Community
+              TheCodeSpark Technologies Private Limited Builder Community
             </div>
             <p className="text-[11px] text-neutral-300 max-w-xs leading-snug">
               Learn beside people who build, compete, present and continuously raise the standard for everyone around them.

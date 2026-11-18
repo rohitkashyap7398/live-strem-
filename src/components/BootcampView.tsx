@@ -439,7 +439,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
   const mentors = [
     {
       name: 'Mr. Rohit Kashyap',
-      role: 'Founder & CEO, TheCodeSpark',
+      role: 'Founder & CEO, TheCodeSpark Technologies Private Limited',
       tag: 'CHIEF MENTOR & GUIDE',
       isChief: true,
       photo: '/assets/aistudio/rohit_kashyap_ceo_portrait.png',
@@ -447,35 +447,35 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
     {
       name: 'Ali Ansari',
       role: 'Backend & Cloud Lead',
-      tag: 'THECODESPARK MENTORS',
+      tag: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
       isChief: false,
       photo: '/assets/aistudio/faculty_nirved_kumar.png',
     },
     {
       name: 'Devendra Dhote',
       role: 'Full Stack Developer',
-      tag: 'THECODESPARK MENTORS',
+      tag: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
       isChief: false,
       photo: '/assets/aistudio/faculty_aadhya.png',
     },
     {
       name: 'Harsh Sharma',
       role: 'Senior Tech Lead',
-      tag: 'THECODESPARK MENTORS',
+      tag: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
       isChief: false,
       photo: '/assets/aistudio/faculty_ishu_sharma.png',
     },
     {
       name: 'Sarthak Sharma',
       role: 'Full Stack Engineer',
-      tag: 'THECODESPARK MENTORS',
+      tag: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
       isChief: false,
       photo: '/assets/aistudio/Warm_Office_Portrait_with_Colorful_Logo_2164f143.png',
     },
     {
       name: 'Ankur Prajapati',
       role: 'DSA & System Coach',
-      tag: 'THECODESPARK MENTORS',
+      tag: 'THECODESPARK TECHNOLOGIES PRIVATE LIMITED',
       isChief: false,
       photo: rohitPhoto,
     },
@@ -829,10 +829,10 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                     </button>
                   </div>
 
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white font-mono text-[11px]">
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 text-white font-mono text-[10px] sm:text-[11px]">
                     <span>Lucknow &amp; Live Online Cohort</span>
-                    <span className="px-2 py-0.5 bg-white text-[#0E0E0E] font-bold">
-                      THECODESPARK
+                    <span className="px-2 py-0.5 bg-white text-[#0E0E0E] font-bold text-[9px] sm:text-[10px] text-right">
+                      THECODESPARK TECHNOLOGIES PRIVATE LIMITED
                     </span>
                   </div>
                 </div>
@@ -860,7 +860,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                     AARAV VERMA
                   </h3>
                   <p className="font-mono text-xs text-[#0E0E0E]/70 mt-1">
-                    TheCodeSpark Placement Success Story
+                    TheCodeSpark Technologies Private Limited Placement Success Story
                   </p>
                 </div>
 
@@ -998,11 +998,11 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
               >
                 <div className="space-y-6">
                   <div className="space-y-2 border-b border-white/10 pb-5">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-xl font-black font-display tracking-wide text-white uppercase">
-                        THECODESPARK BOOTCAMP
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="text-base sm:text-lg font-black font-display tracking-wide text-white uppercase leading-tight">
+                        THECODESPARK TECHNOLOGIES PRIVATE LIMITED BOOTCAMP
                       </h3>
-                      <span className="px-2 py-0.5 bg-[#EA2814] text-white font-mono text-[10px] font-bold">
+                      <span className="px-2 py-0.5 bg-[#EA2814] text-white font-mono text-[10px] font-bold shrink-0">
                         RECOMMENDED
                       </span>
                     </div>
@@ -1047,7 +1047,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                   onClick={onApplyNow}
                   className="w-full py-3.5 px-5 bg-[#EA2814] hover:bg-white hover:text-[#0E0E0E] text-white font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer text-center"
                 >
-                  Start with TheCodeSpark →
+                  Start with TheCodeSpark Technologies Private Limited →
                 </button>
               </motion.div>
 
@@ -1523,7 +1523,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
               <div className="bg-white border-2 border-[#0E0E0E] p-5 sm:p-6 space-y-4 shadow-[6px_6px_0px_#EA2814]">
                 <div className="flex items-center justify-between text-[10px] font-mono">
                   <span className="px-2.5 py-0.5 bg-[#EA2814] text-white font-bold">
-                    THECODESPARK SUCCESS
+                    THECODESPARK TECHNOLOGIES PRIVATE LIMITED
                   </span>
                   <span className="text-[#0E0E0E]/60 font-bold">OFF-CAMPUS CRACKED</span>
                 </div>
@@ -1627,7 +1627,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                     </div>
                     <div className="pt-1">
                       <span
-                        className={`inline-block w-full text-center px-1.5 py-1 text-[8px] font-mono font-bold tracking-wider uppercase truncate ${
+                        className={`inline-block w-full text-center px-1.5 py-1 text-[7.5px] font-mono font-bold tracking-wide uppercase leading-tight ${
                           mentor.isChief
                             ? 'bg-[#EA2814] text-white'
                             : 'bg-white/[0.05] border border-white/10 text-neutral-400'
@@ -1656,11 +1656,11 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
             <div className="bg-[#111111] border-2 border-[#EA2814] p-7 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch shadow-[0_0_70px_-20px_rgba(234,40,20,0.35)]">
               <div className="lg:col-span-5 flex flex-col justify-between space-y-6 text-left">
                 <div className="space-y-5">
-                  <div className="flex items-center justify-between border-b border-white/15 pb-3.5">
-                    <div className="text-[11px] font-mono font-bold tracking-widest text-[#EA2814] uppercase">
-                      THECODESPARK BOOTCAMP
+                  <div className="flex items-center justify-between gap-2 border-b border-white/15 pb-3.5">
+                    <div className="text-[10px] font-mono font-bold tracking-wider text-[#EA2814] uppercase leading-snug">
+                      THECODESPARK TECHNOLOGIES PRIVATE LIMITED
                     </div>
-                    <span className="font-mono text-[10px] text-emerald-400 uppercase tracking-wider font-bold">
+                    <span className="font-mono text-[10px] text-emerald-400 uppercase tracking-wider font-bold shrink-0">
                       ● COHORT OPEN
                     </span>
                   </div>

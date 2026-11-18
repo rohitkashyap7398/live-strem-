@@ -34,7 +34,7 @@ const ROW_1_REVIEWS: CourseReviewCardData[] = [
     role: 'MERN Stack Developer',
     rating: '4.7',
     stars: 5,
-    text: 'TheCodeSpark Coding School is the best hub for hands-on coding. The mentors make DSA, backend APIs, and cloud deployment easy to understand with instant doubt solving.',
+    text: 'TheCodeSpark Technologies Private Limited is the best hub for hands-on coding. The mentors make DSA, backend APIs, and cloud deployment easy to understand with instant doubt solving.',
     avatar: '/assets/aistudio/faculty_ishu_sharma.png',
   },
   {

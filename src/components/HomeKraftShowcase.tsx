@@ -127,72 +127,25 @@ export const HomeKraftShowcase: React.FC<HomeKraftShowcaseProps> = ({
   return (
     <div className="w-full max-w-6xl mx-auto rounded-[28px] sm:rounded-[36px] overflow-hidden border border-slate-200/90 dark:border-white/10 shadow-2xl bg-[#FAF6EE] dark:bg-[#17171B] text-[#141414] dark:text-white">
       {/* =====================================================================
-          BAND 1: 3-PANEL PHOTO STRIP + TILTED CRIMSON INSIGHT CARDS
+          BAND 1: STREET BILLBOARD VIDEO + MIDDLE BRAND POSTER + CRIMSON CARDS
          ===================================================================== */}
       <div className="p-3 sm:p-6 md:p-8 bg-[#FAF6EE] dark:bg-[#19191E] relative overflow-hidden">
-        {/* Top 3-Panel Studio Strip */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 rounded-2xl overflow-hidden shadow-xl border-2 border-[#141414] bg-[#141414]">
-          {/* Left Candid Studio Photo */}
-          <div className="hidden md:block md:col-span-4 h-[230px] sm:h-[290px] overflow-hidden relative">
-            <img
-              src="/assets/aistudio/TCS_Hackathon_Badge_Desk_Scene_04b4ab8b.png"
-              alt="TheCodeSpark Hackathon War Room"
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover brightness-95 hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-          </div>
-
-          {/* Center Punchy Editorial Poster */}
-          <div className="md:col-span-4 h-[250px] sm:h-[290px] relative overflow-hidden bg-[#121216] group">
-            <img
-              src="/assets/aistudio/TheCodeSpark_Developer_Toolkit_Poster_1d5ebe66.png"
-              alt="Developer Engineering Reality"
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover opacity-55 group-hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/35 to-black/85" />
-            <div className="absolute inset-0 p-5 flex flex-col items-center justify-between text-center text-white">
-              <span className="px-2.5 py-0.5 rounded bg-[#CC1E12] text-[10px] font-mono font-bold tracking-[0.22em] uppercase">
-                THECODESPARK BRIEF
-              </span>
-
-              <div className="space-y-1">
-                <div className="text-2xl sm:text-3xl font-black font-display uppercase tracking-tight leading-none">
-                  GOT{' '}
-                  <span className="inline-block px-2 py-0.5 bg-[#DBFF3E] text-[#141414] rounded-md -rotate-3">
-                    5
-                  </span>{' '}
-                  MINUTES?
-                </div>
-                <p className="text-sm sm:text-base font-extrabold italic text-[#ff6b4a] tracking-tight">
-                  escape tutorial autopilot
-                </p>
-              </div>
-
-              <div className="text-[10px] font-mono uppercase tracking-widest text-white/85">
-                Build Real Production Instincts Before Placement Season
-              </div>
-            </div>
-          </div>
-
-          {/* Right Auditorium Session Photo */}
-          <div className="hidden md:block md:col-span-4 h-[230px] sm:h-[290px] overflow-hidden relative">
-            <img
-              src="/assets/aistudio/Corporate_Training_Auditorium_Session_76c6f74e.png"
-              alt="Engineering Seminar Session"
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover brightness-95 hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-          </div>
+        {/* Top Street Billboard Video Frame with User Image Behind Walking Pedestrian */}
+        <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-xl border-2 border-[#141414] bg-[#141414]">
+          <video
+            src="/assets/aistudio/billboard_tcs_street.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-label="TheCodeSpark Technologies Private Limited Street Billboard Showcase"
+            className="w-full h-full object-cover"
+          />
         </div>
 
         {/* Two Tilted Crimson Insight Cards Overlapping Bottom */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-7 mt-5 sm:-mt-8 relative z-10 px-1 sm:px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-7 mt-4 sm:-mt-5 relative z-10 px-1 sm:px-4">
           {/* Card 1 */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}

@@ -256,7 +256,7 @@ export const SummerTrainingDetailView: React.FC<SummerTrainingDetailViewProps> =
                       <div className="aspect-[4/5] rounded-xl overflow-hidden bg-[#180c24] border border-black/5">
                         <img
                           src={posterImg}
-                          alt="TheCodeSpark 45-Day Summer Industrial Training"
+                          alt="TheCodeSpark Technologies Private Limited 45-Day Summer Industrial Training"
                           onError={(e) => {
                             e.currentTarget.src = rohitPhoto;
                           }}
@@ -360,7 +360,7 @@ export const SummerTrainingDetailView: React.FC<SummerTrainingDetailViewProps> =
                 5 Industry Tracks. Built Around Real Deployment.
               </h2>
               <p className="text-sm sm:text-base text-[#4B5563]">
-                Unlike institutes teaching outdated Bootstrap 3 or localhost slides, every TheCodeSpark Summer Training track includes modern frameworks, real databases, and cloud hosting.
+                Unlike institutes teaching outdated Bootstrap 3 or localhost slides, every TheCodeSpark Technologies Private Limited Summer Training track includes modern frameworks, real databases, and cloud hosting.
               </p>
             </div>
 
@@ -812,7 +812,7 @@ export const SummerTrainingDetailView: React.FC<SummerTrainingDetailViewProps> =
           <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-10">
             <div className="text-center space-y-2">
               <h2 className="text-3xl sm:text-4xl font-black text-[#0A140F] font-display tracking-tight">
-                Why Students Switch to TheCodeSpark for Summer Training
+                Why Students Switch to TheCodeSpark Technologies Private Limited for Summer Training
               </h2>
               <p className="text-sm text-[#4B5563]">
                 Real engineering mentorship vs crowded legacy coaching batches.
@@ -841,9 +841,9 @@ export const SummerTrainingDetailView: React.FC<SummerTrainingDetailViewProps> =
               </div>
 
               <div className="bg-[#062B1A] text-white p-6 sm:p-8 space-y-5 shadow-2xl">
-                <div className="flex items-center justify-between pb-3 border-b border-white/15">
-                  <span className="text-base font-black text-[#9BFF6E] font-display">
-                    TheCodeSpark (45 Days)
+                <div className="flex items-center justify-between gap-2 pb-3 border-b border-white/15">
+                  <span className="text-sm sm:text-base font-black text-[#9BFF6E] font-display leading-snug">
+                    TheCodeSpark Technologies Private Limited (45 Days)
                   </span>
                   <span className="text-[10px] font-mono text-[#9BFF6E] font-bold">
                     INDUSTRY STANDARD
@@ -1020,7 +1020,7 @@ export const SummerTrainingDetailView: React.FC<SummerTrainingDetailViewProps> =
                   <div className="flex items-start gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-[#059669] shrink-0 mt-0.5" />
                     <span>
-                      Signed by Mr. Rohit Kashyap, Founder &amp; CEO, TheCodeSpark Technologies Pvt. Ltd.
+                      Signed by Mr. Rohit Kashyap, Founder &amp; CEO, TheCodeSpark Technologies Private Limited
                     </span>
                   </div>
                 </div>
@@ -1035,11 +1035,11 @@ export const SummerTrainingDetailView: React.FC<SummerTrainingDetailViewProps> =
                         onError={(e) => {
                           e.currentTarget.src = brandLogo;
                         }}
-                        alt="TheCodeSpark Logo"
+                        alt="TheCodeSpark Technologies Private Limited Logo"
                         className="h-7 w-auto object-contain"
                       />
                       <span className="text-xs font-bold tracking-tight">
-                        TheCodeSpark Technologies Pvt. Ltd.
+                        TheCodeSpark Technologies Private Limited
                       </span>
                     </div>
                     <span className="text-[10px] font-mono text-[#9BFF6E] font-bold">
@@ -1070,7 +1070,7 @@ export const SummerTrainingDetailView: React.FC<SummerTrainingDetailViewProps> =
                     <div>
                       <div className="font-bold">Rohit Kashyap</div>
                       <div className="text-[10px] text-white/70 font-mono">
-                        Founder &amp; CEO · TheCodeSpark
+                        Founder &amp; CEO · TheCodeSpark Technologies Private Limited
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -1192,7 +1192,7 @@ export const SummerTrainingDetailView: React.FC<SummerTrainingDetailViewProps> =
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
                 <div className="space-y-3">
                   <span className="text-[11px] font-mono text-[#9BFF6E] font-bold">
-                    THECODESPARK SUMMER TRAINING DESK
+                    THECODESPARK TECHNOLOGIES PRIVATE LIMITED · SUMMER TRAINING DESK
                   </span>
                   <h3 className="text-2xl font-black font-display">
                     Reserve Your 45-Day Batch Today
@@ -1274,10 +1274,12 @@ export const SummerTrainingDetailView: React.FC<SummerTrainingDetailViewProps> =
                     onError={(e) => {
                       e.currentTarget.src = brandLogo;
                     }}
-                    alt="TheCodeSpark Logo"
+                    alt="TheCodeSpark Technologies Private Limited Logo"
                     className="h-6 w-auto object-contain"
                   />
-                  <span className="font-bold text-white text-sm">TheCodeSpark</span>
+                  <span className="font-bold text-white text-xs sm:text-sm">
+                    TheCodeSpark Technologies Private Limited
+                  </span>
                 </div>
               </div>
             </div>

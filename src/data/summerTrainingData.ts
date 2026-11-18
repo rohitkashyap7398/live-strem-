@@ -303,7 +303,7 @@ export const DAY_BY_DAY_ROADMAP: DayRoadmapPhase[] = [
     days: 'Days 21 – 32',
     step: 'PHASE 03',
     title: '2 Minor Live Projects + Generative AI APIs',
-    summary: 'Build two portfolio-worthy minor projects with real APIs and Gemini AI integration, reviewed line-by-line by TheCodeSpark mentors.',
+    summary: 'Build two portfolio-worthy minor projects with real APIs and Gemini AI integration, reviewed line-by-line by TheCodeSpark Technologies Private Limited mentors.',
     outcomes: ['2 live minor projects on GitHub', 'AI feature & prompt integration', '1-on-1 mentor code review']
   },
   {
@@ -378,7 +378,7 @@ export const DELIVERABLES_KIT = [
   {
     tag: 'CAREER FAST-TRACK 06',
     title: 'Apprenticeship Interviews & Merit Awards',
-    desc: 'Top Summer Training performers qualify directly for TheCodeSpark Paid Apprenticeship / Internship interviews, merit scholarships, and official welcome goodies.'
+    desc: 'Top Summer Training performers qualify directly for TheCodeSpark Technologies Private Limited Paid Apprenticeship / Internship interviews, merit scholarships, and official welcome goodies.'
   }
 ];
 
@@ -386,7 +386,7 @@ export const TRAINING_MODES = [
   {
     id: 'offline',
     badge: 'OFFLINE IN-CAMPUS • LUCKNOW',
-    title: 'TheCodeSpark Tech Campus (Gomti Nagar, Lucknow)',
+    title: 'TheCodeSpark Technologies Private Limited Tech Campus (Gomti Nagar, Lucknow)',
     subtitle: 'Daily face-to-face coding labs with founder mentorship, high-speed internet, and collaborative hackathon sprints.',
     points: [
       'Air-conditioned smart coding labs with dual-screen guidance',
@@ -419,7 +419,7 @@ export const BATCH_TIMINGS = [
 export const SUMMER_FAQS = [
   {
     category: 'Eligibility & NOC',
-    q: 'Will TheCodeSpark provide a Training Letter / NOC for my college before joining?',
+    q: 'Will TheCodeSpark Technologies Private Limited provide a Training Letter / NOC for my college before joining?',
     a: 'Yes! Immediately after registration, you receive an official signed Confirmation & Joining Letter on TheCodeSpark Technologies Private Limited letterhead addressed to your Head of Department / Training & Placement Cell (accepted by AKTU, BTEUP, Lucknow University & all AICTE colleges).'
   },
   {
@@ -429,7 +429,7 @@ export const SUMMER_FAQS = [
   },
   {
     category: 'Tracks & Projects',
-    q: 'How is TheCodeSpark 45-Day Summer Training better than other institutes in Lucknow?',
+    q: 'How is TheCodeSpark Technologies Private Limited 45-Day Summer Training better than other institutes in Lucknow?',
     a: 'Instead of outdated slides or 150-student crowded halls, you code daily in a 1:15 mentor ratio, integrate modern Generative AI workflows, deploy 2 Minor + 1 Major Live Project with 1-Year Free Cloud Hosting, and graduate with an authentic GitHub portfolio + ATS resume.'
   },
   {

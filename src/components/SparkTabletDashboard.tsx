@@ -317,7 +317,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
                   ? 'bg-white text-black shadow-md scale-105'
                   : 'text-neutral-400 hover:text-white hover:bg-white/10'
               }`}
-              title="TheCodeSpark AI Assistant"
+              title="TheCodeSpark Technologies Private Limited AI Assistant"
             >
               <Sparkles className="w-2.5 h-2.5 text-[#E10600]" />
             </button>
@@ -822,7 +822,7 @@ export const SparkTabletDashboard: React.FC<SparkTabletDashboardProps> = ({
             {/* Background image of photorealistic hands holding the tablet */}
             <img
               src="/hands_wide_tablet.jpg"
-              alt="Hands holding TheCodeSpark AI Tablet"
+              alt="Hands holding TheCodeSpark Technologies Private Limited AI Tablet"
               decoding="async"
               className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none brightness-95"
             />

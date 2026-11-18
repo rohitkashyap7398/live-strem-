@@ -303,11 +303,11 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
                   whileHover={{ scale: 1.02 }}
                   onClick={() => setPeerImageIndex((prev) => (prev + 1) % peerImages.length)}
                   className="rounded-2xl overflow-hidden relative group min-h-[170px] sm:min-h-[200px] border border-white/10 shadow-lg bg-[#121217] cursor-pointer"
-                  title="Click to toggle TheCodeSpark branded artwork"
+                  title="Click to toggle TheCodeSpark Technologies Private Limited branded artwork"
                 >
                   <img
                     src={peerImages[peerImageIndex]}
-                    alt="TheCodeSpark Peer Learning Culture"
+                    alt="TheCodeSpark Technologies Private Limited Peer Learning Culture"
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
@@ -425,7 +425,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
                 <div className="max-w-md">
                   <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-[#E10600]/25 border border-[#E10600]/40 text-[#ff5722] text-[10px] font-mono font-bold uppercase tracking-wider mb-2.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E10600] animate-pulse" />
-                    <span>TheCodeSpark Academy</span>
+                    <span>TheCodeSpark Technologies Private Limited</span>
                   </div>
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white font-display tracking-tight leading-snug">
                     01 — Skills to Success

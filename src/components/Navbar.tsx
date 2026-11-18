@@ -123,22 +123,31 @@ export const Navbar: React.FC<NavbarProps> = ({
             <img
               src={brandLogo}
               onError={(e) => { e.currentTarget.src = '/logo.png'; }}
-              alt="TheCodeSpark Logo"
+              alt="TheCodeSpark Technologies Private Limited Logo"
               className={`w-auto object-contain filter drop-shadow group-hover:scale-105 transition-all duration-300 shrink-0 ${
                 isScrolled ? 'h-4 sm:h-5 max-w-[56px]' : 'h-5 sm:h-6 max-w-[68px]'
               }`}
             />
-            <span
-              className={`font-extrabold tracking-tight text-slate-950 dark:text-white font-display leading-none whitespace-nowrap transition-all duration-300 ${
-                isScrolled ? 'text-[11px] sm:text-xs' : 'text-[12.5px] sm:text-sm'
-              }`}
-            >
-              TheCodeSpark
+            <div className="flex flex-col leading-none">
               <span
-                aria-hidden="true"
-                className="inline-block w-1.5 sm:w-2 h-[2px] bg-[#84cc16] dark:bg-[#C4FF00] ml-0.5 align-baseline rounded-full"
-              />
-            </span>
+                className={`font-extrabold tracking-tight text-slate-950 dark:text-white font-display leading-none whitespace-nowrap transition-all duration-300 ${
+                  isScrolled ? 'text-[10.5px] sm:text-[11.5px]' : 'text-[11.5px] sm:text-[13px]'
+                }`}
+              >
+                TheCodeSpark
+                <span
+                  aria-hidden="true"
+                  className="inline-block w-1.5 sm:w-2 h-[2px] bg-[#84cc16] dark:bg-[#C4FF00] ml-0.5 align-baseline rounded-full"
+                />
+              </span>
+              <span
+                className={`font-semibold tracking-tight text-slate-600 dark:text-neutral-300 whitespace-nowrap transition-all duration-300 leading-none mt-[1px] ${
+                  isScrolled ? 'text-[7px] sm:text-[8px]' : 'text-[7.5px] sm:text-[8.5px]'
+                }`}
+              >
+                Technologies Private Limited
+              </span>
+            </div>
           </motion.button>
 
           {/* Zone 2: Centered Navigation Links */}
@@ -260,7 +269,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <img
                     src={brandLogo}
                     onError={(e) => { e.currentTarget.src = '/logo.png'; }}
-                    alt="TheCodeSpark Logo"
+                    alt="TheCodeSpark Technologies Private Limited Logo"
                     className="h-8 w-auto object-contain filter drop-shadow"
                   />
                   <div className="flex flex-col">
@@ -268,7 +277,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       TheCodeSpark
                     </span>
                     <span className="text-[10px] font-semibold text-slate-600 dark:text-[#C4FF00] leading-tight">
-                      Technologies Pvt Ltd
+                      Technologies Private Limited
                     </span>
                   </div>
                 </div>

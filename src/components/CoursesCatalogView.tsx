@@ -244,7 +244,7 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
         <div className="text-center max-w-4xl mx-auto mb-10 sm:mb-12 space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 text-[11px] font-mono uppercase tracking-widest text-slate-700 dark:text-neutral-300">
             <span className="w-1.5 h-1.5 rounded-full bg-[#5b4bff]" />
-            <span>TheCodeSpark Cohorts &amp; Trading Academy</span>
+            <span>TheCodeSpark Technologies Private Limited · Cohorts</span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white font-display tracking-tight leading-tight">
             Level Up Your Skills With<br className="hidden sm:inline" /> Expert-Led Courses
@@ -654,8 +654,8 @@ export const CoursesCatalogView: React.FC<CoursesCatalogViewProps> = ({
             <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white font-display tracking-tight leading-snug">
               Transform Your Learning Journey<br />
               Into A Career Breakthrough With<br />
-              <span className="text-[#ff5722] border border-[#ff5722]/30 px-3 py-1 rounded-xl bg-[#ff5722]/10 inline-block mt-2">
-                TheCodeSpark
+              <span className="text-[#ff5722] border border-[#ff5722]/30 px-3 py-1 rounded-xl bg-[#ff5722]/10 inline-block mt-2 text-lg sm:text-3xl md:text-4xl">
+                TheCodeSpark Technologies Private Limited
               </span>
             </h2>
 
