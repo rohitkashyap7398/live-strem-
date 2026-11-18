@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, type Variants } from 'motion/react';
 import { Play, Pause, Volume2, VolumeX, ArrowRight, Star, Phone, Sparkles } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
-import { SparkTabletDashboard } from './SparkTabletDashboard';
+import { HomeKraftShowcase } from './HomeKraftShowcase';
 import { MagneticButton } from './MagneticButton';
 
 interface HeroBentoProps {
@@ -229,16 +229,15 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
         </div>
 
         {/* ======================================================== */}
-        {/* PREMIER AI TABLET DASHBOARD SHOWCASE */}
-        {/* (Includes 'TheCodeSpark OS • Live Intelligence' Pill & Tablet) */}
+        {/* HOME EDITORIAL & STACKED CRAFT SHOWCASE */}
         {/* ======================================================== */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-10 sm:mb-14"
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="mb-12 sm:mb-16"
         >
-          <SparkTabletDashboard
+          <HomeKraftShowcase
             onStartJourney={onStartJourney}
             onRequestCallback={onGetInTouch}
             onExploreCourses={onExploreCourses}

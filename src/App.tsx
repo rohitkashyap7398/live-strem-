@@ -119,7 +119,7 @@ export default function App() {
         <main>
           {/* Bento Grid Hero */}
           <HeroBento
-            onStartJourney={() => setCurrentPage('bootcamp')}
+            onStartJourney={() => setCurrentPage('courses')}
             onGetInTouch={() => setIsCallbackOpen(true)}
             onExploreCourses={() => setCurrentPage('courses')}
           />
