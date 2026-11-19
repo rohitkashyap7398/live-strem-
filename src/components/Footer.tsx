@@ -1,21 +1,82 @@
-import React from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import { Youtube, Instagram, Heart, MessageSquare, MapPin, Phone, Mail } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
 
 interface FooterProps {
-  onNavigate: (page: 'home' | 'projects' | 'course-detail') => void;
+  onNavigate: (page: 'home' | 'projects' | 'career' | 'course-detail') => void;
   onRequestCall: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, onRequestCall }) => {
+  const uid = useId().replace(/:/g, '');
+  const fillGradientId = `footer-spotlight-fill-${uid}`;
+  const strokeGradientId = `footer-spotlight-stroke-${uid}`;
+
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const hoveredRef = useRef(false);
+  const targetRef = useRef({ x: 700, y: 120 });
+  const currentRef = useRef({ x: 700, y: 120, radius: 225 });
+  const [spotlight, setSpotlight] = useState({ x: 700, y: 120, radius: 225, hovered: false });
+
+  useEffect(() => {
+    const prefersReduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let rafId = 0;
+    const start = performance.now();
+
+    const tick = (now: number) => {
+      const elapsed = (now - start) / 1000;
+
+      if (!hoveredRef.current) {
+        if (prefersReduced) {
+          targetRef.current = { x: 700, y: 128 };
+        } else {
+          targetRef.current = {
+            x: 700 + Math.sin(elapsed * 0.85) * 520,
+            y: 128 + Math.cos(elapsed * 1.35) * 32,
+          };
+        }
+      }
+
+      const targetRadius = hoveredRef.current ? 265 : 220;
+      const ease = hoveredRef.current ? 0.16 : 0.06;
+
+      currentRef.current.x += (targetRef.current.x - currentRef.current.x) * ease;
+      currentRef.current.y += (targetRef.current.y - currentRef.current.y) * ease;
+      currentRef.current.radius += (targetRadius - currentRef.current.radius) * 0.12;
+
+      setSpotlight({
+        x: currentRef.current.x,
+        y: currentRef.current.y,
+        radius: currentRef.current.radius,
+        hovered: hoveredRef.current,
+      });
+
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
+  const updatePointerTarget = (clientX: number, clientY: number) => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const rect = svg.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    const x = ((clientX - rect.left) / rect.width) * 1400;
+    const y = ((clientY - rect.top) / rect.height) * 285;
+    targetRef.current = {
+      x: Math.max(0, Math.min(1400, x)),
+      y: Math.max(0, Math.min(285, y)),
+    };
+  };
+
   return (
-    <footer className="relative bg-slate-100 dark:bg-[#222222] border-t border-slate-200 dark:border-white/[0.08] pt-16 pb-12 overflow-hidden transition-colors">
-      {/* Huge Outline Watermark in Background */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 mb-8 overflow-hidden select-none pointer-events-none">
-        <div className="text-[6.5vw] font-black font-display tracking-tight text-stroke-subtle opacity-25 leading-none whitespace-nowrap">
-          TheCodeSpark Technologies Private Limited
-        </div>
-      </div>
+    <footer className="relative bg-slate-100 dark:bg-[#08080a] border-t border-slate-200 dark:border-white/[0.08] pt-16 pb-6 overflow-hidden transition-colors">
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-slate-200 dark:border-white/5">
@@ -137,13 +198,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onRequestCall }) => 
                 <span className="hover:text-[#ff5722] cursor-pointer transition-colors">Resume Checker</span>
               </li>
               <li>
-                <span className="hover:text-[#ff5722] cursor-pointer transition-colors">Hire From Us</span>
+                <button onClick={() => onNavigate('career')} className="hover:text-[#ff5722] cursor-pointer transition-colors">
+                  Hire From Us
+                </button>
               </li>
               <li>
                 <span className="hover:text-slate-950 dark:hover:text-white cursor-pointer transition-colors">Discord Community</span>
               </li>
               <li>
-                <span className="hover:text-slate-950 dark:hover:text-white cursor-pointer transition-colors">Career & Jobs</span>
+                <button onClick={() => onNavigate('career')} className="hover:text-[#ff5722] cursor-pointer transition-colors">
+                  Career & Jobs
+                </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('projects')} className="hover:text-[#ff5722] cursor-pointer transition-colors">
@@ -195,13 +260,153 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onRequestCall }) => 
         </div>
 
         {/* Bottom copyright row */}
-        <div className="pt-6 flex flex-wrap justify-between items-center gap-4 text-xs text-slate-500 dark:text-neutral-400 font-mono">
+        <div className="pt-6 pb-8 flex flex-wrap justify-between items-center gap-4 text-xs text-slate-500 dark:text-neutral-400 font-mono">
           <p>© 2024 TheCodeSpark Technologies Private Limited. All Rights Reserved.</p>
           <p className="flex items-center gap-1.5">
             <span>Made with</span>
             <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500 animate-pulse" />
             <span>for Next-Gen Coders in India</span>
           </p>
+        </div>
+      </div>
+
+      {/* Interactive Giant Outline + Spotlight Glow Company Wordmark */}
+      <div
+        className="relative w-full border-t border-slate-200/80 dark:border-white/[0.06] bg-slate-200/40 dark:bg-[#040405] pt-8 pb-6 sm:pt-10 sm:pb-8 cursor-crosshair select-none"
+        onMouseEnter={(e) => {
+          hoveredRef.current = true;
+          updatePointerTarget(e.clientX, e.clientY);
+        }}
+        onMouseMove={(e) => {
+          hoveredRef.current = true;
+          updatePointerTarget(e.clientX, e.clientY);
+        }}
+        onMouseLeave={() => {
+          hoveredRef.current = false;
+        }}
+        onTouchStart={(e) => {
+          const touch = e.touches[0];
+          if (touch) {
+            hoveredRef.current = true;
+            updatePointerTarget(touch.clientX, touch.clientY);
+          }
+        }}
+        onTouchMove={(e) => {
+          const touch = e.touches[0];
+          if (touch) {
+            hoveredRef.current = true;
+            updatePointerTarget(touch.clientX, touch.clientY);
+          }
+        }}
+        onTouchEnd={() => {
+          hoveredRef.current = false;
+        }}
+      >
+        <div className="max-w-[1440px] mx-auto px-3 sm:px-6">
+          <svg
+            ref={svgRef}
+            viewBox="0 0 1400 285"
+            className="w-full h-auto block overflow-visible"
+            role="img"
+            aria-label="TheCodeSpark Technologies Private Limited"
+          >
+            <defs>
+              <radialGradient
+                id={fillGradientId}
+                gradientUnits="userSpaceOnUse"
+                cx={spotlight.x}
+                cy={spotlight.y}
+                r={spotlight.radius}
+              >
+                <stop
+                  offset="0%"
+                  stopColor="#ea5828"
+                  stopOpacity={spotlight.hovered ? 0.96 : 0.88}
+                />
+                <stop
+                  offset="38%"
+                  stopColor="#b93a17"
+                  stopOpacity={spotlight.hovered ? 0.82 : 0.72}
+                />
+                <stop
+                  offset="72%"
+                  stopColor="#4a1508"
+                  stopOpacity={spotlight.hovered ? 0.36 : 0.28}
+                />
+                <stop offset="100%" stopColor="#1a0603" stopOpacity={0} />
+              </radialGradient>
+
+              <radialGradient
+                id={strokeGradientId}
+                gradientUnits="userSpaceOnUse"
+                cx={spotlight.x}
+                cy={spotlight.y}
+                r={spotlight.radius * 1.18}
+              >
+                <stop offset="0%" stopColor="#ff6d3b" stopOpacity={0.95} />
+                <stop offset="55%" stopColor="#d9481c" stopOpacity={0.45} />
+                <stop offset="100%" stopColor="#d9481c" stopOpacity={0} />
+              </radialGradient>
+            </defs>
+
+            {/* Crisp Subtle Outline Layer */}
+            <g
+              fill="none"
+              className="stroke-slate-900/20 dark:stroke-white/[0.18]"
+              fontFamily="var(--font-heading), Outfit, system-ui, sans-serif"
+              textAnchor="middle"
+            >
+              <text
+                x="700"
+                y="165"
+                fontSize="168"
+                fontWeight="900"
+                letterSpacing="-3.5"
+                strokeWidth="1.75"
+              >
+                TheCodeSpark
+              </text>
+              <text
+                x="700"
+                y="246"
+                fontSize="50"
+                fontWeight="800"
+                letterSpacing="9"
+                strokeWidth="1.25"
+              >
+                TECHNOLOGIES PRIVATE LIMITED
+              </text>
+            </g>
+
+            {/* Animated & Cursor-Following Terracotta Radial Spotlight Layer */}
+            <g
+              fill={`url(#${fillGradientId})`}
+              stroke={`url(#${strokeGradientId})`}
+              fontFamily="var(--font-heading), Outfit, system-ui, sans-serif"
+              textAnchor="middle"
+            >
+              <text
+                x="700"
+                y="165"
+                fontSize="168"
+                fontWeight="900"
+                letterSpacing="-3.5"
+                strokeWidth="2.1"
+              >
+                TheCodeSpark
+              </text>
+              <text
+                x="700"
+                y="246"
+                fontSize="50"
+                fontWeight="800"
+                letterSpacing="9"
+                strokeWidth="1.45"
+              >
+                TECHNOLOGIES PRIVATE LIMITED
+              </text>
+            </g>
+          </svg>
         </div>
       </div>
     </footer>

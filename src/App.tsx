@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MotionConfig } from 'motion/react';
-import { Navbar } from './components/Navbar';
+import { Navbar, NavPageId } from './components/Navbar';
 import { HeroBento } from './components/HeroBento';
 import { CompaniesMarquee } from './components/CompaniesMarquee';
 import { ImpactGallery } from './components/ImpactGallery';
@@ -12,6 +12,7 @@ import { BootcampView } from './components/BootcampView';
 import { ClassroomView } from './components/ClassroomView';
 import { OfflineProgramsView } from './components/OfflineProgramsView';
 import { FeaturedProjectsView } from './components/FeaturedProjectsView';
+import { CareerView, CareerSectionCategory } from './components/CareerView';
 import { StudentReviews } from './components/StudentReviews';
 import { YoutubeTutorials } from './components/YoutubeTutorials';
 import { CommunityPlacement } from './components/CommunityPlacement';
@@ -31,13 +32,18 @@ import { COURSES, Course } from './data/coursesData';
 import { ProjectCategory } from './data/featuredProjectsData';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'projects' | 'course-detail'>('home');
+  const [currentPage, setCurrentPage] = useState<NavPageId>('home');
   const [selectedCourse, setSelectedCourse] = useState<Course>(COURSES[0]);
   const [projectNavIntent, setProjectNavIntent] = useState<{
     category: 'All' | ProjectCategory;
     scrollTarget: 'top' | 'live-sites' | 'directory';
     nonce: number;
   }>({ category: 'All', scrollTarget: 'top', nonce: 0 });
+  const [careerNavIntent, setCareerNavIntent] = useState<{
+    section: CareerSectionCategory;
+    scrollTarget: 'top' | 'roles' | 'placement' | 'apply';
+    nonce: number;
+  }>({ section: 'all', scrollTarget: 'top', nonce: 0 });
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     try {
       const saved = localStorage.getItem('thecodespark-theme');
@@ -85,7 +91,7 @@ export default function App() {
     }
   }, [currentPage, selectedCourse]);
 
-  const handleNavigate = (page: 'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'projects' | 'course-detail', courseId?: string) => {
+  const handleNavigate = (page: NavPageId, courseId?: string) => {
     if (courseId) {
       const found = COURSES.find((c) => c.id === courseId);
       if (found) {
@@ -105,6 +111,18 @@ export default function App() {
       nonce: prev.nonce + 1
     }));
     setCurrentPage('projects');
+  };
+
+  const handleNavigateCareer = (
+    section: CareerSectionCategory = 'all',
+    scrollTarget: 'top' | 'roles' | 'placement' | 'apply' = 'top'
+  ) => {
+    setCareerNavIntent((prev) => ({
+      section,
+      scrollTarget,
+      nonce: prev.nonce + 1
+    }));
+    setCurrentPage('career');
   };
 
   const handleSelectCourse = (course: Course) => {
@@ -131,6 +149,7 @@ export default function App() {
         currentPage={currentPage}
         onNavigate={handleNavigate}
         onNavigateProjects={handleNavigateProjects}
+        onNavigateCareer={handleNavigateCareer}
         onRequestCall={() => setIsCallbackOpen(true)}
         isDarkMode={isDarkMode}
         onToggleTheme={() => setIsDarkMode((prev) => !prev)}
@@ -237,6 +256,18 @@ export default function App() {
             initialCategory={projectNavIntent.category}
             scrollTarget={projectNavIntent.scrollTarget}
             navNonce={projectNavIntent.nonce}
+            onRequestCallback={() => setIsCallbackOpen(true)}
+            onExploreCourses={() => setCurrentPage('courses')}
+          />
+        </main>
+      )}
+
+      {currentPage === 'career' && (
+        <main>
+          <CareerView
+            initialSection={careerNavIntent.section}
+            scrollTarget={careerNavIntent.scrollTarget}
+            navNonce={careerNavIntent.nonce}
             onRequestCallback={() => setIsCallbackOpen(true)}
             onExploreCourses={() => setCurrentPage('courses')}
           />
