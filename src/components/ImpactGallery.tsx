@@ -97,6 +97,8 @@ export const ImpactGallery: React.FC = () => {
 
   const [isPaused, setIsPaused] = useState(false);
   const [isInView, setIsInView] = useState(false);
+  const floatScrollRef = useRef<number>(0);
+  const targetScrollRef = useRef<number | null>(null);
 
   // Track section visibility so offscreen timers & videos don't burn mobile CPU/GPU
   useEffect(() => {
@@ -139,32 +141,58 @@ export const ImpactGallery: React.FC = () => {
     };
   }, []);
 
-  // Automatic smooth scroll across cards only when visible
+  // Continuous smooth horizontal auto-scroll across cards when visible
   useEffect(() => {
-    if (isPaused || !isInView) return;
+    let rafId = 0;
+    let lastTime = performance.now();
 
-    const interval = setInterval(() => {
-      if (carouselRef.current) {
-        const container = carouselRef.current;
-        const maxScroll = container.scrollWidth - container.clientWidth;
+    const tick = (now: number) => {
+      const dt = Math.min(now - lastTime, 64);
+      lastTime = now;
 
-        // Loop smoothly when reaching near the end
-        if (container.scrollLeft >= maxScroll - 25) {
-          container.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          container.scrollBy({ left: 310, behavior: 'smooth' });
+      const container = carouselRef.current;
+      if (container) {
+        const halfWidth = container.scrollWidth / 2;
+        if (halfWidth > 0) {
+          if (targetScrollRef.current !== null) {
+            const diff = targetScrollRef.current - floatScrollRef.current;
+            if (Math.abs(diff) < 1.5) {
+              floatScrollRef.current = ((targetScrollRef.current % halfWidth) + halfWidth) % halfWidth;
+              targetScrollRef.current = null;
+            } else {
+              floatScrollRef.current += diff * Math.min(1, dt * 0.012);
+            }
+            const wrapped = ((floatScrollRef.current % halfWidth) + halfWidth) % halfWidth;
+            container.scrollLeft = wrapped;
+          } else if (!isPaused && !isVideoModalOpen && isInView) {
+            floatScrollRef.current += (dt / 1000) * 62;
+            if (floatScrollRef.current >= halfWidth) {
+              floatScrollRef.current -= halfWidth;
+            } else if (floatScrollRef.current < 0) {
+              floatScrollRef.current += halfWidth;
+            }
+            container.scrollLeft = floatScrollRef.current;
+          } else {
+            floatScrollRef.current = container.scrollLeft;
+          }
         }
       }
-    }, 3000);
 
-    return () => clearInterval(interval);
-  }, [isPaused, isInView]);
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [isPaused, isVideoModalOpen, isInView]);
 
   const scroll = (direction: 'left' | 'right') => {
-    if (carouselRef.current) {
-      const scrollAmount = direction === 'left' ? -380 : 380;
-      carouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
+    const container = carouselRef.current;
+    if (!container) return;
+    const halfWidth = container.scrollWidth / 2;
+    if (halfWidth <= 0) return;
+    const base = targetScrollRef.current ?? floatScrollRef.current;
+    const step = direction === 'left' ? -340 : 340;
+    targetScrollRef.current = base + step;
   };
 
   return (
@@ -232,23 +260,24 @@ export const ImpactGallery: React.FC = () => {
           onMouseLeave={() => setIsPaused(false)}
           onTouchStart={() => setIsPaused(true)}
           onTouchEnd={() => setIsPaused(false)}
-          className="flex gap-4 sm:gap-5 overflow-x-auto pb-5 pt-1 scrollbar-none scroll-smooth -mx-4 px-4 sm:-mx-6 sm:px-6"
+          className="flex gap-4 sm:gap-5 overflow-x-auto pb-5 pt-1 scrollbar-none -mx-4 px-4 sm:-mx-6 sm:px-6"
         >
-          {CAMPUS_CARDS.map((card) => {
-            const isSelected = activeCardId === card.id;
+          {[...CAMPUS_CARDS, ...CAMPUS_CARDS].map((card, idx) => {
+            const instanceKey = `${card.id}-${idx}`;
+            const isSelected = activeCardId === instanceKey || (activeCardId === card.id && idx === 0);
 
             return (
               <div
-                key={card.id}
-                onMouseEnter={() => setActiveCardId(card.id)}
+                key={instanceKey}
+                onMouseEnter={() => setActiveCardId(instanceKey)}
                 onClick={() => {
-                  setActiveCardId(card.id);
+                  setActiveCardId(instanceKey);
                   if (card.type === 'video' && card.videoUrl) {
                     setModalVideoUrl(card.videoUrl);
                     setIsVideoModalOpen(true);
                   }
                 }}
-                className={`relative w-[250px] sm:w-[275px] md:w-[290px] h-[390px] sm:h-[430px] shrink-0 rounded-2xl overflow-hidden cursor-pointer snap-start border transition-all duration-500 group select-none ${
+                className={`relative w-[250px] sm:w-[275px] md:w-[290px] h-[390px] sm:h-[430px] shrink-0 rounded-2xl overflow-hidden cursor-pointer border transition-all duration-500 group select-none ${
                   isSelected
                     ? 'border-[#ff5722]/60 shadow-2xl shadow-[#ff5722]/20 ring-1 ring-[#ff5722]/30 scale-[1.01]'
                     : 'border-white/10 shadow-xl shadow-black/60 hover:border-white/30'
@@ -315,7 +344,7 @@ export const ImpactGallery: React.FC = () => {
                     {card.title}
                   </h3>
                   <span className="text-[10.5px] text-neutral-400 mt-0.5 flex items-center gap-1">
-                    {card.type === 'video' ? 'Click to watch video with sound →' : 'Hover to view details →'}
+                    {card.type === 'video' ? 'Click to watch video →' : 'Hover to view details →'}
                   </span>
                 </div>
 
@@ -450,6 +479,13 @@ export const ImpactGallery: React.FC = () => {
                   src={modalVideoUrl}
                   controls
                   autoPlay
+                  muted
+                  onVolumeChange={(e) => {
+                    if (!e.currentTarget.muted || e.currentTarget.volume > 0) {
+                      e.currentTarget.muted = true;
+                      e.currentTarget.volume = 0;
+                    }
+                  }}
                   className="w-full h-full object-contain"
                 >
                   Your browser does not support HTML5 video.

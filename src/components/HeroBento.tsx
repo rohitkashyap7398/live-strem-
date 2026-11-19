@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, type Variants } from 'motion/react';
-import { Play, Pause, Volume2, VolumeX, ArrowRight, Star, Phone, Sparkles } from 'lucide-react';
+import { Play, Pause, ArrowRight, Star, Phone, Sparkles } from 'lucide-react';
 import brandLogo from '../assets/logo.png';
 import { HomeKraftShowcase } from './HomeKraftShowcase';
 import { MagneticButton } from './MagneticButton';
@@ -19,7 +19,6 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
 
   // User provided branded artwork images for Peer Learning Culture
   const peerImages = [
@@ -33,8 +32,8 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.muted = isMuted;
-      videoRef.current.defaultMuted = isMuted;
+      videoRef.current.muted = true;
+      videoRef.current.defaultMuted = true;
       if (isPlaying) {
         const p = videoRef.current.play();
         if (p !== undefined) {
@@ -42,7 +41,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
         }
       }
     }
-  }, [isPlaying, isMuted, selectedVideo]);
+  }, [isPlaying, selectedVideo]);
 
   useEffect(() => {
     const vid = videoRef.current;
@@ -70,12 +69,6 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
       videoRef.current.play().catch(() => {});
       setIsPlaying(true);
     }
-  };
-
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !isMuted;
-    setIsMuted(!isMuted);
   };
 
   const containerVariants: Variants = {
@@ -413,7 +406,7 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
                 className="absolute inset-0 w-full h-full object-cover brightness-95 group-hover:brightness-100 transition-[filter] duration-700"
                 autoPlay
                 loop
-                muted={isMuted}
+                muted
                 playsInline
               />
 
@@ -447,17 +440,6 @@ export const HeroBento: React.FC<HeroBentoProps> = ({
                     title={isPlaying ? 'Pause' : 'Play'}
                   >
                     {isPlaying ? <Pause className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-white" />}
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleMute();
-                    }}
-                    className="p-2 sm:p-2.5 rounded-full bg-black/70 hover:bg-black/90 text-white backdrop-blur-md border border-white/15 transition-all cursor-pointer shadow-lg"
-                    aria-label={isMuted ? 'Unmute' : 'Mute'}
-                    title={isMuted ? 'Unmute' : 'Mute'}
-                  >
-                    {isMuted ? <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
                   </button>
                 </div>
               </div>

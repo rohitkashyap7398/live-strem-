@@ -36,6 +36,11 @@ export function useViewportVideoManager(routeKey: string) {
     );
 
     const scanVideos = () => {
+      document.querySelectorAll<HTMLVideoElement>('video').forEach((video) => {
+        video.muted = true;
+        video.defaultMuted = true;
+        video.volume = 0;
+      });
       const videos = document.querySelectorAll<HTMLVideoElement>('video[autoplay]:not([data-preview-video="true"])');
       videos.forEach((video) => {
         if (!observed.has(video)) {

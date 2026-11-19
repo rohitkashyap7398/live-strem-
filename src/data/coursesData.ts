@@ -609,7 +609,6 @@ export const COURSES: Course[] = [
     isComingSoon: false,
     comingSoonText: "Admissions Open • Batch Starting Soon",
     posterImg: "/assets/aistudio/IGNITE_3.0_Developer_Cohort_Poster_2_2e0454b4.png",
-    videoUrl: "/assets/aistudio/20261101-0826-41.9641150_79ea86df.mp4",
     instructorImg: "/Rohit.png",
     instructorName: "Mr. Rohit Kashyap (Founder & CEO)",
     prerequisites: {
@@ -718,7 +717,6 @@ export const COURSES: Course[] = [
     isComingSoon: true,
     comingSoonText: "Pre-Registration Open • Batch 5.0",
     posterImg: "/assets/aistudio/AI-Powered_Learning_Platform_Conference_4d9a70e4.png",
-    videoUrl: "/assets/aistudio/20261101-0826-41.9641150_79ea86df.mp4",
     instructorImg: "/assets/aistudio/faculty_nirved_kumar.png",
     instructorName: "Lead Cloud Architect",
     prerequisites: {
@@ -814,7 +812,6 @@ export const COURSES: Course[] = [
     isComingSoon: true,
     comingSoonText: "Coming Soon • Pre-Booking Open",
     posterImg: "/assets/aistudio/Autonomous_AI_Agents_Tech_Talk_Poster_db3b38b0.png",
-    videoUrl: "/assets/aistudio/20261101-0826-41.9641150_79ea86df.mp4",
     instructorImg: "/Rohit.png",
     instructorName: "Mr. Rohit Kashyap & AI Systems Lab",
     prerequisites: {
@@ -910,7 +907,6 @@ export const COURSES: Course[] = [
     isComingSoon: true,
     comingSoonText: "Coming Soon • Pre-Booking Open",
     posterImg: "/assets/aistudio/TheCodeSpark_Developer_Toolkit_Poster_1d5ebe66.png",
-    videoUrl: "/assets/aistudio/20261101-0826-41.9641150_79ea86df.mp4",
     instructorImg: "/Rohit.png",
     instructorName: "Mr. Rohit Kashyap & Tooling Leads",
     prerequisites: {
@@ -1006,7 +1002,6 @@ export const COURSES: Course[] = [
     isComingSoon: false,
     comingSoonText: "Admissions Open • 45-Day Summer Batch",
     posterImg: "/assets/aistudio/TheCodeSpark_AI_Coding_Conference_d7477d11.png",
-    videoUrl: "/assets/aistudio/20261101-0826-41.9641150_79ea86df.mp4",
     instructorImg: "/Rohit.png",
     instructorName: "Mr. Rohit Kashyap & Campus Engineering Leads",
     prerequisites: {

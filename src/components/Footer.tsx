@@ -3,7 +3,7 @@ import { Youtube, Instagram, Heart, MessageSquare, MapPin, Phone, Mail } from 'l
 import brandLogo from '../assets/logo.png';
 
 interface FooterProps {
-  onNavigate: (page: 'home' | 'course-detail') => void;
+  onNavigate: (page: 'home' | 'projects' | 'course-detail') => void;
   onRequestCall: () => void;
 }
 
@@ -146,7 +146,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onRequestCall }) => 
                 <span className="hover:text-slate-950 dark:hover:text-white cursor-pointer transition-colors">Career & Jobs</span>
               </li>
               <li>
-                <span className="hover:text-slate-950 dark:hover:text-white cursor-pointer transition-colors">Submit Projects</span>
+                <button onClick={() => onNavigate('projects')} className="hover:text-[#ff5722] cursor-pointer transition-colors">
+                  Featured Projects (240)
+                </button>
               </li>
               <li>
                 <span className="hover:text-slate-950 dark:hover:text-white cursor-pointer transition-colors">Student Feedback</span>

@@ -22,8 +22,6 @@ import {
   Sparkles,
   Terminal,
   Users,
-  Volume2,
-  VolumeX,
   Briefcase,
   Code2,
   Cpu
@@ -487,7 +485,6 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
   const carouselTrackRef = useRef<HTMLDivElement>(null);
 
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
 
   // Interactive sections state
   const [openMethodologyIdx, setOpenMethodologyIdx] = useState<number | null>(0);
@@ -561,12 +558,6 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
       videoRef.current.play().catch(() => {});
       setIsPlaying(true);
     }
-  };
-
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !isMuted;
-    setIsMuted(!isMuted);
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -1480,7 +1471,7 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                       className="w-full h-full object-cover"
                       autoPlay
                       loop
-                      muted={isMuted}
+                      muted
                       playsInline
                     />
 
@@ -1493,18 +1484,6 @@ export const OfflineProgramsView: React.FC<OfflineProgramsViewProps> = ({
                         <Pause className="w-5 h-5 fill-current" />
                       ) : (
                         <Play className="w-5 h-5 fill-current ml-0.5" />
-                      )}
-                    </button>
-
-                    <button
-                      onClick={toggleMute}
-                      aria-label={isMuted ? 'Unmute' : 'Mute'}
-                      className="absolute top-3.5 right-3.5 p-2 rounded-full bg-black/65 hover:bg-black/85 text-white backdrop-blur-md cursor-pointer"
-                    >
-                      {isMuted ? (
-                        <VolumeX className="w-4 h-4" />
-                      ) : (
-                        <Volume2 className="w-4 h-4" />
                       )}
                     </button>
 

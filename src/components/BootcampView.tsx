@@ -6,8 +6,6 @@ import {
   ArrowUp,
   Play,
   Pause,
-  Volume2,
-  VolumeX,
   Check,
   X,
   ChevronDown,
@@ -202,7 +200,6 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
 
   // Module tab state (Default: Module 03 Backend Engineering)
   const [activeModuleTab, setActiveModuleTab] = useState(2);
@@ -225,12 +222,6 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
       videoRef.current.play().catch(() => {});
       setIsPlaying(true);
     }
-  };
-
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !isMuted;
-    setIsMuted(!isMuted);
   };
 
   const scrollToSection = (id: string) => {
@@ -802,7 +793,7 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                     preload="metadata"
                     autoPlay
                     loop
-                    muted={isMuted}
+                    muted
                     playsInline
                     className="w-full h-full object-cover"
                   />
@@ -819,13 +810,6 @@ export const BootcampView: React.FC<BootcampViewProps> = ({
                       className="w-8 h-8 bg-[#0E0E0E]/85 hover:bg-[#EA2814] text-white flex items-center justify-center cursor-pointer transition-colors"
                     >
                       {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-                    </button>
-                    <button
-                      onClick={toggleMute}
-                      aria-label={isMuted ? 'Unmute video' : 'Mute video'}
-                      className="w-8 h-8 bg-[#0E0E0E]/85 hover:bg-[#EA2814] text-white flex items-center justify-center cursor-pointer transition-colors"
-                    >
-                      {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
                     </button>
                   </div>
 

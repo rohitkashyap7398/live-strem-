@@ -1,13 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowUpRight, Menu, X, ArrowRight, Phone } from 'lucide-react';
+import { ArrowUpRight, Menu, X, ArrowRight, Phone, ChevronDown } from 'lucide-react';
 
 import brandLogo from '../assets/logo.png';
 import { RockerThemeToggle } from './RockerThemeToggle';
+import {
+  FEATURED_PROJECTS,
+  CLIENT_LIVE_PROJECTS,
+  PROJECT_CATEGORIES,
+  ProjectCategory
+} from '../data/featuredProjectsData';
 
 interface NavbarProps {
-  currentPage: 'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'course-detail';
-  onNavigate: (page: 'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'course-detail', courseId?: string) => void;
+  currentPage: 'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'projects' | 'course-detail';
+  onNavigate: (page: 'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'projects' | 'course-detail', courseId?: string) => void;
+  onNavigateProjects?: (
+    category?: 'All' | ProjectCategory,
+    scrollTarget?: 'top' | 'live-sites' | 'directory'
+  ) => void;
   onRequestCall: () => void;
   isDarkMode: boolean;
   onToggleTheme: () => void;
@@ -36,12 +46,17 @@ const WhatsAppLogo: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' 
 export const Navbar: React.FC<NavbarProps> = ({
   currentPage,
   onNavigate,
+  onNavigateProjects,
   onRequestCall,
   isDarkMode,
   onToggleTheme
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isProjectsDropdownOpen, setIsProjectsDropdownOpen] = useState(false);
+  const [isMobileProjectsExpanded, setIsMobileProjectsExpanded] = useState(false);
+  const dropdownContainerRef = useRef<HTMLDivElement>(null);
+  const hoverCloseTimerRef = useRef<number | null>(null);
 
   const navItems: { id: 'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline'; label: string }[] = [
     { id: 'home', label: 'Home' },
@@ -50,6 +65,14 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'classroom', label: 'Code Studio' },
     { id: 'offline', label: 'Tech Campus' }
   ];
+
+  const categoryCounts = React.useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const p of FEATURED_PROJECTS) {
+      map[p.category] = (map[p.category] || 0) + 1;
+    }
+    return map;
+  }, []);
 
   // Track scroll smoothly without excessive state updates
   useEffect(() => {
@@ -72,6 +95,30 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close desktop dropdown on outside click or Escape
+  useEffect(() => {
+    if (!isProjectsDropdownOpen) return;
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (
+        dropdownContainerRef.current &&
+        !dropdownContainerRef.current.contains(e.target as Node)
+      ) {
+        setIsProjectsDropdownOpen(false);
+      }
+    };
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsProjectsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    window.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [isProjectsDropdownOpen]);
+
   // Lock body scroll when mobile side-drawer is open
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -90,8 +137,37 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const handleNavClick = (id: 'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline') => {
+    setIsProjectsDropdownOpen(false);
     onNavigate(id);
     setIsMobileMenuOpen(false);
+  };
+
+  const handleProjectDropdownSelect = (
+    category: 'All' | ProjectCategory = 'All',
+    scrollTarget: 'top' | 'live-sites' | 'directory' = 'top'
+  ) => {
+    setIsProjectsDropdownOpen(false);
+    setIsMobileMenuOpen(false);
+    setIsMobileProjectsExpanded(false);
+    if (onNavigateProjects) {
+      onNavigateProjects(category, scrollTarget);
+    } else {
+      onNavigate('projects');
+    }
+  };
+
+  const openDropdownWithHover = () => {
+    if (hoverCloseTimerRef.current) {
+      window.clearTimeout(hoverCloseTimerRef.current);
+      hoverCloseTimerRef.current = null;
+    }
+    setIsProjectsDropdownOpen(true);
+  };
+
+  const closeDropdownWithDelay = () => {
+    hoverCloseTimerRef.current = window.setTimeout(() => {
+      setIsProjectsDropdownOpen(false);
+    }, 140);
   };
 
   const glassSurfaceClass = isScrolled
@@ -109,13 +185,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div
           className={`mx-auto pointer-events-auto rounded-full flex items-center justify-between gap-1.5 sm:gap-2.5 border transition-all duration-300 ease-out will-change-transform ${glassSurfaceClass} ${
             isScrolled
-              ? 'max-w-[96%] sm:max-w-3xl lg:max-w-4xl h-[38px] sm:h-[42px] px-2 sm:px-3.5'
+              ? 'max-w-[96%] sm:max-w-4xl lg:max-w-5xl h-[38px] sm:h-[42px] px-2 sm:px-3.5'
               : 'max-w-6xl h-[46px] sm:h-[52px] px-2.5 sm:px-4.5'
           }`}
         >
           {/* Zone 1: Compact Brand Mark */}
           <motion.button
-            onClick={() => onNavigate('home')}
+            onClick={() => handleNavClick('home')}
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
             className="flex items-center gap-1.5 sm:gap-2 text-left group shrink-0 cursor-pointer select-none pl-0.5"
@@ -150,7 +226,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </motion.button>
 
-          {/* Zone 2: Centered Navigation Links */}
+          {/* Zone 2: Centered Navigation Links + Separate "Our Featured Projects" Dropdown */}
           <nav
             aria-label="Primary Navigation"
             className="hidden lg:flex items-center gap-0.5 xl:gap-1"
@@ -160,7 +236,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               return (
                 <button
                   key={item.id}
-                  onClick={() => onNavigate(item.id)}
+                  onClick={() => handleNavClick(item.id)}
                   className={`rounded-full transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0 ${
                     isScrolled
                       ? 'px-2.5 py-1 text-[11px] xl:text-xs'
@@ -175,6 +251,118 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </button>
               );
             })}
+
+            {/* Dedicated Icon-Only Dropdown Trigger (No "Our Featured Projects" text) */}
+            <div
+              ref={dropdownContainerRef}
+              className="relative"
+              onMouseEnter={openDropdownWithHover}
+              onMouseLeave={closeDropdownWithDelay}
+            >
+              <button
+                type="button"
+                aria-label="Open Projects Dropdown"
+                title="Projects & Showcase"
+                aria-expanded={isProjectsDropdownOpen}
+                aria-haspopup="menu"
+                onClick={() => setIsProjectsDropdownOpen((prev) => !prev)}
+                className={`inline-flex items-center justify-center rounded-full border transition-all duration-200 cursor-pointer shrink-0 ${
+                  isScrolled ? 'w-7 h-7' : 'w-8 h-8'
+                } ${
+                  currentPage === 'projects'
+                    ? 'bg-[#C4FF00] text-slate-950 border-black/40 shadow-sm'
+                    : 'bg-black/[0.04] dark:bg-white/[0.06] border-black/15 dark:border-white/20 text-slate-900 dark:text-neutral-100 hover:bg-black/[0.09] dark:hover:bg-white/[0.14]'
+                }`}
+              >
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    isProjectsDropdownOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              <AnimatePresence>
+                {isProjectsDropdownOpen && (
+                  <motion.div
+                    role="menu"
+                    initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                    transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute right-0 mt-2.5 w-[420px] rounded-2xl bg-white/95 dark:bg-[#131218]/95 backdrop-blur-2xl border border-black/10 dark:border-white/15 shadow-2xl p-4 text-left z-50"
+                  >
+                    {/* Top Spotlight Highlights */}
+                    <div className="grid grid-cols-2 gap-2 pb-3 border-b border-black/10 dark:border-white/10">
+                      <button
+                        type="button"
+                        role="menuitem"
+                        onClick={() => handleProjectDropdownSelect('All', 'top')}
+                        className="rounded-xl bg-[#F7F4F1] dark:bg-white/5 hover:bg-[#EFEAE5] dark:hover:bg-white/10 p-3 text-left transition-colors cursor-pointer"
+                      >
+                        <div className="text-xs font-bold text-[#141214] dark:text-white">
+                          Overview Showcase
+                        </div>
+                        <div className="text-[11px] font-mono tabular-nums text-neutral-600 dark:text-neutral-400 mt-0.5">
+                          {FEATURED_PROJECTS.length} Live Builds
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        role="menuitem"
+                        onClick={() => handleProjectDropdownSelect('Live Web Showcase', 'live-sites')}
+                        className="rounded-xl bg-[#FDF2F0] dark:bg-[#2A1417] hover:bg-[#F9E3DF] dark:hover:bg-[#38191E] p-3 text-left transition-colors cursor-pointer"
+                      >
+                        <div className="text-xs font-bold text-[#D91E2A] dark:text-[#FF7A59]">
+                          25 Featured Live Sites
+                        </div>
+                        <div className="text-[11px] font-mono tabular-nums text-neutral-600 dark:text-neutral-300 mt-0.5">
+                          {CLIENT_LIVE_PROJECTS.length} External URLs
+                        </div>
+                      </button>
+                    </div>
+
+                    {/* Track Filter Shortcuts */}
+                    <div className="pt-3">
+                      <div className="text-[11px] font-mono text-neutral-500 dark:text-neutral-400 px-1 mb-2">
+                        Filter by Engineering Track
+                      </div>
+                      <div className="grid grid-cols-2 gap-1">
+                        {PROJECT_CATEGORIES.filter((c) => c !== 'All').map((category) => (
+                          <button
+                            key={category}
+                            type="button"
+                            role="menuitem"
+                            onClick={() => handleProjectDropdownSelect(category, 'directory')}
+                            className="flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg text-xs text-neutral-800 dark:text-neutral-200 hover:bg-[#F7F4F1] dark:hover:bg-white/10 transition-colors cursor-pointer text-left"
+                          >
+                            <span className="truncate">{category}</span>
+                            <span className="text-[10px] font-mono tabular-nums text-neutral-500 dark:text-neutral-400 shrink-0">
+                              {categoryCounts[category] || 0}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Bottom Action Footer */}
+                    <div className="mt-3 pt-3 border-t border-black/10 dark:border-white/10 flex items-center justify-between">
+                      <span className="text-[11px] text-neutral-500 dark:text-neutral-400">
+                        Interactive sandboxes &amp; live links
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleProjectDropdownSelect('All', 'directory')}
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-[#D91E2A] dark:text-[#C4FF00] hover:underline cursor-pointer whitespace-nowrap"
+                      >
+                        <span>Open Archive</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </nav>
 
           {/* Zone 3: WhatsApp Logo Pill, Lime CTA, Theme Toggle & Mobile Trigger */}
@@ -316,6 +504,61 @@ export const Navbar: React.FC<NavbarProps> = ({
                         </button>
                       );
                     })}
+
+                    {/* Separate Mobile Accordion Dropdown */}
+                    <div className="pt-1">
+                      <button
+                        type="button"
+                        aria-label="Toggle Projects Dropdown"
+                        onClick={() => setIsMobileProjectsExpanded((prev) => !prev)}
+                        className={`w-full flex items-center justify-between px-4 py-3 rounded-full text-sm font-semibold transition-all cursor-pointer ${
+                          currentPage === 'projects'
+                            ? 'bg-[#C4FF00] text-slate-950 shadow-sm font-bold'
+                            : 'text-slate-700 dark:text-neutral-300 bg-slate-100/80 dark:bg-white/5 hover:bg-slate-200/70 dark:hover:bg-white/10'
+                        }`}
+                      >
+                        <span>Projects</span>
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform duration-200 ${
+                            isMobileProjectsExpanded ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+
+                      {isMobileProjectsExpanded && (
+                        <div className="mt-2 rounded-2xl bg-slate-50 dark:bg-white/[0.04] p-2 space-y-1">
+                          <button
+                            type="button"
+                            onClick={() => handleProjectDropdownSelect('All', 'top')}
+                            className="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-white/5 cursor-pointer flex items-center justify-between"
+                          >
+                            <span>All {FEATURED_PROJECTS.length} Live Builds</span>
+                            <ArrowUpRight className="w-3.5 h-3.5 opacity-65" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleProjectDropdownSelect('Live Web Showcase', 'live-sites')}
+                            className="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-[#D91E2A] dark:text-[#FF7A59] hover:bg-slate-100 dark:hover:bg-white/5 cursor-pointer flex items-center justify-between"
+                          >
+                            <span>25 Featured Live Websites</span>
+                            <ArrowUpRight className="w-3.5 h-3.5" />
+                          </button>
+                          {PROJECT_CATEGORIES.filter((c) => c !== 'All').map((category) => (
+                            <button
+                              key={category}
+                              type="button"
+                              onClick={() => handleProjectDropdownSelect(category, 'directory')}
+                              className="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-600 dark:text-neutral-300 hover:bg-slate-100 dark:hover:bg-white/5 cursor-pointer flex items-center justify-between"
+                            >
+                              <span className="truncate">{category}</span>
+                              <span className="font-mono text-[10px] opacity-70 tabular-nums">
+                                {categoryCounts[category] || 0}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   {/* Call & WhatsApp Actions inside mobile drawer */}

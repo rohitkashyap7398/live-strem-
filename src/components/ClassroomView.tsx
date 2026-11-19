@@ -3,8 +3,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Play, 
   Pause, 
-  Volume2, 
-  VolumeX, 
   Maximize2, 
   ArrowLeft, 
   CheckCircle2, 
@@ -46,7 +44,6 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   // Lecture player & studio workspace states
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
   const [activeTabUnderVideo, setActiveTabUnderVideo] = useState<'chat' | 'notes' | 'resources'>('chat');
   const [completedLessons, setCompletedLessons] = useState<string[]>([
@@ -90,12 +87,6 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       videoRef.current.play().catch(() => {});
       setIsPlaying(true);
     }
-  };
-
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !isMuted;
-    setIsMuted(!isMuted);
   };
 
   const handleSpeedChange = (speed: number) => {
@@ -1006,13 +997,6 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                         >
                           {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
                         </button>
-                        <button
-                          onClick={toggleMute}
-                          className="p-2 rounded-full bg-white/15 hover:bg-white/25 text-white backdrop-blur-md cursor-pointer transition-colors"
-                          aria-label={isMuted ? 'Unmute audio' : 'Mute audio'}
-                        >
-                          {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                        </button>
                         <span className="text-xs font-mono tabular-nums text-white/85">
                           {isPlaying ? 'Playing Lab Feed' : 'Paused'}
                         </span>
@@ -1042,7 +1026,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                     className="w-full h-full object-cover"
                     autoPlay
                     loop
-                    muted={isMuted}
+                    muted
                     playsInline
                   />
                   <div className="absolute inset-x-0 top-0 p-3 bg-gradient-to-b from-black/75 to-transparent flex items-center justify-between text-[10px] font-mono text-white/90">

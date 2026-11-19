@@ -11,6 +11,7 @@ import { CoursesCatalogView } from './components/CoursesCatalogView';
 import { BootcampView } from './components/BootcampView';
 import { ClassroomView } from './components/ClassroomView';
 import { OfflineProgramsView } from './components/OfflineProgramsView';
+import { FeaturedProjectsView } from './components/FeaturedProjectsView';
 import { StudentReviews } from './components/StudentReviews';
 import { YoutubeTutorials } from './components/YoutubeTutorials';
 import { CommunityPlacement } from './components/CommunityPlacement';
@@ -27,10 +28,16 @@ import { StartupLoader } from './components/StartupLoader';
 import { useGlobalButtonEffects } from './hooks/useGlobalButtonEffects';
 import { useViewportVideoManager } from './hooks/useViewportVideoManager';
 import { COURSES, Course } from './data/coursesData';
+import { ProjectCategory } from './data/featuredProjectsData';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'course-detail'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'projects' | 'course-detail'>('home');
   const [selectedCourse, setSelectedCourse] = useState<Course>(COURSES[0]);
+  const [projectNavIntent, setProjectNavIntent] = useState<{
+    category: 'All' | ProjectCategory;
+    scrollTarget: 'top' | 'live-sites' | 'directory';
+    nonce: number;
+  }>({ category: 'All', scrollTarget: 'top', nonce: 0 });
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     try {
       const saved = localStorage.getItem('thecodespark-theme');
@@ -78,7 +85,7 @@ export default function App() {
     }
   }, [currentPage, selectedCourse]);
 
-  const handleNavigate = (page: 'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'course-detail', courseId?: string) => {
+  const handleNavigate = (page: 'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline' | 'projects' | 'course-detail', courseId?: string) => {
     if (courseId) {
       const found = COURSES.find((c) => c.id === courseId);
       if (found) {
@@ -86,6 +93,18 @@ export default function App() {
       }
     }
     setCurrentPage(page);
+  };
+
+  const handleNavigateProjects = (
+    category: 'All' | ProjectCategory = 'All',
+    scrollTarget: 'top' | 'live-sites' | 'directory' = 'top'
+  ) => {
+    setProjectNavIntent((prev) => ({
+      category,
+      scrollTarget,
+      nonce: prev.nonce + 1
+    }));
+    setCurrentPage('projects');
   };
 
   const handleSelectCourse = (course: Course) => {
@@ -111,6 +130,7 @@ export default function App() {
       <Navbar
         currentPage={currentPage}
         onNavigate={handleNavigate}
+        onNavigateProjects={handleNavigateProjects}
         onRequestCall={() => setIsCallbackOpen(true)}
         isDarkMode={isDarkMode}
         onToggleTheme={() => setIsDarkMode((prev) => !prev)}
@@ -207,6 +227,18 @@ export default function App() {
           <OfflineProgramsView
             onApplyOffline={() => handleOpenEnroll(COURSES[0])}
             onRequestCallback={() => setIsCallbackOpen(true)}
+          />
+        </main>
+      )}
+
+      {currentPage === 'projects' && (
+        <main>
+          <FeaturedProjectsView
+            initialCategory={projectNavIntent.category}
+            scrollTarget={projectNavIntent.scrollTarget}
+            navNonce={projectNavIntent.nonce}
+            onRequestCallback={() => setIsCallbackOpen(true)}
+            onExploreCourses={() => setCurrentPage('courses')}
           />
         </main>
       )}

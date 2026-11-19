@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Play, ChevronLeft, ChevronRight, X, ExternalLink, Sparkles, Youtube, CheckCircle2 } from 'lucide-react';
-import brandLogo from '../assets/logo.png';
+import { ChevronLeft, ChevronRight, ExternalLink, Youtube } from 'lucide-react';
 
 interface TutorialVideo {
   id: string;
@@ -11,7 +9,6 @@ interface TutorialVideo {
   duration: string;
   category: string;
   thumbnail: string;
-  videoUrl?: string;
   summary: string;
   relatedCohort: string;
 }
@@ -99,10 +96,11 @@ const TUTORIAL_VIDEOS: TutorialVideo[] = [
 export const YoutubeTutorials: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const [selectedVideo, setSelectedVideo] = useState<TutorialVideo | null>(null);
 
   const [isPaused, setIsPaused] = useState(false);
   const [isInView, setIsInView] = useState(false);
+  const floatScrollRef = useRef<number>(0);
+  const targetScrollRef = useRef<number | null>(null);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -125,32 +123,58 @@ export const YoutubeTutorials: React.FC = () => {
     };
   }, []);
 
-  // Automatic smooth scroll across tutorial video cards when visible
+  // Continuous smooth horizontal auto-scroll across tutorial cards when visible
   useEffect(() => {
-    if (isPaused || !isInView) return;
+    let rafId = 0;
+    let lastTime = performance.now();
 
-    const interval = setInterval(() => {
-      if (carouselRef.current) {
-        const container = carouselRef.current;
-        const maxScroll = container.scrollWidth - container.clientWidth;
+    const tick = (now: number) => {
+      const dt = Math.min(now - lastTime, 64);
+      lastTime = now;
 
-        // Loop smoothly when reaching near the end
-        if (container.scrollLeft >= maxScroll - 25) {
-          container.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          container.scrollBy({ left: 320, behavior: 'smooth' });
+      const container = carouselRef.current;
+      if (container) {
+        const halfWidth = container.scrollWidth / 2;
+        if (halfWidth > 0) {
+          if (targetScrollRef.current !== null) {
+            const diff = targetScrollRef.current - floatScrollRef.current;
+            if (Math.abs(diff) < 1.5) {
+              floatScrollRef.current = ((targetScrollRef.current % halfWidth) + halfWidth) % halfWidth;
+              targetScrollRef.current = null;
+            } else {
+              floatScrollRef.current += diff * Math.min(1, dt * 0.012);
+            }
+            const wrapped = ((floatScrollRef.current % halfWidth) + halfWidth) % halfWidth;
+            container.scrollLeft = wrapped;
+          } else if (!isPaused && isInView) {
+            floatScrollRef.current += (dt / 1000) * 62;
+            if (floatScrollRef.current >= halfWidth) {
+              floatScrollRef.current -= halfWidth;
+            } else if (floatScrollRef.current < 0) {
+              floatScrollRef.current += halfWidth;
+            }
+            container.scrollLeft = floatScrollRef.current;
+          } else {
+            floatScrollRef.current = container.scrollLeft;
+          }
         }
       }
-    }, 3200);
 
-    return () => clearInterval(interval);
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
   }, [isPaused, isInView]);
 
   const scroll = (direction: 'left' | 'right') => {
-    if (carouselRef.current) {
-      const scrollAmount = direction === 'left' ? -380 : 380;
-      carouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
+    const container = carouselRef.current;
+    if (!container) return;
+    const halfWidth = container.scrollWidth / 2;
+    if (halfWidth <= 0) return;
+    const base = targetScrollRef.current ?? floatScrollRef.current;
+    const step = direction === 'left' ? -340 : 340;
+    targetScrollRef.current = base + step;
   };
 
   return (
@@ -224,13 +248,12 @@ export const YoutubeTutorials: React.FC = () => {
           onMouseLeave={() => setIsPaused(false)}
           onTouchStart={() => setIsPaused(true)}
           onTouchEnd={() => setIsPaused(false)}
-          className="flex gap-4 sm:gap-5 overflow-x-auto pb-5 pt-1 scrollbar-none scroll-smooth -mx-4 px-4 sm:-mx-6 sm:px-6"
+          className="flex gap-4 sm:gap-5 overflow-x-auto pb-5 pt-1 scrollbar-none -mx-4 px-4 sm:-mx-6 sm:px-6"
         >
-          {TUTORIAL_VIDEOS.map((video) => (
+          {[...TUTORIAL_VIDEOS, ...TUTORIAL_VIDEOS].map((video, idx) => (
             <div
-              key={video.id}
-              onClick={() => setSelectedVideo(video)}
-              className="w-[260px] sm:w-[285px] md:w-[305px] shrink-0 bg-slate-50 dark:bg-[#1e1e1e] rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 hover:border-[#E10600]/40 transition-all duration-300 shadow-md dark:shadow-xl dark:shadow-black/50 hover:shadow-[#E10600]/15 group cursor-pointer snap-start flex flex-col justify-between"
+              key={`${video.id}-${idx}`}
+              className="w-[260px] sm:w-[285px] md:w-[305px] shrink-0 bg-slate-50 dark:bg-[#1e1e1e] rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 hover:border-[#E10600]/40 transition-all duration-300 shadow-md dark:shadow-xl dark:shadow-black/50 hover:shadow-[#E10600]/15 group flex flex-col justify-between"
             >
               {/* Thumbnail Container */}
               <div className="relative aspect-video bg-neutral-900 overflow-hidden">
@@ -244,14 +267,7 @@ export const YoutubeTutorials: React.FC = () => {
                 />
 
                 {/* Dark Vignette Overlay */}
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors" />
-
-                {/* Play Button Icon that smoothly pops in on hover */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center shadow-2xl shadow-black/80 scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300">
-                    <Play className="w-4 h-4 fill-current ml-0.5" />
-                  </div>
-                </div>
+                <div className="absolute inset-0 bg-black/25 group-hover:bg-black/35 transition-colors" />
 
                 {/* Duration Badge */}
                 <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-black/80 backdrop-blur-md text-[10px] font-mono text-white border border-white/10">
@@ -275,11 +291,11 @@ export const YoutubeTutorials: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Views & Likes Row */}
+                {/* Views & Cohort Row */}
                 <div className="pt-2.5 border-t border-slate-200 dark:border-white/5 mt-3 flex items-center justify-between text-[11px] text-slate-500 dark:text-neutral-400 font-mono">
                   <span>{video.views} • {video.likes}</span>
-                  <span className="text-[10.5px] text-[#ff5722] font-semibold group-hover:underline">
-                    Watch Free →
+                  <span className="text-[10.5px] text-[#ff5722] font-semibold">
+                    {video.relatedCohort}
                   </span>
                 </div>
               </div>
@@ -295,84 +311,6 @@ export const YoutubeTutorials: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Interactive Video Modal */}
-      <AnimatePresence>
-        {selectedVideo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6"
-            onClick={() => setSelectedVideo(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl bg-[#111116] border border-white/15 rounded-3xl overflow-hidden shadow-2xl flex flex-col"
-            >
-              {/* Header */}
-              <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between bg-black/50">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center">
-                    <Play className="w-4 h-4 fill-current ml-0.5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-white leading-tight">
-                      {selectedVideo.title}
-                    </h4>
-                    <span className="text-[11px] text-neutral-400">
-                      TheCodeSpark Technologies Private Limited Free Tutorial • {selectedVideo.duration} • {selectedVideo.views}
-                    </span>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => setSelectedVideo(null)}
-                  className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Video Player */}
-              <div className="relative aspect-video w-full bg-black">
-                <video
-                  src="/assets/aistudio/20261101-1411-36.8921526_efb55882.mp4"
-                  controls
-                  autoPlay
-                  className="w-full h-full object-contain"
-                >
-                  Your browser does not support HTML5 video.
-                </video>
-              </div>
-
-              {/* Details & Related Course CTA */}
-              <div className="p-5 bg-[#0a0a0d] border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-                <div className="space-y-1">
-                  <span className="text-neutral-300 block">{selectedVideo.summary}</span>
-                  <span className="text-neutral-500 font-mono">
-                    Related Live Cohort: <strong className="text-white">{selectedVideo.relatedCohort}</strong>
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2.5 shrink-0">
-                  <a
-                    href="#courses-section"
-                    onClick={() => setSelectedVideo(null)}
-                    className="px-4 py-2 rounded-xl bg-[#ff5722] hover:bg-[#e64a19] text-white font-semibold transition-all cursor-pointer whitespace-nowrap shadow-md"
-                  >
-                    Explore Related Live Cohort
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 };

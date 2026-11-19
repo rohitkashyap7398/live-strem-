@@ -265,6 +265,9 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
   const [facultyOffset, setFacultyOffset] = useState<number>(0);
   const [isFacultyPaused, setIsFacultyPaused] = useState<boolean>(false);
   const chatScrollRef = useRef<HTMLDivElement>(null);
+  const facultyTrackRef = useRef<HTMLDivElement>(null);
+  const facultyYRef = useRef<number>(0);
+  const facultyTargetYRef = useRef<number | null>(null);
 
   useEffect(() => {
     const el = wrapperRef.current;
@@ -289,25 +292,72 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
 
   const currentTab = TABS_DATA.find((t) => t.id === activeTabId) || TABS_DATA[0];
 
-  // Auto-rotate the 2 stacked cards on right every 6 seconds when in view
+  // Continuous smooth vertical auto-scroll for the employee/faculty cards when in view
   useEffect(() => {
-    if (isFacultyPaused || !isInView) return;
-    const fTimer = setInterval(() => {
-      setFacultyOffset((prev) => (prev + 1) % FACULTY_TRUTHS.length);
-    }, 6000);
-    return () => clearInterval(fTimer);
+    let rafId = 0;
+    let lastTime = performance.now();
+
+    const tick = (now: number) => {
+      const dt = Math.min(now - lastTime, 64);
+      lastTime = now;
+
+      const track = facultyTrackRef.current;
+      if (track) {
+        const halfHeight = track.scrollHeight / 2;
+        if (halfHeight > 0) {
+          if (facultyTargetYRef.current !== null) {
+            const diff = facultyTargetYRef.current - facultyYRef.current;
+            if (Math.abs(diff) < 1) {
+              facultyYRef.current = ((facultyTargetYRef.current % halfHeight) + halfHeight) % halfHeight;
+              facultyTargetYRef.current = null;
+            } else {
+              facultyYRef.current += diff * Math.min(1, dt * 0.012);
+            }
+          } else if (!isFacultyPaused && isInView) {
+            facultyYRef.current += (dt / 1000) * 44;
+          }
+
+          if (facultyTargetYRef.current === null) {
+            if (facultyYRef.current >= halfHeight) {
+              facultyYRef.current -= halfHeight;
+            } else if (facultyYRef.current < 0) {
+              facultyYRef.current += halfHeight;
+            }
+          }
+
+          const displayY = ((facultyYRef.current % halfHeight) + halfHeight) % halfHeight;
+          track.style.transform = `translate3d(0, -${displayY.toFixed(2)}px, 0)`;
+
+          const estimatedIdx =
+            Math.floor((displayY / halfHeight) * FACULTY_TRUTHS.length) % FACULTY_TRUTHS.length;
+          setFacultyOffset((prev) => (prev === estimatedIdx ? prev : estimatedIdx));
+        }
+      }
+
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
   }, [isFacultyPaused, isInView]);
 
+  const scrollToFacultyIndex = (targetIdx: number) => {
+    const normalized = ((targetIdx % FACULTY_TRUTHS.length) + FACULTY_TRUTHS.length) % FACULTY_TRUTHS.length;
+    setFacultyOffset(normalized);
+    const track = facultyTrackRef.current;
+    if (!track) return;
+    const halfHeight = track.scrollHeight / 2;
+    if (halfHeight <= 0) return;
+    facultyTargetYRef.current = (normalized / FACULTY_TRUTHS.length) * halfHeight;
+  };
+
   const handleNextFaculty = () => {
-    setFacultyOffset((prev) => (prev + 1) % FACULTY_TRUTHS.length);
+    scrollToFacultyIndex(facultyOffset + 1);
   };
 
   const handlePrevFaculty = () => {
-    setFacultyOffset((prev) => (prev - 1 + FACULTY_TRUTHS.length) % FACULTY_TRUTHS.length);
+    scrollToFacultyIndex(facultyOffset - 1);
   };
-
-  const topFaculty = FACULTY_TRUTHS[facultyOffset % FACULTY_TRUTHS.length];
-  const bottomFaculty = FACULTY_TRUTHS[(facultyOffset + 1) % FACULTY_TRUTHS.length];
 
   // 1. Automatic Tab Cycling every 7 seconds when in view
   useEffect(() => {
@@ -738,14 +788,16 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
               </div>
 
               {/* ==============================================================
-                  RIGHT BOX: TWO STACKED CARDS (Exact 2 stacked boxes from image)
+                  RIGHT BOX: AUTO-SCROLLING EMPLOYEE / FACULTY CARDS
                   ============================================================== */}
               <div 
                 onMouseEnter={() => setIsFacultyPaused(true)}
                 onMouseLeave={() => setIsFacultyPaused(false)}
+                onTouchStart={() => setIsFacultyPaused(true)}
+                onTouchEnd={() => setIsFacultyPaused(false)}
                 className="lg:col-span-7 flex flex-col justify-between space-y-4"
               >
-                {/* Header above the 2 stacked cards with pagination controls */}
+                {/* Header above the auto-scrolling employee cards with pagination controls */}
                 <div className="flex items-center justify-between px-1">
                   <div className="flex items-center gap-2">
                     <span className="text-xs sm:text-sm font-mono font-bold text-slate-900 dark:text-white uppercase tracking-wider">
@@ -756,10 +808,11 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                     </span>
                   </div>
 
-                  {/* Next / Previous & Auto-cycle indicator */}
+                  {/* Next / Previous & Auto-scroll indicator */}
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono text-slate-500 dark:text-neutral-400 hidden sm:inline">
-                      {isFacultyPaused ? 'Paused' : 'Auto-cycles'}
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono text-slate-500 dark:text-neutral-400">
+                      <span className={`w-1.5 h-1.5 rounded-full ${isFacultyPaused ? 'bg-amber-500' : 'bg-emerald-500 animate-pulse'}`} />
+                      <span className="hidden sm:inline">{isFacultyPaused ? 'Paused' : 'Auto-scrolling'}</span>
                     </span>
                     <div className="inline-flex items-center rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-black/60 p-0.5">
                       <button
@@ -780,11 +833,20 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                   </div>
                 </div>
 
-                {/* STACKED CARD 1 (Top Box in user diagram) */}
-                <HorizontalFacultyCard faculty={topFaculty} />
+                {/* Continuous Vertical Auto-Scrolling Viewport */}
+                <div className="relative h-[470px] sm:h-[550px] lg:h-[600px] overflow-hidden rounded-2xl">
+                  {/* Soft top & bottom edge fades */}
+                  <div className="pointer-events-none absolute top-0 inset-x-0 h-5 bg-gradient-to-b from-slate-50 dark:from-[#0b0b0f] to-transparent z-10" />
+                  <div className="pointer-events-none absolute bottom-0 inset-x-0 h-6 bg-gradient-to-t from-slate-50 dark:from-[#0b0b0f] to-transparent z-10" />
 
-                {/* STACKED CARD 2 (Bottom Box in user diagram) */}
-                <HorizontalFacultyCard faculty={bottomFaculty} />
+                  <div ref={facultyTrackRef} className="will-change-transform">
+                    {[...FACULTY_TRUTHS, ...FACULTY_TRUTHS].map((faculty, idx) => (
+                      <div key={`${faculty.id}-${idx}`} className="pb-4">
+                        <HorizontalFacultyCard faculty={faculty} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
                 {/* Footer notes under right side */}
                 <div className="flex items-center justify-between text-[11px] font-mono text-neutral-400 px-1 pt-1">
@@ -793,7 +855,7 @@ export const FounderMentorship: React.FC<FounderMentorshipProps> = ({
                     {FACULTY_TRUTHS.map((_, dotIdx) => (
                       <button
                         key={dotIdx}
-                        onClick={() => setFacultyOffset(dotIdx)}
+                        onClick={() => scrollToFacultyIndex(dotIdx)}
                         className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
                           dotIdx === facultyOffset % FACULTY_TRUTHS.length
                             ? 'bg-[#ea580c] w-5'
