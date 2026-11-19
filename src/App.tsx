@@ -28,6 +28,7 @@ import { CustomCursor } from './components/CustomCursor';
 import { StartupLoader } from './components/StartupLoader';
 import { useGlobalButtonEffects } from './hooks/useGlobalButtonEffects';
 import { useViewportVideoManager } from './hooks/useViewportVideoManager';
+import { useInspectLock } from './hooks/useInspectLock';
 import { COURSES, Course } from './data/coursesData';
 import { ProjectCategory } from './data/featuredProjectsData';
 
@@ -75,6 +76,9 @@ export default function App() {
 
   // Pause offscreen/background autoPlay videos to keep scrolling & animations smooth
   useViewportVideoManager(`${currentPage}-${selectedCourse.id}`);
+
+  // Lock right-click context menu & inspect shortcuts globally
+  useInspectLock();
 
   // Modal states
   const [isCallbackOpen, setIsCallbackOpen] = useState(false);
