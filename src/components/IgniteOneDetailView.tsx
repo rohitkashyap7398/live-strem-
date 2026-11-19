@@ -38,6 +38,7 @@ import brandLogo from '../assets/logo.png';
 import rohitPhoto from '../assets/Rohit.png';
 import { Course, COURSES } from '../data/coursesData';
 import { CourseReviewWall } from './CourseReviewWall';
+import { OfficialFramedCertificate } from './OfficialFramedCertificate';
 
 interface IgniteOneDetailViewProps {
   course: Course;
@@ -2216,59 +2217,12 @@ export const IgniteOneDetailView: React.FC<IgniteOneDetailViewProps> = ({
               </div>
 
               <div className="lg:col-span-7">
-                <motion.div
-                  whileHover={{ y: -4 }}
-                  transition={{ duration: 0.25 }}
-                  className="rounded-2xl bg-[#062B1A] text-white p-6 sm:p-8 border-4 border-[#EAF7EE] shadow-xl space-y-5 relative overflow-hidden"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2.5">
-                      <img
-                        src={uploadedLogo}
-                        onError={(e) => {
-                          e.currentTarget.src = brandLogo;
-                        }}
-                        alt="TheCodeSpark Technologies Private Limited Logo"
-                        className="h-7 w-auto object-contain"
-                      />
-                      <span className="text-xs font-bold tracking-tight">
-                        TheCodeSpark Technologies Private Limited
-                      </span>
-                    </div>
-                    <span className="text-[10px] font-mono text-[#9BFF6E] font-bold">
-                      {course.codeName} COHORT
-                    </span>
-                  </div>
-
-                  <div className="space-y-1.5 py-2">
-                    <div className="text-2xl font-black font-display tracking-wide text-[#9BFF6E]">
-                      CERTIFICATE
-                    </div>
-                    <div className="text-xs text-white/75">is issued to certify that</div>
-                    <div className="text-xl font-extrabold text-white font-display pt-1">
-                      Aarav Sharma
-                    </div>
-                    <p className="text-xs text-white/80 leading-relaxed max-w-md">
-                      has successfully completed{' '}
-                      <span className="font-semibold text-white">{course.title}</span> with practical mastery and excellence.
-                    </p>
-                  </div>
-
-                  <div className="flex items-end justify-between pt-3 border-t border-white/15 text-xs">
-                    <div>
-                      <div className="font-bold">Rohit Kashyap</div>
-                      <div className="text-[10px] text-white/70 font-mono">
-                        Founder &amp; CEO, TheCodeSpark Technologies Private Limited
-                      </div>
-                    </div>
-                    <div className="text-right font-mono">
-                      <div className="text-[#9BFF6E] font-bold text-[11px]">
-                        Verified #TCS-{course.codeName.replace(/\s+/g, '')}
-                      </div>
-                      <div className="text-[10px] text-white/70">Authorized Credential</div>
-                    </div>
-                  </div>
-                </motion.div>
+                <OfficialFramedCertificate
+                  courseTitle={course.title}
+                  cohortBadge={`${course.codeName} COHORT`}
+                  recipientName="Aarav Sharma"
+                  credentialId={`#TCS-${course.codeName.replace(/\s+/g, '')}`}
+                />
               </div>
             </motion.div>
           </div>

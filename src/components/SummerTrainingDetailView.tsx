@@ -33,6 +33,7 @@ import {
   TRAINING_MODES,
 } from '../data/summerTrainingData';
 import { CourseReviewWall } from './CourseReviewWall';
+import { OfficialFramedCertificate } from './OfficialFramedCertificate';
 
 interface SummerTrainingDetailViewProps {
   course: Course;
@@ -1027,65 +1028,13 @@ export const SummerTrainingDetailView: React.FC<SummerTrainingDetailViewProps> =
               </div>
 
               <div className="lg:col-span-7">
-                <div className="rounded-2xl bg-[#062B1A] text-white p-6 sm:p-8 border-4 border-[#EAF7EE] shadow-xl space-y-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2.5">
-                      <img
-                        src={uploadedLogo}
-                        onError={(e) => {
-                          e.currentTarget.src = brandLogo;
-                        }}
-                        alt="TheCodeSpark Technologies Private Limited Logo"
-                        className="h-7 w-auto object-contain"
-                      />
-                      <span className="text-xs font-bold tracking-tight">
-                        TheCodeSpark Technologies Private Limited
-                      </span>
-                    </div>
-                    <span className="text-[10px] font-mono text-[#9BFF6E] font-bold">
-                      45-DAY SUMMER TRAINING
-                    </span>
-                  </div>
-
-                  <div className="space-y-1.5 py-2">
-                    <div className="text-2xl font-black font-display tracking-wide text-[#9BFF6E]">
-                      INDUSTRIAL TRAINING CERTIFICATE
-                    </div>
-                    <div className="text-xs text-white/75">
-                      This is to certify that
-                    </div>
-                    <div className="text-xl font-extrabold text-white font-display pt-1">
-                      Ananya Verma · B.Tech (CSE)
-                    </div>
-                    <p className="text-xs text-white/80 leading-relaxed max-w-lg">
-                      has successfully completed{' '}
-                      <span className="font-semibold text-white">
-                        45-Day Summer Industrial Training in {activeTrack.title}
-                      </span>{' '}
-                      and deployed a production Major Live Project at TheCodeSpark Technologies Private Limited.
-                    </p>
-                  </div>
-
-                  <div className="flex items-end justify-between pt-3 border-t border-white/15 text-xs">
-                    <div>
-                      <div className="font-bold">Rohit Kashyap</div>
-                      <div className="text-[10px] text-white/70 font-mono">
-                        Founder &amp; CEO · TheCodeSpark Technologies Private Limited
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="text-right font-mono">
-                        <div className="text-[#9BFF6E] font-bold text-[11px]">
-                          Verified #TCS-ST45
-                        </div>
-                        <div className="text-[10px] text-white/70">QR Authenticated</div>
-                      </div>
-                      <div className="w-10 h-10 rounded-lg bg-white text-[#062B1A] flex items-center justify-center">
-                        <QrCode className="w-7 h-7" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <OfficialFramedCertificate
+                  courseTitle={`45-Day Summer Industrial Training in ${activeTrack.title}`}
+                  cohortBadge="45-DAY SUMMER TRAINING"
+                  recipientName="Ananya Verma · B.Tech (CSE)"
+                  credentialId="#TCS-ST45"
+                  description={`For successfully completing 45-Day Summer Industrial Training in ${activeTrack.title} and deploying a production Major Live Project at TheCodeSpark Technologies Private Limited.`}
+                />
               </div>
             </div>
           </div>
