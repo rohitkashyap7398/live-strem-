@@ -70,13 +70,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isProjectsDropdownOpen, setIsProjectsDropdownOpen] = useState(false);
-  const [isCareerDropdownOpen, setIsCareerDropdownOpen] = useState(false);
   const [isMobileProjectsExpanded, setIsMobileProjectsExpanded] = useState(false);
   const [isMobileCareerExpanded, setIsMobileCareerExpanded] = useState(false);
   const dropdownContainerRef = useRef<HTMLDivElement>(null);
-  const careerDropdownContainerRef = useRef<HTMLDivElement>(null);
   const hoverCloseTimerRef = useRef<number | null>(null);
-  const careerHoverCloseTimerRef = useRef<number | null>(null);
 
   const navItems: { id: 'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline'; label: string }[] = [
     { id: 'home', label: 'Home' },
@@ -115,9 +112,9 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close desktop dropdowns on outside click or Escape
+  // Close desktop dropdown on outside click or Escape
   useEffect(() => {
-    if (!isProjectsDropdownOpen && !isCareerDropdownOpen) return;
+    if (!isProjectsDropdownOpen) return;
     const handleOutsideClick = (e: MouseEvent) => {
       if (
         dropdownContainerRef.current &&
@@ -125,17 +122,10 @@ export const Navbar: React.FC<NavbarProps> = ({
       ) {
         setIsProjectsDropdownOpen(false);
       }
-      if (
-        careerDropdownContainerRef.current &&
-        !careerDropdownContainerRef.current.contains(e.target as Node)
-      ) {
-        setIsCareerDropdownOpen(false);
-      }
     };
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsProjectsDropdownOpen(false);
-        setIsCareerDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleOutsideClick);
@@ -144,7 +134,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       document.removeEventListener('mousedown', handleOutsideClick);
       window.removeEventListener('keydown', handleEscape);
     };
-  }, [isProjectsDropdownOpen, isCareerDropdownOpen]);
+  }, [isProjectsDropdownOpen]);
 
   // Lock body scroll when mobile side-drawer is open
   useEffect(() => {
@@ -165,7 +155,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const handleNavClick = (id: 'home' | 'courses' | 'bootcamp' | 'classroom' | 'offline') => {
     setIsProjectsDropdownOpen(false);
-    setIsCareerDropdownOpen(false);
     onNavigate(id);
     setIsMobileMenuOpen(false);
   };
@@ -175,7 +164,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     scrollTarget: 'top' | 'live-sites' | 'directory' = 'top'
   ) => {
     setIsProjectsDropdownOpen(false);
-    setIsCareerDropdownOpen(false);
     setIsMobileMenuOpen(false);
     setIsMobileProjectsExpanded(false);
     if (onNavigateProjects) {
@@ -189,7 +177,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     section: CareerSectionCategory = 'all',
     scrollTarget: 'top' | 'roles' | 'placement' | 'apply' = 'top'
   ) => {
-    setIsCareerDropdownOpen(false);
     setIsProjectsDropdownOpen(false);
     setIsMobileMenuOpen(false);
     setIsMobileCareerExpanded(false);
@@ -205,28 +192,12 @@ export const Navbar: React.FC<NavbarProps> = ({
       window.clearTimeout(hoverCloseTimerRef.current);
       hoverCloseTimerRef.current = null;
     }
-    setIsCareerDropdownOpen(false);
     setIsProjectsDropdownOpen(true);
   };
 
   const closeDropdownWithDelay = () => {
     hoverCloseTimerRef.current = window.setTimeout(() => {
       setIsProjectsDropdownOpen(false);
-    }, 140);
-  };
-
-  const openCareerDropdownWithHover = () => {
-    if (careerHoverCloseTimerRef.current) {
-      window.clearTimeout(careerHoverCloseTimerRef.current);
-      careerHoverCloseTimerRef.current = null;
-    }
-    setIsProjectsDropdownOpen(false);
-    setIsCareerDropdownOpen(true);
-  };
-
-  const closeCareerDropdownWithDelay = () => {
-    careerHoverCloseTimerRef.current = window.setTimeout(() => {
-      setIsCareerDropdownOpen(false);
     }, 140);
   };
 
@@ -312,127 +283,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               );
             })}
 
-            {/* Career Section with Dedicated Dropdown */}
-            <div
-              ref={careerDropdownContainerRef}
-              className="relative"
-              onMouseEnter={openCareerDropdownWithHover}
-              onMouseLeave={closeCareerDropdownWithDelay}
-            >
-              <button
-                type="button"
-                aria-expanded={isCareerDropdownOpen}
-                aria-haspopup="menu"
-                onClick={() => setIsCareerDropdownOpen((prev) => !prev)}
-                className={`inline-flex items-center gap-1 rounded-full transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0 ${
-                  isScrolled
-                    ? 'px-2.5 py-1 text-[11px] xl:text-xs'
-                    : 'px-3 py-1.5 text-xs'
-                } ${
-                  currentPage === 'career'
-                    ? 'bg-[#C4FF00] text-slate-950 font-semibold shadow-sm'
-                    : 'text-slate-900 dark:text-neutral-100 font-medium hover:bg-black/[0.07] dark:hover:bg-white/[0.1] hover:text-slate-950 dark:hover:text-white'
-                }`}
-              >
-                <span>Career</span>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                    isCareerDropdownOpen ? 'rotate-180' : ''
-                  }`}
-                />
-              </button>
-
-              <AnimatePresence>
-                {isCareerDropdownOpen && (
-                  <motion.div
-                    role="menu"
-                    initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                    transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute right-0 mt-2.5 w-[380px] rounded-2xl bg-white/95 dark:bg-[#131218]/95 backdrop-blur-2xl border border-black/10 dark:border-white/15 shadow-2xl p-4 text-left z-50"
-                  >
-                    {/* Top Highlights */}
-                    <div className="grid grid-cols-2 gap-2 pb-3 border-b border-black/10 dark:border-white/10">
-                      <button
-                        type="button"
-                        role="menuitem"
-                        onClick={() => handleCareerDropdownSelect('open-roles', 'roles')}
-                        className="rounded-xl bg-[#F7F4F1] dark:bg-white/5 hover:bg-[#EFEAE5] dark:hover:bg-white/10 p-3 text-left transition-colors cursor-pointer"
-                      >
-                        <div className="text-xs font-bold text-[#141214] dark:text-white">
-                          Open Roles &amp; Hiring
-                        </div>
-                        <div className="text-[11px] font-mono tabular-nums text-neutral-600 dark:text-neutral-400 mt-0.5">
-                          {CAREER_ROLES.length} Active Positions
-                        </div>
-                      </button>
-
-                      <button
-                        type="button"
-                        role="menuitem"
-                        onClick={() => handleCareerDropdownSelect('placement-cell', 'placement')}
-                        className="rounded-xl bg-[#FDF2F0] dark:bg-[#2A1417] hover:bg-[#F9E3DF] dark:hover:bg-[#38191E] p-3 text-left transition-colors cursor-pointer"
-                      >
-                        <div className="text-xs font-bold text-[#D91E2A] dark:text-[#FF7A59]">
-                          Placement &amp; Hiring Cell
-                        </div>
-                        <div className="text-[11px] font-mono tabular-nums text-neutral-600 dark:text-neutral-300 mt-0.5">
-                          180+ Partner Drives
-                        </div>
-                      </button>
-                    </div>
-
-                    {/* Career Tracks */}
-                    <div className="pt-3 space-y-1">
-                      <div className="text-[11px] font-mono text-neutral-500 dark:text-neutral-400 px-1 mb-1.5">
-                        Explore Career Paths
-                      </div>
-
-                      {(
-                        [
-                          { section: 'all' as const, target: 'top' as const, title: 'Career Hub Overview', meta: 'Team & Placement' },
-                          { section: 'mentorship' as const, target: 'roles' as const, title: 'Mentors & Instructors', meta: 'Full & Part-Time' },
-                          { section: 'internships' as const, target: 'roles' as const, title: 'Paid Engineering Internships', meta: 'Stipend Tracks' },
-                          { section: 'placement-cell' as const, target: 'placement' as const, title: 'Mock Interviews & Resume Audit', meta: 'Job Readiness' }
-                        ]
-                      ).map((entry) => (
-                        <button
-                          key={entry.title}
-                          type="button"
-                          role="menuitem"
-                          onClick={() => handleCareerDropdownSelect(entry.section, entry.target)}
-                          className="w-full flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg text-xs text-neutral-800 dark:text-neutral-200 hover:bg-[#F7F4F1] dark:hover:bg-white/10 transition-colors cursor-pointer text-left"
-                        >
-                          <span className="font-medium truncate">{entry.title}</span>
-                          <span className="text-[10px] font-mono text-neutral-500 dark:text-neutral-400 shrink-0">
-                            {entry.meta}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Footer Action */}
-                    <div className="mt-3 pt-3 border-t border-black/10 dark:border-white/10 flex items-center justify-between">
-                      <span className="inline-flex items-center gap-1.5 text-[11px] text-neutral-500 dark:text-neutral-400">
-                        <Briefcase className="w-3 h-3" />
-                        <span>Lucknow Campus &amp; Remote</span>
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => handleCareerDropdownSelect('all', 'apply')}
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-[#D91E2A] dark:text-[#C4FF00] hover:underline cursor-pointer whitespace-nowrap"
-                      >
-                        <span>Apply Now</span>
-                        <ArrowUpRight className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Dedicated Icon-Only Dropdown Trigger (No "Our Featured Projects" text) */}
+            {/* Unified Icon-Only Dropdown Trigger for Projects & Careers (No text label in top bar) */}
             <div
               ref={dropdownContainerRef}
               className="relative"
@@ -441,15 +292,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <button
                 type="button"
-                aria-label="Open Projects Dropdown"
-                title="Projects & Showcase"
+                aria-label="Open Projects and Careers Dropdown"
+                title="Projects & Careers"
                 aria-expanded={isProjectsDropdownOpen}
                 aria-haspopup="menu"
                 onClick={() => setIsProjectsDropdownOpen((prev) => !prev)}
                 className={`inline-flex items-center justify-center rounded-full border transition-all duration-200 cursor-pointer shrink-0 ${
                   isScrolled ? 'w-7 h-7' : 'w-8 h-8'
                 } ${
-                  currentPage === 'projects'
+                  currentPage === 'projects' || currentPage === 'career'
                     ? 'bg-[#C4FF00] text-slate-950 border-black/40 shadow-sm'
                     : 'bg-black/[0.04] dark:bg-white/[0.06] border-black/15 dark:border-white/20 text-slate-900 dark:text-neutral-100 hover:bg-black/[0.09] dark:hover:bg-white/[0.14]'
                 }`}
@@ -469,10 +320,79 @@ export const Navbar: React.FC<NavbarProps> = ({
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 6, scale: 0.98 }}
                     transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute right-0 mt-2.5 w-[420px] rounded-2xl bg-white/95 dark:bg-[#131218]/95 backdrop-blur-2xl border border-black/10 dark:border-white/15 shadow-2xl p-4 text-left z-50"
+                    className="absolute right-0 mt-2.5 w-[450px] rounded-2xl bg-white/95 dark:bg-[#131218]/95 backdrop-blur-2xl border border-black/10 dark:border-white/15 shadow-2xl p-4 text-left z-50 max-h-[82vh] overflow-y-auto"
                   >
-                    {/* Top Spotlight Highlights */}
-                    <div className="grid grid-cols-2 gap-2 pb-3 border-b border-black/10 dark:border-white/10">
+                    {/* Careers & Hiring Section inside Dropdown */}
+                    <div className="pb-3.5 border-b border-black/10 dark:border-white/10">
+                      <div className="flex items-center justify-between px-1 mb-2">
+                        <span className="text-[11px] font-mono font-semibold text-[#D91E2A] dark:text-[#FF7A59]">
+                          Careers &amp; Hiring
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleCareerDropdownSelect('all', 'apply')}
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#D91E2A] dark:text-[#C4FF00] hover:underline cursor-pointer"
+                        >
+                          <span>Quick Apply</span>
+                          <ArrowUpRight className="w-3 h-3" />
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={() => handleCareerDropdownSelect('all', 'top')}
+                          className="rounded-xl bg-[#FFF5F0] dark:bg-[#231511] hover:bg-[#FFE9DF] dark:hover:bg-[#2E1A15] border border-[#FF5A1F]/20 p-3 text-left transition-colors cursor-pointer"
+                        >
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-[#141214] dark:text-white">
+                            <Briefcase className="w-3.5 h-3.5 text-[#FF5A1F] shrink-0" />
+                            <span>Careers Page</span>
+                          </div>
+                          <div className="text-[11px] font-mono tabular-nums text-neutral-600 dark:text-neutral-300 mt-0.5">
+                            BDE · Calling · Counsellor · Full Stack
+                          </div>
+                        </button>
+
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={() => handleCareerDropdownSelect('placement-cell', 'placement')}
+                          className="rounded-xl bg-[#F7F4F1] dark:bg-white/5 hover:bg-[#EFEAE5] dark:hover:bg-white/10 p-3 text-left transition-colors cursor-pointer"
+                        >
+                          <div className="text-xs font-bold text-[#141214] dark:text-white">
+                            Placement &amp; Hiring Cell
+                          </div>
+                          <div className="text-[11px] font-mono tabular-nums text-neutral-600 dark:text-neutral-400 mt-0.5">
+                            {CAREER_ROLES.length} Roles · 180+ Drives
+                          </div>
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-1 mt-2">
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={() => handleCareerDropdownSelect('open-roles', 'roles')}
+                          className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-xs text-neutral-800 dark:text-neutral-200 hover:bg-[#F7F4F1] dark:hover:bg-white/10 transition-colors cursor-pointer text-left"
+                        >
+                          <span className="truncate">Open Roles ({CAREER_ROLES.length})</span>
+                          <ArrowUpRight className="w-3 h-3 opacity-60 shrink-0" />
+                        </button>
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={() => handleCareerDropdownSelect('internships', 'roles')}
+                          className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-xs text-neutral-800 dark:text-neutral-200 hover:bg-[#F7F4F1] dark:hover:bg-white/10 transition-colors cursor-pointer text-left"
+                        >
+                          <span className="truncate">Paid Internships</span>
+                          <ArrowUpRight className="w-3 h-3 opacity-60 shrink-0" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Featured Projects Section inside Dropdown */}
+                    <div className="grid grid-cols-2 gap-2 py-3 border-b border-black/10 dark:border-white/10">
                       <button
                         type="button"
                         role="menuitem"
@@ -505,7 +425,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     {/* Track Filter Shortcuts */}
                     <div className="pt-3">
                       <div className="text-[11px] font-mono text-neutral-500 dark:text-neutral-400 px-1 mb-2">
-                        Filter by Engineering Track
+                        Filter Projects by Track
                       </div>
                       <div className="grid grid-cols-2 gap-1">
                         {PROJECT_CATEGORIES.filter((c) => c !== 'All').map((category) => (
@@ -528,7 +448,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     {/* Bottom Action Footer */}
                     <div className="mt-3 pt-3 border-t border-black/10 dark:border-white/10 flex items-center justify-between">
                       <span className="text-[11px] text-neutral-500 dark:text-neutral-400">
-                        Interactive sandboxes &amp; live links
+                        Careers, sandboxes &amp; live links
                       </span>
                       <button
                         type="button"
